@@ -176,7 +176,7 @@ namespace NsisoLauncher
                 d.Visibility = Visibility.Visible;
                 playerPassTextBox.Visibility = Visibility.Visible;
                 playerPassTextBox.Margin = new Thickness(41, 150, 20, 0);
-                playerPassTextBox.Text = App.GetResourceString("String.Base.Password");
+                //playerPassTextBox.Text = App.GetResourceString("String.Base.Password");
                 fastlogin = true;
             }
         }
