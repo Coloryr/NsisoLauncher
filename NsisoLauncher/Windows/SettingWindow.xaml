@@ -231,7 +231,7 @@
                         <StackPanel/>
                     </GroupBox>
                     -->
-                    
+
                 </Grid>
             </TabItem>
             <TabItem Header="{DynamicResource String.Settingwindow.User}">
@@ -327,24 +327,11 @@
             </TabItem>
             <TabItem Header="关于">
                 <StackPanel>
-                    <TextBlock Margin="10,0">
-                        启动器开源
-                        <Hyperlink Click="Hyperlink_Click" NavigateUri="https://github.com/Nsiso/NsisoLauncher">
-                            https://github.com/Nsiso/NsisoLauncher
-                        </Hyperlink>
-                    </TextBlock>
-                    <TextBlock Margin="10,0">
-                        启动器声明
-                        <Hyperlink Click="Hyperlink_Click" NavigateUri="https://github.com/Nsiso/NsisoLauncher/blob/master/README.md">
-                            https://github.com/Nsiso/NsisoLauncher/blob/master/README.md
-                        </Hyperlink>
-                    </TextBlock>
-                    <TextBlock Margin="10,0">
-                        启动器文档
-                        <Hyperlink Click="Hyperlink_Click" NavigateUri="https://github.com/Nsiso/NsisoLauncher/wiki">
-                            https://github.com/Nsiso/NsisoLauncher/wiki
-                        </Hyperlink>
-                    </TextBlock>
+                    <TextBlock Margin="10,0"><Run Text="启动器声明 "/><Hyperlink Click="Hyperlink_Click" NavigateUri="https://github.com/Nsiso/NsisoLauncher/blob/master/README.md"><Run Text="https://github.com/Nsiso/NsisoLauncher/blob/master/README.md"/></Hyperlink></TextBlock>
+                    <TextBlock Margin="10,0"><Run Text="启动器文档 "/><Hyperlink Click="Hyperlink_Click" NavigateUri="https://github.com/Nsiso/NsisoLauncher/wiki"><Run Text="https://github.com/Nsiso/NsisoLauncher/wiki"/></Hyperlink></TextBlock>
+                    <TextBlock Margin="10,0"><Run Text="启动器原仓库 "/><Hyperlink Click="Hyperlink_Click" NavigateUri="https://github.com/Nsiso/NsisoLauncher"><Run Text="https://github.com/Nsiso/NsisoLauncher"/></Hyperlink></TextBlock>
+                    <TextBlock Margin="10,0"><Run Text="启动器fork仓库 "/><Hyperlink Click="Hyperlink_Click" NavigateUri="https://github.com/Coloryr/NsisoLauncher"><Run Text="https://github.com/Coloryr/NsisoLauncher"/></Hyperlink></TextBlock>
+                    <TextBlock Margin="10,0" Text="该启动器版权归Nsiso所有，此版本为衍生版本！" FontSize="24"/>
                 </StackPanel>
             </TabItem>
 

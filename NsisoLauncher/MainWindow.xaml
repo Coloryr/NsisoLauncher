@@ -18,12 +18,6 @@
         <MediaElement x:Name="mediaElement" Visibility="Hidden" LoadedBehavior="Manual" MediaEnded="mediaElement_MediaEnded"/>
         <Grid Width="220" x:Name="userGrid" HorizontalAlignment="Right">
             <!--#region 高斯模糊效果(最底层) -->
-            <Rectangle Fill="{Binding Background, ElementName=mainWindow}" >
-                <Rectangle.Effect>
-                    <BlurEffect Radius="20"/>
-                </Rectangle.Effect>
-            </Rectangle>
-            <Rectangle Fill="#33FFFFFF" HorizontalAlignment="Right" Width="220"/>
             <!--#endregion-->
             <Button x:Name="launchButton" Content="{DynamicResource String.Base.Launch}" Margin="10,0,10,10" Height="50" VerticalAlignment="Bottom"
                     FontSize="14" Background="#19000000" BorderBrush="White" Foreground="White" Click="launchButton_Click"/>
@@ -31,33 +25,40 @@
             <Image Source="Resource/Steve.jpg" Height="60" Width="60" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,30,0,0"/>
             <Ellipse  Height="100" Stroke="White" VerticalAlignment="Top" HorizontalAlignment="Center" Width="100" Margin="0,10,0,0"/>
 
-            <Label Content="{iconPacks:FontAwesome Kind=LocationArrowSolid}" HorizontalAlignment ="Left" Margin="10,115,0,0" Height="auto" VerticalAlignment="Top" Foreground="White"/>
+            <Label x:Name="a" Content="{iconPacks:FontAwesome Kind=LocationArrowSolid}" HorizontalAlignment ="Left" Margin="10,115,0,0" Height="auto" VerticalAlignment="Top" Foreground="White"/>
             <ComboBox x:Name="authTypeCombobox"
                   Margin="41,115,20,0" 
                   VerticalAlignment="Top" 
                   Background="#33FFFFFF" BorderBrush="#99FFFFFF"
                   DisplayMemberPath="Name"
-                  controls:TextBoxHelper.Watermark="{DynamicResource String.MainWindow.ChooseAuthType}"
+                  controls:TextBoxHelper.Watermark="{DynamicResource String.MainWindow.ChooseAuthType}" Foreground="White" FontWeight="Bold"
                   />
-            
-            <Label Content="{iconPacks:FontAwesome Kind=RocketSolid}" HorizontalAlignment ="Left" Margin="10,150,0,0" Height="auto" VerticalAlignment="Top" Foreground="White"/>
+
+            <Label x:Name="b" Content="{iconPacks:FontAwesome Kind=RocketSolid}" HorizontalAlignment ="Left" Margin="10,150,0,0" Height="auto" VerticalAlignment="Top" Foreground="White"/>
             <ComboBox x:Name="launchVersionCombobox"
                   Margin="41,150,20,0" 
                   VerticalAlignment="Top" 
                   Background="#33FFFFFF" BorderBrush="#99FFFFFF"
                   DisplayMemberPath="ID"
-                  controls:TextBoxHelper.Watermark="{DynamicResource String.MainWindow.ChooseLaunchVersion}"
+                  controls:TextBoxHelper.Watermark="{DynamicResource String.MainWindow.ChooseLaunchVersion}" Foreground="White" FontWeight="Bold"
                   />
 
-            <Label Content="{iconPacks:FontAwesome Kind=UserSolid}" HorizontalAlignment="Left" Height="auto" VerticalAlignment="Top" Margin="10,185,0,0" Foreground="White"/>
+            <Label x:Name="c" Content="{iconPacks:FontAwesome Kind=UserSolid}" HorizontalAlignment="Left" Height="auto" VerticalAlignment="Top" Margin="10,185,0,0" Foreground="White"/>
             <TextBox x:Name="playerNameTextBox"
                  Height="23"
                  Margin="41,185,20,0"
                  TextWrapping="Wrap"
                  VerticalAlignment="Top" Background="#33FFFFFF" BorderBrush="#99FFFFFF"
-                 controls:TextBoxHelper.Watermark="{DynamicResource String.Mainwindow.InputPlayerName}"
+                 controls:TextBoxHelper.Watermark="{DynamicResource String.Mainwindow.InputPlayerName}" Foreground="White" FontWeight="Bold"
                  />
-
+            <Label x:Name="d" Content="{iconPacks:FontAwesome Kind=LocationArrowSolid}" HorizontalAlignment="Left" Height="auto" VerticalAlignment="Top" Margin="10,216,0,0" Foreground="White" Visibility="Hidden"/>
+            <TextBox x:Name="playerPassTextBox"
+                Height="23"
+                Margin="41,216,20,0"
+                TextWrapping="Wrap"
+                VerticalAlignment="Top" Background="#33FFFFFF" BorderBrush="#99FFFFFF"
+                controls:TextBoxHelper.Watermark="{DynamicResource String.Mainwindow.InputPassWord}" RenderTransformOrigin="0.441,2.323" Foreground="White" FontWeight="Bold" Visibility="Hidden"
+                 />
             <!--
             <controls:ToggleSwitch Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}" Margin="41,190,10,0" Height="auto" VerticalAlignment="Top"
                                    x:Name="isOnlineLogin"
@@ -83,9 +84,9 @@
                 BorderBrush="White" Visibility="Hidden" Foreground="White" Click="volumeButton_Click">
             <iconPacks:FontAwesome x:Name="volumeButtonIcon" Kind="VolumeUpSolid" />
         </Button>
-        
+
         <userControl:ServerInfoControl x:Name="serverInfoControl" Height="125" Margin="10,10,352,0" VerticalAlignment="Top"/>
-        
+
         <Grid x:Name="loadingGrid" Visibility="Hidden">
             <Border Background="{Binding Background, ElementName=mainWindow}" >
                 <Border.Effect>

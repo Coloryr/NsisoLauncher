@@ -10,7 +10,7 @@
     <sys:String x:Key="String.Base.Download">下载</sys:String>
     <sys:String x:Key="String.Base.Cancel">取消</sys:String>
     <sys:String x:Key="String.Base.Unremember">不再提醒</sys:String>
-    <sys:String x:Key="String.Base.Apply">应用</sys:String>
+    <sys:String x:Key="String.Base.Apply">保存</sys:String>
     <sys:String x:Key="String.Base.Login">登陆</sys:String>
     <sys:String x:Key="String.Base.Yes">确认</sys:String>
     <sys:String x:Key="String.Base.Username">用户名</sys:String>
@@ -32,7 +32,9 @@
 
     <sys:String x:Key="String.MainWindow.ChooseLaunchVersion">选择启动版本</sys:String>
     <sys:String x:Key="String.MainWindow.ChooseAuthType">选择验证类型</sys:String>
-    <sys:String x:Key="String.Mainwindow.InputPlayerName">输入游戏名称或账号</sys:String>
+    <sys:String x:Key="String.Mainwindow.InputPlayerName">输入游戏名称或邮箱</sys:String>
+    <sys:String x:Key="String.Mainwindow.InputPassWord">输入账户的密码</sys:String>
+    <sys:String x:Key="String.Mainwindow.Logining">登陆中...</sys:String>
     <sys:String x:Key="String.Mainwindow.Launching">启动中...</sys:String>
      
     <!--#region 登陆-->

@@ -174,7 +174,8 @@ namespace NsisoLauncher.Windows
             }
             
             App.config.Save();
-            await this.ShowMessageAsync("保存成功", "所有设置已成功保存在本地");
+            //await this.ShowMessageAsync("保存成功", "所有设置已成功保存在本地");
+            this.Close();
         }
 
         //取消按钮点击后
