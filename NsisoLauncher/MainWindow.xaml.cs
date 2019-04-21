@@ -598,7 +598,11 @@ namespace NsisoLauncher
                                 "建议您联系启动器开发者进行解决。");
                             break;
                     }
-                    if(authResult.State != AuthState.SUCCESS) launchButton.Content = App.GetResourceString("String.Base.Launch");
+                    if (authResult.State != AuthState.SUCCESS)
+                    {
+                        launchButton.Content = App.GetResourceString("String.Base.Launch");
+                        return;
+                    }
                 }
                 else
                 {
@@ -815,9 +819,11 @@ namespace NsisoLauncher
             catch (Exception ex)
             {
                 App.logHandler.AppendFatal(ex);
+                launchButton.Content = App.GetResourceString("String.Base.Launch");
             }
             finally
             {
+                launchButton.Content = App.GetResourceString("String.Base.Launch");
                 this.loadingGrid.Visibility = Visibility.Hidden;
                 this.loadingRing.IsActive = false;
             }

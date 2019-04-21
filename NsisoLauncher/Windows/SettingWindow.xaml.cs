@@ -172,7 +172,10 @@ namespace NsisoLauncher.Windows
                 App.handler,
                 new NsisoLauncherCore.Modules.Version() { ID = "null" });
             }
-            
+            if (App.config.MainConfig.Environment.AutoJava == true)
+                App.handler.Java = Java.GetSuitableJava(Java.GetJavaList());
+            else
+                App.handler.Java = Java.GetJavaInfo(javaPathComboBox.Text);
             App.config.Save();
             //await this.ShowMessageAsync("保存成功", "所有设置已成功保存在本地");
             this.Close();
