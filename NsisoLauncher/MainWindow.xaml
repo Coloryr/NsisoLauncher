@@ -26,7 +26,7 @@
 
             <Label x:Name="a" Content="{iconPacks:FontAwesome Kind=LocationArrowSolid}" HorizontalAlignment ="Left" Margin="10,120,0,0" Height="auto" VerticalAlignment="Top" Foreground="White"/>
             <ComboBox x:Name="authTypeCombobox"
-                  Margin="41,115,20,0" 
+                  Margin="41,120,20,0" 
                   VerticalAlignment="Top" 
                   Background="#33FFFFFF" BorderBrush="#99FFFFFF"
                   DisplayMemberPath="Name"
