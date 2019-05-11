@@ -22,12 +22,13 @@
             <DataGrid.Columns>
                 <DataGridTextColumn Header="{DynamicResource String.Downloadwindow.TaskName}" Binding="{Binding Path=TaskName}" IsReadOnly="True"/>
                 <DataGridTemplateColumn Header="{DynamicResource String.Downloadwindow.TaskProgress}" IsReadOnly="True">
+				<DataGridTextColumn Header="任务状态" Binding="{Binding Path=State, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True"/>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <controls:MetroProgressBar
                                 VerticalAlignment="Center"
                                 Foreground="{DynamicResource AccentColorBrush}"
-                                Maximum="{Binding TotalSize, Mode=OneWay}"
+                                Maximum="{Binding TotalSize, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                 Minimum="0"
                                 Value="{Binding DownloadSize, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                 Background="LightGray">

@@ -68,7 +68,9 @@ namespace NsisoLauncher
         {
             this.playerNameTextBox.Text = App.config.MainConfig.User.UserName;
             authTypeCombobox.ItemsSource = this.authTypes;
-            if ((App.nide8Handler != null) && App.config.MainConfig.User.AllUsingNide8)
+             //全局统一验证设置
+            bool isAllUsingNide8 = (App.nide8Handler != null) && App.config.MainConfig.User.AllUsingNide8;
+            if (isAllUsingNide8)
             {
                 authTypeCombobox.SelectedItem = authTypes.Find(x => x.Type == Config.AuthenticationType.NIDE8);
                 authTypeCombobox.IsEnabled = false;
@@ -79,6 +81,13 @@ namespace NsisoLauncher
             }
             launchVersionCombobox.ItemsSource = await App.handler.GetVersionsAsync();
             this.launchVersionCombobox.Text = App.config.MainConfig.History.LastLaunchVersion;
+			 //头像自定义显示皮肤
+            bool isNeedRefreshIcon = (!string.IsNullOrWhiteSpace(App.config.MainConfig.User.AuthenticationUUID?.Value)) &&
+                App.config.MainConfig.User.AuthenticationType == Config.AuthenticationType.MOJANG;
+            if (isNeedRefreshIcon)
+            {
+                await headScul.RefreshIcon(App.config.MainConfig.User.AuthenticationUUID.Value);
+            }
             App.logHandler.AppendDebug("启动器主窗体数据重载完毕");
         }
 
@@ -461,100 +470,12 @@ namespace NsisoLauncher
                         break;
                 }
 
-                #region Old
-                //if (auth.Type != Config.AuthenticationType.OFFLINE)
-                //{
-                //    try
-                //    {
-                //        #region 如果记住登陆(有登陆记录)
-                //        if ((!string.IsNullOrWhiteSpace(App.config.MainConfig.User.AccessToken)) && (App.config.MainConfig.User.AuthenticationUUID != null))
-                //        {
-                //            authenticator = new YggdrasilTokenAuthenticator(App.config.MainConfig.User.AccessToken,
-                //                App.config.MainConfig.User.AuthenticationUUID,
-                //                App.config.MainConfig.User.AuthenticationUserData);
-                //            //var loader = await this.ShowProgressAsync(autoVerifyingMsg, autoVerifyingMsg2);
-                //            //loader.SetIndeterminate();
-                //            //Validate validate = new Validate(App.config.MainConfig.User.AccessToken);
-                //            //var validateResult = await validate.PerformRequestAsync();
-                //            //if (validateResult.IsSuccess)
-                //            //{
-
-                //            //    launchSetting.AuthenticateAccessToken = App.config.MainConfig.User.AccessToken;
-                //            //    launchSetting.AuthenticateUUID = App.config.MainConfig.User.AuthenticationUUID;
-                //            //    await loader.CloseAsync();
-                //            //}
-                //            //else
-                //            //{
-                //            //    Refresh refresher = new Refresh(App.config.MainConfig.User.AccessToken);
-                //            //    var refreshResult = await refresher.PerformRequestAsync();
-                //            //    await loader.CloseAsync();
-                //            //    if (refreshResult.IsSuccess)
-                //            //    {
-                //            //        App.config.MainConfig.User.AccessToken = refreshResult.AccessToken;
-
-                //            //        launchSetting.AuthenticateUUID = App.config.MainConfig.User.AuthenticationUUID;
-                //            //        launchSetting.AuthenticateAccessToken = refreshResult.AccessToken;
-                //            //    }
-                //            //    else
-                //            //    {
-                //            //        App.config.MainConfig.User.AccessToken = string.Empty;
-                //            //        App.config.Save();
-                //            //        await this.ShowMessageAsync(autoVerificationFailedMsg, autoVerificationFailedMsg2);
-                //            //        return;
-                //            //    }
-                //            //}
-                //        }
-                //        #endregion
-
-                //        #region 从零登陆
-                //        else
-                //        {
-                //            var loginMsgResult = await this.ShowLoginAsync(loginMsg, loginMsg2, loginDialogSettings);
-
-                //            if (loginMsgResult == null)
-                //            {
-                //                return;
-                //            }
-                //            var loader = await this.ShowProgressAsync(verifyingMsg, verifyingMsg2);
-                //            loader.SetIndeterminate();
-                //            userName = loginMsgResult.Username;
-                //            Authenticate authenticate = new Authenticate(new Credentials() { Username = loginMsgResult.Username, Password = loginMsgResult.Password });
-                //            var aloginResult = await authenticate.PerformRequestAsync();
-                //            await loader.CloseAsync();
-                //            if (aloginResult.IsSuccess)
-                //            {
-                //                if (loginMsgResult.ShouldRemember)
-                //                {
-                //                    App.config.MainConfig.User.AccessToken = aloginResult.AccessToken;
-                //                }
-                //                App.config.MainConfig.User.AuthenticationUserData = aloginResult.User;
-                //                App.config.MainConfig.User.AuthenticationUUID = aloginResult.SelectedProfile;
-
-                //                launchSetting.AuthenticateAccessToken = aloginResult.AccessToken;
-                //                launchSetting.AuthenticateUUID = aloginResult.SelectedProfile;
-                //                launchSetting.AuthenticationUserData = aloginResult.User;
-                //            }
-                //            else
-                //            {
-                //                await this.ShowMessageAsync(verifyingFailedMsg, verifyingFailedMsg2 + aloginResult.Error.ErrorMessage);
-                //                return;
-                //            }
-                //        }
-                //        #endregion
-                //    }
-                //    catch (Exception ex)
-                //    {
-                //        await this.ShowMessageAsync(verifyingFailedMsg, verifyingFailedMsg2 + ex.Message);
-                //        return;
-                //    }
-                //}
-                #endregion
-
                 if (auth.Type != Config.AuthenticationType.OFFLINE)
                 {
                     //string currentLoginType = string.Format("正在进行{0}中...", auth.Name);
                     //string loginMsg = "这需要联网进行操作，可能需要一分钟的时间";
                     //var loader = await this.ShowProgressAsync(currentLoginType, loginMsg);
+					var loader = await this.ShowProgressAsync(currentLoginType, loginMsg, true);
                     //loader.SetIndeterminate();
                     launchButton.Content = App.GetResourceString("String.Mainwindow.Logining");
                     var authResult = await authenticator.DoAuthenticateAsync();
