@@ -79,14 +79,18 @@ namespace NsisoLauncher
             {
                 this.authTypeCombobox.SelectedItem = authTypes.Find(x => x.Type == App.config.MainConfig.User.AuthenticationType);
             }
-            launchVersionCombobox.ItemsSource = await App.handler.GetVersionsAsync();
-            this.launchVersionCombobox.Text = App.config.MainConfig.History.LastLaunchVersion;
-			 //头像自定义显示皮肤
+            //launchVersionCombobox.ItemsSource = await App.handler.GetVersionsAsync();
+            //this.launchVersionCombobox.Text = App.config.MainConfig.History.LastLaunchVersion;
+            //头像自定义显示皮肤
             bool isNeedRefreshIcon = (!string.IsNullOrWhiteSpace(App.config.MainConfig.User.AuthenticationUUID?.Value)) &&
-                App.config.MainConfig.User.AuthenticationType == Config.AuthenticationType.MOJANG;
+                ((App.config.MainConfig.User.AuthenticationType == Config.AuthenticationType.MOJANG) ||
+                (App.config.MainConfig.User.AuthenticationType == Config.AuthenticationType.NIDE8));
             if (isNeedRefreshIcon)
             {
-                await headScul.RefreshIcon(App.config.MainConfig.User.AuthenticationUUID.Value);
+                if (App.config.MainConfig.User.AuthenticationType == Config.AuthenticationType.MOJANG) 
+                    await headScul.RefreshIcon(App.config.MainConfig.User.AuthenticationUUID.Value);
+                else if (App.config.MainConfig.User.AuthenticationType == Config.AuthenticationType.NIDE8)
+                    await headScul.RefreshIcon_nide8(App.config.MainConfig.User.AuthenticationUUID.Value);
             }
             App.logHandler.AppendDebug("启动器主窗体数据重载完毕");
         }
@@ -178,13 +182,13 @@ namespace NsisoLauncher
                 authTypeCombobox.Visibility = Visibility.Collapsed;
                 a.Visibility = Visibility.Collapsed;
                 b.Visibility = Visibility.Collapsed;
-                c.Margin = new Thickness(10, 115, 0, 0);
+                c.Margin = new Thickness(10, 120, 0, 0);
                 launchVersionCombobox.Visibility = Visibility.Collapsed;
-                playerNameTextBox.Margin = new Thickness(41, 115, 20, 0);
-                d.Margin = new Thickness(10, 150, 0, 0);
+                playerNameTextBox.Margin = new Thickness(41, 120, 20, 0);
+                d.Margin = new Thickness(10, 155, 0, 0);
                 d.Visibility = Visibility.Visible;
                 playerPassTextBox.Visibility = Visibility.Visible;
-                playerPassTextBox.Margin = new Thickness(41, 150, 20, 0);
+                playerPassTextBox.Margin = new Thickness(41, 155, 20, 0);
                 //playerPassTextBox.Text = App.GetResourceString("String.Base.Password");
                 fastlogin = true;
             }
@@ -475,7 +479,7 @@ namespace NsisoLauncher
                     //string currentLoginType = string.Format("正在进行{0}中...", auth.Name);
                     //string loginMsg = "这需要联网进行操作，可能需要一分钟的时间";
                     //var loader = await this.ShowProgressAsync(currentLoginType, loginMsg);
-					var loader = await this.ShowProgressAsync(currentLoginType, loginMsg, true);
+					//var loader = await this.ShowProgressAsync(currentLoginType, loginMsg, true);
                     //loader.SetIndeterminate();
                     launchButton.Content = App.GetResourceString("String.Mainwindow.Logining");
                     var authResult = await authenticator.DoAuthenticateAsync();

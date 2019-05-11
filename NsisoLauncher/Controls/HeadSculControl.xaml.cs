@@ -32,5 +32,13 @@ namespace NsisoLauncher.Controls
             iconImage.Source = await handler.GetHeadSculSource(uuid);
             progressRing.IsActive = false;
         }
+
+        public async Task RefreshIcon_nide8(string uuid)
+        {
+            NsisoLauncher.APIHandler_nide8.APIHandler_nide8 handler = new APIHandler_nide8.APIHandler_nide8();
+            progressRing.IsActive = true;
+            iconImage.Source = await handler.GetHeadSculSource(uuid);
+            progressRing.IsActive = false;
+        }
     }
 }

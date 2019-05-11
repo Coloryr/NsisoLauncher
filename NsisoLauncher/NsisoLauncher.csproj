@@ -91,12 +91,13 @@
     <Compile Include="Config\ConfigHandler.cs" />
     <Compile Include="Config\LauncherProfilesConfig.cs" />
     <Compile Include="Config\MainConfig.cs" />
-	<Compile Include="Controls\HeadSculControl.xaml.cs">
+    <Compile Include="Controls\HeadSculControl.xaml.cs">
       <DependentUpon>HeadSculControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\ServerInfoControl.xaml.cs">
       <DependentUpon>ServerInfoControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="lunzi.cs" />
     <Compile Include="Utils\LogHandler.cs" />
     <Compile Include="Utils\Converter.cs" />
     <Compile Include="Utils\DataChecker.cs" />
@@ -115,7 +116,7 @@
     <Compile Include="Windows\SettingWindow.xaml.cs">
       <DependentUpon>SettingWindow.xaml</DependentUpon>
     </Compile>
-	 <Page Include="Controls\HeadSculControl.xaml">
+    <Page Include="Controls\HeadSculControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -147,7 +148,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-	 <Page Include="Resource\Style\Fonts.xaml">
+    <Page Include="Resource\Style\Fonts.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
