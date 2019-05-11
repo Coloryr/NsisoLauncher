@@ -79,8 +79,8 @@ namespace NsisoLauncher
             {
                 this.authTypeCombobox.SelectedItem = authTypes.Find(x => x.Type == App.config.MainConfig.User.AuthenticationType);
             }
-            //launchVersionCombobox.ItemsSource = await App.handler.GetVersionsAsync();
-            //this.launchVersionCombobox.Text = App.config.MainConfig.History.LastLaunchVersion;
+            launchVersionCombobox.ItemsSource = await App.handler.GetVersionsAsync();
+            this.launchVersionCombobox.Text = App.config.MainConfig.History.LastLaunchVersion;
             //头像自定义显示皮肤
             bool isNeedRefreshIcon = (!string.IsNullOrWhiteSpace(App.config.MainConfig.User.AuthenticationUUID?.Value)) &&
                 ((App.config.MainConfig.User.AuthenticationType == Config.AuthenticationType.MOJANG) ||
