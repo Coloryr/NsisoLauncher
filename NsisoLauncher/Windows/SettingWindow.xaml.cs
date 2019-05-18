@@ -178,6 +178,7 @@ namespace NsisoLauncher.Windows
                 App.handler.Java = Java.GetJavaInfo(javaPathComboBox.Text);
             App.config.Save();
             //await this.ShowMessageAsync("保存成功", "所有设置已成功保存在本地");
+            MainWindow.is_re = true;
             this.Close();
         }
 

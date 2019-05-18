@@ -33,6 +33,9 @@ namespace NsisoLauncher
     public partial class MainWindow : MetroWindow
     {
         private bool fastlogin = false;
+        public static bool is_re = false;
+        private bool is_start = true;
+        Thread re_t;
 
         private List<AuthTypeItem> authTypes = new List<AuthTypeItem>()
         {
@@ -42,14 +45,30 @@ namespace NsisoLauncher
             new AuthTypeItem(){Type = Config.AuthenticationType.CUSTOM_SERVER, Name = App.GetResourceString("String.MainWindow.Auth.Custom")}
         };
 
+        public void re()
+        {
+            while (true)
+            {
+                if (is_re == true)
+                {
+                    Refresh();
+                    CustomizeRefresh();
+                    Color_custom();
+                    App.logHandler.AppendDebug("启动器主窗体数据重载完毕");
+                    is_re = false;
+                }
+                Thread.Sleep(1000);
+            }
+        }
+
         public MainWindow()
         {
             InitializeComponent();
             App.logHandler.AppendDebug("启动器主窗体已载入");
             App.handler.GameExit += Handler_GameExit;
-            Refresh();
-            CustomizeRefresh();
-            Color_custom();
+            is_re = true;
+            re_t = new Thread(re);
+            is_start = false;
         }
 
         private void Handler_GameExit(object sender, GameExitArg arg)
@@ -68,7 +87,7 @@ namespace NsisoLauncher
         {
             this.playerNameTextBox.Text = App.config.MainConfig.User.UserName;
             authTypeCombobox.ItemsSource = this.authTypes;
-             //全局统一验证设置
+            //全局统一验证设置
             bool isAllUsingNide8 = (App.nide8Handler != null) && App.config.MainConfig.User.AllUsingNide8;
             if (isAllUsingNide8)
             {
@@ -87,12 +106,11 @@ namespace NsisoLauncher
                 (App.config.MainConfig.User.AuthenticationType == Config.AuthenticationType.NIDE8));
             if (isNeedRefreshIcon)
             {
-                if (App.config.MainConfig.User.AuthenticationType == Config.AuthenticationType.MOJANG) 
+                if (App.config.MainConfig.User.AuthenticationType == Config.AuthenticationType.MOJANG)
                     await headScul.RefreshIcon(App.config.MainConfig.User.AuthenticationUUID.Value);
                 else if (App.config.MainConfig.User.AuthenticationType == Config.AuthenticationType.NIDE8)
                     await headScul.RefreshIcon_nide8(App.config.MainConfig.User.AuthenticationUUID.Value);
             }
-            App.logHandler.AppendDebug("启动器主窗体数据重载完毕");
         }
 
         #region 自定义
@@ -181,14 +199,19 @@ namespace NsisoLauncher
             {
                 authTypeCombobox.Visibility = Visibility.Collapsed;
                 launchVersionCombobox.Visibility = Visibility.Collapsed;
-                playerNameTextBox.Margin = new Thickness(41, 120, 20, 0);
+                playerNameTextBox.Margin = new Thickness(10, 120, 10, 0);
                 playerPassTextBox.Visibility = Visibility.Visible;
-                playerPassTextBox.Margin = new Thickness(41, 155, 20, 0);
+                playerPassTextBox.Margin = new Thickness(10, 155, 10, 0);
                 fastlogin = true;
             }
-            else
+            switch (App.config.MainConfig.User.AuthenticationType)
             {
-                playerPassTextBox.Visibility = Visibility.Hidden;
+                case Config.AuthenticationType.OFFLINE:
+                    playerPassTextBox.Visibility = Visibility.Hidden;
+                    break;
+                default:
+                    playerPassTextBox.Visibility = Visibility.Visible;
+                    break;
             }
         }
 
@@ -319,25 +342,23 @@ namespace NsisoLauncher
                         }
                         else
                         {
-                            var mojangLoginDResult = await this.ShowLoginAsync(App.GetResourceString("String.Mainwindow.Auth.Mojang.Login"),
-                                App.GetResourceString("String.Mainwindow.Auth.Mojang.Login2"),
-                                loginDialogSettings);
-                            if (IsValidateLoginData(mojangLoginDResult))
-                            {
-                                var mYggAuthenticator = new YggdrasilAuthenticator(new Credentials()
-                                {
-                                    Username = mojangLoginDResult.Username,
-                                    Password = mojangLoginDResult.Password
-                                });
-                                mYggAuthenticator.ProxyAuthServerAddress = "https://authserver.mojang.com";
-                                authenticator = mYggAuthenticator;
-                                shouldRemember = mojangLoginDResult.ShouldRemember;
-                            }
-                            else
+                            // 使用一个IntPtr类型值来存储加密字符串的起始点  
+                            IntPtr p = System.Runtime.InteropServices.Marshal.SecureStringToBSTR(this.playerPassTextBox.SecurePassword);
+
+                            // 使用.NET内部算法把IntPtr指向处的字符集合转换成字符串  
+                            string password = System.Runtime.InteropServices.Marshal.PtrToStringBSTR(p);
+                            if (playerNameTextBox.Text == null || password == null)
                             {
                                 await this.ShowMessageAsync("您输入的账号或密码为空", "请检查您是否正确填写登陆信息");
                                 return;
                             }
+                            var mYggAuthenticator = new Nide8Authenticator(new Credentials()
+                            {
+                                Username = playerNameTextBox.Text,
+                                Password = password
+                            });
+                            mYggAuthenticator.ProxyAuthServerAddress = "https://authserver.mojang.com";
+                            authenticator = mYggAuthenticator;
                         }
                         break;
                     #endregion
@@ -350,63 +371,13 @@ namespace NsisoLauncher
                                 App.GetResourceString("String.Mainwindow.Auth.Nide8.NoID2"));
                             return;
                         }
-                        if (fastlogin == false)
+                        if (isSameAuthType && isSameName && isRemember)
                         {
-                            var nide8ChooseResult = await this.ShowMessageAsync(App.GetResourceString("String.Mainwindow.Auth.Nide8.Login2"), App.GetResourceString("String.Base.Choose"),
-                                MessageDialogStyle.AffirmativeAndNegativeAndSingleAuxiliary,
-                                new MetroDialogSettings()
-                                {
-                                    AffirmativeButtonText = App.GetResourceString("String.Base.Login"),
-                                    NegativeButtonText = App.GetResourceString("String.Base.Cancel"),
-                                    FirstAuxiliaryButtonText = App.GetResourceString("String.Base.Register"),
-                                    DefaultButtonFocus = MessageDialogResult.Affirmative
-                                });
-                            switch (nide8ChooseResult)
-                            {
-                                case MessageDialogResult.Canceled:
-                                    return;
-                                case MessageDialogResult.Negative:
-                                    return;
-                                case MessageDialogResult.FirstAuxiliary:
-                                    System.Diagnostics.Process.Start(string.Format("https://login2.nide8.com:233/{0}/register", App.nide8Handler.ServerID));
-                                    return;
-                                case MessageDialogResult.Affirmative:
-                                    if (isSameAuthType && isSameName && isRemember)
-                                    {
-                                        var nYggTokenCator = new Nide8TokenAuthenticator(App.config.MainConfig.User.AccessToken,
-                                            App.config.MainConfig.User.AuthenticationUUID,
-                                            App.config.MainConfig.User.AuthenticationUserData);
-                                        nYggTokenCator.ProxyAuthServerAddress = string.Format("{0}authserver", App.nide8Handler.BaseURL);
-                                        authenticator = nYggTokenCator;
-                                    }
-                                    else
-                                    {
-                                        var nide8LoginDResult = await this.ShowLoginAsync(App.GetResourceString("String.Mainwindow.Auth.Nide8.Login"),
-                                            App.GetResourceString("String.Mainwindow.Auth.Nide8.Login2"),
-                                            loginDialogSettings);
-                                        if (IsValidateLoginData(nide8LoginDResult))
-                                        {
-                                            var nYggCator = new Nide8Authenticator(new Credentials()
-                                            {
-                                                Username = nide8LoginDResult.Username,
-                                                Password = nide8LoginDResult.Password
-                                            });
-
-                                            nYggCator.ProxyAuthServerAddress = string.Format("{0}authserver", App.nide8Handler.BaseURL);
-                                            authenticator = nYggCator;
-                                            shouldRemember = nide8LoginDResult.ShouldRemember;
-                                        }
-                                        else
-                                        {
-                                            await this.ShowMessageAsync("您输入的账号或密码为空", "请检查您是否正确填写登陆信息");
-                                            return;
-                                        }
-                                    }
-                                    break;
-                                default:
-                                    break;
-                            }
-
+                            var nYggTokenCator = new Nide8TokenAuthenticator(App.config.MainConfig.User.AccessToken,
+                                App.config.MainConfig.User.AuthenticationUUID,
+                                App.config.MainConfig.User.AuthenticationUserData);
+                            nYggTokenCator.ProxyAuthServerAddress = string.Format("{0}authserver", App.nide8Handler.BaseURL);
+                            authenticator = nYggTokenCator;
                         }
                         else
                         {
@@ -415,15 +386,19 @@ namespace NsisoLauncher
 
                             // 使用.NET内部算法把IntPtr指向处的字符集合转换成字符串  
                             string password = System.Runtime.InteropServices.Marshal.PtrToStringBSTR(p);
+                            if (playerNameTextBox.Text == null || password == null)
+                            {
+                                await this.ShowMessageAsync("您输入的账号或密码为空", "请检查您是否正确填写登陆信息");
+                                return;
+                            }
                             var nYggCator = new Nide8Authenticator(new Credentials()
                             {
                                 Username = playerNameTextBox.Text,
                                 Password = password
                             });
-                        
-                        nYggCator.ProxyAuthServerAddress = string.Format("{0}authserver", App.nide8Handler.BaseURL);
-                        authenticator = nYggCator;
-                        shouldRemember = true;
+
+                            nYggCator.ProxyAuthServerAddress = string.Format("{0}authserver", App.nide8Handler.BaseURL);
+                            authenticator = nYggCator;
                         }
                         break;
                     #endregion
@@ -448,25 +423,23 @@ namespace NsisoLauncher
                             }
                             else
                             {
-                                var customLoginDResult = await this.ShowLoginAsync(App.GetResourceString("String.Mainwindow.Auth.Custom.Login"),
-                               App.GetResourceString("String.Mainwindow.Auth.Custom.Login2"),
-                               loginDialogSettings);
-                                if (IsValidateLoginData(customLoginDResult))
-                                {
-                                    var cYggAuthenticator = new YggdrasilAuthenticator(new Credentials()
-                                    {
-                                        Username = customLoginDResult.Username,
-                                        Password = customLoginDResult.Password
-                                    });
-                                    cYggAuthenticator.ProxyAuthServerAddress = customAuthServer;
-                                    authenticator = cYggAuthenticator;
-                                    shouldRemember = customLoginDResult.ShouldRemember;
-                                }
-                                else
+                                // 使用一个IntPtr类型值来存储加密字符串的起始点  
+                                IntPtr p = System.Runtime.InteropServices.Marshal.SecureStringToBSTR(this.playerPassTextBox.SecurePassword);
+
+                                // 使用.NET内部算法把IntPtr指向处的字符集合转换成字符串  
+                                string password = System.Runtime.InteropServices.Marshal.PtrToStringBSTR(p);
+                                if (playerNameTextBox.Text == null || password == null)
                                 {
                                     await this.ShowMessageAsync("您输入的账号或密码为空", "请检查您是否正确填写登陆信息");
                                     return;
                                 }
+                                var cYggAuthenticator = new Nide8Authenticator(new Credentials()
+                                {
+                                    Username = playerNameTextBox.Text,
+                                    Password = password
+                                });
+                                cYggAuthenticator.ProxyAuthServerAddress = customAuthServer;
+                                authenticator = cYggAuthenticator;
                             }
                         }
                         break;
@@ -482,7 +455,7 @@ namespace NsisoLauncher
                     //string currentLoginType = string.Format("正在进行{0}中...", auth.Name);
                     //string loginMsg = "这需要联网进行操作，可能需要一分钟的时间";
                     //var loader = await this.ShowProgressAsync(currentLoginType, loginMsg);
-					//var loader = await this.ShowProgressAsync(currentLoginType, loginMsg, true);
+                    //var loader = await this.ShowProgressAsync(currentLoginType, loginMsg, true);
                     //loader.SetIndeterminate();
                     launchButton.Content = App.GetResourceString("String.Mainwindow.Logining");
                     var authResult = await authenticator.DoAuthenticateAsync();
@@ -861,6 +834,16 @@ namespace NsisoLauncher
         private void PlayerPassTextBox_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
         {
 
+        }
+
+        private void AuthTypeCombobox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        {
+            if (is_start == false)
+            {
+                AuthTypeItem auth = (AuthTypeItem)authTypeCombobox.SelectedItem;
+                App.config.MainConfig.User.AuthenticationType = auth.Type;
+                is_re = true;
+            }
         }
     }
 }
