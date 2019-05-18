@@ -200,7 +200,6 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resource\bg.png" />
-    <Resource Include="Resource\defaultIcon.png" />
     <Resource Include="Resource\icon.ico" />
   </ItemGroup>
   <ItemGroup>
@@ -250,6 +249,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resource\Steve.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resource\unknown_server.png" />
   </ItemGroup>
   <Import Project="..\..\NsisoLauncherCore\NsisoLauncherCore\NsisoLauncherCore.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

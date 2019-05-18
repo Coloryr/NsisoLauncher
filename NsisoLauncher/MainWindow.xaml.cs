@@ -180,17 +180,15 @@ namespace NsisoLauncher
             if (App.config.MainConfig.User.AllUsingNide8 == true)
             {
                 authTypeCombobox.Visibility = Visibility.Collapsed;
-                a.Visibility = Visibility.Collapsed;
-                b.Visibility = Visibility.Collapsed;
-                c.Margin = new Thickness(10, 120, 0, 0);
                 launchVersionCombobox.Visibility = Visibility.Collapsed;
                 playerNameTextBox.Margin = new Thickness(41, 120, 20, 0);
-                d.Margin = new Thickness(10, 155, 0, 0);
-                d.Visibility = Visibility.Visible;
                 playerPassTextBox.Visibility = Visibility.Visible;
                 playerPassTextBox.Margin = new Thickness(41, 155, 20, 0);
-                //playerPassTextBox.Text = App.GetResourceString("String.Base.Password");
                 fastlogin = true;
+            }
+            else
+            {
+                playerPassTextBox.Visibility = Visibility.Hidden;
             }
         }
 
@@ -412,10 +410,15 @@ namespace NsisoLauncher
                         }
                         else
                         {
+                            // 使用一个IntPtr类型值来存储加密字符串的起始点  
+                            IntPtr p = System.Runtime.InteropServices.Marshal.SecureStringToBSTR(this.playerPassTextBox.SecurePassword);
+
+                            // 使用.NET内部算法把IntPtr指向处的字符集合转换成字符串  
+                            string password = System.Runtime.InteropServices.Marshal.PtrToStringBSTR(p);
                             var nYggCator = new Nide8Authenticator(new Credentials()
                             {
                                 Username = playerNameTextBox.Text,
-                                Password = playerPassTextBox.Text
+                                Password = password
                             });
                         
                         nYggCator.ProxyAuthServerAddress = string.Format("{0}authserver", App.nide8Handler.BaseURL);
@@ -853,6 +856,11 @@ namespace NsisoLauncher
                 return false;
             }
             return true;
+        }
+
+        private void PlayerPassTextBox_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
+        {
+
         }
     }
 }

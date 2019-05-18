@@ -3,10 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:NsisoLauncher"
         xmlns:userControl="clr-namespace:NsisoLauncher.Controls"
         xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
-        xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
         mc:Ignorable="d"
         BorderBrush="{DynamicResource AccentColorBrush}"
         WindowStartupLocation="CenterScreen"
@@ -22,66 +20,55 @@
             <Button x:Name="launchButton" Content="{DynamicResource String.Base.Launch}" Margin="10,0,10,10" Height="50" VerticalAlignment="Bottom"
                     FontSize="14" Background="#19000000" BorderBrush="White" Foreground="White" Click="launchButton_Click"/>
 
-             <userControl:HeadSculControl x:Name="headScul" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,10,0,0"/>
-
-            <Label x:Name="a" Content="{iconPacks:FontAwesome Kind=LocationArrowSolid}" HorizontalAlignment ="Left" Margin="10,120,0,0" Height="auto" VerticalAlignment="Top" Foreground="White"/>
+            <userControl:HeadSculControl x:Name="headScul" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,10,0,0"/>
             <ComboBox x:Name="authTypeCombobox"
-                  Margin="41,120,20,0" 
+                  Margin="20,120,20,0" 
                   VerticalAlignment="Top" 
                   Background="#33FFFFFF" BorderBrush="#99FFFFFF"
                   DisplayMemberPath="Name"
                   controls:TextBoxHelper.Watermark="{DynamicResource String.MainWindow.ChooseAuthType}" Foreground="White" FontWeight="Bold"
                   />
-
-            <Label x:Name="b" Content="{iconPacks:FontAwesome Kind=RocketSolid}" HorizontalAlignment ="Left" Margin="10,155,0,0" Height="auto" VerticalAlignment="Top" Foreground="White"/>
             <ComboBox x:Name="launchVersionCombobox"
-                  Margin="41,155,20,0" 
+                  Margin="20,155,20,0" 
                   VerticalAlignment="Top" 
                   Background="#33FFFFFF" BorderBrush="#99FFFFFF"
                   DisplayMemberPath="ID"
                   controls:TextBoxHelper.Watermark="{DynamicResource String.MainWindow.ChooseLaunchVersion}" Foreground="White" FontWeight="Bold"
                   />
-
-            <Label x:Name="c" Content="{iconPacks:FontAwesome Kind=UserSolid}" HorizontalAlignment="Left" Height="auto" VerticalAlignment="Top" Margin="10,190,0,0" Foreground="White"/>
             <TextBox x:Name="playerNameTextBox"
                  Height="23"
-                 Margin="41,190,20,0"
+                 Margin="20,190,20,0"
                  TextWrapping="Wrap"
                  VerticalAlignment="Top" Background="#33FFFFFF" BorderBrush="#99FFFFFF"
                  controls:TextBoxHelper.Watermark="{DynamicResource String.Mainwindow.InputPlayerName}" Foreground="White" FontWeight="Bold"
                  />
-            <Label x:Name="d" Content="{iconPacks:FontAwesome Kind=LocationArrowSolid}" HorizontalAlignment="Left" Height="auto" VerticalAlignment="Top" Margin="10,216,0,0" Foreground="White" Visibility="Hidden"/>
-            <TextBox x:Name="playerPassTextBox"
+            <PasswordBox x:Name="playerPassTextBox"
                 Height="23"
-                Margin="41,216,20,0"
-                TextWrapping="Wrap"
+                Margin="20,225,20,0"
                 VerticalAlignment="Top" Background="#33FFFFFF" BorderBrush="#99FFFFFF"
-                controls:TextBoxHelper.Watermark="{DynamicResource String.Mainwindow.InputPassWord}" RenderTransformOrigin="0.441,2.323" Foreground="White" FontWeight="Bold" Visibility="Hidden"
+                controls:TextBoxHelper.Watermark="{DynamicResource String.Mainwindow.InputPassWord}" RenderTransformOrigin="0.441,2.323" Foreground="White" FontWeight="Bold"
                  />
-            <!--
-            <controls:ToggleSwitch Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}" Margin="41,190,10,0" Height="auto" VerticalAlignment="Top"
-                                   x:Name="isOnlineLogin"
-                                   OnLabel="{DynamicResource String.Mainwindow.UseOnlineAuth}"
-                                   OffLabel="{DynamicResource String.Mainwindow.UseOfflineAuth}" FontSize="14"
-                                   />
-            -->
 
             <Button x:Name="configButton"
                     Height="30" Margin="10,0,0,65" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="95"
-                    Background="{x:Null}" BorderBrush="White" Foreground="White" Click="configButton_Click">
-                <iconPacks:FontAwesome Kind="CogSolid"/>
+                    Background="{x:Null}" BorderBrush="White" Foreground="White" Click="configButton_Click" Content="设置" FontSize="14">
             </Button>
 
             <Button x:Name="downloadButton"
                     Height="30" Margin="0,0,10,65" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="95"
-                    Background="{x:Null}" BorderBrush="White" Foreground="White" Click="downloadButton_Click">
-                <iconPacks:FontAwesome  Kind="CloudDownloadAltSolid"/>
+                    Background="{x:Null}" BorderBrush="White" Foreground="White" Click="downloadButton_Click" Content="下载" FontSize="14">
             </Button>
+            <TextBox x:Name="playerPassTextBox_Copy"
+                Height="23"
+                Margin="20,256,20,0"
+                TextWrapping="Wrap"
+                VerticalAlignment="Top" Background="#33FFFFFF" BorderBrush="#99FFFFFF"
+                controls:TextBoxHelper.Watermark="{DynamicResource String.Mainwindow.InputPassWord}" RenderTransformOrigin="0.441,2.323" Foreground="White" FontWeight="Bold" Visibility="Hidden"
+                 />
         </Grid>
         <Button x:Name="volumeButton" Style ="{DynamicResource MahApps.Metro.Styles.MetroCircleButtonStyle}"
                 Width="30" Height="30" Margin="0,10,225,0" VerticalAlignment="Top" HorizontalAlignment="Right"
                 BorderBrush="White" Visibility="Hidden" Foreground="White" Click="volumeButton_Click">
-            <iconPacks:FontAwesome x:Name="volumeButtonIcon" Kind="VolumeUpSolid" />
         </Button>
 
         <userControl:ServerInfoControl x:Name="serverInfoControl" Height="125" Margin="10,10,352,0" VerticalAlignment="Top"/>

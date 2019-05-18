@@ -73,28 +73,31 @@ namespace NsisoLauncher.Controls
                     case ServerInfo.StateType.NO_RESPONSE:
                         this.serverStateIcon.Kind = MahApps.Metro.IconPacks.PackIconFontAwesomeKind.ExclamationCircleSolid;
                         this.serverStateIcon.Foreground = System.Windows.Media.Brushes.Red;
-                        this.serverPeopleTextBlock.Text = "获取失败";
-                        this.serverVersionTextBlock.Text = "获取失败";
-                        this.serverPingTextBlock.Text = "获取失败";
-                        this.serverMotdTextBlock.Text = "服务器没有响应，可能网络或服务器发生异常";
+                        serverNameTextBlock.Text = "获取失败";
+                        this.serverPeopleTextBlock.Text = "";
+                        this.serverVersionTextBlock.Text = "";
+                        this.serverPingTextBlock.Text = "";
+                        this.serverMotdTextBlock.Text = "";
                         break;
 
                     case ServerInfo.StateType.BAD_CONNECT:
                         this.serverStateIcon.Kind = MahApps.Metro.IconPacks.PackIconFontAwesomeKind.ExclamationCircleSolid;
                         this.serverStateIcon.Foreground = System.Windows.Media.Brushes.Red;
-                        this.serverPeopleTextBlock.Text = "获取失败";
-                        this.serverVersionTextBlock.Text = "获取失败";
-                        this.serverPingTextBlock.Text = "获取失败";
-                        this.serverMotdTextBlock.Text = "服务器连接失败，服务器可能不存在或网络异常";
+                        serverNameTextBlock.Text = "获取失败";
+                        this.serverPeopleTextBlock.Text = "";
+                        this.serverVersionTextBlock.Text = "";
+                        this.serverPingTextBlock.Text = "";
+                        this.serverMotdTextBlock.Text = "";
                         break;
 
                     case ServerInfo.StateType.EXCEPTION:
                         this.serverStateIcon.Kind = MahApps.Metro.IconPacks.PackIconFontAwesomeKind.ExclamationCircleSolid;
                         this.serverStateIcon.Foreground = System.Windows.Media.Brushes.Red;
-                        this.serverPeopleTextBlock.Text = "获取失败";
-                        this.serverVersionTextBlock.Text = "获取失败";
-                        this.serverPingTextBlock.Text = "获取失败";
-                        this.serverMotdTextBlock.Text = "启动器获取服务器信息时发生内部异常";
+                        serverNameTextBlock.Text = "获取失败";
+                        this.serverPeopleTextBlock.Text = "";
+                        this.serverVersionTextBlock.Text = "";
+                        this.serverPingTextBlock.Text = "";
+                        this.serverMotdTextBlock.Text = "";
                         break;
                     default:
                         break;

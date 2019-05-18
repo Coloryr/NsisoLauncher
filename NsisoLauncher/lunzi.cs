@@ -18,21 +18,18 @@ namespace NsisoLauncher.APIHandler_nide8
     class lunzi
     {
 
-        public static Bitmap BitmapImageToBitmap(BitmapImage bitmapImage)
+        public Bitmap BitmapImageToBitmap(BitmapImage bitmapImage)
         {
-            // BitmapImage bitmapImage = new BitmapImage(new Uri("../Images/test.png", UriKind.Relative));
-
             using (MemoryStream outStream = new MemoryStream())
             {
                 BitmapEncoder enc = new BmpBitmapEncoder();
                 enc.Frames.Add(BitmapFrame.Create(bitmapImage));
                 enc.Save(outStream);
                 Bitmap bitmap = new Bitmap(outStream);
-
                 return new Bitmap(bitmap);
             }
         }
-        public static BitmapImage BitmapToBitmapImage(Bitmap bitmap)
+        public BitmapImage BitmapToBitmapImage(Bitmap bitmap)
         {
             Bitmap bitmapSource = new Bitmap(bitmap.Width, bitmap.Height);
             int i, j;
@@ -52,7 +49,7 @@ namespace NsisoLauncher.APIHandler_nide8
 
             return bitmapImage;
         }
-        public static Bitmap Zoom(Bitmap orgimg, int times)
+        public Bitmap Zoom(Bitmap orgimg, int times)
         {
             Bitmap newimg = new Bitmap(orgimg.Width * times, orgimg.Height * times);
             for (int i = 0; i < orgimg.Width; i++)
@@ -70,14 +67,14 @@ namespace NsisoLauncher.APIHandler_nide8
             }
             return newimg;
         }
-        public static BitmapImage CaptureImage(BitmapImage fromImage)
+        public BitmapImage CaptureImage(BitmapImage fromImage)
         {
             //创建新图位图
             Bitmap bitmap = new Bitmap(8, 8);
             //创建作图区域
             Graphics graphic = Graphics.FromImage(bitmap);
             //矩形定义,将要在被截取的图像上要截取的图像区域的左顶点位置和截取的大小
-            Rectangle rectSource = new Rectangle(8,8, 8, 8);
+            Rectangle rectSource = new Rectangle(8, 8, 8, 8);
             //矩形定义,将要把 截取的图像区域 绘制到初始化的位图的位置和大小
             //rectDest说明，将把截取的区域，从位图左顶点开始绘制，绘制截取的区域原来大小
             Rectangle rectDest = new Rectangle(0, 0, 8, 8);
@@ -93,7 +90,7 @@ namespace NsisoLauncher.APIHandler_nide8
             graphic.Dispose();
             bitmap.Dispose();
 
-            return BitmapToBitmapImage(Zoom(map,8));
+            return BitmapToBitmapImage(Zoom(map, 8));
         }
     }
     public class APIHandler_nide8
@@ -102,33 +99,41 @@ namespace NsisoLauncher.APIHandler_nide8
         public async Task<ImageSource> GetHeadSculSource(string uuid)
         {
             string url = App.nide8Handler.BaseURL + APIUrl + uuid;
-             var res = await APIRequester.HttpGetAsync(url);
-            string b = await res.Content.ReadAsStringAsync();//把流转换为字符串并显示在文本框中
-            if (res.IsSuccessStatusCode)
+            try
             {
-                int d = b.IndexOf("value");
-                b = b.PadLeft(d).Remove(0, d);
-                b = b.Replace("value\":\"", "");
-                b = b.Replace("\"}]}", "");
-                byte[] inArray = Convert.FromBase64String(b);
-                string c = Encoding.UTF8.GetString(inArray);
-                d = c.IndexOf("https://");
-                if (d != -1)
+                var res = await APIRequester.HttpGetAsync(url);
+                string b = await res.Content.ReadAsStringAsync();//把流转换为字符串并显示在文本框中
+                if (res.IsSuccessStatusCode)
                 {
-                    c = c.PadLeft(d).Remove(0, d);
-                    c = c.Replace("\",\"metadata\":", "");
-                    c = c.Replace("{\"model\":\"slim\"}}}}", "");
-                    c = c.Replace("\"}}}", "");
-                    res = await APIRequester.HttpGetAsync(c);
-                    using (Stream stream = await res.Content.ReadAsStreamAsync())
+                    int d = b.IndexOf("value");
+                    b = b.PadLeft(d).Remove(0, d);
+                    b = b.Replace("value\":\"", "");
+                    b = b.Replace("\"}]}", "");
+                    byte[] inArray = Convert.FromBase64String(b);
+                    string c = Encoding.UTF8.GetString(inArray);
+                    d = c.IndexOf("https://");
+                    if (d != -1)
                     {
-                        var bImage = new BitmapImage();
-                        bImage.BeginInit();
-                        bImage.StreamSource = stream;
-                        bImage.EndInit();
-                        return lunzi.CaptureImage(bImage);
+                        c = c.PadLeft(d).Remove(0, d);
+                        c = c.Replace("\",\"metadata\":", "");
+                        c = c.Replace("{\"model\":\"slim\"}}}}", "");
+                        c = c.Replace("\"}}}", "");
+                        res = await APIRequester.HttpGetAsync(c);
+                        using (Stream stream = await res.Content.ReadAsStreamAsync())
+                        {
+                            var bImage = new BitmapImage();
+                            bImage.BeginInit();
+                            bImage.StreamSource = stream;
+                            bImage.EndInit();
+                            lunzi lunzi = new lunzi();
+                            return lunzi.CaptureImage(bImage);
+                        }
                     }
                 }
+            }
+            catch
+            {
+                return new BitmapImage(new Uri("/NsisoLauncher;component/Resource/Steve.jpg"));
             }
             return new BitmapImage(new Uri("/NsisoLauncher;component/Resource/Steve.jpg"));
         }
