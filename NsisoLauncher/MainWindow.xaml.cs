@@ -17,7 +17,7 @@ using NsisoLauncherCore.Net;
 using NsisoLauncherCore.Net.MojangApi.Api;
 using NsisoLauncherCore;
 using NsisoLauncherCore.Auth;
-using System.Windows.Forms.VisualStyles;
+using System.Runtime.InteropServices;
 
 namespace NsisoLauncher
 {
@@ -34,7 +34,6 @@ namespace NsisoLauncher
     {
         private bool fastlogin = false;
         public static bool is_re = false;
-        private bool is_start = true;
         Thread re_t;
 
         private List<AuthTypeItem> authTypes = new List<AuthTypeItem>()
@@ -45,19 +44,48 @@ namespace NsisoLauncher
             new AuthTypeItem(){Type = Config.AuthenticationType.CUSTOM_SERVER, Name = App.GetResourceString("String.MainWindow.Auth.Custom")}
         };
 
+        [DllImport("kernel32.dll", EntryPoint = "SetProcessWorkingSetSize")]
+        public static extern int SetProcessWorkingSetSize(IntPtr process, int minSize, int maxSize);
+
+        private void GC_now()
+        {
+            try
+            {
+                if (Environment.OSVersion.Platform == PlatformID.Win32NT)
+                {
+                    SetProcessWorkingSetSize(System.Diagnostics.Process.GetCurrentProcess().Handle, -1, -1);
+                }
+            }
+            catch
+            {
+            }
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            re_t.Abort();
+            re_t = null;
+        }
+
         public void re()
         {
             while (true)
             {
                 if (is_re == true)
                 {
-                    Refresh();
-                    CustomizeRefresh();
-                    Color_custom();
-                    App.logHandler.AppendDebug("启动器主窗体数据重载完毕");
-                    is_re = false;
+                    Dispatcher.Invoke(new Action(() =>
+                    {
+                        GC.Collect();
+                        GC.WaitForPendingFinalizers();
+                        Refresh();
+                        CustomizeRefresh();
+                        Color_custom();
+                        App.logHandler.AppendDebug("启动器主窗体数据重载完毕");
+                        is_re = false;
+                    }));
                 }
                 Thread.Sleep(1000);
+                GC_now();
             }
         }
 
@@ -68,7 +96,9 @@ namespace NsisoLauncher
             App.handler.GameExit += Handler_GameExit;
             is_re = true;
             re_t = new Thread(re);
-            is_start = false;
+            re_t.IsBackground = true;
+            re_t.Start();
+            this.Closing += Window_Closing;
         }
 
         private void Handler_GameExit(object sender, GameExitArg arg)
@@ -831,19 +861,11 @@ namespace NsisoLauncher
             return true;
         }
 
-        private void PlayerPassTextBox_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
-        {
-
-        }
-
         private void AuthTypeCombobox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
-            if (is_start == false)
-            {
-                AuthTypeItem auth = (AuthTypeItem)authTypeCombobox.SelectedItem;
-                App.config.MainConfig.User.AuthenticationType = auth.Type;
-                is_re = true;
-            }
+            AuthTypeItem auth = (AuthTypeItem)authTypeCombobox.SelectedItem;
+            App.config.MainConfig.User.AuthenticationType = auth.Type;
+            is_re = true;
         }
     }
 }
