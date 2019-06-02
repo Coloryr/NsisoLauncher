@@ -33,8 +33,6 @@ namespace NsisoLauncher
     public partial class MainWindow : MetroWindow
     {
         private bool fastlogin = false;
-        public static bool is_re = false;
-        Thread re_t;
 
         #region AuthTypeItems
         private List<AuthTypeItem> authTypes = new List<AuthTypeItem>()
@@ -47,44 +45,16 @@ namespace NsisoLauncher
         };
         #endregion
 
-        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            re_t.Abort();
-            re_t = null;
-        }
-
-        public void re()
-        {
-            while (true)
-            {
-                if (is_re == true)
-                {
-                    Dispatcher.Invoke(new Action(() =>
-                    {
-                        GC.Collect();
-                        GC.WaitForPendingFinalizers();
-                        Refresh();
-                        CustomizeRefresh();
-                        Color_custom();
-                        App.logHandler.AppendDebug("启动器主窗体数据重载完毕");
-                        is_re = false;
-                    }));
-                }
-                Thread.Sleep(1000);
-            }
-        }
-
         //TODO:增加取消启动按钮
         public MainWindow()
         {
             InitializeComponent();
             App.logHandler.AppendDebug("启动器主窗体已载入");
             App.handler.GameExit += Handler_GameExit;
-            is_re = true;
-            re_t = new Thread(re);
-            re_t.IsBackground = true;
-            re_t.Start();
-            this.Closing += Window_Closing;
+            Refresh();
+            CustomizeRefresh();
+            Color_custom();
+            App.logHandler.AppendDebug("启动器主窗体数据重载完毕");
         }
 
         #region 启动核心事件处理
@@ -781,6 +751,7 @@ namespace NsisoLauncher
             new SettingWindow().ShowDialog();
             Refresh();
             CustomizeRefresh();
+            Color_custom();
         }
         #endregion
 
@@ -871,7 +842,6 @@ namespace NsisoLauncher
         {
             AuthTypeItem auth = (AuthTypeItem)authTypeCombobox.SelectedItem;
             App.config.MainConfig.User.AuthenticationType = auth.Type;
-            is_re = true;
         }
         #endregion
     }
