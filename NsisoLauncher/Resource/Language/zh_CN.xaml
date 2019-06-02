@@ -9,6 +9,7 @@
     <sys:String x:Key="String.Base.Launch">启动游戏</sys:String>
     <sys:String x:Key="String.Base.Download">下载</sys:String>
     <sys:String x:Key="String.Base.Cancel">取消</sys:String>
+    <sys:String x:Key="String.Base.Config">设置</sys:String>
     <sys:String x:Key="String.Base.Unremember">不再提醒</sys:String>
     <sys:String x:Key="String.Base.Apply">保存</sys:String>
     <sys:String x:Key="String.Base.Login">登陆</sys:String>

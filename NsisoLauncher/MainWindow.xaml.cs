@@ -223,6 +223,7 @@ namespace NsisoLauncher
                 playerPassTextBox.Visibility = Visibility.Visible;
                 playerPassTextBox.Margin = new Thickness(10, 155, 10, 0);
                 fastlogin = true;
+                downloadButton.Content = App.GetResourceString("String.Base.Register");
             }
             switch (App.config.MainConfig.User.AuthenticationType)
             {

@@ -77,11 +77,11 @@
 
             <Button x:Name="configButton"
                     Height="30" Margin="10,0,4.4,65.2" VerticalAlignment="Bottom"
-                    Background="{x:Null}" BorderBrush="White" Foreground="White" Click="configButton_Click" Content="设置" FontSize="14"/>
+                    Background="{x:Null}" BorderBrush="White" Foreground="White" Click="configButton_Click" Content="{DynamicResource String.Base.Config}" FontSize="14"/>
 
             <Button x:Name="downloadButton"
                     Height="30" Margin="5.6,0,9.6,65.2" VerticalAlignment="Bottom"
-                    Background="{x:Null}" BorderBrush="White" Foreground="White" Click="downloadButton_Click" Content="下载" FontSize="14" Grid.Column="1"/>
+                    Background="{x:Null}" BorderBrush="White" Foreground="White" Click="downloadButton_Click" Content="{DynamicResource String.Base.Download}" FontSize="14" Grid.Column="1"/>
             <TextBox x:Name="playerPassTextBox_Copy"
                 Height="23"
                 Margin="20,256,20,0"
