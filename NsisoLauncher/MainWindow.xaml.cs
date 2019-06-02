@@ -36,30 +36,16 @@ namespace NsisoLauncher
         public static bool is_re = false;
         Thread re_t;
 
+        #region AuthTypeItems
         private List<AuthTypeItem> authTypes = new List<AuthTypeItem>()
         {
+            
             new AuthTypeItem(){Type = Config.AuthenticationType.OFFLINE, Name = App.GetResourceString("String.MainWindow.Auth.Offline")},
             new AuthTypeItem(){Type = Config.AuthenticationType.MOJANG, Name = App.GetResourceString("String.MainWindow.Auth.Mojang")},
             new AuthTypeItem(){Type = Config.AuthenticationType.NIDE8, Name = App.GetResourceString("String.MainWindow.Auth.Nide8")},
             new AuthTypeItem(){Type = Config.AuthenticationType.CUSTOM_SERVER, Name = App.GetResourceString("String.MainWindow.Auth.Custom")}
         };
-
-        [DllImport("kernel32.dll", EntryPoint = "SetProcessWorkingSetSize")]
-        public static extern int SetProcessWorkingSetSize(IntPtr process, int minSize, int maxSize);
-
-        private void GC_now()
-        {
-            try
-            {
-                if (Environment.OSVersion.Platform == PlatformID.Win32NT)
-                {
-                    SetProcessWorkingSetSize(System.Diagnostics.Process.GetCurrentProcess().Handle, -1, -1);
-                }
-            }
-            catch
-            {
-            }
-        }
+        #endregion
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
@@ -85,10 +71,10 @@ namespace NsisoLauncher
                     }));
                 }
                 Thread.Sleep(1000);
-                GC_now();
             }
         }
 
+        //TODO:增加取消启动按钮
         public MainWindow()
         {
             InitializeComponent();
@@ -101,6 +87,7 @@ namespace NsisoLauncher
             this.Closing += Window_Closing;
         }
 
+        #region 启动核心事件处理
         private void Handler_GameExit(object sender, GameExitArg arg)
         {
             this.Dispatcher.Invoke(new Action(() =>
@@ -108,10 +95,13 @@ namespace NsisoLauncher
                 this.WindowState = WindowState.Normal;
                 if (!arg.IsNormalExit())
                 {
-                    this.ShowMessageAsync("游戏非正常退出", "这很有可能是因为游戏崩溃导致的，退出代码:" + arg.ExitCode);
+                    this.ShowMessageAsync("游戏非正常退出",
+                        string.Format("这很有可能是因为游戏崩溃导致的，退出代码:{0}，游戏持续时间:{1}",
+                        arg.ExitCode, arg.Duration));
                 }
             }));
         }
+        #endregion
 
         private async void Refresh()
         {
@@ -256,11 +246,6 @@ namespace NsisoLauncher
             mediaElement.Play();
         }
         #endregion
-
-        private async void launchButton_Click(object sender, RoutedEventArgs e)
-        {
-            await LaunchGameFromWindow();
-        }
 
         private async Task LaunchGameFromWindow()
         {
@@ -503,6 +488,7 @@ namespace NsisoLauncher
                             launchSetting.AuthenticateResult = authResult;
                             break;
                         case AuthState.REQ_LOGIN:
+                            App.config.MainConfig.User.ClearAuthCache();
                             await this.ShowMessageAsync("验证失败：您的登陆信息已过期",
                                 string.Format("请您重新进行登陆。具体信息：{0}", authResult.Error.ErrorMessage));
                             isRemember = false;
@@ -746,6 +732,11 @@ namespace NsisoLauncher
                     }
                 }
                 #endregion
+
+                #region 数据反馈
+                //API使用次数计数器+1
+                await App.nsisoAPIHandler.RefreshUsingTimesCounter();
+                #endregion
             }
             catch (Exception ex)
             {
@@ -760,6 +751,15 @@ namespace NsisoLauncher
             }
         }
 
+        #region MainWindow button click event
+
+        //启动游戏按钮点击
+        private async void launchButton_Click(object sender, RoutedEventArgs e)
+        {
+            await LaunchGameFromWindow();
+        }
+
+        //下载按钮点击
         private void downloadButton_Click(object sender, RoutedEventArgs e)
         {
             if (fastlogin == true)
@@ -774,13 +774,16 @@ namespace NsisoLauncher
             }
         }
 
+        //配置按钮点击
         private void configButton_Click(object sender, RoutedEventArgs e)
         {
             new SettingWindow().ShowDialog();
             Refresh();
             CustomizeRefresh();
         }
+        #endregion
 
+        #region MainWindow event
         private async void mainWindow_Loaded(object sender, RoutedEventArgs e)
         {
             #region 无JAVA提示
@@ -843,7 +846,9 @@ namespace NsisoLauncher
             }
 
         }
+        #endregion
 
+        #region Tools
         private bool IsValidateLoginData(LoginDialogData data)
         {
             if (data == null)
@@ -867,5 +872,6 @@ namespace NsisoLauncher
             App.config.MainConfig.User.AuthenticationType = auth.Type;
             is_re = true;
         }
+        #endregion
     }
 }

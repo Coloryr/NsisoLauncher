@@ -13,51 +13,75 @@
         <ImageBrush ImageSource="Resource/bg.png" TileMode="FlipXY" AlignmentX="Right" Stretch="UniformToFill"/>
     </controls:MetroWindow.Background>
     <Grid>
-        <MediaElement x:Name="mediaElement" Visibility="Hidden" LoadedBehavior="Manual" MediaEnded="mediaElement_MediaEnded"/>
-        <Grid Width="220" x:Name="userGrid" HorizontalAlignment="Right">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <MediaElement x:Name="mediaElement" Visibility="Hidden" LoadedBehavior="Manual" MediaEnded="mediaElement_MediaEnded" Grid.ColumnSpan="2"/>
+        <Grid x:Name="userGrid" Grid.Column="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
             <!--#region 高斯模糊效果(最底层) -->
+            <Rectangle Grid.ColumnSpan="2">
+                <Rectangle.Effect>
+                    <BlurEffect Radius="20"/>
+                </Rectangle.Effect>
+                <Rectangle.Fill>
+                    <VisualBrush Stretch="UniformToFill" AlignmentX="Right" >
+                        <VisualBrush.Visual>
+                            <Rectangle Width="{Binding ActualWidth, ElementName=mainWindow}" 
+                                       Height="{Binding ActualHeight, ElementName=mainWindow}"
+                                       Fill="{Binding Background, ElementName=mainWindow}"
+                                       />
+                        </VisualBrush.Visual>
+                    </VisualBrush>
+                </Rectangle.Fill>
+            </Rectangle>
+            <Rectangle Fill="White" Opacity="0.2" Grid.ColumnSpan="2"/>
             <!--#endregion-->
             <Button x:Name="launchButton" Content="{DynamicResource String.Base.Launch}" Margin="10,0,10,10" Height="50" VerticalAlignment="Bottom"
-                    FontSize="14" Background="#19000000" BorderBrush="White" Foreground="White" Click="launchButton_Click"/>
+                    FontSize="14" Background="#19000000" BorderBrush="White" Foreground="White" Click="launchButton_Click" Grid.ColumnSpan="2"/>
 
-            <userControl:HeadSculControl x:Name="headScul" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,10,0,0"/>
+            <userControl:HeadSculControl x:Name="headScul" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="61,10,61,0" Grid.ColumnSpan="2"/>
+
             <ComboBox x:Name="authTypeCombobox"
                   Margin="10,120,10,0" 
                   VerticalAlignment="Top" 
                   Background="#33FFFFFF" BorderBrush="#99FFFFFF"
                   DisplayMemberPath="Name"
-                  controls:TextBoxHelper.Watermark="{DynamicResource String.MainWindow.ChooseAuthType}" Foreground="White" FontWeight="Bold" SelectionChanged="AuthTypeCombobox_SelectionChanged"
+                  controls:TextBoxHelper.Watermark="{DynamicResource String.MainWindow.ChooseAuthType}" Grid.ColumnSpan="2" Foreground="White" FontWeight="Bold" SelectionChanged="AuthTypeCombobox_SelectionChanged"
                   />
             <ComboBox x:Name="launchVersionCombobox"
                   Margin="10,155,10,0" 
                   VerticalAlignment="Top" 
                   Background="#33FFFFFF" BorderBrush="#99FFFFFF"
                   DisplayMemberPath="ID"
-                  controls:TextBoxHelper.Watermark="{DynamicResource String.MainWindow.ChooseLaunchVersion}" Foreground="White" FontWeight="Bold"
+                  controls:TextBoxHelper.Watermark="{DynamicResource String.MainWindow.ChooseLaunchVersion}" Grid.ColumnSpan="2" Foreground="White" FontWeight="Bold"
                   />
             <TextBox x:Name="playerNameTextBox"
                  Height="23"
                  Margin="10,190,10,0"
                  TextWrapping="Wrap"
                  VerticalAlignment="Top" Background="#33FFFFFF" BorderBrush="#99FFFFFF"
-                 controls:TextBoxHelper.Watermark="{DynamicResource String.Mainwindow.InputPlayerName}" Foreground="White" FontWeight="Bold"
+                 controls:TextBoxHelper.Watermark="{DynamicResource String.Mainwindow.InputPlayerName}" Grid.ColumnSpan="2" Foreground="White" FontWeight="Bold"
                  />
             <PasswordBox x:Name="playerPassTextBox"
                 Height="23"
                 Margin="10,225,10,0"
                 VerticalAlignment="Top" Background="#33FFFFFF" BorderBrush="#99FFFFFF"
-                controls:TextBoxHelper.Watermark="{DynamicResource String.Mainwindow.InputPassWord}" RenderTransformOrigin="0.441,2.323" Foreground="White" FontWeight="Bold"
+                controls:TextBoxHelper.Watermark="{DynamicResource String.Mainwindow.InputPassWord}" Grid.ColumnSpan="2" RenderTransformOrigin="0.441,2.323" Foreground="White" FontWeight="Bold"
                  />
 
             <Button x:Name="configButton"
-                    Height="30" Margin="10,0,0,65" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="95"
-                    Background="{x:Null}" BorderBrush="White" Foreground="White" Click="configButton_Click" Content="设置" FontSize="14">
-            </Button>
+                    Height="30" Margin="10,0,4.4,65.2" VerticalAlignment="Bottom"
+                    Background="{x:Null}" BorderBrush="White" Foreground="White" Click="configButton_Click" Content="设置" FontSize="14"/>
 
             <Button x:Name="downloadButton"
-                    Height="30" Margin="0,0,10,65" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="95"
-                    Background="{x:Null}" BorderBrush="White" Foreground="White" Click="downloadButton_Click" Content="下载" FontSize="14">
-            </Button>
+                    Height="30" Margin="5.6,0,9.6,65.2" VerticalAlignment="Bottom"
+                    Background="{x:Null}" BorderBrush="White" Foreground="White" Click="downloadButton_Click" Content="下载" FontSize="14" Grid.Column="1"/>
             <TextBox x:Name="playerPassTextBox_Copy"
                 Height="23"
                 Margin="20,256,20,0"
@@ -68,12 +92,12 @@
         </Grid>
         <Button x:Name="volumeButton" Style ="{DynamicResource MahApps.Metro.Styles.MetroCircleButtonStyle}"
                 Width="30" Height="30" Margin="0,10,225,0" VerticalAlignment="Top" HorizontalAlignment="Right"
-                BorderBrush="White" Visibility="Hidden" Foreground="White" Click="volumeButton_Click">
+                BorderBrush="White" Visibility="Hidden" Foreground="White" Click="volumeButton_Click" Grid.ColumnSpan="2">
         </Button>
 
-        <userControl:ServerInfoControl x:Name="serverInfoControl" Height="125" Margin="10,10,352,0" VerticalAlignment="Top"/>
+        <userControl:ServerInfoControl x:Name="serverInfoControl" Height="125" Margin="10,10,118,0" VerticalAlignment="Top"/>
 
-        <Grid x:Name="loadingGrid" Visibility="Hidden">
+        <Grid x:Name="loadingGrid" Visibility="Hidden" Grid.ColumnSpan="2">
             <Border Background="{Binding Background, ElementName=mainWindow}" >
                 <Border.Effect>
                     <BlurEffect Radius="20"/>
