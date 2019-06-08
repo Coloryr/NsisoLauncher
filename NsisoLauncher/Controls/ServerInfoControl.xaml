@@ -5,19 +5,19 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
              mc:Ignorable="d"
-             Height="152" Width="504">
+             Height="152" Width="368">
     <Grid Margin="0,0,0,0
  ">
-        <Ellipse x:Name="serverIcon" HorizontalAlignment="Left" Width="100" Stroke="#7FFFFFFF" Height="100" VerticalAlignment="Top">
+        <Ellipse x:Name="serverIcon" HorizontalAlignment="Left" Width="100" Stroke="#7FFFFFFF" Height="100" VerticalAlignment="Top" OpacityMask="Black">
             <Ellipse.Fill>
                 <ImageBrush ImageSource="/NsisoLauncher;component/Resource/unknown_server.png" Stretch="None"/>
             </Ellipse.Fill>
         </Ellipse>
-        <TextBlock x:Name="serverNameTextBlock" Margin="105,0,25,0" TextWrapping="Wrap" Text="{DynamicResource String.Mainwindow.ServerName}" FontSize="15" Foreground="White" Opacity="0.8" VerticalAlignment="Top" Height="20"/>
-        <TextBlock x:Name="serverPeopleTextBlock" Margin="105,25,25,0" TextWrapping="Wrap" Text="{DynamicResource String.Mainwindow.ServerGettingNum}" FontSize="15" Foreground="White" Opacity="0.8" VerticalAlignment="Top" Height="20"/>
-        <TextBlock x:Name="serverVersionTextBlock" Margin="105,50,25,0" TextWrapping="Wrap" Text="{DynamicResource String.Mainwindow.ServerGettingVer}" FontSize="15" Foreground="White" Opacity="0.8" VerticalAlignment="Top" Height="20"/>
-        <TextBlock x:Name="serverPingTextBlock" Margin="105,75,25,0" TextWrapping="Wrap" Text="{DynamicResource String.Mainwindow.ServerGettingPing}" FontSize="15" Foreground="White" Opacity="0.8" VerticalAlignment="Top" Height="20"/>
-        <TextBlock x:Name="serverMotdTextBlock" Margin="0,100,10,5" FontSize="15" Foreground="White" Opacity="0.8"/>
-        <controls:MetroProgressBar  x:Name="serverLoadingBar" VerticalAlignment="Bottom" Height="20" IsIndeterminate="False" Margin="0,0,24.8,5.4"/>
+        <TextBlock x:Name="serverNameTextBlock" Margin="105,0,123,0" TextWrapping="Wrap" Text="{DynamicResource String.Mainwindow.ServerName}" FontSize="15" Foreground="White" Opacity="0.8" VerticalAlignment="Top" Height="20" Background="#AF3F5966" HorizontalAlignment="Left"/>
+        <TextBlock x:Name="serverPeopleTextBlock" Margin="105,25,123,0" TextWrapping="Wrap" Text="{DynamicResource String.Mainwindow.ServerGettingNum}" FontSize="15" Foreground="White" Opacity="0.8" VerticalAlignment="Top" Height="20" Background="#AF3F5966" HorizontalAlignment="Left"/>
+        <TextBlock x:Name="serverVersionTextBlock" Margin="105,50,123,0" TextWrapping="Wrap" Text="{DynamicResource String.Mainwindow.ServerGettingVer}" FontSize="15" Foreground="White" Opacity="0.8" VerticalAlignment="Top" Height="20" Background="#AF3F5966" HorizontalAlignment="Left"/>
+        <TextBlock x:Name="serverPingTextBlock" Margin="105,75,123,0" TextWrapping="Wrap" Text="{DynamicResource String.Mainwindow.ServerGettingPing}" FontSize="15" Foreground="White" Opacity="0.8" VerticalAlignment="Top" Height="20" Background="#AF3F5966" HorizontalAlignment="Left"/>
+        <TextBlock x:Name="serverMotdTextBlock" Margin="0,100,10.2,5" FontSize="15" Foreground="White" Opacity="0.8" Background="#AF3F5966" VerticalAlignment="Top" HorizontalAlignment="Left"/>
+        <controls:MetroProgressBar  x:Name="serverLoadingBar" VerticalAlignment="Bottom" Height="20" IsIndeterminate="False" Margin="0,0,10.2,5"/>
     </Grid>
 </UserControl>

@@ -17,8 +17,7 @@ using NsisoLauncherCore.Net;
 using NsisoLauncherCore.Net.MojangApi.Api;
 using NsisoLauncherCore;
 using NsisoLauncherCore.Auth;
-using System.Runtime.InteropServices;
-using System.Windows.Controls;
+using System.Windows.Threading;
 
 namespace NsisoLauncher
 {
@@ -34,6 +33,10 @@ namespace NsisoLauncher
     public partial class MainWindow : MetroWindow
     {
         private bool fastlogin = false;
+        private string[] newStr;
+        private int filescount;
+        private int filesnow;
+        private DispatcherTimer timer;
 
         #region AuthTypeItems
         private List<AuthTypeItem> authTypes = new List<AuthTypeItem>()
@@ -49,6 +52,9 @@ namespace NsisoLauncher
         public MainWindow()
         {
             InitializeComponent();
+            timer = new DispatcherTimer();
+            timer.Interval = TimeSpan.FromSeconds(5);
+            timer.Tick += timer_Tick;
             App.logHandler.AppendDebug("启动器主窗体已载入");
             App.handler.GameExit += Handler_GameExit;
             Refresh();
@@ -72,6 +78,16 @@ namespace NsisoLauncher
             }));
         }
         #endregion
+
+        void timer_Tick(object sender, EventArgs e)
+        {
+            ImageBrush brush = new ImageBrush(new BitmapImage(new Uri(newStr[filesnow])))
+            { TileMode = TileMode.FlipXY, AlignmentX = AlignmentX.Right, Stretch = Stretch.UniformToFill };
+            this.Background = brush;
+            filesnow++;
+            if (filesnow >= filescount)
+                filesnow = 0;
+        }
 
         private async void Refresh()
         {
@@ -117,15 +133,31 @@ namespace NsisoLauncher
             }
             if (App.config.MainConfig.Customize.CustomBackGroundPicture)
             {
-                string[] files = Directory.GetFiles(Path.GetDirectoryName(App.config.MainConfigPath), "bgpic_?.png");
-                if (files.Count() != 0)
+                string[] files = Directory.GetFiles(Path.GetDirectoryName(App.config.MainConfigPath), "bg?.png");
+                string[] files1 = Directory.GetFiles(Path.GetDirectoryName(App.config.MainConfigPath), "bg?.jpg");
+                filescount = files.Count() + files1.Count();
+                if (filescount != 0)
                 {
-                    Random random = new Random();
-                    ImageBrush brush = new ImageBrush(new BitmapImage(new Uri(files[random.Next(files.Count())])))
-                    { TileMode = TileMode.FlipXY, AlignmentX = AlignmentX.Right, Stretch = Stretch.UniformToFill };
-                    this.Background = brush;
+                    newStr = new string[files.Length + files1.Length];
+                    int i = 0;
+                    foreach (string a in files)
+                    {
+                        newStr[i] = a;
+                        i++;
+                    }
+                    foreach (string a in files1)
+                    {
+                        newStr[i] = a;
+                        i++;
+                    }
+                    timer_Tick(null, null);
+                    timer.Start();
                 }
+                else
+                    timer.Stop();
             }
+            else
+                timer.Stop();
 
             if ((App.nide8Handler != null) && App.config.MainConfig.User.AllUsingNide8)
             {

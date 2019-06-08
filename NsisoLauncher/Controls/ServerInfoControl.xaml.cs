@@ -2,6 +2,7 @@
 using NsisoLauncherCore.Net.Server;
 using System;
 using System.Drawing;
+using System.Globalization;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Windows;
@@ -33,7 +34,6 @@ namespace NsisoLauncher.Controls
                 Visibility = Visibility.Visible;
                 serverLoadingBar.Visibility = Visibility.Visible;
                 serverLoadingBar.IsIndeterminate = true;
-
 
                 ServerInfo serverInfo = new ServerInfo(server.Address, server.Port);
                 await serverInfo.StartGetServerInfoAsync();
