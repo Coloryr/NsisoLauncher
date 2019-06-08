@@ -18,17 +18,6 @@ namespace NsisoLauncher.APIHandler_nide8
     class lunzi
     {
 
-        public Bitmap BitmapImageToBitmap(BitmapImage bitmapImage)
-        {
-            using (MemoryStream outStream = new MemoryStream())
-            {
-                BitmapEncoder enc = new BmpBitmapEncoder();
-                enc.Frames.Add(BitmapFrame.Create(bitmapImage));
-                enc.Save(outStream);
-                Bitmap bitmap = new Bitmap(outStream);
-                return new Bitmap(bitmap);
-            }
-        }
         public BitmapImage BitmapToBitmapImage(Bitmap bitmap)
         {
             Bitmap bitmapSource = new Bitmap(bitmap.Width, bitmap.Height);
@@ -49,6 +38,8 @@ namespace NsisoLauncher.APIHandler_nide8
 
             return bitmapImage;
         }
+
+        //缩放
         public Bitmap Zoom(Bitmap orgimg, int times)
         {
             Bitmap newimg = new Bitmap(orgimg.Width * times, orgimg.Height * times);
@@ -67,30 +58,32 @@ namespace NsisoLauncher.APIHandler_nide8
             }
             return newimg;
         }
-        public BitmapImage CaptureImage(BitmapImage fromImage)
+        public BitmapImage CaptureImage(System.Drawing.Image fromImage)
         {
             //创建新图位图
             Bitmap bitmap = new Bitmap(8, 8);
+            Bitmap bitmap_top = new Bitmap(8, 8);
+            bitmap_top.MakeTransparent();
             //创建作图区域
             Graphics graphic = Graphics.FromImage(bitmap);
+            Graphics graphic_top = Graphics.FromImage(bitmap_top);
             //矩形定义,将要在被截取的图像上要截取的图像区域的左顶点位置和截取的大小
             Rectangle rectSource = new Rectangle(8, 8, 8, 8);
+            Rectangle rectSource_top = new Rectangle(40, 8, 8, 8);
             //矩形定义,将要把 截取的图像区域 绘制到初始化的位图的位置和大小
             //rectDest说明，将把截取的区域，从位图左顶点开始绘制，绘制截取的区域原来大小
             Rectangle rectDest = new Rectangle(0, 0, 8, 8);
             //截取原图相应区域写入作图区
-            graphic.DrawImage(BitmapImageToBitmap(fromImage), rectDest, rectSource, GraphicsUnit.Pixel);
-            //从作图区生成新图
-            System.Drawing.Image saveImage = System.Drawing.Image.FromHbitmap(bitmap.GetHbitmap());
-
-            Bitmap map = new Bitmap(saveImage);
-
+            graphic.DrawImage(fromImage, rectDest, rectSource, GraphicsUnit.Pixel);
+            graphic_top.DrawImage(fromImage, rectDest, rectSource_top, GraphicsUnit.Pixel);
+            graphic.DrawImage(bitmap_top, rectDest, rectDest, GraphicsUnit.Pixel);
+            Bitmap save = new Bitmap(bitmap);
             //释放资源   
-            saveImage.Dispose();
             graphic.Dispose();
+            graphic_top.Dispose();
             bitmap.Dispose();
-
-            return BitmapToBitmapImage(Zoom(map, 8));
+            bitmap_top.Dispose();
+            return BitmapToBitmapImage(Zoom(save, 8));
         }
     }
     public class APIHandler_nide8
@@ -121,19 +114,16 @@ namespace NsisoLauncher.APIHandler_nide8
                         res = await APIRequester.HttpGetAsync(c);
                         using (Stream stream = await res.Content.ReadAsStreamAsync())
                         {
-                            var bImage = new BitmapImage();
-                            bImage.BeginInit();
-                            bImage.StreamSource = stream;
-                            bImage.EndInit();
+                            System.Drawing.Image saveImage = System.Drawing.Image.FromStream(stream);
                             lunzi lunzi = new lunzi();
-                            return lunzi.CaptureImage(bImage);
+                            return lunzi.CaptureImage(saveImage);
                         }
                     }
                 }
             }
             catch
             {
-                return new BitmapImage(new Uri("/NsisoLauncher;component/Resource/Steve.jpg"));
+                
             }
             return new BitmapImage(new Uri("/NsisoLauncher;component/Resource/Steve.jpg"));
         }

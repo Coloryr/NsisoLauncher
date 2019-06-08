@@ -18,6 +18,7 @@ using NsisoLauncherCore.Net.MojangApi.Api;
 using NsisoLauncherCore;
 using NsisoLauncherCore.Auth;
 using System.Runtime.InteropServices;
+using System.Windows.Controls;
 
 namespace NsisoLauncher
 {
@@ -37,7 +38,6 @@ namespace NsisoLauncher
         #region AuthTypeItems
         private List<AuthTypeItem> authTypes = new List<AuthTypeItem>()
         {
-            
             new AuthTypeItem(){Type = Config.AuthenticationType.OFFLINE, Name = App.GetResourceString("String.MainWindow.Auth.Offline")},
             new AuthTypeItem(){Type = Config.AuthenticationType.MOJANG, Name = App.GetResourceString("String.MainWindow.Auth.Mojang")},
             new AuthTypeItem(){Type = Config.AuthenticationType.NIDE8, Name = App.GetResourceString("String.MainWindow.Auth.Nide8")},
@@ -83,10 +83,15 @@ namespace NsisoLauncher
             {
                 authTypeCombobox.SelectedItem = authTypes.Find(x => x.Type == Config.AuthenticationType.NIDE8);
                 authTypeCombobox.IsEnabled = false;
+                fastlogin = true;
+                downloadButton.Content = App.GetResourceString("String.Base.Register");
             }
             else
             {
+                authTypeCombobox.IsEnabled = true;
+                fastlogin = false;
                 this.authTypeCombobox.SelectedItem = authTypes.Find(x => x.Type == App.config.MainConfig.User.AuthenticationType);
+                downloadButton.Content = App.GetResourceString("String.Base.Download");
             }
             launchVersionCombobox.ItemsSource = await App.handler.GetVersionsAsync();
             this.launchVersionCombobox.Text = App.config.MainConfig.History.LastLaunchVersion;
@@ -185,16 +190,6 @@ namespace NsisoLauncher
 
         private void Color_custom()
         {
-            if (App.config.MainConfig.User.AllUsingNide8 == true)
-            {
-                authTypeCombobox.Visibility = Visibility.Collapsed;
-                launchVersionCombobox.Visibility = Visibility.Collapsed;
-                playerNameTextBox.Margin = new Thickness(10, 120, 10, 0);
-                playerPassTextBox.Visibility = Visibility.Visible;
-                playerPassTextBox.Margin = new Thickness(10, 155, 10, 0);
-                fastlogin = true;
-                downloadButton.Content = App.GetResourceString("String.Base.Register");
-            }
             switch (App.config.MainConfig.User.AuthenticationType)
             {
                 case Config.AuthenticationType.OFFLINE:
