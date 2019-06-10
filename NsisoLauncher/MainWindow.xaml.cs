@@ -37,6 +37,7 @@ namespace NsisoLauncher
         private int filescount;
         private int filesnow;
         private DispatcherTimer timer;
+        private bool have_mp4 = false;
 
         #region AuthTypeItems
         private List<AuthTypeItem> authTypes = new List<AuthTypeItem>()
@@ -193,7 +194,32 @@ namespace NsisoLauncher
             if (App.config.MainConfig.Customize.CustomBackGroundMusic)
             {
                 string[] files = Directory.GetFiles(Path.GetDirectoryName(App.config.MainConfigPath), "bgmusic_?.mp3");
-                if (files.Count() != 0)
+                string[] files1 = Directory.GetFiles(Path.GetDirectoryName(App.config.MainConfigPath), "bg?.mp4");
+                if (files1.Count() != 0)
+                {
+                    have_mp4 = true;
+                    timer.Stop();
+                    mediaElement.Source = new Uri(files1[0]);
+                    this.volumeButton.Visibility = Visibility.Visible;
+                    mediaElement.Play();
+                    mediaElement.Volume = 0;
+                    await Task.Factory.StartNew(() =>
+                    {
+                        try
+                        {
+                            for (int i = 0; i < 50; i++)
+                            {
+                                this.Dispatcher.Invoke(new Action(() =>
+                                {
+                                    this.mediaElement.Volume += 0.01;
+                                }));
+                                Thread.Sleep(50);
+                            }
+                        }
+                        catch (Exception) { }
+                    });
+                }
+                if (files.Count() != 0 || have_mp4 == false) 
                 {
                     Random random = new Random();
                     mediaElement.Source = new Uri(files[random.Next(files.Count())]);
@@ -869,6 +895,7 @@ namespace NsisoLauncher
         {
             AuthTypeItem auth = (AuthTypeItem)authTypeCombobox.SelectedItem;
             App.config.MainConfig.User.AuthenticationType = auth.Type;
+            Color_custom();
         }
         #endregion
     }
