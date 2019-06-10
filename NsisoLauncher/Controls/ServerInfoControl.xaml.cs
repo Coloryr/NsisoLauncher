@@ -42,6 +42,8 @@ namespace NsisoLauncher.Controls
                 serverLoadingBar.IsIndeterminate = false;
                 serverLoadingBar.Visibility = Visibility.Hidden;
                 serverNameTextBlock.Text = serverInfo.ServerName;
+                if (serverInfo.ServerName == null)
+                    serverNameTextBlock.Text = App.config.MainConfig.Server.ServerName;
 
                 switch (serverInfo.State)
                 {
@@ -50,10 +52,13 @@ namespace NsisoLauncher.Controls
                         serverVersionTextBlock.Text = serverInfo.GameVersion;
                         serverVersionTextBlock.ToolTip = serverInfo.GameVersion;
                         serverPingTextBlock.Text = string.Format("延迟:{0}ms", serverInfo.Ping);
-                        serverMotdTextBlock.ToolTip = serverInfo.MOTD;
-                        string str = serverInfo.MOTD;
-                        str.Replace(Convert.ToChar(10).ToString(), "&#x000A");
-                        serverMotdTextBlock.Text = str;
+                        if (serverInfo.MOTD != null)
+                        {
+                            serverMotdTextBlock.ToolTip = serverInfo.MOTD;
+                            string str = serverInfo.MOTD;
+                            str.Replace(Convert.ToChar(10).ToString(), "&#x000A");
+                            serverMotdTextBlock.Text = str;
+                        }
                         if (serverInfo.OnlinePlayersName != null)
                         {
                             serverPeopleTextBlock.ToolTip = string.Join("\n", serverInfo.OnlinePlayersName);

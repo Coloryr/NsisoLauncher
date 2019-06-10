@@ -201,6 +201,7 @@ namespace NsisoLauncher
                     timer.Stop();
                     mediaElement.Source = new Uri(files1[0]);
                     this.volumeButton.Visibility = Visibility.Visible;
+                    mediaElement.Visibility = Visibility.Visible;
                     mediaElement.Play();
                     mediaElement.Volume = 0;
                     await Task.Factory.StartNew(() =>
@@ -219,7 +220,7 @@ namespace NsisoLauncher
                         catch (Exception) { }
                     });
                 }
-                if (files.Count() != 0 || have_mp4 == false) 
+                if (files.Count() != 0 && have_mp4 == false) 
                 {
                     Random random = new Random();
                     mediaElement.Source = new Uri(files[random.Next(files.Count())]);
