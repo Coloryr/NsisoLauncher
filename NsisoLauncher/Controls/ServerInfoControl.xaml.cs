@@ -114,5 +114,6 @@ namespace NsisoLauncher.Controls
 
         }
         #endregion
+
     }
 }
