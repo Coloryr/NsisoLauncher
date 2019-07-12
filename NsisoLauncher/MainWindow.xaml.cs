@@ -208,11 +208,11 @@ namespace NsisoLauncher
                     {
                         try
                         {
-                            for (int i = 0; i < 50; i++)
+                            for (int i = 0; i < 100; i++)
                             {
                                 this.Dispatcher.Invoke(new Action(() =>
                                 {
-                                    this.mediaElement.Volume += 0.01;
+                                    this.mediaElement.Volume += 0.001;
                                 }));
                                 Thread.Sleep(50);
                             }
@@ -231,11 +231,11 @@ namespace NsisoLauncher
                     {
                         try
                         {
-                            for (int i = 0; i < 50; i++)
+                            for (int i = 0; i < 100; i++)
                             {
                                 this.Dispatcher.Invoke(new Action(() =>
                                 {
-                                    this.mediaElement.Volume += 0.01;
+                                    this.mediaElement.Volume += 0.001;
                                 }));
                                 Thread.Sleep(50);
                             }

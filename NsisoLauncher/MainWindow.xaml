@@ -20,7 +20,7 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <MediaElement x:Name="mediaElement" LoadedBehavior="Manual" MediaEnded="mediaElement_MediaEnded" Grid.ColumnSpan="3" HorizontalAlignment="Center" VerticalAlignment="Top" Visibility="Hidden"/>
-        <userControl:ServerInfoControl x:Name="serverInfoControl" Margin="10,10,0,0" VerticalAlignment="Top" Grid.ColumnSpan="3" HorizontalAlignment="Left" Height="152" Width="400"/>
+        <userControl:ServerInfoControl x:Name="serverInfoControl" Margin="10,10,0,0" VerticalAlignment="Top" Grid.ColumnSpan="3" HorizontalAlignment="Left" Height="152" Width="430"/>
         <Grid x:Name="userGrid" Grid.Column="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
