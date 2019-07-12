@@ -8,7 +8,7 @@
         xmlns:chart="http"
         mc:Ignorable="d"
         Title="DownloadWindow" Height="450" Width="800" WindowStartupLocation="CenterScreen" 
-                      Closing="MetroWindow_Closing" Loaded="MetroWindow_Loaded">
+                      Closing="MetroWindow_Closing" Loaded="MetroWindow_Loaded" ResizeMode="CanMinimize">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="2*"/>

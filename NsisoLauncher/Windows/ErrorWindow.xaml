@@ -7,7 +7,7 @@
         xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
         xmlns:local="clr-namespace:NsisoLauncher.Windows"
         mc:Ignorable="d"
-        Title="错误窗口" Height="445" Width="720" WindowStartupLocation="CenterScreen">
+        Title="错误窗口" Height="445" Width="720" WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize">
     <Grid>
         <Grid HorizontalAlignment="Left" Height="100" Margin="10,10,0,0" VerticalAlignment="Top" Width="100">
             <iconPacks:PackIconFontAwesome Kind="TimesCircleSolid" Height="100" Width="100" Foreground="DarkRed"/>

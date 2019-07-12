@@ -8,7 +8,7 @@
         xmlns:util="clr-namespace:NsisoLauncher.Utils"
         xmlns:local="clr-namespace:NsisoLauncher.Windows"
         mc:Ignorable="d"
-        Title="{DynamicResource String.Settingwindow.Title}" Height="450" Width="800" WindowStartupLocation="CenterScreen">
+        Title="{DynamicResource String.Settingwindow.Title}" Height="450" Width="800" WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize">
     <Controls:MetroWindow.Resources>
         <util:BoolToOppositeBoolConverter x:Key="BoolToOppositeBoolConverter"/>
         <util:SettingDirRadioButtonConverter x:Key="SettingDirRadioButtonConverter" />

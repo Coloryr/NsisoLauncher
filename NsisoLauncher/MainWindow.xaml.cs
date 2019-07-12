@@ -1,22 +1,23 @@
-﻿using System;
+﻿using MahApps.Metro.Controls;
+using MahApps.Metro.Controls.Dialogs;
+using NsisoLauncher.Windows;
+using NsisoLauncherCore;
+using NsisoLauncherCore.Auth;
+using NsisoLauncherCore.Modules;
+using NsisoLauncherCore.Net;
+using NsisoLauncherCore.Net.MojangApi.Api;
+using NsisoLauncherCore.Net.MojangApi.Endpoints;
+using NsisoLauncherCore.Util;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.IO;
+using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using MahApps.Metro.Controls;
-using MahApps.Metro.Controls.Dialogs;
-using NsisoLauncherCore.Modules;
-using NsisoLauncherCore.Net.MojangApi.Endpoints;
-using System.IO;
-using System.Linq;
-using System.Threading;
-using NsisoLauncherCore.Util;
-using NsisoLauncher.Windows;
-using NsisoLauncherCore.Net;
-using NsisoLauncherCore.Net.MojangApi.Api;
-using NsisoLauncherCore;
-using NsisoLauncherCore.Auth;
 using System.Windows.Threading;
 
 namespace NsisoLauncher
@@ -67,9 +68,9 @@ namespace NsisoLauncher
         #region 启动核心事件处理
         private void Handler_GameExit(object sender, GameExitArg arg)
         {
-            this.Dispatcher.Invoke(new Action(() =>
+            Dispatcher.Invoke(new Action(() =>
             {
-                this.WindowState = WindowState.Normal;
+                WindowState = WindowState.Normal;
                 if (!arg.IsNormalExit())
                 {
                     this.ShowMessageAsync("游戏非正常退出",
@@ -84,7 +85,7 @@ namespace NsisoLauncher
         {
             ImageBrush brush = new ImageBrush(new BitmapImage(new Uri(newStr[filesnow])))
             { TileMode = TileMode.FlipXY, AlignmentX = AlignmentX.Right, Stretch = Stretch.UniformToFill };
-            this.Background = brush;
+            Background = brush;
             filesnow++;
             if (filesnow >= filescount)
                 filesnow = 0;
@@ -92,8 +93,8 @@ namespace NsisoLauncher
 
         private async void Refresh()
         {
-            this.playerNameTextBox.Text = App.config.MainConfig.User.UserName;
-            authTypeCombobox.ItemsSource = this.authTypes;
+            playerNameTextBox.Text = App.config.MainConfig.User.UserName;
+            authTypeCombobox.ItemsSource = authTypes;
             //全局统一验证设置
             bool isAllUsingNide8 = (App.nide8Handler != null) && App.config.MainConfig.User.AllUsingNide8;
             if (isAllUsingNide8)
@@ -107,7 +108,7 @@ namespace NsisoLauncher
             {
                 authTypeCombobox.IsEnabled = true;
                 fastlogin = false;
-                this.authTypeCombobox.SelectedItem = authTypes.Find(x => x.Type == App.config.MainConfig.User.AuthenticationType);
+                authTypeCombobox.SelectedItem = authTypes.Find(x => x.Type == App.config.MainConfig.User.AuthenticationType);
                 downloadButton.Content = App.GetResourceString("String.Base.Download");
             }
             launchVersionCombobox.ItemsSource = await App.handler.GetVersionsAsync();
@@ -130,7 +131,7 @@ namespace NsisoLauncher
         {
             if (!string.IsNullOrWhiteSpace(App.config.MainConfig.Customize.LauncherTitle))
             {
-                this.Title = App.config.MainConfig.Customize.LauncherTitle;
+                Title = App.config.MainConfig.Customize.LauncherTitle;
             }
             if (App.config.MainConfig.Customize.CustomBackGroundPicture)
             {
@@ -200,7 +201,7 @@ namespace NsisoLauncher
                     have_mp4 = true;
                     timer.Stop();
                     mediaElement.Source = new Uri(files1[0]);
-                    this.volumeButton.Visibility = Visibility.Visible;
+                    volumeButton.Visibility = Visibility.Visible;
                     mediaElement.Visibility = Visibility.Visible;
                     mediaElement.Play();
                     mediaElement.Volume = 0;
@@ -208,11 +209,11 @@ namespace NsisoLauncher
                     {
                         try
                         {
-                            for (int i = 0; i < 100; i++)
+                            for (int i = 0; i < 30; i++)
                             {
-                                this.Dispatcher.Invoke(new Action(() =>
+                                Dispatcher.Invoke(new Action(() =>
                                 {
-                                    this.mediaElement.Volume += 0.001;
+                                    mediaElement.Volume += 0.01;
                                 }));
                                 Thread.Sleep(50);
                             }
@@ -224,18 +225,18 @@ namespace NsisoLauncher
                 {
                     Random random = new Random();
                     mediaElement.Source = new Uri(files[random.Next(files.Count())]);
-                    this.volumeButton.Visibility = Visibility.Visible;
+                    volumeButton.Visibility = Visibility.Visible;
                     mediaElement.Play();
                     mediaElement.Volume = 0;
                     await Task.Factory.StartNew(() =>
                     {
                         try
                         {
-                            for (int i = 0; i < 100; i++)
+                            for (int i = 0; i < 30; i++)
                             {
-                                this.Dispatcher.Invoke(new Action(() =>
+                                Dispatcher.Invoke(new Action(() =>
                                 {
-                                    this.mediaElement.Volume += 0.001;
+                                    mediaElement.Volume += 0.01;
                                 }));
                                 Thread.Sleep(50);
                             }
@@ -258,11 +259,94 @@ namespace NsisoLauncher
                     playerPassTextBox.Visibility = Visibility.Visible;
                     break;
             }
+            Brush b = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#AF3F5966"));
+            switch (App.config.MainConfig.Customize.AccentColor)
+            {
+                case "Red":
+                    b = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#7CAE0F00"));
+                    break;
+                case "Green":
+                    b = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#7C548E19"));
+                    break;
+                case "Blue":
+                    b = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#7C1585B5"));
+                    break;
+                case "Purple":
+                    b = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#7C574EB9"));
+                    break;
+                case "Orange":
+                    b = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#7CCF5A07"));
+                    break;
+                case "Lime":
+                    b = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#7C8AA407"));
+                    break;
+                case "Emerald":
+                    b = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#7C077507"));
+                    break;
+                case "Teal":
+                    b = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#7C07908E"));
+                    break;
+                case "Cyan":
+                    b = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#7C1D88BC"));
+                    break;
+                case "Cobalt":
+                    b = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#7C0747C6"));
+                    break;
+                case "Indigo":
+                    b = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#7C5C07D3"));
+                    break;
+                case "Violet":
+                    b = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#7C8F07D3"));
+                    break;
+                case "Pink":
+                    b = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#7CCA62AD"));
+                    break;
+                case "Magenta":
+                    b = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#7CB40763"));
+                    break;
+                case "Crimson":
+                    b = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#7C890725"));
+                    break;
+                case "Amber":
+                    b = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#7CC7890F"));
+                    break;
+                case "Yellow":
+                    b = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#7CD2B90C"));
+                    break;
+                case "Browns":
+                    b = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#7C6F4F2A"));
+                    break;
+                case "Olive":
+                    b = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#7C5E7357"));
+                    break;
+                case "Steel":
+                    b = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#7C576573"));
+                    break;
+                case "mauve":
+                    b = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#7C655475"));
+                    break;
+                case "Taupe":
+                    b = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#7C736845"));
+                    break;
+                case "Sienna":
+                    b = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#7C87492B"));
+                    break;
+            }
+            if (b != null)
+            {
+                authTypeCombobox.Background = b;
+                launchVersionCombobox.Background = b;
+                playerNameTextBox.Background = b;
+                playerPassTextBox.Background = b;
+                configButton.Background = b;
+                downloadButton.Background = b;
+                launchButton.Background = b;
+            }
         }
 
         private void volumeButton_Click(object sender, RoutedEventArgs e)
         {
-            this.mediaElement.IsMuted = !this.mediaElement.IsMuted;
+            mediaElement.IsMuted = !mediaElement.IsMuted;
         }
 
         private void mediaElement_MediaEnded(object sender, RoutedEventArgs e)
@@ -724,7 +808,7 @@ namespace NsisoLauncher
                     {
                         Application.Current.Shutdown();
                     }
-                    this.WindowState = WindowState.Minimized;
+                    WindowState = WindowState.Minimized;
                     Refresh();
 
                     //自定义处理
@@ -734,28 +818,29 @@ namespace NsisoLauncher
                     }
                     if (App.config.MainConfig.Customize.CustomBackGroundMusic)
                     {
-                        mediaElement.Volume = 0.5;
+                        mediaElement.Volume = 0.3;
                         await Task.Factory.StartNew(() =>
                         {
                             try
                             {
-                                for (int i = 0; i < 50; i++)
+                                for (int i = 0; i < 30; i++)
                                 {
-                                    this.Dispatcher.Invoke(new Action(() =>
+                                    Dispatcher.Invoke(new Action(() =>
                                     {
-                                        this.mediaElement.Volume -= 0.01;
+                                        mediaElement.Volume -= 0.01;
                                     }));
                                     Thread.Sleep(50);
                                 }
-                                this.Dispatcher.Invoke(new Action(() =>
+                                Dispatcher.Invoke(new Action(() =>
                                 {
-                                    this.mediaElement.Stop();
+                                    mediaElement.Stop();
                                 }));
                             }
                             catch (Exception) { }
                         });
                     }
                 }
+                launchButton.Content = App.GetResourceString("String.Mainwindow.Launch");
                 #endregion
 
                 #region 数据反馈
@@ -771,8 +856,8 @@ namespace NsisoLauncher
             finally
             {
                 launchButton.Content = App.GetResourceString("String.Base.Launch");
-                this.loadingGrid.Visibility = Visibility.Hidden;
-                this.loadingRing.IsActive = false;
+                loadingGrid.Visibility = Visibility.Hidden;
+                loadingRing.IsActive = false;
             }
         }
 

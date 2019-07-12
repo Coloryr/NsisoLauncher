@@ -30,32 +30,32 @@
 
             <!--#endregion-->
             <Button x:Name="launchButton" Content="{DynamicResource String.Base.Launch}" Margin="10,0,10,10" Height="50" VerticalAlignment="Bottom"
-                    FontSize="14" Background="#AF3F5966" BorderBrush="White" Foreground="White" Click="launchButton_Click" Grid.ColumnSpan="2" IsDefault="True"/>
+                    FontSize="14" Background="#00000000" BorderBrush="White" Foreground="White" Click="launchButton_Click" Grid.ColumnSpan="2" IsDefault="True"/>
 
-            <userControl:HeadSculControl x:Name="headScul" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="61,10,61,0" Grid.ColumnSpan="2"/>
+            <userControl:HeadSculControl x:Name="headScul" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="59,11,60,0" Grid.ColumnSpan="2"/>
 
             <ComboBox x:Name="authTypeCombobox"
                   Margin="10,116,9.6,0" 
                   VerticalAlignment="Top" BorderBrush="White"
                   DisplayMemberPath="Name"
                   controls:TextBoxHelper.Watermark="{DynamicResource String.MainWindow.ChooseAuthType}" 
-                      Grid.ColumnSpan="2" FontWeight="Bold" SelectionChanged="AuthTypeCombobox_SelectionChanged" Background="#AF3F5966" Foreground="White"/>
+                      Grid.ColumnSpan="2" FontWeight="Bold" SelectionChanged="AuthTypeCombobox_SelectionChanged" Background="#00000000" Foreground="White"/>
             <ComboBox x:Name="launchVersionCombobox"
                   Margin="10,147,9.6,0" 
                   VerticalAlignment="Top" 
-                  Background="#AF3F5966" BorderBrush="White"
+                  Background="#00000000" BorderBrush="White"
                   DisplayMemberPath="ID"
                   controls:TextBoxHelper.Watermark="{DynamicResource String.MainWindow.ChooseLaunchVersion}" Grid.ColumnSpan="2" Foreground="White" FontWeight="Bold"/>
             <TextBox x:Name="playerNameTextBox"
                  Height="23"
                  Margin="10,178,9.6,0"
                  TextWrapping="Wrap"
-                 VerticalAlignment="Top" Background="#AF3F5966" BorderBrush="White"
+                 VerticalAlignment="Top" Background="#00000000" BorderBrush="White"
                  controls:TextBoxHelper.Watermark="{DynamicResource String.Mainwindow.InputPlayerName}" Grid.ColumnSpan="2" Foreground="White" FontWeight="Bold"/>
             <PasswordBox x:Name="playerPassTextBox"
                 Height="18"
                 Margin="10,209,9.6,0"
-                VerticalAlignment="Top" Background="#AF3F5966" BorderBrush="White"
+                VerticalAlignment="Top" Background="#00000000" BorderBrush="White"
                 controls:TextBoxHelper.Watermark="{DynamicResource String.Mainwindow.InputPassWord}" Grid.ColumnSpan="2" RenderTransformOrigin="0.441,2.323" Foreground="White" FontWeight="Bold"/>
             <TextBox x:Name="playerPassTextBox_Copy"
                 Height="23"
@@ -66,12 +66,12 @@
             <Button x:Name="configButton"
                     Height="30" Margin="10,0,4.4,65.2" VerticalAlignment="Bottom" BorderBrush="White" Foreground="White" Click="configButton_Click" Content="{DynamicResource String.Base.Config}" FontSize="14">
                 <Button.Background>
-                    <SolidColorBrush Color="#AF3F5966"/>
+                    <SolidColorBrush Color="#00000000"/>
                 </Button.Background>
             </Button>
             <Button x:Name="downloadButton"
                     Height="30" Margin="5.6,0,9.6,65.2" VerticalAlignment="Bottom"
-                    Background="#AF3F5966" BorderBrush="White" Foreground="White" Click="downloadButton_Click" Content="{DynamicResource String.Base.Download}" FontSize="14" Grid.Column="1"/>
+                    Background="#00000000" BorderBrush="White" Foreground="White" Click="downloadButton_Click" Content="{DynamicResource String.Base.Download}" FontSize="14" Grid.Column="1"/>
         </Grid>
         <Button x:Name="volumeButton" Style ="{DynamicResource MahApps.Metro.Styles.MetroCircleButtonStyle}"
                 Width="30" Height="30" Margin="0,336,181,0" VerticalAlignment="Top" HorizontalAlignment="Right"
