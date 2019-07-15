@@ -263,73 +263,73 @@ namespace NsisoLauncher
             switch (App.config.MainConfig.Customize.AccentColor)
             {
                 case "Red":
-                    b = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#7CAE0F00"));
+                    b = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#4CBE1707"));
                     break;
                 case "Green":
-                    b = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#7C548E19"));
+                    b = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#4C548E19"));
                     break;
                 case "Blue":
-                    b = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#7C1585B5"));
+                    b = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#4C1585B5"));
                     break;
                 case "Purple":
-                    b = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#7C574EB9"));
+                    b = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#4C574EB9"));
                     break;
                 case "Orange":
-                    b = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#7CCF5A07"));
+                    b = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#4CCF5A07"));
                     break;
                 case "Lime":
-                    b = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#7C8AA407"));
+                    b = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#4C8AA407"));
                     break;
                 case "Emerald":
-                    b = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#7C077507"));
+                    b = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#4C077507"));
                     break;
                 case "Teal":
-                    b = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#7C07908E"));
+                    b = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#4C07908E"));
                     break;
                 case "Cyan":
-                    b = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#7C1D88BC"));
+                    b = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#4C1D88BC"));
                     break;
                 case "Cobalt":
-                    b = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#7C0747C6"));
+                    b = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#4C0747C6"));
                     break;
                 case "Indigo":
-                    b = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#7C5C07D3"));
+                    b = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#4C5C07D3"));
                     break;
                 case "Violet":
-                    b = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#7C8F07D3"));
+                    b = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#4C8F07D3"));
                     break;
                 case "Pink":
-                    b = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#7CCA62AD"));
+                    b = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#4CCA62AD"));
                     break;
                 case "Magenta":
-                    b = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#7CB40763"));
+                    b = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#4CB40763"));
                     break;
                 case "Crimson":
-                    b = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#7C890725"));
+                    b = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#4C890725"));
                     break;
                 case "Amber":
-                    b = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#7CC7890F"));
+                    b = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#4CC7890F"));
                     break;
                 case "Yellow":
-                    b = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#7CD2B90C"));
+                    b = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#4CD2B90C"));
                     break;
                 case "Browns":
-                    b = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#7C6F4F2A"));
+                    b = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#4C6F4F2A"));
                     break;
                 case "Olive":
-                    b = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#7C5E7357"));
+                    b = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#4C5E7357"));
                     break;
                 case "Steel":
-                    b = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#7C576573"));
+                    b = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#4C576573"));
                     break;
                 case "mauve":
-                    b = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#7C655475"));
+                    b = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#4C655475"));
                     break;
                 case "Taupe":
-                    b = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#7C736845"));
+                    b = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#4C736845"));
                     break;
                 case "Sienna":
-                    b = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#7C87492B"));
+                    b = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#4C87492B"));
                     break;
             }
             if (b != null)
