@@ -41,8 +41,8 @@ namespace NsisoLauncher.Controls
                 App.logHandler.AppendDebug(serverInfo.JsonResult);
                 serverLoadingBar.IsIndeterminate = false;
                 serverLoadingBar.Visibility = Visibility.Hidden;
-                serverNameTextBlock.Text = serverInfo.ServerName;
-                if (serverInfo.ServerName == null)
+                serverNameTextBlock.Text = server.ServerName;
+                if (string.IsNullOrWhiteSpace(serverNameTextBlock.Text) == true)
                     serverNameTextBlock.Text = App.config.MainConfig.Server.ServerName;
 
                 switch (serverInfo.State)

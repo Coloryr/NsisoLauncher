@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 using System.Windows;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -178,7 +180,8 @@ namespace NsisoLauncher.Config
                 User = new User()
                 {
                     ClientToken = Guid.NewGuid().ToString("N"),
-                    AuthenticationType = AuthenticationType.OFFLINE
+                    UserDatabase = new Dictionary<string, UserNode>(),
+                    AuthenticationDic = new Dictionary<string, AuthenticationNode>()
                 },
                 History = new History()
                 {
@@ -218,7 +221,8 @@ namespace NsisoLauncher.Config
                     CustomBackGroundPicture = false,
                     AccentColor = "Blue",
                     AppThme = "BaseLight"
-                }
+                },
+                ConfigVersion = Assembly.GetExecutingAssembly().GetName().Version
             };
             Save();
         }

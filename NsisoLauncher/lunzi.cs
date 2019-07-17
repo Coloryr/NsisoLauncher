@@ -89,9 +89,9 @@ namespace NsisoLauncher.APIHandler_nide8
     public class APIHandler_nide8
     {
         const string APIUrl = "sessionserver/session/minecraft/profile/";
-        public async Task<ImageSource> GetHeadSculSource(string uuid)
+        public async Task<ImageSource> GetHeadSculSource(string uuid, Controls.LaunchEventArgs args)
         {
-            string url = App.nide8Handler.BaseURL + APIUrl + uuid;
+            string url = "https://auth2.nide8.com:233/" + args.AuthNode.Property["nide8ID"] + APIUrl + uuid;
             try
             {
                 var res = await APIRequester.HttpGetAsync(url);
