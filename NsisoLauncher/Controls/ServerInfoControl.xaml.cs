@@ -1,4 +1,5 @@
-﻿using NsisoLauncher.Config;
+﻿using NsisoLauncher.Color_yr;
+using NsisoLauncher.Config;
 using NsisoLauncherCore.Net.Server;
 using System;
 using System.Drawing;
@@ -8,6 +9,9 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using Brush = System.Windows.Media.Brush;
+using Color = System.Windows.Media.Color;
+using ColorConverter = System.Windows.Media.ColorConverter;
 
 namespace NsisoLauncher.Controls
 {
@@ -20,8 +24,27 @@ namespace NsisoLauncher.Controls
         {
             InitializeComponent();
             this.Visibility = Visibility.Hidden;
+            //Color_yr Add
+            APP_Color();
         }
-
+        //Color_yr Add Start
+        [System.ComponentModel.TypeConverter(typeof(LengthConverter))]
+        [Localizability(LocalizationCategory.None, Readability = Readability.Unreadable)]
+        public new double Width { get; set; }
+        public void APP_Color()
+        {
+            Brush_Color get = new Brush_Color();
+            Brush b = get.get_Bursh();
+            if (b != null)
+            {
+                serverNameTextBlock.Background = b;
+                serverPeopleTextBlock.Background = b;
+                serverVersionTextBlock.Background = b;
+                serverPingTextBlock.Background = b;
+                serverMotdTextBlock.Background = b;
+            }
+        }
+        //Color_yr Add Stop
         public async void SetServerInfo(Server server)
         {
             if (server.ShowServerInfo)

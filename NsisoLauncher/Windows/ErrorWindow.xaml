@@ -7,7 +7,7 @@
         xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
         xmlns:local="clr-namespace:NsisoLauncher.Windows"
         mc:Ignorable="d"
-        Title="错误窗口" Height="445" Width="720" WindowStartupLocation="CenterScreen">
+        Title="错误窗口" Height="445" Width="720" WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize">
     <Grid>
         <Grid HorizontalAlignment="Left" Height="100" Margin="10,10,0,0" VerticalAlignment="Top" Width="100">
             <iconPacks:PackIconFontAwesome Kind="TimesCircleSolid" Height="100" Width="100" Foreground="DarkRed"/>
@@ -21,25 +21,8 @@
                    Height="39"
                    FontSize="16"/>
         <TextBox x:Name="textBox" Margin="10,115,10,50" TextWrapping="Wrap" IsReadOnly="True"/>
-        <Button x:Name="RebootButton" Style="{StaticResource AccentedSquareButtonStyle}"
-                Content="报告并重启启动器" Margin="0,0,10,10" FontSize="12" Click="RebootButton_Click" Height="35" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="140"/>
-        <Button x:Name="CloseButton" Content="忽视这个错误" Style="{DynamicResource SquareButtonStyle}"
-                Margin="0,0,155,10" FontSize="12" Click="CloseButton_Click" Height="35" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="100"/>
         <Button x:Name="CopyButton" Content="复制错误信息"
-                Style="{DynamicResource SquareButtonStyle}" Margin="0,0,260,10" FontSize="12" Click="CopyButton_Click" HorizontalAlignment="Right" Width="100" Height="35" VerticalAlignment="Bottom"/>
-        
-        <StackPanel Margin="0,392,0,0" Orientation="Horizontal">
-            <TextBlock x:Name="textBlock1"  Margin="10,0,0,0" >
-            <Hyperlink Click="Hyperlink_Click">作者邮箱</Hyperlink>
-            </TextBlock>
-            <TextBlock x:Name="textBlock3" Margin="10,0,0,0" >
-            <Hyperlink Click="Hyperlink_Click_2">作者Github</Hyperlink>
-            </TextBlock>
-            <TextBlock x:Name="textBlock2" Margin="10,0,0,0" >
-            <Hyperlink Click="Hyperlink_Click_1">用户QQ群</Hyperlink>
-            </TextBlock>
-        </StackPanel>
-        
-        <CheckBox x:Name="moreInfoCheckBox" Content="上传报告时附加环境信息" HorizontalAlignment="Left" Margin="10,0,0,27" Height="18" VerticalAlignment="Bottom"/>
+                Style="{DynamicResource SquareButtonStyle}" Margin="0,0,10,9" FontSize="12" Click="CopyButton_Click" HorizontalAlignment="Right" Width="100" Height="35" VerticalAlignment="Bottom"/>
+        <Label Content="这个是非官方的版本，bug反馈请加群：571239090" HorizontalAlignment="Left" Height="33" Margin="10,374,0,0" VerticalAlignment="Top" Width="339" FontSize="14"/>
     </Grid>
 </controls:MetroWindow>

@@ -9,7 +9,7 @@
         xmlns:util="clr-namespace:NsisoLauncher.Utils"
         xmlns:local="clr-namespace:NsisoLauncher.Windows"
         mc:Ignorable="d"
-        Title="{DynamicResource String.Settingwindow.Title}" Height="450" Width="800" WindowStartupLocation="CenterScreen">
+        Title="{DynamicResource String.Settingwindow.Title}" Height="450" Width="800" WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize">
     <Controls:MetroWindow.Resources>
         <util:BoolToOppositeBoolConverter x:Key="BoolToOppositeBoolConverter"/>
         <util:SettingDirRadioButtonConverter x:Key="SettingDirRadioButtonConverter" />
@@ -289,7 +289,7 @@
                                     DisplayMemberPath="Value.Name" ItemsSource="{Binding User.AuthenticationDic}"
                                     SelectedValuePath="Key" SelectedValue="{Binding User.LockAuthName}"/>
                                     <Button Width="100" Content="清除全局验证选择" Click="clearAllauthButton_Click"/>
-                                    </StackPanel>
+                                </StackPanel>
                                 <CheckBox Margin="0,0,0,10" Content="统一通行证服务器依赖（仅在全局使用统一通行证验证模型，且统一通行证后台正确设置后生效）" IsChecked="{Binding User.Nide8ServerDependence}"/>
                                 <Button Style="{DynamicResource SquareButtonStyle}" Content="删除全部验证模型" Background="IndianRed" Foreground="White" Margin="0,0,0,5" Click="delAllAuthnodeButton_Click"/>
                                 <Button Style="{DynamicResource SquareButtonStyle}" Content="删除全部用户" Background="IndianRed" Foreground="White" Click="delAllUserButton_Click"/>
@@ -346,9 +346,15 @@
 
                         <Expander Header="启动器背景元素设置" Margin="0,0,0,5">
                             <StackPanel>
-                                <CheckBox x:Name="checkBox1" Content="开启自定义背景图片" IsChecked="{Binding Customize.CustomBackGroundPicture}" Margin="0,0,0,2"/>
-                                <CheckBox x:Name="checkBox2" Content="开启自定义背景音乐" IsChecked="{Binding Customize.CustomBackGroundMusic}" Margin="0,0,0,2"/>
-                                <Label Content="*自定义方法请查看启动器教程文档"/>
+                                <!--Color_yr Add Start-->
+                                <CheckBox x:Name="checkBox3" Content="开启自定义背景视频" IsChecked="{Binding Customize.CustomBackGroundViode}" Margin="0,0,442,2" Click="CheckBox3_Checked"/>
+                                <CheckBox x:Name="checkBox2" Content="开启自定义背景音乐" IsChecked="{Binding Customize.CustomBackGroundMusic}" Margin="0,0,442,2" Click="CheckBox2_Checked"/>
+                                <CheckBox x:Name="checkBox1" Content="开启自定义背景图片" IsChecked="{Binding Customize.CustomBackGroundPicture}" Margin="0,0,442,2" Click="CheckBox1_Checked" Checked="CheckBox1_Checked"/>
+                                <CheckBox x:Name="checkBox4" Content="开启自定义背景图片循环播放" IsChecked="{Binding Customize.CustomBackGroundCyclic}" Margin="0,0,442,2" IsEnabled="False"/>
+                                <Label x:Name="set" Content="循环背景图片时间，单位毫秒" IsEnabled="False"/>
+                                <TextBox x:Name="Text" HorizontalAlignment="Left" Height="3" Margin="0,0,0,0" TextWrapping="Wrap" Text="{Binding Customize.CustomBackGroundCyclic_time}" Width="132" TextChanged="TextBox_TextChanged" IsEnabled="False"/>
+                                <Label Content="把图片放进config文件夹即可，支持jpg和png，自定义视频启用后自定义图片和音乐不可用。"/>
+                                <!--Color_yr Add Stop-->
                             </StackPanel>
                         </Expander>
 
@@ -385,26 +391,31 @@
             </TabItem>
             <TabItem Header="关于">
                 <StackPanel>
-                    <TextBlock Margin="10,0">
-                        启动器开源
+                    <TextBlock Margin="10,0" FontSize="18">
+                        启动器原来的仓库
                         <Hyperlink Click="Hyperlink_Click" NavigateUri="https://github.com/Nsiso/NsisoLauncher">
                             https://github.com/Nsiso/NsisoLauncher
                         </Hyperlink>
                     </TextBlock>
-                    <TextBlock Margin="10,0">
+                    <TextBlock Margin="10,0" FontSize="18"><Run Text="启动器Fork后的仓库 "/><Hyperlink Click="Hyperlink_Click" NavigateUri="https://github.com/Coloryr/NsisoLauncher"><Run Text="https://github.com/Coloryr/NsisoLauncher"/></Hyperlink></TextBlock>
+                    <TextBlock Margin="10,0" FontSize="18">
                         启动器声明
                         <Hyperlink Click="Hyperlink_Click" NavigateUri="https://github.com/Nsiso/NsisoLauncher/blob/master/README.md">
                             https://github.com/Nsiso/NsisoLauncher/blob/master/README.md
                         </Hyperlink>
                     </TextBlock>
-                    <TextBlock Margin="10,0">
+                    <TextBlock Margin="10,0" FontSize="18">
                         启动器文档
                         <Hyperlink Click="Hyperlink_Click" NavigateUri="https://github.com/Nsiso/NsisoLauncher/wiki">
                             https://github.com/Nsiso/NsisoLauncher/wiki
                         </Hyperlink>
                     </TextBlock>
+                    <TextBlock Margin="10,0" FontSize="24">
+                        该启动器版权由Nsiso所有
+                    </TextBlock>
                 </StackPanel>
             </TabItem>
+            <TextBox Height="35" TextWrapping="Wrap" Text="TextBox" Width="70"/>
 
         </TabControl>
         <Button x:Name="saveButton" Content="{DynamicResource String.Base.Apply}"

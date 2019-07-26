@@ -36,7 +36,6 @@ namespace NsisoLauncher.Windows
                 exception = ex;
                 Random random = new Random();
                 FunnyBlock.Text = funny[random.Next(funny.Count())];
-                moreInfoCheckBox.IsChecked = true;
                 this.textBox.Text = ex.ToString();
                 if (Environment.GetCommandLineArgs().Contains("-reboot"))
                 {
@@ -48,34 +47,13 @@ namespace NsisoLauncher.Windows
             }
         }
 
-        //作者邮箱点击后
-        private void Hyperlink_Click(object sender, RoutedEventArgs e)
-        {
-            System.Diagnostics.Process.Start("mailto:siso@nsiso.com");
-        }
-
-        //作者qq点击后
-        private void Hyperlink_Click_1(object sender, RoutedEventArgs e)
-        {
-            System.Diagnostics.Process.Start("http://shang.qq.com/wpa/qunwpa?idkey=3b39ff435aeca097dbe8bcef6f32d26367bdb630357570693b5315e6c13f7c9f");
-        }
-
-        //作者github点击后
-        private void Hyperlink_Click_2(object sender, RoutedEventArgs e)
-        {
-            System.Diagnostics.Process.Start("https://github.com/Nsiso");
-        }
-
         private async void RebootButton_Click(object sender, RoutedEventArgs e)
         {
             try
             {
                 var progress = await this.ShowProgressAsync("正在处理中", "请稍后...");
                 progress.SetIndeterminate();
-                bool moreInfo = (bool)moreInfoCheckBox.IsChecked;
                 string msg = exception.ToString();
-                if (moreInfo)
-                { msg += ("/r/n" + await GetEnvironmentInfoAsync()); }
                 await App.nsisoAPIHandler.PostLogAsync(NsisoLauncherCore.Modules.LogLevel.FATAL, msg);
             }
             catch (Exception ex)
@@ -97,29 +75,6 @@ namespace NsisoLauncher.Windows
         {
             Clipboard.SetDataObject(textBox.Text);
             this.ShowMessageAsync("复制成功", "你现在可以点击窗口左下角作者联系方式，并把这该死的错误抛给他");
-        }
-
-        private string GetEnvironmentInfo()
-        {
-            StringBuilder builder = new StringBuilder();
-            builder.Append("\r\n==========环境信息==========");
-            builder.Append("\r\nCPU信息:" + SystemTools.GetProcessorInfo());
-            builder.Append("\r\n内存信息: 总大小:" + SystemTools.GetTotalMemory().ToString() + "MB/可用大小:" + SystemTools.GetRunmemory().ToString() + "MB");
-            builder.Append("\r\n显卡信息:" + SystemTools.GetVideoCardInfo());
-            builder.Append("\r\n操作系统:" + Environment.OSVersion.Platform);
-            builder.Append("\r\n版本号:" + Environment.OSVersion.VersionString);
-            builder.Append("\r\n系统位数:" + SystemTools.GetSystemArch());
-            builder.Append("\r\n程序运行命令行:" + Environment.CommandLine);
-            builder.Append("\r\n程序工作目录:" + Environment.CurrentDirectory);
-            return builder.ToString();
-        }
-
-        private Task<string> GetEnvironmentInfoAsync()
-        {
-            return Task.Factory.StartNew(() =>
-            {
-                return GetEnvironmentInfo();
-            });
         }
     }
 }

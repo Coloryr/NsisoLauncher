@@ -398,5 +398,56 @@ namespace NsisoLauncher.Windows
         {
             _isGameSettingChanged = true;
         }
+
+        //Color_yr Add Start
+        private void CheckBox3_Checked(object sender, RoutedEventArgs e)
+        {
+            if (checkBox3.IsChecked == true)
+            {
+                checkBox1.IsEnabled = false;
+                checkBox2.IsEnabled = false;
+            }
+            else if (checkBox3.IsChecked == false)
+            {
+                checkBox1.IsEnabled = true;
+                checkBox2.IsEnabled = true;
+            }
+        }
+        private void CheckBox1_Checked(object sender, RoutedEventArgs e)
+        {
+            if (checkBox1.IsChecked == true)
+            {
+                checkBox3.IsEnabled = false;
+                checkBox4.IsEnabled = true;
+                set.IsEnabled = true;
+                Text.IsEnabled = true;
+            }
+            if (checkBox1.IsChecked == false)
+            {
+                checkBox3.IsEnabled = true;
+                checkBox4.IsEnabled = false;
+                set.IsEnabled = false;
+                Text.IsEnabled = false;
+            }
+        }
+        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        { 
+            if (!int.TryParse(Text.Text, out int number))
+            {
+                e.Handled = true;
+            }
+        }
+        private void CheckBox2_Checked(object sender, RoutedEventArgs e)
+        {
+            if (checkBox2.IsChecked == true)
+            {
+                checkBox3.IsEnabled = false;
+            }
+            if (checkBox2.IsChecked == false)
+            {
+                checkBox3.IsEnabled = true;
+            }
+        }
+        //Color_yr Add Start
     }
 }

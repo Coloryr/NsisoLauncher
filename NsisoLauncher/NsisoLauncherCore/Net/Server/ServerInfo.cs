@@ -354,7 +354,8 @@ namespace NsisoLauncherCore.Net.Server
 
         private string ClearColor(string str)
         {
-            str = str.Replace(@"\n", "");
+            //Color_yr Remove
+            //str = str.Replace(@"\n", "");
             while (str.Contains('§'))
             {
                 str = str.Remove(str.IndexOf('§'), 2);

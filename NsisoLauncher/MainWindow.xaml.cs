@@ -1,6 +1,5 @@
 ﻿using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
-using NsisoLauncher.Color_yr;
 using NsisoLauncher.Config;
 using NsisoLauncher.Windows;
 using NsisoLauncherCore;
@@ -17,8 +16,6 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 
@@ -36,20 +33,19 @@ namespace NsisoLauncher
     public partial class MainWindow : MetroWindow
     {
         //Color_yr Add Start
-        public string[] newStr;
-        public int filescount;
-        public int filesnow;
-        public DispatcherTimer timer;
+        public string[] pic_file;
+        public int filesnow = 0;
         public bool have_mp4 = false;
+        public string[] mp3_file;
+        public string[] mp4_file;
+        public bool is_close = false;
+        public BitmapImage now_img;
         //Color_yr Add Stop
 
         //TODO:增加取消启动按钮
         public MainWindow()
         {
             InitializeComponent();
-            timer = new DispatcherTimer();
-            timer.Interval = TimeSpan.FromSeconds(5);
-            timer.Tick += Timer_Tick;
             App.logHandler.AppendDebug("启动器主窗体已载入");
             mainPanel.Launch += MainPanel_Launch;
             App.handler.GameExit += Handler_GameExit;
@@ -58,12 +54,101 @@ namespace NsisoLauncher
             CustomizeRefresh();
         }
         //Color_yr Add Start
-        public void Timer_Tick(object sender, EventArgs e)
+        public void Pic_cyclic()
         {
-            BG.Source = new BitmapImage(new Uri(newStr[filesnow]));
-            filesnow++;
-            if (filesnow >= filescount)
-                filesnow = 0;
+            if (App.config.MainConfig.Customize.CustomBackGroundCyclic)
+            {
+                Task.Factory.StartNew(() =>
+                {
+                    while (is_close == false)
+                    {
+                        Dispatcher.Invoke(new Action(() =>
+                        {
+                            BG.Source = null;
+                            now_img = new BitmapImage(new Uri(pic_file[filesnow]));
+                            BG.Source = now_img;
+                            now_img = null;
+                        }));
+                        GC.Collect();
+                        filesnow++;
+                        if (filesnow >= pic_file.Length)
+                            filesnow = 0;
+                        Thread.Sleep(App.config.MainConfig.Customize.CustomBackGroundCyclic_time);
+                    }
+                });
+            }
+            else
+                Dispatcher.Invoke(new Action(() =>
+                {
+                    BG.Source = now_img;
+                }));
+        }
+        public void Mp4_cyclic()
+        {
+            try
+            {
+                int now = 0;
+                mediaElement.Source = new Uri(mp4_file[now]);
+                volumeButton.Visibility = Visibility.Visible;
+                mediaElement.Visibility = Visibility.Visible;
+                mediaElement.Play();
+                mediaElement.Volume = 0.3;
+                Task.Factory.StartNew(() =>
+                {
+                    while (is_close == false)
+                    {
+                        Dispatcher.Invoke(new Action(() =>
+                        {
+                            if (mediaElement.Position.TotalSeconds == double.Epsilon)
+                            {
+                                if (now < mp4_file.Length)
+                                    now++;
+                                else
+                                    now = 0;
+                                mediaElement.Source = new Uri(mp4_file[now]);
+                                mediaElement.Stop();
+                                mediaElement.Play();
+                            }
+                        }));
+                        Thread.Sleep(1000);
+                    }
+                });
+                mediaElement.Stop();
+            }
+            catch (Exception) { }
+        }
+            public void Mp3_cyclic()
+        {
+            try
+            {
+                int now = 0;
+                mediaElement.Source = new Uri(mp3_file[now]);
+                volumeButton.Visibility = Visibility.Visible;
+                mediaElement.Visibility = Visibility.Visible;
+                mediaElement.Play();
+                mediaElement.Volume = 0.3;
+                Task.Factory.StartNew(() =>
+                {
+                    while (is_close == false)
+                    {
+                        Dispatcher.Invoke(new Action(() =>
+                        {
+                            if (mediaElement.HasAudio == true && mediaElement.Position.TotalSeconds >= mediaElement.NaturalDuration.TimeSpan.TotalSeconds)
+                            {
+                                if (now < mp3_file.Length)
+                                    now++;
+                                else
+                                    now = 0;
+                                mediaElement.Source = new Uri(mp3_file[now]);
+                                mediaElement.Stop();
+                                mediaElement.Play();
+                            }
+                        }));
+                        Thread.Sleep(1000);
+                    }
+                });
+            }
+            catch (Exception) { }
         }
         //Color_yr Add Stop
         private async void MainPanel_Launch(object sender, Controls.LaunchEventArgs obj)
@@ -94,110 +179,81 @@ namespace NsisoLauncher
             {
                 this.Title = App.config.MainConfig.Customize.LauncherTitle;
             }
-            if (App.config.MainConfig.Customize.CustomBackGroundPicture)
+            //Color_yr Add Start
+            if (App.config.MainConfig.Customize.CustomBackGroundViode)
             {
-                /*
-                string[] files = Directory.GetFiles(Path.GetDirectoryName(App.config.MainConfigPath), "bgpic_?.png");
-                if (files.Count() != 0)
+                mp4_file = Directory.GetFiles(Path.GetDirectoryName(App.config.MainConfigPath), "*.mp4");
+                if (mp4_file.Length != 0)
                 {
-                    Random random = new Random();
-                    ImageBrush brush = new ImageBrush(new BitmapImage(new Uri(files[random.Next(files.Count())])))
-                    { TileMode = TileMode.FlipXY, AlignmentX = AlignmentX.Right, Stretch = Stretch.UniformToFill };
-                    this.Background = brush;
+                    have_mp4 = true;
+                    Mp4_cyclic();
                 }
-                */
-                //Color_yr Add Start
-                string[] files = Directory.GetFiles(Path.GetDirectoryName(App.config.MainConfigPath), "bg?.png");
-                string[] files1 = Directory.GetFiles(Path.GetDirectoryName(App.config.MainConfigPath), "bg?.jpg");
-                filescount = files.Count() + files1.Count();
-                if (filescount != 0)
+                else
+                    have_mp4 = false;
+            }
+            if (App.config.MainConfig.Customize.CustomBackGroundPicture && have_mp4 == false)
+            {
+                string[] files = Directory.GetFiles(Path.GetDirectoryName(App.config.MainConfigPath), "*.png");
+                string[] files1 = Directory.GetFiles(Path.GetDirectoryName(App.config.MainConfigPath), "*.jpg");
+                if (files.Count() + files1.Count() != 0)
                 {
-                    newStr = new string[files.Length + files1.Length];
+                    pic_file = new string[files.Length + files1.Length];
                     int i = 0;
                     foreach (string a in files)
                     {
-                        newStr[i] = a;
+                        pic_file[i] = a;
                         i++;
                     }
                     foreach (string a in files1)
                     {
-                        newStr[i] = a;
+                        pic_file[i] = a;
                         i++;
                     }
-                    Timer_Tick(null, null);
-                    timer.Start();
-                }
-                else
-                    timer.Stop();
-                //Color_yr Add Stop
-
-                if (App.config.MainConfig.User.Nide8ServerDependence)
-                {
-                    try
-                    {
-                        var lockAuthNode = App.config.MainConfig.User.GetLockAuthNode();
-                        if ((lockAuthNode != null) &&
-                            (lockAuthNode.AuthType == AuthenticationType.NIDE8))
-                        {
-                            Config.Server nide8Server = new Config.Server() { ShowServerInfo = true };
-                            var nide8ReturnResult = await (new NsisoLauncherCore.Net.Nide8API.APIHandler(lockAuthNode.Property["nide8ID"])).GetInfoAsync();
-                            if (!string.IsNullOrWhiteSpace(nide8ReturnResult.Meta.ServerIP))
-                            {
-                                string[] serverIp = nide8ReturnResult.Meta.ServerIP.Split(':');
-                                if (serverIp.Length == 2)
-                                {
-                                    nide8Server.Address = serverIp[0];
-                                    nide8Server.Port = ushort.Parse(serverIp[1]);
-                                }
-                                else
-                                {
-                                    nide8Server.Address = nide8ReturnResult.Meta.ServerIP;
-                                    nide8Server.Port = 25565;
-                                }
-                                nide8Server.ServerName = nide8ReturnResult.Meta.ServerName;
-                                serverInfoControl.SetServerInfo(nide8Server);
-                            }
-                        }
-
-                    }
-                    catch (Exception)
-                    { }
-                }
-                else if (App.config.MainConfig.Server != null)
-                {
-                    serverInfoControl.SetServerInfo(App.config.MainConfig.Server);
-                }
-
-                if (App.config.MainConfig.Customize.CustomBackGroundMusic)
-                {
-                    string[] mp4_file = Directory.GetFiles(Path.GetDirectoryName(App.config.MainConfigPath), "bg?.mp4");
-                    if (files1.Count() != 0)
-                    {
-                        have_mp4 = true;
-                        timer.Stop();
-                        mediaElement.Source = new Uri(files1[0]);
-                        volumeButton.Visibility = Visibility.Visible;
-                        mediaElement.Visibility = Visibility.Visible;
-                        mediaElement.Play();
-                        mediaElement.Volume = 0;
-                        await Task.Factory.StartNew(() =>
-                        {
-                            try
-                            {
-                                for (int i = 0; i < 30; i++)
-                                {
-                                    Dispatcher.Invoke(new Action(() =>
-                                    {
-                                        mediaElement.Volume += 0.01;
-                                    }));
-                                    Thread.Sleep(50);
-                                }
-                            }
-                            catch (Exception) { }
-                        });
-                    }
+                    Pic_cyclic();
                 }
             }
+            if (App.config.MainConfig.Customize.CustomBackGroundMusic && have_mp4 == false)
+            {
+                mp3_file = Directory.GetFiles(Path.GetDirectoryName(App.config.MainConfigPath), "*.mp3");
+                if (mp3_file.Length != 0)
+                    Mp3_cyclic();
+            }
+            if (App.config.MainConfig.User.Nide8ServerDependence)
+            {
+                try
+                {
+                    var lockAuthNode = App.config.MainConfig.User.GetLockAuthNode();
+                    if ((lockAuthNode != null) &&
+                        (lockAuthNode.AuthType == AuthenticationType.NIDE8))
+                    {
+                        Config.Server nide8Server = new Config.Server() { ShowServerInfo = true };
+                        var nide8ReturnResult = await (new NsisoLauncherCore.Net.Nide8API.APIHandler(lockAuthNode.Property["nide8ID"])).GetInfoAsync();
+                        if (!string.IsNullOrWhiteSpace(nide8ReturnResult.Meta.ServerIP))
+                        {
+                            string[] serverIp = nide8ReturnResult.Meta.ServerIP.Split(':');
+                            if (serverIp.Length == 2)
+                            {
+                                nide8Server.Address = serverIp[0];
+                                nide8Server.Port = ushort.Parse(serverIp[1]);
+                            }
+                            else
+                            {
+                                nide8Server.Address = nide8ReturnResult.Meta.ServerIP;
+                                nide8Server.Port = 25565;
+                            }
+                            nide8Server.ServerName = nide8ReturnResult.Meta.ServerName;
+                            serverInfoControl.SetServerInfo(nide8Server);
+                        }
+                    }
+                }
+                catch (Exception)
+                { }
+            }
+            else if (App.config.MainConfig.Server != null)
+            {
+                serverInfoControl.SetServerInfo(App.config.MainConfig.Server);
+            }
+            //Color_yr Add Stop
         }
 
         private void volumeButton_Click(object sender, RoutedEventArgs e)

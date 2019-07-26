@@ -7,7 +7,7 @@
         xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
         xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         mc:Ignorable="d"
-        Title="DebugWindow" Height="450" Width="800" WindowStartupLocation="CenterScreen">
+        Title="DebugWindow" Height="450" Width="800" WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize">
     <Grid>
         <TextBox x:Name="textBox" Margin="10,10,10,41" TextWrapping="Wrap" IsReadOnly="True" VerticalScrollBarVisibility="Visible"/>
         <TextBox x:Name="keyWordTextBox" VerticalAlignment="Bottom" Margin="10,0,0,10" HorizontalAlignment="Left" Width="180"/>
