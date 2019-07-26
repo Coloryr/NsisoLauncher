@@ -1,10 +1,10 @@
-﻿using NsisoLauncherCore.Modules;
+﻿using NsisoLauncherCore.LaunchException;
+using NsisoLauncherCore.Modules;
 using NsisoLauncherCore.Util;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using NsisoLauncherCore.LaunchException;
 using System.Threading.Tasks;
 
 namespace NsisoLauncherCore
@@ -268,6 +268,11 @@ namespace NsisoLauncherCore
             return PathManager.GetNide8JarPath(GameRootPath);
         }
 
+        public string GetAIJarPath()
+        {
+            return PathManager.GetAIJarPath(GameRootPath);
+        }
+        
         public string GetVersionOptionsPath(Modules.Version version)
         {
             return PathManager.GetVersionOptionsPath(VersionIsolation, GameRootPath, version);

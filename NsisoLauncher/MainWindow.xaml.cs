@@ -11,7 +11,6 @@ using NsisoLauncherCore.Net.MojangApi.Endpoints;
 using NsisoLauncherCore.Util;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -40,18 +39,6 @@ namespace NsisoLauncher
         private DispatcherTimer timer;
         private bool have_mp4 = false;
 
-        /*
-        #region AuthTypeItems
-        private List<AuthTypeItem> authTypes = new List<AuthTypeItem>()
-        {
-            new AuthTypeItem(){Type = Config.AuthenticationType.OFFLINE, Name = App.GetResourceString("String.MainWindow.Auth.Offline")},
-            new AuthTypeItem(){Type = Config.AuthenticationType.MOJANG, Name = App.GetResourceString("String.MainWindow.Auth.Mojang")},
-            new AuthTypeItem(){Type = Config.AuthenticationType.NIDE8, Name = App.GetResourceString("String.MainWindow.Auth.Nide8")},
-            new AuthTypeItem(){Type = Config.AuthenticationType.CUSTOM_SERVER, Name = App.GetResourceString("String.MainWindow.Auth.Custom")}
-        };
-        #endregion
-        */
-
         //TODO:增加取消启动按钮
         public MainWindow()
         {
@@ -65,7 +52,7 @@ namespace NsisoLauncher
             CustomizeRefresh();
             App.logHandler.AppendDebug("启动器主窗体数据重载完毕");
         }
-        private async void MainPanel_Launch(Controls.LaunchEventArgs obj)
+        private async void MainPanel_Launch(object sender, Controls.LaunchEventArgs obj)
         {
             await LaunchGameFromArgs(obj);
         }
@@ -97,7 +84,7 @@ namespace NsisoLauncher
         }
 
         #region 自定义
-        private async void CustomizeRefresh()
+        public async void CustomizeRefresh()
         {
             if (!string.IsNullOrWhiteSpace(App.config.MainConfig.Customize.LauncherTitle))
             {
@@ -130,29 +117,34 @@ namespace NsisoLauncher
             }
             else
                 timer.Stop();
-            /*
-            if ((App.nide8Handler != null) && App.config.MainConfig.User.AllUsingNide8)
+            if (App.config.MainConfig.User.Nide8ServerDependence)
             {
                 try
                 {
-                    Config.Server nide8Server = new Config.Server() { ShowServerInfo = true };
-                    var nide8ReturnResult = await App.nide8Handler.GetInfoAsync();
-                    if (!string.IsNullOrWhiteSpace(nide8ReturnResult.Meta.ServerIP))
+                    var lockAuthNode = App.config.MainConfig.User.GetLockAuthNode();
+                    if ((lockAuthNode != null) &&
+                        (lockAuthNode.AuthType == AuthenticationType.NIDE8))
                     {
-                        string[] serverIp = nide8ReturnResult.Meta.ServerIP.Split(':');
-                        if (serverIp.Length == 2)
+                        Config.Server nide8Server = new Config.Server() { ShowServerInfo = true };
+                        var nide8ReturnResult = await (new NsisoLauncherCore.Net.Nide8API.APIHandler(lockAuthNode.Property["nide8ID"])).GetInfoAsync();
+                        if (!string.IsNullOrWhiteSpace(nide8ReturnResult.Meta.ServerIP))
                         {
-                            nide8Server.Address = serverIp[0];
-                            nide8Server.Port = ushort.Parse(serverIp[1]);
+                            string[] serverIp = nide8ReturnResult.Meta.ServerIP.Split(':');
+                            if (serverIp.Length == 2)
+                            {
+                                nide8Server.Address = serverIp[0];
+                                nide8Server.Port = ushort.Parse(serverIp[1]);
+                            }
+                            else
+                            {
+                                nide8Server.Address = nide8ReturnResult.Meta.ServerIP;
+                                nide8Server.Port = 25565;
+                            }
+                            nide8Server.ServerName = nide8ReturnResult.Meta.ServerName;
+                            serverInfoControl.SetServerInfo(nide8Server);
                         }
-                        else
-                        {
-                            nide8Server.Address = nide8ReturnResult.Meta.ServerIP;
-                            nide8Server.Port = 25565;
-                        }
-                        nide8Server.ServerName = nide8ReturnResult.Meta.ServerName;
-                        serverInfoControl.SetServerInfo(nide8Server);
                     }
+
                 }
                 catch (Exception)
                 { }
@@ -161,7 +153,6 @@ namespace NsisoLauncher
             {
                 serverInfoControl.SetServerInfo(App.config.MainConfig.Server);
             }
-            */
             if (App.config.MainConfig.Customize.CustomBackGroundMusic)
             {
                 string[] files = Directory.GetFiles(Path.GetDirectoryName(App.config.MainConfigPath), "bgmusic_?.mp3");
@@ -604,9 +595,9 @@ namespace NsisoLauncher
                 else
                 {
                     var authResult = await authenticator.DoAuthenticateAsync();
+                    launchSetting.AuthenticateResult = authResult;
                     args.UserNode.UserData = authResult.UserData;
                     args.UserNode.SelectProfileUUID = authResult.SelectedProfileUUID.Value;
-                    launchSetting.AuthenticateResult = authResult;
                 }
 
                 App.config.MainConfig.History.SelectedUserNodeID = args.UserNode.UserData.Uuid;
@@ -631,6 +622,14 @@ namespace NsisoLauncher
                     if (!File.Exists(nideJarPath))
                     {
                         lostDepend.Add(new DownloadTask("统一通行证核心", "https://login2.nide8.com:233/index/jar", nideJarPath));
+                    }
+                }
+                else if (args.AuthNode.AuthType == AuthenticationType.AUTHLIB_INJECTOR)
+                {
+                    string aiJarPath = App.handler.GetAIJarPath();
+                    if (!File.Exists(aiJarPath))
+                    {
+                        lostDepend.Add(await NsisoLauncherCore.Net.Tools.GetDownloadUrl.GetAICoreDownloadTask(App.config.MainConfig.Download.DownloadSource, aiJarPath));
                     }
                 }
                 if (App.config.MainConfig.Environment.DownloadLostDepend && lostDepend.Count != 0)
@@ -708,34 +707,39 @@ namespace NsisoLauncher
                 {
                     launchSetting.JavaAgent += string.Format(" \"{0}\"={1}", App.handler.GetNide8JarPath(), args.AuthNode.Property["nide8ID"]);
                 }
-
-                /*
-                //直连服务器设置
-                if ((authNode.AuthenticationType == AuthenticationType.NIDE8) && App.config.MainConfig.User.AllUsingNide8)
+                else if (args.AuthNode.AuthType == AuthenticationType.AUTHLIB_INJECTOR)
                 {
-                    var nide8ReturnResult = await App.nide8Handler.GetInfoAsync();
-                    if (App.config.MainConfig.User.AllUsingNide8 && !string.IsNullOrWhiteSpace(nide8ReturnResult.Meta.ServerIP))
+                    launchSetting.JavaAgent += string.Format(" \"{0}\"={1}", App.handler.GetAIJarPath(), args.AuthNode.Property["authserver"] + "/authserver");
+                }
+
+                //直连服务器设置
+                var lockAuthNode = App.config.MainConfig.User.GetLockAuthNode();
+                if (App.config.MainConfig.User.Nide8ServerDependence &&
+                    (lockAuthNode != null) &&
+                        (lockAuthNode.AuthType == AuthenticationType.NIDE8))
+                {
+                    var nide8ReturnResult = await (new NsisoLauncherCore.Net.Nide8API.APIHandler(lockAuthNode.Property["nide8ID"])).GetInfoAsync();
+                    if (!string.IsNullOrWhiteSpace(nide8ReturnResult.Meta.ServerIP))
                     {
-                        Server server = new Server();
+                        NsisoLauncherCore.Modules.Server server = new NsisoLauncherCore.Modules.Server();
                         string[] serverIp = nide8ReturnResult.Meta.ServerIP.Split(':');
                         if (serverIp.Length == 2)
                         {
-                            //server.Address = serverIp[0];
-                            //server.Port = ushort.Parse(serverIp[1]);
+                            server.Address = serverIp[0];
+                            server.Port = ushort.Parse(serverIp[1]);
                         }
                         else
                         {
                             server.Address = nide8ReturnResult.Meta.ServerIP;
                             server.Port = 25565;
                         }
-                        //launchSetting.LaunchToServer = server;
+                        launchSetting.LaunchToServer = server;
                     }
                 }
                 else if (App.config.MainConfig.Server.LaunchToServer)
                 {
-                    launchSetting.LaunchToServer = new Server() { Address = App.config.MainConfig.Server.Address, Port = App.config.MainConfig.Server.Port };
+                    launchSetting.LaunchToServer = new NsisoLauncherCore.Modules.Server() { Address = App.config.MainConfig.Server.Address, Port = App.config.MainConfig.Server.Port };
                 }
-                */
 
                 //自动内存设置
                 if (App.config.MainConfig.Environment.AutoMemory)
@@ -772,6 +776,9 @@ namespace NsisoLauncher
                 }
                 else
                 {
+                    cancelLaunchButton.Click += (x, y) => { CancelLaunching(result); };
+
+                    #region 等待游戏响应
                     try
                     {
                         await Task.Factory.StartNew(() =>
@@ -784,6 +791,9 @@ namespace NsisoLauncher
                         await this.ShowMessageAsync("启动后等待游戏窗口响应异常", "这可能是由于游戏进程发生意外（闪退）导致的。具体原因:" + ex.Message);
                         return;
                     }
+                    #endregion
+
+                    cancelLaunchButton.Click -= (x, y) => { CancelLaunching(result); };
                     if (App.config.MainConfig.Environment.ExitAfterLaunch)
                     {
                         Application.Current.Shutdown();
@@ -924,6 +934,13 @@ namespace NsisoLauncher
             return true;
         }
 
+        private void CancelLaunching(LaunchResult result)
+        {
+            if (!result.Process.HasExited)
+            {
+                result.Process.Kill();
+            }
+        }
         #endregion
     }
 }

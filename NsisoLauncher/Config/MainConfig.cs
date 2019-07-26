@@ -2,7 +2,6 @@
 using NsisoLauncherCore.Net.MojangApi.Api;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using static NsisoLauncherCore.Net.MojangApi.Responses.AuthenticateResponse;
 
 namespace NsisoLauncher.Config
@@ -105,7 +104,7 @@ namespace NsisoLauncher.Config
         /// <summary>
         /// 配置文件版本
         /// </summary>
-        public System.Version ConfigVersion { get; set; }
+        public string ConfigVersion { get; set; }
     }
 
     /// <summary>
@@ -132,6 +131,27 @@ namespace NsisoLauncher.Config
         /// 锁定全局验证
         /// </summary>
         public string LockAuthName { get; set; }
+
+        /// <summary>
+        /// 全局是否对NIDE8服务器依赖
+        /// </summary>
+        public bool Nide8ServerDependence { get; set; }
+
+        /// <summary>
+        /// 获取锁定验证模型，若不存在返回NULL
+        /// </summary>
+        /// <returns>锁定的验证模型</returns>
+        public AuthenticationNode GetLockAuthNode()
+        {
+            if ((!string.IsNullOrWhiteSpace(LockAuthName)) && (AuthenticationDic.ContainsKey(LockAuthName)))
+            {
+                return AuthenticationDic[LockAuthName];
+            }
+            else
+            {
+                return null;
+            }
+        }
     }
 
 
@@ -448,7 +468,7 @@ namespace NsisoLauncher.Config
         /// authserver:验证服务器地址
         /// nide8ID:NIDE8的验证ID
         /// </summary>
-        public Dictionary<string, string> Property { get; set; }
+        public Dictionary<string, string> Property { get; set; } = new Dictionary<string, string>();
     }
 
     /// <summary>

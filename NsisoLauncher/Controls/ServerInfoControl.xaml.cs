@@ -2,7 +2,6 @@
 using NsisoLauncherCore.Net.Server;
 using System;
 using System.Drawing;
-using System.Globalization;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Windows;

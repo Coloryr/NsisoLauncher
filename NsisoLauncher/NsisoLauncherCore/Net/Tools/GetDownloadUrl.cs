@@ -2,6 +2,7 @@
 using NsisoLauncherCore.Util;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace NsisoLauncherCore.Net.Tools
 {
@@ -86,7 +87,7 @@ namespace NsisoLauncherCore.Net.Tools
                     default:
                         return ver.Downloads.Client.URL;
                 }
-                
+
             }
             else
             {
@@ -138,7 +139,7 @@ namespace NsisoLauncherCore.Net.Tools
         /// <param name="lib">lib实例</param>
         /// <param name="core">所使用的核心</param>
         /// <returns>下载任务</returns>
-        public static DownloadTask GetLibDownloadTask(DownloadSource source, KeyValuePair<string, Modules.Library>lib)
+        public static DownloadTask GetLibDownloadTask(DownloadSource source, KeyValuePair<string, Modules.Library> lib)
         {
             string from = GetLibDownloadURL(source, lib.Value);
             return new DownloadTask("版本依赖库文件" + lib.Value.Name, from, lib.Key);
@@ -173,7 +174,7 @@ namespace NsisoLauncherCore.Net.Tools
         /// <param name="native">native实例</param>
         /// <param name="core">所使用的核心</param>
         /// <returns>下载任务</returns>
-        public static DownloadTask GetNativeDownloadTask(DownloadSource source, KeyValuePair<string,Native> native)
+        public static DownloadTask GetNativeDownloadTask(DownloadSource source, KeyValuePair<string, Native> native)
         {
             string from = GetNativeDownloadURL(source, native.Value);
             return new DownloadTask("版本系统依赖库文件" + native.Value.Name, from, native.Key);
@@ -213,6 +214,22 @@ namespace NsisoLauncherCore.Net.Tools
             string from = GetAssetsDownloadURL(source, assets);
             string to = core.GetAssetsPath(assets);
             return new DownloadTask("游戏资源文件" + assets.Hash, from, to);
+        }
+        
+        /// <summary>
+        /// 获取NIDE8核心下载任务
+        /// </summary>
+        /// <param name="downloadTo">下载目的路径</param>
+        /// <returns>下载任务</returns>
+        public static DownloadTask GetNide8CoreDownloadTask(string downloadTo)
+        {
+            return new DownloadTask("统一通行证核心", "https://login2.nide8.com:233/index/jar", downloadTo);
+        }
+
+        public async static Task<DownloadTask> GetAICoreDownloadTask(DownloadSource source, string downloadTo)
+        {
+            AuthlibInjectorAPI.APIHandler handler = new AuthlibInjectorAPI.APIHandler();
+            return await handler.GetLatestAICoreDownloadTask(source, downloadTo);
         }
     }
 }

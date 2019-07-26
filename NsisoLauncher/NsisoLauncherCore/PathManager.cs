@@ -1,8 +1,6 @@
 ﻿using NsisoLauncherCore.Modules;
 using NsisoLauncherCore.Util;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace NsisoLauncherCore
 {
@@ -112,7 +110,7 @@ namespace NsisoLauncherCore
             }
             else
             {
-                return GetJarPath(gameRootPath,ver.ID);
+                return GetJarPath(gameRootPath, ver.ID);
             }
         }
 
@@ -157,6 +155,16 @@ namespace NsisoLauncherCore
         public static string GetNide8JarPath(string gameRootPath)
         {
             return string.Format(@"{0}\nide8auth.jar", gameRootPath);
+        }
+        
+        /// <summary>
+        /// 获取Authlib-injector核心路径
+        /// </summary>
+        /// <param name="gameRootPath">游戏根目录</param>
+        /// <returns>NIDE8路径</returns>
+        public static string GetAIJarPath(string gameRootPath)
+        {
+            return string.Format(@"{0}\Authlib-injector.jar", gameRootPath);
         }
 
         /// <summary>

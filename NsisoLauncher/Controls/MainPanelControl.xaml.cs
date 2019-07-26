@@ -1,19 +1,11 @@
 ﻿using NsisoLauncher.Config;
+using NsisoLauncher.Windows;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using System.Collections.ObjectModel;
-using NsisoLauncher.Windows;
 
 namespace NsisoLauncher.Controls
 {
@@ -22,8 +14,7 @@ namespace NsisoLauncher.Controls
     /// </summary>
     public partial class MainPanelControl : UserControl
     {
-        private bool fastlogin = false;
-        public event Action<LaunchEventArgs> Launch;
+        public event Action<object, LaunchEventArgs> Launch;
 
         private ObservableCollection<KeyValuePair<string, UserNode>> userList = new ObservableCollection<KeyValuePair<string, UserNode>>();
         private ObservableCollection<KeyValuePair<string, AuthenticationNode>> authNodeList = new ObservableCollection<KeyValuePair<string, AuthenticationNode>>();
@@ -59,56 +50,81 @@ namespace NsisoLauncher.Controls
 
         public async void Refresh()
         {
-            //更新用户列表
-            userList.Clear();
-            foreach (var item in App.config.MainConfig.User.UserDatabase)
+            try
             {
-                userList.Add(item);
-            }
-            /*
-            //全局统一验证设置
-            bool isAllUsingNide8 = (App.nide8Handler != null) && App.config.MainConfig.User.AllUsingNide8;
-            if (isAllUsingNide8)
-            {
-                downloadButton.Content = App.GetResourceString("String.Base.Register");
-            }
-            else
-            {
-                downloadButton.Content = App.GetResourceString("String.Base.Download");
-            }
-            
-            launchVersionCombobox.ItemsSource = await App.handler.GetVersionsAsync();
-            this.launchVersionCombobox.Text = App.config.MainConfig.History.LastLaunchVersion;
-            */
-            //更新验证模型列表
-            authNodeList.Clear();
-            authNodeList.Add(new KeyValuePair<string, AuthenticationNode>("offline", new AuthenticationNode()
-            {
-                AuthType = AuthenticationType.OFFLINE,
-                Name = App.GetResourceString("String.MainWindow.Auth.Offline")
-            }));
-            authNodeList.Add(new KeyValuePair<string, AuthenticationNode>("mojang", new AuthenticationNode()
-            {
-                AuthType = AuthenticationType.MOJANG,
-                Name = App.GetResourceString("String.MainWindow.Auth.Mojang")
-            }));
-            foreach (var item in App.config.MainConfig.User.AuthenticationDic)
-            {
-                authNodeList.Add(item);
-            }
+                //更新用户列表
+                userList.Clear();
+                foreach (var item in App.config.MainConfig.User.UserDatabase)
+                {
+                    userList.Add(item);
+                }
+                /*
+                //全局统一验证设置
+                bool isAllUsingNide8 = (App.nide8Handler != null) && App.config.MainConfig.User.AllUsingNide8;
+                if (isAllUsingNide8)
+                {
+                    downloadButton.Content = App.GetResourceString("String.Base.Register");
+                }
+                else
+                {
+                    downloadButton.Content = App.GetResourceString("String.Base.Download");
+                }
 
-            //更新版本列表
+                launchVersionCombobox.ItemsSource = await App.handler.GetVersionsAsync();
+                this.launchVersionCombobox.Text = App.config.MainConfig.History.LastLaunchVersion;
+                */
+                //更新验证模型列表
+                authNodeList.Clear();
+                authNodeList.Add(new KeyValuePair<string, AuthenticationNode>("offline", new AuthenticationNode()
+                {
+                    AuthType = AuthenticationType.OFFLINE,
+                    Name = App.GetResourceString("String.MainWindow.Auth.Offline")
+                }));
+                authNodeList.Add(new KeyValuePair<string, AuthenticationNode>("mojang", new AuthenticationNode()
+                {
+                    AuthType = AuthenticationType.MOJANG,
+                    Name = App.GetResourceString("String.MainWindow.Auth.Mojang")
+                }));
+                foreach (var item in App.config.MainConfig.User.AuthenticationDic)
+                {
+                    authNodeList.Add(item);
+                }
 
-            List<NsisoLauncherCore.Modules.Version> versions = await App.handler.GetVersionsAsync();
-            versionList.Clear();
-            foreach (var item in versions)
-            {
-                versionList.Add(item);
+                //更新版本列表
+
+                List<NsisoLauncherCore.Modules.Version> versions = await App.handler.GetVersionsAsync();
+                versionList.Clear();
+                foreach (var item in versions)
+                {
+                    versionList.Add(item);
+                }
+                this.launchVersionCombobox.Text = App.config.MainConfig.History.LastLaunchVersion;
+                this.userComboBox.SelectedValue = App.config.MainConfig.History.SelectedUserNodeID;
+                if ((App.config.MainConfig.History.SelectedUserNodeID != null) &&
+                    (App.config.MainConfig.User.UserDatabase.ContainsKey(App.config.MainConfig.History.SelectedUserNodeID)))
+                {
+                    this.userComboBox.SelectedValue = App.config.MainConfig.History.SelectedUserNodeID;
+                }
+
+                //锁定验证模型处理
+                if (!string.IsNullOrWhiteSpace(App.config.MainConfig.User.LockAuthName))
+                {
+                    if (App.config.MainConfig.User.AuthenticationDic.ContainsKey(App.config.MainConfig.User.LockAuthName))
+                    {
+                        authTypeCombobox.SelectedValue = App.config.MainConfig.User.LockAuthName;
+                        authTypeCombobox.IsEnabled = false;
+                    }
+                }
+                else
+                {
+                    authTypeCombobox.IsEnabled = true;
+                }
+                App.logHandler.AppendDebug("启动器主窗体数据重载完毕");
             }
-            this.launchVersionCombobox.Text = App.config.MainConfig.History.LastLaunchVersion;
-            this.userComboBox.SelectedValue = App.config.MainConfig.History.SelectedUserNodeID;
-
-            App.logHandler.AppendDebug("启动器主窗体数据重载完毕");
+            catch (Exception e)
+            {
+                App.CatchAggregateException(this, new AggregateExceptionArgs() { AggregateException = new AggregateException("启动器致命错误", e) });
+            }
         }
 
         public async void RefreshIcon()
@@ -292,8 +308,10 @@ namespace NsisoLauncher.Controls
             }
 
 
-            this.Launch?.Invoke(new LaunchEventArgs() { AuthNode = authNode, UserNode = userNode, LaunchVersion = launchVersion, IsNewUser = isNewUser });
+            this.Launch?.Invoke(this, new LaunchEventArgs() { AuthNode = authNode, UserNode = userNode, LaunchVersion = launchVersion, IsNewUser = isNewUser });
         }
+
+        //下载按钮点击
 
         //下载按钮点击
         private void downloadButton_Click(object sender, RoutedEventArgs e)
@@ -307,8 +325,8 @@ namespace NsisoLauncher.Controls
             */
             //else
             //{
-                new DownloadWindow().ShowDialog();
-                Refresh();
+            new DownloadWindow().ShowDialog();
+            Refresh();
             //}
         }
 
@@ -317,13 +335,18 @@ namespace NsisoLauncher.Controls
         {
             new SettingWindow().ShowDialog();
             Refresh();
-            //CustomizeRefresh();
+            ((MainWindow)Window.GetWindow(this)).CustomizeRefresh();
             Color_custom();
         }
         #endregion
-
+        private void addAuthButton_Click(object sender, RoutedEventArgs e)
+        {
+            var a = new SettingWindow();
+            a.ShowAddAuthModule();
+            a.ShowDialog();
+            Refresh();
+        }
     }
-
     public class LaunchEventArgs : EventArgs
     {
         public NsisoLauncherCore.Modules.Version LaunchVersion { get; set; }
