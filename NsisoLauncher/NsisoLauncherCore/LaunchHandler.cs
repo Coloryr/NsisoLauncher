@@ -272,7 +272,7 @@ namespace NsisoLauncherCore
         {
             return PathManager.GetAIJarPath(GameRootPath);
         }
-        
+
         public string GetVersionOptionsPath(Modules.Version version)
         {
             return PathManager.GetVersionOptionsPath(VersionIsolation, GameRootPath, version);

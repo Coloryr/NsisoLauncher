@@ -1,23 +1,18 @@
-﻿using NsisoLauncherCore.Net;
+﻿using NsisoLauncher.Config;
+using NsisoLauncherCore.Net;
 using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Drawing.Drawing2D;
 using System.IO;
-using System.Linq;
-using System.Net;
+using System.Security.RightsManagement;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
-namespace NsisoLauncher.APIHandler_nide8
+namespace NsisoLauncher.Color_yr
 {
-    class lunzi
+    class NIDE8_head
     {
-
         public BitmapImage BitmapToBitmapImage(Bitmap bitmap)
         {
             Bitmap bitmapSource = new Bitmap(bitmap.Width, bitmap.Height);
@@ -85,13 +80,14 @@ namespace NsisoLauncher.APIHandler_nide8
             bitmap_top.Dispose();
             return BitmapToBitmapImage(Zoom(save, 8));
         }
+        
     }
     public class APIHandler_nide8
     {
-        const string APIUrl = "sessionserver/session/minecraft/profile/";
-        public async Task<ImageSource> GetHeadSculSource(string uuid, Controls.LaunchEventArgs args)
+        const string APIUrl = "/sessionserver/session/minecraft/profile/";
+        public async Task<ImageSource> GetHeadSculSource(string uuid, AuthenticationNode args)
         {
-            string url = "https://auth2.nide8.com:233/" + args.AuthNode.Property["nide8ID"] + APIUrl + uuid;
+            string url = "https://auth2.nide8.com:233/" + args.Property["nide8ID"] + APIUrl + uuid;
             try
             {
                 var res = await APIRequester.HttpGetAsync(url);
@@ -114,8 +110,8 @@ namespace NsisoLauncher.APIHandler_nide8
                         res = await APIRequester.HttpGetAsync(c);
                         using (Stream stream = await res.Content.ReadAsStreamAsync())
                         {
-                            System.Drawing.Image saveImage = System.Drawing.Image.FromStream(stream);
-                            lunzi lunzi = new lunzi();
+                            Image saveImage = System.Drawing.Image.FromStream(stream);
+                            NIDE8_head lunzi = new NIDE8_head();
                             return lunzi.CaptureImage(saveImage);
                         }
                     }

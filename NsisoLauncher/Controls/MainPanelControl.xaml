@@ -13,6 +13,7 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="*"/>
+            
         </Grid.ColumnDefinitions>
         <Button x:Name="launchButton" Content="{DynamicResource String.Base.Launch}" Margin="10,0,10,10" Height="50" VerticalAlignment="Bottom"
                     FontSize="14" Background="#19000000" BorderBrush="White" Foreground="White" Click="launchButton_Click" Grid.ColumnSpan="2"/>
@@ -28,10 +29,11 @@
                   SelectedValuePath="Key"
                   SelectedValue="{Binding ElementName=userComboBox, Path=SelectedItem.Value.AuthModule}"
                   controls:TextBoxHelper.Watermark="{DynamicResource String.MainWindow.ChooseAuthType}" Grid.ColumnSpan="2" Foreground="White"/>
-        <Button  Grid.Column="1" Margin="0,190,20,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="35" ToolTip="{DynamicResource String.Mainwindow.Auth.Add}"
+        <Button  x:Name="addauth" Grid.Column="1" Margin="0,190,20,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="35" ToolTip="{DynamicResource String.Mainwindow.Auth.Add}"
                  Background="{x:Null}" BorderBrush="White" Foreground="White" Height="26" Click="addAuthButton_Click">
             <iconPacks:FontAwesome Kind="PlusSolid" Width="10" Height="10"/>
         </Button>
+
         <Label Content="{iconPacks:FontAwesome Kind=RocketSolid}" HorizontalAlignment ="Left" Margin="10,120,0,0" Height="auto" VerticalAlignment="Top" Foreground="White"/>
         <ComboBox x:Name="launchVersionCombobox"
                   Margin="41,120,20,0" 
@@ -50,7 +52,7 @@
                  SelectedValuePath="Key"
                  DisplayMemberPath="Value.UserName"
                  VerticalAlignment="Top" Background="#33FFFFFF" BorderBrush="#99FFFFFF"
-                 controls:TextBoxHelper.Watermark="{DynamicResource String.Mainwindow.InputPlayerName}" Grid.ColumnSpan="2" Foreground="White"
+                 controls:TextBoxHelper.Watermark="{DynamicResource String.Mainwindow.InputPlayerName}" Grid.ColumnSpan="2" SelectionChanged="UserComboBox_SelectionChanged" Foreground="White"
                  />
 
         <Button x:Name="configButton"

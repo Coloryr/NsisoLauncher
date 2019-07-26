@@ -66,9 +66,8 @@ namespace NsisoLauncher.Windows
 
             VersionsComboBox.ItemsSource = await App.handler.GetVersionsAsync();
 
-            #endregion
+        #endregion
 
-            //TODO:游戏内设置修复
             if (App.config.MainConfig.Environment.VersionIsolation)
             {
                 VersionsComboBox.IsEnabled = true;
@@ -171,8 +170,9 @@ namespace NsisoLauncher.Windows
             }
             App.handler.VersionIsolation = config.Environment.VersionIsolation;
             #endregion
-            
+
             App.config.MainConfig = config;
+
             if (_isGameSettingChanged)
             {
                 if (App.config.MainConfig.Environment.VersionIsolation)
@@ -290,6 +290,7 @@ namespace NsisoLauncher.Windows
             UserNode node = selectedItem.Value;
             //todo （后）恢复注销用户功能
             node.AccessToken = null;
+            this.ShowMessageAsync("注销成功", "请保存以生效");
         }
 
         private void clearUserButton_Click(object sender, RoutedEventArgs e)
@@ -306,6 +307,7 @@ namespace NsisoLauncher.Windows
             node.Profiles = null;
             node.UserData = null;
             node.SelectProfileUUID = null;
+            this.ShowMessageAsync("重置用户成功", "请保存以生效");
         }
 
         private void delUserButton_Click(object sender, RoutedEventArgs e)
@@ -386,6 +388,7 @@ namespace NsisoLauncher.Windows
             authModuleCombobox.SelectedItem = null;
         }
         #endregion
+
         private void clearAllauthButton_Click(object sender, RoutedEventArgs e)
         {
             lockauthCombobox.SelectedItem = null;

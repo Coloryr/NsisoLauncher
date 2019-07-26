@@ -1,4 +1,5 @@
-﻿using MahApps.Metro;
+﻿
+using MahApps.Metro;
 using NsisoLauncher.Config;
 using NsisoLauncher.Core.Util;
 using NsisoLauncherCore;

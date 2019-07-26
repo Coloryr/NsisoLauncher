@@ -163,7 +163,6 @@ namespace NsisoLauncherCore.Net
                         IsBusy = false;
                         return;
                     }
-
                     _threads = new Thread[ProcessorSize];
                     _timer.Start();
 
@@ -222,8 +221,9 @@ namespace NsisoLauncherCore.Net
                     {
                         if (cancelToken.IsCancellationRequested)
                         {
-                            CompleteDownload();
-                            return;
+                            ApendDebugLog("放弃下载:" + item.TaskName);
+                            RemoveItemFromViewTask(item);
+                            continue;
                         }
                         ApendDebugLog("开始下载:" + item.From);
                         item.SetState("下载中");
@@ -268,6 +268,7 @@ namespace NsisoLauncherCore.Net
                             }
                         }
                         #endregion
+
                         item.SetDone();
                         RemoveItemFromViewTask(item);
                         DownloadProgressChanged?.Invoke(this, new DownloadProgressChangedArg() { TaskCount = _taskCount, LastTaskCount = _viewDownloadTasks.Count, DoneTask = item });
@@ -312,6 +313,7 @@ namespace NsisoLauncherCore.Net
                 HttpWebResponse response = request.GetResponse() as HttpWebResponse;
                 task.SetTotalSize(response.ContentLength);
                 Stream responseStream = response.GetResponseStream();
+                responseStream.ReadTimeout = 5000;
                 FileStream fs = new FileStream(buffFilename, FileMode.Create);
                 byte[] bArr = new byte[1024];
                 int size = responseStream.Read(bArr, 0, (int)bArr.Length);
@@ -320,6 +322,7 @@ namespace NsisoLauncherCore.Net
                 {
                     if (cancelToken.IsCancellationRequested)
                     {
+                        ApendDebugLog("放弃下载:" + task.TaskName);
                         fs.Close();
                         responseStream.Close();
                         RemoveItemFromViewTask(task);

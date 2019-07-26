@@ -113,12 +113,12 @@ namespace NsisoLauncher.Config
     public class User
     {
         /// <summary>
-        /// 用户数据
+        /// 用户数据库
         /// </summary>
         public Dictionary<string, UserNode> UserDatabase { get; set; }
 
         /// <summary>
-        /// 验证验证节点
+        /// 验证节点
         /// </summary>
         public Dictionary<string, AuthenticationNode> AuthenticationDic { get; set; }
 
@@ -153,7 +153,6 @@ namespace NsisoLauncher.Config
             }
         }
     }
-
 
     /// <summary>
     /// 启动环境基本设置

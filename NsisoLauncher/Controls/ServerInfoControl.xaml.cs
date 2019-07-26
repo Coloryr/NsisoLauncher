@@ -19,20 +19,24 @@ namespace NsisoLauncher.Controls
         public ServerInfoControl()
         {
             InitializeComponent();
-            Visibility = Visibility.Hidden;
+            this.Visibility = Visibility.Hidden;
         }
 
         public async void SetServerInfo(Server server)
         {
             if (server.ShowServerInfo)
             {
+                serverNameTextBlock.Text = server.ServerName;
+                serverStateIcon.Foreground = System.Windows.Media.Brushes.White;
+                serverStateIcon.Kind = MahApps.Metro.IconPacks.PackIconFontAwesomeKind.SyncAltSolid;
                 serverPeopleTextBlock.Text = App.GetResourceString("String.Mainwindow.ServerGettingNum");
                 serverVersionTextBlock.Text = App.GetResourceString("String.Mainwindow.ServerGettingVer");
                 serverPingTextBlock.Text = App.GetResourceString("String.Mainwindow.ServerGettingPing");
                 serverMotdTextBlock.Text = null;
-                Visibility = Visibility.Visible;
+                this.Visibility = Visibility.Visible;
                 serverLoadingBar.Visibility = Visibility.Visible;
                 serverLoadingBar.IsIndeterminate = true;
+
 
                 ServerInfo serverInfo = new ServerInfo(server.Address, server.Port);
                 await serverInfo.StartGetServerInfoAsync();
@@ -47,10 +51,12 @@ namespace NsisoLauncher.Controls
                 switch (serverInfo.State)
                 {
                     case ServerInfo.StateType.GOOD:
-                        serverPeopleTextBlock.Text = string.Format("人数:[{0}/{1}]", serverInfo.CurrentPlayerCount, serverInfo.MaxPlayerCount);
-                        serverVersionTextBlock.Text = serverInfo.GameVersion;
-                        serverVersionTextBlock.ToolTip = serverInfo.GameVersion;
-                        serverPingTextBlock.Text = string.Format("延迟:{0}ms", serverInfo.Ping);
+                        this.serverStateIcon.Kind = MahApps.Metro.IconPacks.PackIconFontAwesomeKind.CheckCircleSolid;
+                        this.serverStateIcon.Foreground = System.Windows.Media.Brushes.Green;
+                        this.serverPeopleTextBlock.Text = string.Format("人数:[{0}/{1}]", serverInfo.CurrentPlayerCount, serverInfo.MaxPlayerCount);
+                        this.serverVersionTextBlock.Text = serverInfo.GameVersion;
+                        this.serverVersionTextBlock.ToolTip = serverInfo.GameVersion;
+                        this.serverPingTextBlock.Text = string.Format("延迟:{0}ms", serverInfo.Ping);
                         if (serverInfo.MOTD != null)
                         {
                             serverMotdTextBlock.ToolTip = serverInfo.MOTD;
@@ -60,13 +66,13 @@ namespace NsisoLauncher.Controls
                         }
                         if (serverInfo.OnlinePlayersName != null)
                         {
-                            serverPeopleTextBlock.ToolTip = string.Join("\n", serverInfo.OnlinePlayersName);
+                            this.serverPeopleTextBlock.ToolTip = string.Join("\n", serverInfo.OnlinePlayersName);
                         }
                         if (serverInfo.IconData != null)
                         {
                             using (MemoryStream ms = new MemoryStream(serverInfo.IconData))
                             {
-                                serverIcon.Fill = new ImageBrush(ChangeBitmapToImageSource(new Bitmap(ms)));
+                                this.serverIcon.Fill = new ImageBrush(ChangeBitmapToImageSource(new Bitmap(ms)));
                             }
 
                         }
@@ -82,7 +88,7 @@ namespace NsisoLauncher.Controls
             }
             else
             {
-                Visibility = Visibility.Hidden;
+                this.Visibility = Visibility.Hidden;
             }
         }
 
@@ -113,6 +119,5 @@ namespace NsisoLauncher.Controls
 
         }
         #endregion
-
     }
 }

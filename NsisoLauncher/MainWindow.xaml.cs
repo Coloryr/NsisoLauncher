@@ -1,5 +1,6 @@
 ﻿using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
+using NsisoLauncher.Color_yr;
 using NsisoLauncher.Config;
 using NsisoLauncher.Windows;
 using NsisoLauncherCore;
@@ -16,6 +17,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
@@ -33,11 +35,13 @@ namespace NsisoLauncher
     /// </summary>
     public partial class MainWindow : MetroWindow
     {
-        private string[] newStr;
-        private int filescount;
-        private int filesnow;
-        private DispatcherTimer timer;
-        private bool have_mp4 = false;
+        //Color_yr Add Start
+        public string[] newStr;
+        public int filescount;
+        public int filesnow;
+        public DispatcherTimer timer;
+        public bool have_mp4 = false;
+        //Color_yr Add Stop
 
         //TODO:增加取消启动按钮
         public MainWindow()
@@ -45,13 +49,23 @@ namespace NsisoLauncher
             InitializeComponent();
             timer = new DispatcherTimer();
             timer.Interval = TimeSpan.FromSeconds(5);
-            timer.Tick += timer_Tick;
+            timer.Tick += Timer_Tick;
             App.logHandler.AppendDebug("启动器主窗体已载入");
             mainPanel.Launch += MainPanel_Launch;
             App.handler.GameExit += Handler_GameExit;
+            BG.Width = 720;
+            BG.Height = 405;
             CustomizeRefresh();
-            App.logHandler.AppendDebug("启动器主窗体数据重载完毕");
         }
+        //Color_yr Add Start
+        public void Timer_Tick(object sender, EventArgs e)
+        {
+            BG.Source = new BitmapImage(new Uri(newStr[filesnow]));
+            filesnow++;
+            if (filesnow >= filescount)
+                filesnow = 0;
+        }
+        //Color_yr Add Stop
         private async void MainPanel_Launch(object sender, Controls.LaunchEventArgs obj)
         {
             await LaunchGameFromArgs(obj);
@@ -60,9 +74,9 @@ namespace NsisoLauncher
         #region 启动核心事件处理
         private void Handler_GameExit(object sender, GameExitArg arg)
         {
-            Dispatcher.Invoke(new Action(() =>
+            this.Dispatcher.Invoke(new Action(() =>
             {
-                WindowState = WindowState.Normal;
+                this.WindowState = WindowState.Normal;
                 if (!arg.IsNormalExit())
                 {
                     this.ShowMessageAsync("游戏非正常退出",
@@ -73,25 +87,26 @@ namespace NsisoLauncher
         }
         #endregion
 
-        void timer_Tick(object sender, EventArgs e)
-        {
-            ImageBrush brush = new ImageBrush(new BitmapImage(new Uri(newStr[filesnow])))
-            { TileMode = TileMode.FlipXY, AlignmentX = AlignmentX.Right, Stretch = Stretch.UniformToFill };
-            Background = brush;
-            filesnow++;
-            if (filesnow >= filescount)
-                filesnow = 0;
-        }
-
         #region 自定义
         public async void CustomizeRefresh()
         {
             if (!string.IsNullOrWhiteSpace(App.config.MainConfig.Customize.LauncherTitle))
             {
-                Title = App.config.MainConfig.Customize.LauncherTitle;
+                this.Title = App.config.MainConfig.Customize.LauncherTitle;
             }
             if (App.config.MainConfig.Customize.CustomBackGroundPicture)
             {
+                /*
+                string[] files = Directory.GetFiles(Path.GetDirectoryName(App.config.MainConfigPath), "bgpic_?.png");
+                if (files.Count() != 0)
+                {
+                    Random random = new Random();
+                    ImageBrush brush = new ImageBrush(new BitmapImage(new Uri(files[random.Next(files.Count())])))
+                    { TileMode = TileMode.FlipXY, AlignmentX = AlignmentX.Right, Stretch = Stretch.UniformToFill };
+                    this.Background = brush;
+                }
+                */
+                //Color_yr Add Start
                 string[] files = Directory.GetFiles(Path.GetDirectoryName(App.config.MainConfigPath), "bg?.png");
                 string[] files1 = Directory.GetFiles(Path.GetDirectoryName(App.config.MainConfigPath), "bg?.jpg");
                 filescount = files.Count() + files1.Count();
@@ -109,109 +124,85 @@ namespace NsisoLauncher
                         newStr[i] = a;
                         i++;
                     }
-                    timer_Tick(null, null);
+                    Timer_Tick(null, null);
                     timer.Start();
                 }
                 else
                     timer.Stop();
-            }
-            else
-                timer.Stop();
-            if (App.config.MainConfig.User.Nide8ServerDependence)
-            {
-                try
+                //Color_yr Add Stop
+
+                if (App.config.MainConfig.User.Nide8ServerDependence)
                 {
-                    var lockAuthNode = App.config.MainConfig.User.GetLockAuthNode();
-                    if ((lockAuthNode != null) &&
-                        (lockAuthNode.AuthType == AuthenticationType.NIDE8))
+                    try
                     {
-                        Config.Server nide8Server = new Config.Server() { ShowServerInfo = true };
-                        var nide8ReturnResult = await (new NsisoLauncherCore.Net.Nide8API.APIHandler(lockAuthNode.Property["nide8ID"])).GetInfoAsync();
-                        if (!string.IsNullOrWhiteSpace(nide8ReturnResult.Meta.ServerIP))
+                        var lockAuthNode = App.config.MainConfig.User.GetLockAuthNode();
+                        if ((lockAuthNode != null) &&
+                            (lockAuthNode.AuthType == AuthenticationType.NIDE8))
                         {
-                            string[] serverIp = nide8ReturnResult.Meta.ServerIP.Split(':');
-                            if (serverIp.Length == 2)
+                            Config.Server nide8Server = new Config.Server() { ShowServerInfo = true };
+                            var nide8ReturnResult = await (new NsisoLauncherCore.Net.Nide8API.APIHandler(lockAuthNode.Property["nide8ID"])).GetInfoAsync();
+                            if (!string.IsNullOrWhiteSpace(nide8ReturnResult.Meta.ServerIP))
                             {
-                                nide8Server.Address = serverIp[0];
-                                nide8Server.Port = ushort.Parse(serverIp[1]);
+                                string[] serverIp = nide8ReturnResult.Meta.ServerIP.Split(':');
+                                if (serverIp.Length == 2)
+                                {
+                                    nide8Server.Address = serverIp[0];
+                                    nide8Server.Port = ushort.Parse(serverIp[1]);
+                                }
+                                else
+                                {
+                                    nide8Server.Address = nide8ReturnResult.Meta.ServerIP;
+                                    nide8Server.Port = 25565;
+                                }
+                                nide8Server.ServerName = nide8ReturnResult.Meta.ServerName;
+                                serverInfoControl.SetServerInfo(nide8Server);
                             }
-                            else
-                            {
-                                nide8Server.Address = nide8ReturnResult.Meta.ServerIP;
-                                nide8Server.Port = 25565;
-                            }
-                            nide8Server.ServerName = nide8ReturnResult.Meta.ServerName;
-                            serverInfoControl.SetServerInfo(nide8Server);
                         }
+
                     }
-
+                    catch (Exception)
+                    { }
                 }
-                catch (Exception)
-                { }
-            }
-            else if (App.config.MainConfig.Server != null)
-            {
-                serverInfoControl.SetServerInfo(App.config.MainConfig.Server);
-            }
-            if (App.config.MainConfig.Customize.CustomBackGroundMusic)
-            {
-                string[] files = Directory.GetFiles(Path.GetDirectoryName(App.config.MainConfigPath), "bgmusic_?.mp3");
-                string[] files1 = Directory.GetFiles(Path.GetDirectoryName(App.config.MainConfigPath), "bg?.mp4");
-                if (files1.Count() != 0)
+                else if (App.config.MainConfig.Server != null)
                 {
-                    have_mp4 = true;
-                    timer.Stop();
-                    mediaElement.Source = new Uri(files1[0]);
-                    volumeButton.Visibility = Visibility.Visible;
-                    mediaElement.Visibility = Visibility.Visible;
-                    mediaElement.Play();
-                    mediaElement.Volume = 0;
-                    await Task.Factory.StartNew(() =>
-                    {
-                        try
-                        {
-                            for (int i = 0; i < 30; i++)
-                            {
-                                Dispatcher.Invoke(new Action(() =>
-                                {
-                                    mediaElement.Volume += 0.01;
-                                }));
-                                Thread.Sleep(50);
-                            }
-                        }
-                        catch (Exception) { }
-                    });
+                    serverInfoControl.SetServerInfo(App.config.MainConfig.Server);
                 }
-                if (files.Count() != 0 && have_mp4 == false) 
+
+                if (App.config.MainConfig.Customize.CustomBackGroundMusic)
                 {
-                    Random random = new Random();
-                    mediaElement.Source = new Uri(files[random.Next(files.Count())]);
-                    volumeButton.Visibility = Visibility.Visible;
-                    mediaElement.Play();
-                    mediaElement.Volume = 0;
-                    await Task.Factory.StartNew(() =>
+                    string[] mp4_file = Directory.GetFiles(Path.GetDirectoryName(App.config.MainConfigPath), "bg?.mp4");
+                    if (files1.Count() != 0)
                     {
-                        try
+                        have_mp4 = true;
+                        timer.Stop();
+                        mediaElement.Source = new Uri(files1[0]);
+                        volumeButton.Visibility = Visibility.Visible;
+                        mediaElement.Visibility = Visibility.Visible;
+                        mediaElement.Play();
+                        mediaElement.Volume = 0;
+                        await Task.Factory.StartNew(() =>
                         {
-                            for (int i = 0; i < 30; i++)
+                            try
                             {
-                                Dispatcher.Invoke(new Action(() =>
+                                for (int i = 0; i < 30; i++)
                                 {
-                                    mediaElement.Volume += 0.01;
-                                }));
-                                Thread.Sleep(50);
+                                    Dispatcher.Invoke(new Action(() =>
+                                    {
+                                        mediaElement.Volume += 0.01;
+                                    }));
+                                    Thread.Sleep(50);
+                                }
                             }
-                        }
-                        catch (Exception) { }
-                    });
+                            catch (Exception) { }
+                        });
+                    }
                 }
             }
-
         }
 
         private void volumeButton_Click(object sender, RoutedEventArgs e)
         {
-            mediaElement.IsMuted = !mediaElement.IsMuted;
+            this.mediaElement.IsMuted = !this.mediaElement.IsMuted;
         }
 
         private void mediaElement_MediaEnded(object sender, RoutedEventArgs e)
@@ -219,6 +210,8 @@ namespace NsisoLauncher
             mediaElement.Stop();
             mediaElement.Play();
         }
+
+
         #endregion
 
         private async Task LaunchGameFromArgs(Controls.LaunchEventArgs args)
@@ -226,10 +219,10 @@ namespace NsisoLauncher
             try
             {
                 #region 检查有效数据
-                if (args.AuthNode == null)
+                if (args.LaunchVersion == null)
                 {
-                    await this.ShowMessageAsync(App.GetResourceString("String.Message.EmptyAuthType"),
-                        App.GetResourceString("String.Message.EmptyAuthType2"));
+                    await this.ShowMessageAsync(App.GetResourceString("String.Message.EmptyLaunchVersion"),
+                        App.GetResourceString("String.Message.EmptyLaunchVersion2"));
                     return;
                 }
                 if (args.UserNode == null)
@@ -238,10 +231,10 @@ namespace NsisoLauncher
                         App.GetResourceString("String.Message.EmptyUsername2"));
                     return;
                 }
-                if (args.LaunchVersion == null)
+                if (args.AuthNode == null)
                 {
-                    await this.ShowMessageAsync(App.GetResourceString("String.Message.EmptyLaunchVersion"),
-                        App.GetResourceString("String.Message.EmptyLaunchVersion2"));
+                    await this.ShowMessageAsync(App.GetResourceString("String.Message.EmptyAuthType"),
+                        App.GetResourceString("String.Message.EmptyAuthType2"));
                     return;
                 }
                 if (App.handler.Java == null)
@@ -250,6 +243,7 @@ namespace NsisoLauncher
                     return;
                 }
                 #endregion
+
 
                 #region 保存启动数据
                 App.config.MainConfig.History.LastLaunchVersion = args.LaunchVersion.ID;
@@ -260,8 +254,8 @@ namespace NsisoLauncher
                     Version = args.LaunchVersion
                 };
 
-                //this.loadingGrid.Visibility = Visibility.Visible;
-                //this.loadingRing.IsActive = true;
+                this.loadingGrid.Visibility = Visibility.Visible;
+                this.loadingRing.IsActive = true;
 
                 #region 验证
 
@@ -276,7 +270,7 @@ namespace NsisoLauncher
                 }
                 #endregion
 
-                #region 多语言支持变量(old)
+                #region 多语言支持变量
                 LoginDialogSettings loginDialogSettings = new LoginDialogSettings()
                 {
                     NegativeButtonText = App.GetResourceString("String.Base.Cancel"),
@@ -289,14 +283,13 @@ namespace NsisoLauncher
                     PasswordWatermark = App.GetResourceString("String.Base.Password"),
                     NegativeButtonVisibility = Visibility.Visible
                 };
-                //string verifyingMsg = null, verifyingMsg2 = null, verifyingFailedMsg = null, verifyingFailedMsg2 = null;
                 #endregion
 
                 //主验证器接口
                 IAuthenticator authenticator = null;
                 bool shouldRemember = false;
 
-                //bool isSameAuthType = App.config.MainConfig.User.AuthenticationType == auth.Type;
+                //bool isSameAuthType = (authNode.AuthenticationType == auth);
                 bool isRemember = (!string.IsNullOrWhiteSpace(args.UserNode.AccessToken)) && (args.UserNode.SelectProfileUUID != null);
                 //bool isSameName = userName == App.config.MainConfig.User.UserName;
 
@@ -525,27 +518,27 @@ namespace NsisoLauncher
                 //如果验证方式不是离线验证
                 if (args.AuthNode.AuthType != AuthenticationType.OFFLINE)
                 {
-                    //string currentLoginType = string.Format("正在进行{0}中...", args.AuthNode.Name);
-                    //string loginMsg = "这需要联网进行操作，可能需要一分钟的时间";
-                    //var loader = await this.ShowProgressAsync(currentLoginType, loginMsg, true);
-                    //loader.SetIndeterminate();
-                    mainPanel.launchButton.Content = App.GetResourceString("String.Mainwindow.Logining");
+                    string currentLoginType = string.Format("正在进行{0}中...", args.AuthNode.Name);
+                    string loginMsg = "这需要联网进行操作，可能需要一分钟的时间";
+                    var loader = await this.ShowProgressAsync(currentLoginType, loginMsg, true);
+
+                    loader.SetIndeterminate();
                     var authResult = await authenticator.DoAuthenticateAsync();
-                    //await loader.CloseAsync();
+                    await loader.CloseAsync();
 
                     switch (authResult.State)
                     {
                         case AuthState.SUCCESS:
+                            args.UserNode.SelectProfileUUID = authResult.SelectedProfileUUID.Value;
+                            args.UserNode.UserData = authResult.UserData;
+                            if (authResult.Profiles != null)
+                            {
+                                args.UserNode.Profiles.Clear();
+                                authResult.Profiles.ForEach(x => args.UserNode.Profiles.Add(x.Value, x));
+                            }
                             if (shouldRemember)
                             {
                                 args.UserNode.AccessToken = authResult.AccessToken;
-                                args.UserNode.SelectProfileUUID = authResult.SelectedProfileUUID.Value;
-                                args.UserNode.UserData = authResult.UserData;
-                                if (authResult.Profiles != null)
-                                {
-                                    args.UserNode.Profiles.Clear();
-                                    authResult.Profiles.ForEach(x => args.UserNode.Profiles.Add(x.Value, x));
-                                };
                             }
                             launchSetting.AuthenticateResult = authResult;
                             break;
@@ -553,13 +546,11 @@ namespace NsisoLauncher
                             args.UserNode.ClearAuthCache();
                             await this.ShowMessageAsync("验证失败：您的登陆信息已过期",
                                 string.Format("请您重新进行登陆。具体信息：{0}", authResult.Error.ErrorMessage));
-                            isRemember = false;
-                            break;
+                            return;
                         case AuthState.ERR_INVALID_CRDL:
                             await this.ShowMessageAsync("验证失败：您的登陆账号或密码错误",
                                 string.Format("请您确认您输入的账号密码正确。具体信息：{0}", authResult.Error.ErrorMessage));
-                            isRemember = false;
-                            break;
+                            return;
                         case AuthState.ERR_NOTFOUND:
                             if (args.AuthNode.AuthType == AuthenticationType.CUSTOM_SERVER || args.AuthNode.AuthType == AuthenticationType.AUTHLIB_INJECTOR)
                             {
@@ -572,24 +563,19 @@ namespace NsisoLauncher
                                 await this.ShowMessageAsync("验证失败：您的账号未找到",
                                 string.Format("请确认您的账号和游戏角色存在。具体信息：{0}", authResult.Error.ErrorMessage));
                             }
-                            break;
+                            return;
                         case AuthState.ERR_OTHER:
                             await this.ShowMessageAsync("验证失败：其他错误",
                                 string.Format("具体信息：{0}", authResult.Error.ErrorMessage));
-                            break;
+                            return;
                         case AuthState.ERR_INSIDE:
                             await this.ShowMessageAsync("验证失败：启动器内部错误",
                                 string.Format("建议您联系启动器开发者进行解决。具体信息：{0}", authResult.Error.ErrorMessage));
-                            break;
+                            return;
                         default:
                             await this.ShowMessageAsync("验证失败：未知错误",
                                 "建议您联系启动器开发者进行解决。");
-                            break;
-                    }
-                    if (authResult.State != AuthState.SUCCESS)
-                    {
-                        mainPanel.launchButton.Content = App.GetResourceString("String.Base.Launch");
-                        return;
+                            return;
                     }
                 }
                 else
@@ -632,6 +618,7 @@ namespace NsisoLauncher
                         lostDepend.Add(await NsisoLauncherCore.Net.Tools.GetDownloadUrl.GetAICoreDownloadTask(App.config.MainConfig.Download.DownloadSource, aiJarPath));
                     }
                 }
+
                 if (App.config.MainConfig.Environment.DownloadLostDepend && lostDepend.Count != 0)
                 {
                     MessageDialogResult downDependResult = await this.ShowMessageAsync(App.GetResourceString("String.Mainwindow.NeedDownloadDepend"),
@@ -762,8 +749,6 @@ namespace NsisoLauncher
 
                 #region 启动
 
-                mainPanel.launchButton.Content = App.GetResourceString("String.Mainwindow.Launching");
-
                 App.logHandler.OnLog += (a, b) => { this.Invoke(() => { launchInfoBlock.Text = b.Message; }); };
                 var result = await App.handler.LaunchAsync(launchSetting);
                 App.logHandler.OnLog -= (a, b) => { this.Invoke(() => { launchInfoBlock.Text = b.Message; }); };
@@ -794,11 +779,18 @@ namespace NsisoLauncher
                     #endregion
 
                     cancelLaunchButton.Click -= (x, y) => { CancelLaunching(result); };
+
+                    #region 数据反馈
+                    //API使用次数计数器+1
+                    await App.nsisoAPIHandler.RefreshUsingTimesCounter();
+                    #endregion
+
                     if (App.config.MainConfig.Environment.ExitAfterLaunch)
                     {
                         Application.Current.Shutdown();
                     }
-                    WindowState = WindowState.Minimized;
+                    this.WindowState = WindowState.Minimized;
+
                     mainPanel.Refresh();
 
                     //自定义处理
@@ -808,50 +800,45 @@ namespace NsisoLauncher
                     }
                     if (App.config.MainConfig.Customize.CustomBackGroundMusic)
                     {
-                        mediaElement.Volume = 0.3;
+                        mediaElement.Volume = 0.5;
                         await Task.Factory.StartNew(() =>
                         {
                             try
                             {
-                                for (int i = 0; i < 30; i++)
+                                for (int i = 0; i < 50; i++)
                                 {
-                                    Dispatcher.Invoke(new Action(() =>
+                                    this.Dispatcher.Invoke(new Action(() =>
                                     {
-                                        mediaElement.Volume -= 0.01;
+                                        this.mediaElement.Volume -= 0.01;
                                     }));
                                     Thread.Sleep(50);
                                 }
-                                Dispatcher.Invoke(new Action(() =>
+                                this.Dispatcher.Invoke(new Action(() =>
                                 {
-                                    mediaElement.Stop();
+                                    this.mediaElement.Stop();
                                 }));
                             }
                             catch (Exception) { }
                         });
                     }
                 }
-                mainPanel.launchButton.Content = App.GetResourceString("String.Mainwindow.Launch");
-                #endregion
-
-                #region 数据反馈
-                //API使用次数计数器+1
-                await App.nsisoAPIHandler.RefreshUsingTimesCounter();
                 #endregion
             }
             catch (Exception ex)
             {
                 App.logHandler.AppendFatal(ex);
-                mainPanel.launchButton.Content = App.GetResourceString("String.Base.Launch");
             }
             finally
             {
-                mainPanel.launchButton.Content = App.GetResourceString("String.Base.Launch");
-                loadingGrid.Visibility = Visibility.Hidden;
-                loadingRing.IsActive = false;
+                this.loadingGrid.Visibility = Visibility.Hidden;
+                this.loadingRing.IsActive = false;
             }
         }
 
+
+
         #region MainWindow event
+
         private async void mainWindow_Loaded(object sender, RoutedEventArgs e)
         {
             #region 无JAVA提示
@@ -889,7 +876,6 @@ namespace NsisoLauncher
                 }
             }
             #endregion
-
         }
 
         private void mainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)

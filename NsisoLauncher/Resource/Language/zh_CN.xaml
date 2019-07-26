@@ -9,9 +9,8 @@
     <sys:String x:Key="String.Base.Launch">启动游戏</sys:String>
     <sys:String x:Key="String.Base.Download">下载</sys:String>
     <sys:String x:Key="String.Base.Cancel">取消</sys:String>
-    <sys:String x:Key="String.Base.Config">设置</sys:String>
     <sys:String x:Key="String.Base.Unremember">不再提醒</sys:String>
-    <sys:String x:Key="String.Base.Apply">保存</sys:String>
+    <sys:String x:Key="String.Base.Apply">应用</sys:String>
     <sys:String x:Key="String.Base.Login">登陆</sys:String>
     <sys:String x:Key="String.Base.Yes">确认</sys:String>
     <sys:String x:Key="String.Base.Username">用户名</sys:String>
@@ -34,9 +33,7 @@
     <sys:String x:Key="String.MainWindow.ChooseLaunchVersion">选择启动版本</sys:String>
     <sys:String x:Key="String.MainWindow.ChooseAuthType">选择验证类型</sys:String>
     <sys:String x:Key="String.Mainwindow.InputPlayerName">输入/选择游戏名称或账号</sys:String>
-    <sys:String x:Key="String.Mainwindow.InputPassWord">输入账户的密码</sys:String>
-    <sys:String x:Key="String.Mainwindow.Logining">登陆中...</sys:String>
-    <sys:String x:Key="String.Mainwindow.Launching">少女祈祷中...</sys:String>
+    <sys:String x:Key="String.Mainwindow.Launching">启动中...</sys:String>
      
     <!--#region 登陆-->
     <sys:String x:Key="String.Mainwindow.Auth.Mojang.Verifying">在线正版验证中...</sys:String>
@@ -75,7 +72,6 @@
     <sys:String x:Key="String.Mainwindow.Auth.Custom.Login2">您启用了自定义验证</sys:String>
     <sys:String x:Key="String.Mainwindow.Auth.Custom.NoAdrress">未设置自定义验证服务器地址</sys:String>
     <sys:String x:Key="String.Mainwindow.Auth.Custom.NoAdrress2">请在设置：用户验证设置：高级验证中设置自定义验证服务器(authlib或其它验证系统)</sys:String>
-     <!--#endregion-->
 
     <sys:String x:Key="String.Mainwindow.Auth.Add">添加新验证方式</sys:String>
     <!--#endregion-->
@@ -91,10 +87,10 @@
     <sys:String x:Key="String.Mainwindow.NeedDownloadDepend2">您当前启动的版本缺少了必要的依赖库文件。若不下载补全，可能导致无法启动</sys:String>
     <sys:String x:Key="String.Mainwindow.NeedDownloadAssets">可以下载补全资源文件</sys:String>
     <sys:String x:Key="String.Mainwindow.NeedDownloadAssets2">您当前启动的版本缺少了部分资源文件。若不下载补全，可能导致游戏内容不完整（如无声音），但并不影响正常使用</sys:String>
-    <sys:String x:Key="String.MainWindow.Auth.AI">authlib-injector验证</sys:String>
     <sys:String x:Key="String.MainWindow.Auth.Offline">离线验证</sys:String>
     <sys:String x:Key="String.MainWindow.Auth.Mojang">正版验证</sys:String>
     <sys:String x:Key="String.MainWindow.Auth.Nide8">统一通行证验证</sys:String>
+    <sys:String x:Key="String.MainWindow.Auth.AI">authlib-injector验证</sys:String>
     <sys:String x:Key="String.MainWindow.Auth.Custom">自定义验证</sys:String>
 
     <sys:String x:Key="String.Downloadwindow.TaskName">任务名称</sys:String>

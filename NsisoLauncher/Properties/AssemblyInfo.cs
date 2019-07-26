@@ -5,11 +5,11 @@ using System.Windows;
 // 有关程序集的一般信息由以下
 // 控制。更改这些特性值可修改
 // 与程序集关联的信息。
-[assembly: AssemblyTitle("NsisoLauncher-Unofficial")]
+[assembly: AssemblyTitle("NsisoLauncher")]
 [assembly: AssemblyDescription("A Minecraft Launcher")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Nsiso Studio")]
-[assembly: AssemblyProduct("NsisoLauncher-Unofficial")]
+[assembly: AssemblyProduct("NsisoLauncher")]
 [assembly: AssemblyCopyright("Copyright © Nsiso 2018")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

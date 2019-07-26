@@ -215,7 +215,7 @@ namespace NsisoLauncherCore.Net.Tools
             string to = core.GetAssetsPath(assets);
             return new DownloadTask("游戏资源文件" + assets.Hash, from, to);
         }
-        
+
         /// <summary>
         /// 获取NIDE8核心下载任务
         /// </summary>

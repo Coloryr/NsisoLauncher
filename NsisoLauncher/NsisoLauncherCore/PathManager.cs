@@ -156,7 +156,7 @@ namespace NsisoLauncherCore
         {
             return string.Format(@"{0}\nide8auth.jar", gameRootPath);
         }
-        
+
         /// <summary>
         /// 获取Authlib-injector核心路径
         /// </summary>

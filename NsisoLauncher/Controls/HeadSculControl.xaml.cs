@@ -1,3 +1,6 @@
+﻿using NsisoLauncher.Color_yr;
+using NsisoLauncher.Config;
+using NsisoLauncherCore.Net.CrafatarAPI;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 
@@ -15,15 +18,15 @@ namespace NsisoLauncher.Controls
 
         public async Task RefreshIcon(string uuid)
         {
-            NsisoLauncherCore.Net.CrafatarAPI.APIHandler handler = new NsisoLauncherCore.Net.CrafatarAPI.APIHandler();
+            APIHandler handler = new APIHandler();
             progressRing.IsActive = true;
             iconImage.Source = await handler.GetHeadSculSource(uuid);
             progressRing.IsActive = false;
         }
-
-        public async Task RefreshIcon_nide8(string uuid, LaunchEventArgs args)
+        //Color_yr Add
+        public async Task RefreshIcon_nide8(string uuid, AuthenticationNode args)
         {
-            NsisoLauncher.APIHandler_nide8.APIHandler_nide8 handler = new APIHandler_nide8.APIHandler_nide8();
+            APIHandler_nide8 handler = new APIHandler_nide8();
             progressRing.IsActive = true;
             iconImage.Source = await handler.GetHeadSculSource(uuid, args);
             progressRing.IsActive = false;
