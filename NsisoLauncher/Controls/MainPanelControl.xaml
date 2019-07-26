@@ -48,7 +48,7 @@
                  VerticalAlignment="Top" Background="{x:Null}" BorderBrush="#99FFFFFF"
                  controls:TextBoxHelper.Watermark="{DynamicResource String.Mainwindow.InputPlayerName}" Grid.ColumnSpan="2" SelectionChanged="UserComboBox_SelectionChanged" Foreground="White"
                  />
-        <PasswordBox controls:TextBoxHelper.Watermark="{DynamicResource String.Mainwindow.InputPassWord}"
+        <PasswordBox x:Name="PasswordBox" controls:TextBoxHelper.Watermark="{DynamicResource String.Mainwindow.InputPassWord}"
                      Margin="10,213,10,0" VerticalAlignment="Top" Background="{x:Null}" CaretBrush="White" Foreground="White" SelectionBrush="White" Grid.ColumnSpan="2"/>
 
         <Button x:Name="configButton" Content="{DynamicResource String.Base.Setting}"

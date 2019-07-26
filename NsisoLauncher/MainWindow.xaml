@@ -18,7 +18,7 @@
             <ColumnDefinition Width="126*"/>
         </Grid.ColumnDefinitions>
         <Image x:Name="BG" Width="720" Height="405" Grid.ColumnSpan="3" Visibility="Visible" Source="/NsisoLauncher;component/Resource/bg.jpg" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,0,-2,0"/>
-        <MediaElement x:Name="mediaElement" LoadedBehavior="Manual" MediaEnded="mediaElement_MediaEnded" Grid.ColumnSpan="3" Margin="0,0,-8,0" Visibility="Hidden"/>
+        <MediaElement x:Name="mediaElement" LoadedBehavior="Manual" Grid.ColumnSpan="3" Margin="0,0,-8,0" Visibility="Hidden"/>
         <Grid x:Name="userGrid" Grid.Column="2">
             <userControl:MainPanelControl x:Name="mainPanel"/>
         </Grid>

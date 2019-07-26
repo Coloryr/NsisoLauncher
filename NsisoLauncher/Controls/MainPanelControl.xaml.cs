@@ -251,6 +251,7 @@ namespace NsisoLauncher.Controls
                 configButton.Background = b;
                 downloadButton.Background = b;
                 launchButton.Background = b;
+                PasswordBox.Background = b;
             }
         }
         //Color_yr Add Stop

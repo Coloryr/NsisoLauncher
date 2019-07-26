@@ -261,13 +261,6 @@ namespace NsisoLauncher
             this.mediaElement.IsMuted = !this.mediaElement.IsMuted;
         }
 
-        private void mediaElement_MediaEnded(object sender, RoutedEventArgs e)
-        {
-            mediaElement.Stop();
-            mediaElement.Play();
-        }
-
-
         #endregion
 
         private async Task LaunchGameFromArgs(Controls.LaunchEventArgs args)
