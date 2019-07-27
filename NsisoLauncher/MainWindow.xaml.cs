@@ -84,7 +84,9 @@ namespace NsisoLauncher
             else
                 Dispatcher.Invoke(new Action(() =>
                 {
+                    now_img = new BitmapImage(new Uri(pic_file[filesnow]));
                     BG.Source = now_img;
+                    now_img = null;
                 }));
         }
         public void Mp4_cyclic()
