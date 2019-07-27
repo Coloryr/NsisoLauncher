@@ -1,5 +1,7 @@
 ﻿using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
+using MahApps.Metro.IconPacks;
+using NsisoLauncher.Color_yr;
 using NsisoLauncher.Config;
 using NsisoLauncher.Windows;
 using NsisoLauncherCore;
@@ -16,6 +18,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 
@@ -38,8 +41,8 @@ namespace NsisoLauncher
         public bool have_mp4 = false;
         public string[] mp3_file;
         public string[] mp4_file;
-        public bool is_close = false;
         public BitmapImage now_img;
+        int now = 0;
         //Color_yr Add Stop
 
         //TODO:增加取消启动按钮
@@ -49,6 +52,7 @@ namespace NsisoLauncher
             App.logHandler.AppendDebug("启动器主窗体已载入");
             mainPanel.Launch += MainPanel_Launch;
             App.handler.GameExit += Handler_GameExit;
+            //Color_yr Add
             BG.Width = 720;
             BG.Height = 405;
             CustomizeRefresh();
@@ -60,7 +64,7 @@ namespace NsisoLauncher
             {
                 Task.Factory.StartNew(() =>
                 {
-                    while (is_close == false)
+                    while (true)
                     {
                         Dispatcher.Invoke(new Action(() =>
                         {
@@ -93,62 +97,43 @@ namespace NsisoLauncher
                 mediaElement.Visibility = Visibility.Visible;
                 mediaElement.Play();
                 mediaElement.Volume = 0.3;
-                Task.Factory.StartNew(() =>
-                {
-                    while (is_close == false)
-                    {
-                        Dispatcher.Invoke(new Action(() =>
-                        {
-                            if (mediaElement.Position.TotalSeconds == double.Epsilon)
-                            {
-                                if (now < mp4_file.Length)
-                                    now++;
-                                else
-                                    now = 0;
-                                mediaElement.Source = new Uri(mp4_file[now]);
-                                mediaElement.Stop();
-                                mediaElement.Play();
-                            }
-                        }));
-                        Thread.Sleep(1000);
-                    }
-                });
-                mediaElement.Stop();
             }
             catch (Exception) { }
         }
-            public void Mp3_cyclic()
+        public void Mp3_cyclic()
         {
             try
             {
-                int now = 0;
                 mediaElement.Source = new Uri(mp3_file[now]);
                 volumeButton.Visibility = Visibility.Visible;
                 mediaElement.Visibility = Visibility.Visible;
                 mediaElement.Play();
                 mediaElement.Volume = 0.3;
-                Task.Factory.StartNew(() =>
-                {
-                    while (is_close == false)
-                    {
-                        Dispatcher.Invoke(new Action(() =>
-                        {
-                            if (mediaElement.HasAudio == true && mediaElement.Position.TotalSeconds >= mediaElement.NaturalDuration.TimeSpan.TotalSeconds)
-                            {
-                                if (now < mp3_file.Length)
-                                    now++;
-                                else
-                                    now = 0;
-                                mediaElement.Source = new Uri(mp3_file[now]);
-                                mediaElement.Stop();
-                                mediaElement.Play();
-                            }
-                        }));
-                        Thread.Sleep(1000);
-                    }
-                });
             }
             catch (Exception) { }
+        }
+        private void mediaElement_MediaEnded(object sender, RoutedEventArgs e)
+        {
+            if (have_mp4 == true)
+            {
+                if (now < mp4_file.Length)
+                    now++;
+                else
+                    now = 0;
+                mediaElement.Source = new Uri(mp4_file[now]);
+                mediaElement.Stop();
+                mediaElement.Play();
+            }
+            else
+            {
+                if (now < mp3_file.Length)
+                    now++;
+                else
+                    now = 0;
+                mediaElement.Source = new Uri(mp3_file[now]);
+                mediaElement.Stop();
+                mediaElement.Play();
+            }
         }
         //Color_yr Add Stop
         private async void MainPanel_Launch(object sender, Controls.LaunchEventArgs obj)
@@ -172,6 +157,7 @@ namespace NsisoLauncher
         }
         #endregion
 
+        //Color_yr Add Start
         #region 自定义
         public async void CustomizeRefresh()
         {
@@ -179,7 +165,6 @@ namespace NsisoLauncher
             {
                 this.Title = App.config.MainConfig.Customize.LauncherTitle;
             }
-            //Color_yr Add Start
             if (App.config.MainConfig.Customize.CustomBackGroundViode)
             {
                 mp4_file = Directory.GetFiles(Path.GetDirectoryName(App.config.MainConfigPath), "*.mp4");
@@ -253,14 +238,36 @@ namespace NsisoLauncher
             {
                 serverInfoControl.SetServerInfo(App.config.MainConfig.Server);
             }
-            //Color_yr Add Stop
+            APP_Color();
+        }
+
+        public void APP_Color()
+        {
+            Brush_Color get = new Brush_Color();
+            Brush b = get.get_Bursh();
+            if (b != null)
+            {
+                cancelLaunchButton.Background = b;
+                launchInfoBlock.Background = b;
+                loadingRing.Background = b;
+            }
         }
 
         private void volumeButton_Click(object sender, RoutedEventArgs e)
         {
-            this.mediaElement.IsMuted = !this.mediaElement.IsMuted;
+            if (mediaElement.IsMuted)
+            {
+                this.mediaElement.Play();
+                this.mediaElement.IsMuted = false;
+            }
+            else
+            {
+                this.mediaElement.Pause();
+                this.mediaElement.IsMuted = true;
+            }
         }
 
+        //Color_yr Add Stop
         #endregion
 
         private async Task LaunchGameFromArgs(Controls.LaunchEventArgs args)
@@ -303,7 +310,11 @@ namespace NsisoLauncher
                     Version = args.LaunchVersion
                 };
 
-                this.loadingGrid.Visibility = Visibility.Visible;
+                //Color_yr Add Start
+                loadingRing.Visibility = Visibility.Visible;
+                launchInfoBlock.Visibility = Visibility.Visible;
+                cancelLaunchButton.Visibility = Visibility.Visible;
+                //Color_yr Add Stop
                 this.loadingRing.IsActive = true;
 
                 #region 验证
@@ -336,12 +347,11 @@ namespace NsisoLauncher
 
                 //主验证器接口
                 IAuthenticator authenticator = null;
-                bool shouldRemember = false;
 
                 //bool isSameAuthType = (authNode.AuthenticationType == auth);
                 bool isRemember = (!string.IsNullOrWhiteSpace(args.UserNode.AccessToken)) && (args.UserNode.SelectProfileUUID != null);
                 //bool isSameName = userName == App.config.MainConfig.User.UserName;
-
+                mainPanel.launchButton.Content = App.GetResourceString("String.Mainwindow.Loging");
                 switch (args.AuthNode.AuthType)
                 {
                     #region 离线验证
@@ -371,24 +381,20 @@ namespace NsisoLauncher
                         }
                         else
                         {
-                            var mojangLoginDResult = await this.ShowLoginAsync(App.GetResourceString("String.Mainwindow.Auth.Mojang.Login"),
-                                App.GetResourceString("String.Mainwindow.Auth.Mojang.Login2"),
-                                loginDialogSettings);
-                            if (IsValidateLoginData(mojangLoginDResult))
-                            {
-                                var mYggAuthenticator = new YggdrasilAuthenticator(new Credentials()
-                                {
-                                    Username = mojangLoginDResult.Username,
-                                    Password = mojangLoginDResult.Password
-                                });
-                                mYggAuthenticator.ProxyAuthServerAddress = "https://authserver.mojang.com";
-                                authenticator = mYggAuthenticator;
-                                shouldRemember = mojangLoginDResult.ShouldRemember;
-                            }
-                            else
+                            if (string.IsNullOrWhiteSpace(mainPanel.PasswordBox.Password))
                             {
                                 await this.ShowMessageAsync("您输入的账号或密码为空", "请检查您是否正确填写登陆信息");
                                 return;
+                            }
+                            else
+                            {
+                                var mYggAuthenticator = new YggdrasilAuthenticator(new Credentials()
+                                {
+                                    Username = args.UserNode.UserName,
+                                    Password = mainPanel.PasswordBox.Password
+                                });
+                                mYggAuthenticator.ProxyAuthServerAddress = "https://authserver.mojang.com";
+                                authenticator = mYggAuthenticator;
                             }
                         }
                         break;
@@ -403,58 +409,28 @@ namespace NsisoLauncher
                                 App.GetResourceString("String.Mainwindow.Auth.Nide8.NoID2"));
                             return;
                         }
-                        var nide8ChooseResult = await this.ShowMessageAsync(App.GetResourceString("String.Mainwindow.Auth.Nide8.Login2"), App.GetResourceString("String.Base.Choose"),
-                            MessageDialogStyle.AffirmativeAndNegativeAndSingleAuxiliary,
-                            new MetroDialogSettings()
-                            {
-                                AffirmativeButtonText = App.GetResourceString("String.Base.Login"),
-                                NegativeButtonText = App.GetResourceString("String.Base.Cancel"),
-                                FirstAuxiliaryButtonText = App.GetResourceString("String.Base.Register"),
-                                DefaultButtonFocus = MessageDialogResult.Affirmative
-                            });
-                        switch (nide8ChooseResult)
+                        if (string.IsNullOrWhiteSpace(mainPanel.PasswordBox.Password))
                         {
-                            case MessageDialogResult.Canceled:
-                                return;
-                            case MessageDialogResult.Negative:
-                                return;
-                            case MessageDialogResult.FirstAuxiliary:
-                                System.Diagnostics.Process.Start(string.Format("https://login2.nide8.com:233/{0}/register", nide8ID));
-                                return;
-                            case MessageDialogResult.Affirmative:
-                                if (isRemember)
+                            await this.ShowMessageAsync("您输入的账号或密码为空", "请检查您是否正确填写登陆信息");
+                            return;
+                        }
+                        if (isRemember)
+                        {
+                            var nYggTokenCator = new Nide8TokenAuthenticator(nide8ID, args.UserNode.AccessToken,
+                                args.UserNode.GetSelectProfileUUID(),
+                                args.UserNode.UserData);
+                            authenticator = nYggTokenCator;
+                        }
+                        else
+                        {
+                            var nYggCator = new Nide8Authenticator(
+                                nide8ID,
+                                new Credentials()
                                 {
-                                    var nYggTokenCator = new Nide8TokenAuthenticator(nide8ID, args.UserNode.AccessToken,
-                                        args.UserNode.GetSelectProfileUUID(),
-                                        args.UserNode.UserData);
-                                    authenticator = nYggTokenCator;
-                                }
-                                else
-                                {
-                                    var nide8LoginDResult = await this.ShowLoginAsync(App.GetResourceString("String.Mainwindow.Auth.Nide8.Login"),
-                                        App.GetResourceString("String.Mainwindow.Auth.Nide8.Login2"),
-                                        loginDialogSettings);
-                                    if (IsValidateLoginData(nide8LoginDResult))
-                                    {
-                                        var nYggCator = new Nide8Authenticator(
-                                            nide8ID,
-                                            new Credentials()
-                                            {
-                                                Username = nide8LoginDResult.Username,
-                                                Password = nide8LoginDResult.Password
-                                            });
-                                        authenticator = nYggCator;
-                                        shouldRemember = nide8LoginDResult.ShouldRemember;
-                                    }
-                                    else
-                                    {
-                                        await this.ShowMessageAsync("您输入的账号或密码为空", "请检查您是否正确填写登陆信息");
-                                        return;
-                                    }
-                                }
-                                break;
-                            default:
-                                break;
+                                    Username = args.UserNode.UserName,
+                                    Password = mainPanel.PasswordBox.Password
+                                });
+                            authenticator = nYggCator;
                         }
                         break;
                     #endregion
@@ -492,7 +468,6 @@ namespace NsisoLauncher
                                             Password = customLoginDResult.Password
                                         });
                                     authenticator = cYggAuthenticator;
-                                    shouldRemember = customLoginDResult.ShouldRemember;
                                 }
                                 else
                                 {
@@ -536,7 +511,6 @@ namespace NsisoLauncher
                                     });
                                     cYggAuthenticator.ProxyAuthServerAddress = customAuthServer;
                                     authenticator = cYggAuthenticator;
-                                    shouldRemember = customLoginDResult.ShouldRemember;
                                 }
                                 else
                                 {
@@ -567,13 +541,8 @@ namespace NsisoLauncher
                 //如果验证方式不是离线验证
                 if (args.AuthNode.AuthType != AuthenticationType.OFFLINE)
                 {
-                    string currentLoginType = string.Format("正在进行{0}中...", args.AuthNode.Name);
-                    string loginMsg = "这需要联网进行操作，可能需要一分钟的时间";
-                    var loader = await this.ShowProgressAsync(currentLoginType, loginMsg, true);
 
-                    loader.SetIndeterminate();
                     var authResult = await authenticator.DoAuthenticateAsync();
-                    await loader.CloseAsync();
 
                     switch (authResult.State)
                     {
@@ -585,10 +554,10 @@ namespace NsisoLauncher
                                 args.UserNode.Profiles.Clear();
                                 authResult.Profiles.ForEach(x => args.UserNode.Profiles.Add(x.Value, x));
                             }
-                            if (shouldRemember)
-                            {
-                                args.UserNode.AccessToken = authResult.AccessToken;
-                            }
+
+                            //Color_yr Change
+                            args.UserNode.AccessToken = authResult.AccessToken;
+
                             launchSetting.AuthenticateResult = authResult;
                             break;
                         case AuthState.REQ_LOGIN:
@@ -720,7 +689,6 @@ namespace NsisoLauncher
                         default:
                             break;
                     }
-
                 }
 
                 if (losts.Count != 0)
@@ -797,7 +765,7 @@ namespace NsisoLauncher
                 #endregion
 
                 #region 启动
-
+                mainPanel.launchButton.Content = App.GetResourceString("String.Mainwindow.Staring");
                 App.logHandler.OnLog += (a, b) => { this.Invoke(() => { launchInfoBlock.Text = b.Message; }); };
                 var result = await App.handler.LaunchAsync(launchSetting);
                 App.logHandler.OnLog -= (a, b) => { this.Invoke(() => { launchInfoBlock.Text = b.Message; }); };
@@ -810,6 +778,8 @@ namespace NsisoLauncher
                 }
                 else
                 {
+                    mediaElement.Pause();
+
                     cancelLaunchButton.Click += (x, y) => { CancelLaunching(result); };
 
                     #region 等待游戏响应
@@ -840,35 +810,13 @@ namespace NsisoLauncher
                     }
                     this.WindowState = WindowState.Minimized;
 
-                    mainPanel.Refresh();
+                    //Color_yr Remove
+                    //mainPanel.Refresh();
 
                     //自定义处理
                     if (!string.IsNullOrWhiteSpace(App.config.MainConfig.Customize.GameWindowTitle))
                     {
                         GameHelper.SetGameTitle(result, App.config.MainConfig.Customize.GameWindowTitle);
-                    }
-                    if (App.config.MainConfig.Customize.CustomBackGroundMusic)
-                    {
-                        mediaElement.Volume = 0.5;
-                        await Task.Factory.StartNew(() =>
-                        {
-                            try
-                            {
-                                for (int i = 0; i < 50; i++)
-                                {
-                                    this.Dispatcher.Invoke(new Action(() =>
-                                    {
-                                        this.mediaElement.Volume -= 0.01;
-                                    }));
-                                    Thread.Sleep(50);
-                                }
-                                this.Dispatcher.Invoke(new Action(() =>
-                                {
-                                    this.mediaElement.Stop();
-                                }));
-                            }
-                            catch (Exception) { }
-                        });
                     }
                 }
                 #endregion
@@ -879,12 +827,16 @@ namespace NsisoLauncher
             }
             finally
             {
-                this.loadingGrid.Visibility = Visibility.Hidden;
+                //Color_yr Add Start
+                mainPanel.launchButton.Content = App.GetResourceString("String.Base.Launch");
+                loadingRing.Visibility = Visibility.Hidden;
+                launchInfoBlock.Visibility = Visibility.Hidden;
+                cancelLaunchButton.Visibility = Visibility.Hidden;
+                mediaElement.Play();
+                //Color_yr Add Stop
                 this.loadingRing.IsActive = false;
             }
         }
-
-
 
         #region MainWindow event
 
@@ -947,7 +899,6 @@ namespace NsisoLauncher
                     e.Cancel = true;
                 }
             }
-
         }
         #endregion
 

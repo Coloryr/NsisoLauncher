@@ -10,39 +10,36 @@
         mc:Ignorable="d"
         BorderBrush="{DynamicResource AccentColorBrush}"
         WindowStartupLocation="CenterScreen"
-        Title="Nsiso Launcher" Height="436" Width="720" MinHeight="436" MinWidth="720" ShowMaxRestoreButton="False" ShowMinButton="True" Loaded="mainWindow_Loaded" Closing="mainWindow_Closing" WindowStyle="SingleBorderWindow" ResizeMode="CanMinimize">
+        Title="Nsiso Launcher(Unofficial Edit)" Height="436" Width="720" MinHeight="436" MinWidth="720" ShowMaxRestoreButton="False" ShowMinButton="True" Loaded="mainWindow_Loaded" Closing="mainWindow_Closing" WindowStyle="SingleBorderWindow" ResizeMode="CanMinimize">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="0*"/>
             <ColumnDefinition Width="243*"/>
             <ColumnDefinition Width="126*"/>
         </Grid.ColumnDefinitions>
+
         <Image x:Name="BG" Width="720" Height="405" Grid.ColumnSpan="3" Visibility="Visible" Source="/NsisoLauncher;component/Resource/bg.jpg" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,0,-2,0"/>
-        <MediaElement x:Name="mediaElement" LoadedBehavior="Manual" Grid.ColumnSpan="3" Margin="0,0,-8,0" Visibility="Hidden"/>
+        <MediaElement x:Name="mediaElement" LoadedBehavior="Manual" Grid.ColumnSpan="3" Margin="0,0,-8,0" Visibility="Hidden" MediaEnded="mediaElement_MediaEnded"/>
         <Grid x:Name="userGrid" Grid.Column="2">
             <userControl:MainPanelControl x:Name="mainPanel"/>
         </Grid>
-        <Button x:Name="volumeButton" Style ="{DynamicResource MahApps.Metro.Styles.MetroCircleButtonStyle}"
-                Width="30" Height="30" Margin="0,367,430,0" VerticalAlignment="Top" HorizontalAlignment="Right"
-                BorderBrush="White" Foreground="White" Click="volumeButton_Click" Grid.Column="1" Visibility="Hidden">
-            <iconPacks:FontAwesome x:Name="volumeButtonIcon" Kind="VolumeUpSolid" />
-        </Button>
-
         <userControl:ServerInfoControl x:Name="serverInfoControl" Margin="10,10,42,0" VerticalAlignment="Top" Grid.ColumnSpan="1" Grid.Column="1" Visibility="Hidden"/>
 
-        <Grid x:Name="loadingGrid" Visibility="Hidden" Grid.ColumnSpan="3">
-            <Rectangle Fill="{Binding Background, ElementName=mainWindow}" >
-                <Rectangle.Effect>
-                    <BlurEffect Radius="20"/>
-                </Rectangle.Effect>
-            </Rectangle>
-            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-                <controls:ProgressRing x:Name="loadingRing" Width="70" Height="70" IsActive="False"/>
-                <TextBlock Text="{DynamicResource String.Mainwindow.Launching}" TextAlignment="Center" Foreground="Gray"/>
-                <Button x:Name="cancelLaunchButton" Content="取消启动" Height="30" Width="70" Margin="0,10,0,0" Opacity="0.6"/>
-            </StackPanel>
-            <TextBlock x:Name="launchInfoBlock" Height="20" TextAlignment="Right" Foreground="Gray" VerticalAlignment="Bottom" Margin="10,0"/>
-        </Grid>
+        <Button x:Name="volumeButton" Style ="{DynamicResource MahApps.Metro.Styles.MetroCircleButtonStyle}"
+                Width="30" Height="30" Margin="0,375,440,0" VerticalAlignment="Top" HorizontalAlignment="Right"
+                BorderBrush="White" Foreground="White" Click="volumeButton_Click" Grid.Column="1" Visibility="Hidden">
+            <iconPacks:FontAwesome x:Name="volumeButtonIcon" Kind="PauseSolid" />
+        </Button>
+
+        <TextBlock x:Name="launchInfoBlock" TextAlignment="Right" Foreground="Gray" Margin="32,382,0,4" 
+                   Grid.ColumnSpan="2" FontSize="14" TextWrapping="Wrap" HorizontalAlignment="Left"/>
+        <controls:ProgressRing x:Name="loadingRing" Width="24" Height="24" IsActive="False" Margin="50,360,170,23" Grid.Column="2"
+                               Foreground="#FFFFFFFF" Visibility="Hidden" Background="#00FFFFFF" BorderBrush="#00FFFFFF"/>
+        <Button x:Name="cancelLaunchButton" Height="30" Margin="440,0,0,2" VerticalAlignment="Bottom" Grid.Column="1"
+                Background="{x:Null}" BorderBrush="White" Foreground="White" FontSize="14" FontWeight="Bold" Visibility="Hidden">
+            <iconPacks:FontAwesome Kind="BanSolid" />
+        </Button>
+
     </Grid>
 </controls:MetroWindow>
     

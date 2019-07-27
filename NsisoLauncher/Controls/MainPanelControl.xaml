@@ -24,9 +24,8 @@
                   VerticalAlignment="Top" 
                   Background="{x:Null}" BorderBrush="#99FFFFFF"
                   DisplayMemberPath="Value.Name"
-                  SelectedValuePath="Key"
-                  SelectedValue="{Binding ElementName=userComboBox, Path=SelectedItem.Value.AuthModule}"
-                  controls:TextBoxHelper.Watermark="{DynamicResource String.MainWindow.ChooseAuthType}" Grid.ColumnSpan="2" Foreground="White"/>
+                  SelectedValuePath="Key"             
+                  controls:TextBoxHelper.Watermark="{DynamicResource String.MainWindow.ChooseAuthType}" Grid.ColumnSpan="2" Foreground="White" SelectionChanged="AuthTypeCombobox_SelectionChanged"/>
         <Button  x:Name="addauth" Grid.Column="1" Margin="0,151,10,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="35" ToolTip="{DynamicResource String.Mainwindow.Auth.Add}"
                  Background="{x:Null}" BorderBrush="White" Foreground="White" Height="26" Click="addAuthButton_Click">
             <iconPacks:FontAwesome Kind="PlusSolid" Width="10" Height="10"/>
@@ -49,7 +48,7 @@
                  controls:TextBoxHelper.Watermark="{DynamicResource String.Mainwindow.InputPlayerName}" Grid.ColumnSpan="2" SelectionChanged="UserComboBox_SelectionChanged" Foreground="White"
                  />
         <PasswordBox x:Name="PasswordBox" controls:TextBoxHelper.Watermark="{DynamicResource String.Mainwindow.InputPassWord}"
-                     Margin="10,213,10,0" VerticalAlignment="Top" Background="{x:Null}" CaretBrush="White" Foreground="White" SelectionBrush="White" Grid.ColumnSpan="2"/>
+                     Margin="10,213,10,0" VerticalAlignment="Top" Background="{x:Null}" CaretBrush="White" Foreground="White" SelectionBrush="White" Grid.ColumnSpan="2" Visibility="Hidden"/>
 
         <Button x:Name="configButton" Content="{DynamicResource String.Base.Setting}"
                     Height="30" Margin="10,0,5,65" VerticalAlignment="Bottom"

@@ -1,4 +1,5 @@
-﻿using NsisoLauncher.Color_yr;
+﻿using MahApps.Metro.Controls.Dialogs;
+using NsisoLauncher.Color_yr;
 using NsisoLauncher.Config;
 using NsisoLauncher.Windows;
 using System;
@@ -16,6 +17,9 @@ namespace NsisoLauncher.Controls
     /// </summary>
     public partial class MainPanelControl : UserControl
     {
+        //Color_yr Add
+        private bool first = true;
+
         public event Action<object, LaunchEventArgs> Launch;
 
         private ObservableCollection<KeyValuePair<string, UserNode>> userList = new ObservableCollection<KeyValuePair<string, UserNode>>();
@@ -27,8 +31,18 @@ namespace NsisoLauncher.Controls
             InitializeComponent();
             FirstBinding();
             Refresh();
-            //Color_yr add
+            //Color_yr Add Start
             APP_Color();
+            if (userList.Count != 0)
+            {
+                authTypeCombobox.SelectedValue = userList[0].Value.AuthModule;
+            }
+            else
+            {
+                authTypeCombobox.SelectedValue = 0;
+            }
+            PasswordBox.Password = "11111111111";
+            //Color_yr Add Stop
         }
 
         private void FirstBinding()
@@ -118,7 +132,12 @@ namespace NsisoLauncher.Controls
                 {
                     authTypeCombobox.IsEnabled = true;
                 }
-
+                //Color_yr Add Start
+                if (App.config.MainConfig.User.Nide8ServerDependence)
+                {
+                    downloadButton.Content = App.GetResourceString("String.Base.Register");
+                }
+                //Color_yr Add Stop
                 App.logHandler.AppendDebug("启动器主窗体数据重载完毕");
             }
             catch (Exception e)
@@ -130,19 +149,7 @@ namespace NsisoLauncher.Controls
         public async Task RefreshIcon()
         {
             //头像自定义显示皮肤
-            /*
-            UserNode node = GetSelectedAuthNode();
-            if (node == null)
-            {
-                return;
-            }
-            bool isNeedRefreshIcon = (!string.IsNullOrWhiteSpace(node.SelectProfileUUID)) &&
-                node.AuthModule == "mojang";
-            if (isNeedRefreshIcon)
-            {
-                await headScul.RefreshIcon(node.SelectProfileUUID);
-            }
-            */
+            //Color_yr Add Start
             UserNode node = GetSelectedAuthNode();
             AuthenticationNode node1 = GetSelectedAuthenticationNode();
             if (node == null || node1 == null)
@@ -158,6 +165,7 @@ namespace NsisoLauncher.Controls
                 else if (node1.AuthType == AuthenticationType.NIDE8)
                     await headScul.RefreshIcon_nide8(node.SelectProfileUUID, node1);
             }
+            //Color_yr Add Stop
         }
 
         #region button click event
@@ -186,7 +194,7 @@ namespace NsisoLauncher.Controls
             string userName = userComboBox.Text;
             string selectedUserUUID = (string)userComboBox.SelectedValue;
             bool isNewUser = string.IsNullOrWhiteSpace(selectedUserUUID);
-            UserNode userNode = null;
+            UserNode userNode;
             if (!string.IsNullOrWhiteSpace(userName))
             {
                 if (!isNewUser)
@@ -208,11 +216,27 @@ namespace NsisoLauncher.Controls
         }
 
         //下载按钮点击
-        private void downloadButton_Click(object sender, RoutedEventArgs e)
+        //Color_yr Add Start
+        private async void downloadButton_Click(object sender, RoutedEventArgs e)
         {
-            new DownloadWindow().ShowDialog();
-            Refresh();
+            if (App.config.MainConfig.User.Nide8ServerDependence)
+            {
+                AuthenticationNode node = GetSelectedAuthenticationNode();
+                if (node == null)
+                {
+                    await DialogManager.ShowMessageAsync(null, App.GetResourceString("String.Mainwindow.Auth.Nide8.NoID"),
+                                App.GetResourceString("String.Mainwindow.Auth.Nide8.NoID2"));
+                    return;
+                }
+                System.Diagnostics.Process.Start(string.Format("https://login2.nide8.com:233/{0}/loginreg", node.Property["nide8ID"]));
+            }
+            else
+            {
+                new DownloadWindow().ShowDialog();
+                Refresh();
+            }
         }
+        //Color_yr Add Stop
 
         //配置按钮点击
         private void configButton_Click(object sender, RoutedEventArgs e)
@@ -232,12 +256,29 @@ namespace NsisoLauncher.Controls
             a.ShowDialog();
             Refresh();
         }
-
-        private void UserComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            RefreshIcon();
-        }
         //Color_yr Add Start
+        private async void UserComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (first == true)
+            {
+                first = false;
+                return;
+            }
+            if (userComboBox.SelectedValue == null)
+                PasswordBox.Password = null;
+            UserNode node = GetSelectedAuthNode();
+            if (node == null)
+                return;
+            if (node.SelectProfileUUID != null && string.IsNullOrWhiteSpace(PasswordBox.Password) == false)
+                PasswordBox.Password = "11111111111";
+            else
+            {
+                if (node.AuthModule != "offline")
+                    PasswordBox.Password = "11111111111";
+                authTypeCombobox.SelectedValue = node.AuthModule;
+            }
+            await RefreshIcon();       
+        }
         public void APP_Color()
         {
             Brush_Color get = new Brush_Color();
@@ -252,6 +293,40 @@ namespace NsisoLauncher.Controls
                 downloadButton.Background = b;
                 launchButton.Background = b;
                 PasswordBox.Background = b;
+            }
+        }
+        private void AuthTypeCombobox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (authTypeCombobox.SelectedValue != null && authTypeCombobox.SelectedValue.ToString() == "offline")
+            {
+                authTypeCombobox.SelectedIndex = 0;
+                PasswordBox.Visibility = Visibility.Hidden;
+                PasswordBox.Password = null;
+                if (userComboBox.SelectedValue != null)
+                    userComboBox.SelectedValue = null;
+                return;
+            }
+            AuthenticationNode node = GetSelectedAuthenticationNode();
+            if (node == null)
+            {
+                return;
+            }
+            switch (node.AuthType)
+            {
+                case AuthenticationType.OFFLINE: //离线模式
+                    PasswordBox.Visibility = Visibility.Hidden;
+                    PasswordBox.Password = null;
+                    if (userComboBox.SelectedValue != null)
+                        userComboBox.SelectedValue = null;
+                    break;
+                default: //非离线模式
+                    PasswordBox.Visibility = Visibility.Visible;
+                    UserNode node1 = GetSelectedAuthNode();
+                    if (node1 != null && node1.SelectProfileUUID != null && string.IsNullOrWhiteSpace(PasswordBox.Password) == true)
+                        PasswordBox.Password = "11111111111";
+                    else if(string.IsNullOrWhiteSpace(PasswordBox.Password) == false && userComboBox.SelectedValue == null)
+                        PasswordBox.Password = null;
+                    break;
             }
         }
         //Color_yr Add Stop

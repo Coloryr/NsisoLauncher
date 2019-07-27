@@ -353,7 +353,7 @@
                                 <CheckBox x:Name="checkBox4" Content="开启自定义背景图片循环播放" IsChecked="{Binding Customize.CustomBackGroundCyclic}" Margin="0,0,442,2" IsEnabled="False"/>
                                 <Label x:Name="set" Content="循环背景图片时间，单位毫秒" IsEnabled="False"/>
                                 <TextBox x:Name="Text" HorizontalAlignment="Left" Height="3" Margin="0,0,0,0" TextWrapping="Wrap" Text="{Binding Customize.CustomBackGroundCyclic_time}" Width="132" TextChanged="TextBox_TextChanged" IsEnabled="False"/>
-                                <Label Content="把图片放进config文件夹即可，支持jpg和png，自定义视频启用后自定义图片和音乐不可用。"/>
+                                <Label Content="把文件放进config文件夹即可，支持jpg和png，自定义视频启用后自定义图片和音乐不可用。"/>
                                 <!--Color_yr Add Stop-->
                             </StackPanel>
                         </Expander>

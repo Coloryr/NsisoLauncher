@@ -3,6 +3,8 @@
                     xmlns:sys="clr-namespace:System;assembly=mscorlib">
     <!--Color_yr Add Start-->
     <sys:String x:Key="String.Base.Setting">设置</sys:String>
+    <sys:String x:Key="String.Mainwindow.Loging">登录中...</sys:String>
+    <sys:String x:Key="String.Mainwindow.Staring">少女祈祷中...</sys:String>
     <sys:String x:Key="String.Mainwindow.InputPassWord">请在这里输入密码</sys:String>
     <!--Color_yr Add Stop-->
 
