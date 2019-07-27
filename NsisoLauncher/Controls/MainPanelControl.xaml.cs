@@ -136,6 +136,14 @@ namespace NsisoLauncher.Controls
                 if (App.config.MainConfig.User.Nide8ServerDependence)
                 {
                     downloadButton.Content = App.GetResourceString("String.Base.Register");
+                    addauth.Visibility = Visibility.Hidden;
+                    authTypeCombobox.Margin = new Thickness(10, 151, 10, 0);
+                }
+                else
+                {
+                    downloadButton.Content = App.GetResourceString("String.Base.Download");
+                    addauth.Visibility = Visibility.Visible;
+                    authTypeCombobox.Margin = new Thickness(10, 151, 50, 0);
                 }
                 //Color_yr Add Stop
                 App.logHandler.AppendDebug("启动器主窗体数据重载完毕");

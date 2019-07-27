@@ -259,11 +259,13 @@ namespace NsisoLauncher
             {
                 this.mediaElement.Play();
                 this.mediaElement.IsMuted = false;
+                volumeButtonIcon.Kind = PackIconFontAwesomeKind.PauseSolid;
             }
             else
             {
                 this.mediaElement.Pause();
                 this.mediaElement.IsMuted = true;
+                volumeButtonIcon.Kind = PackIconFontAwesomeKind.PlaySolid;
             }
         }
 
@@ -778,8 +780,6 @@ namespace NsisoLauncher
                 }
                 else
                 {
-                    mediaElement.Pause();
-
                     cancelLaunchButton.Click += (x, y) => { CancelLaunching(result); };
 
                     #region 等待游戏响应
@@ -832,7 +832,6 @@ namespace NsisoLauncher
                 loadingRing.Visibility = Visibility.Hidden;
                 launchInfoBlock.Visibility = Visibility.Hidden;
                 cancelLaunchButton.Visibility = Visibility.Hidden;
-                mediaElement.Play();
                 //Color_yr Add Stop
                 this.loadingRing.IsActive = false;
             }

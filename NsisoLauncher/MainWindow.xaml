@@ -26,12 +26,12 @@
         <userControl:ServerInfoControl x:Name="serverInfoControl" Margin="10,10,42,0" VerticalAlignment="Top" Grid.ColumnSpan="1" Grid.Column="1" Visibility="Hidden"/>
 
         <Button x:Name="volumeButton" Style ="{DynamicResource MahApps.Metro.Styles.MetroCircleButtonStyle}"
-                Width="30" Height="30" Margin="0,375,440,0" VerticalAlignment="Top" HorizontalAlignment="Right"
+                Width="30" Height="30" Margin="0,372,440,0" VerticalAlignment="Top" HorizontalAlignment="Right"
                 BorderBrush="White" Foreground="White" Click="volumeButton_Click" Grid.Column="1" Visibility="Hidden">
-            <iconPacks:FontAwesome x:Name="volumeButtonIcon" Kind="PauseSolid" />
+            <iconPacks:PackIconFontAwesome x:Name="volumeButtonIcon" Kind="PauseSolid" />
         </Button>
 
-        <TextBlock x:Name="launchInfoBlock" TextAlignment="Right" Foreground="Gray" Margin="32,382,0,4" 
+        <TextBlock x:Name="launchInfoBlock" TextAlignment="Right" Foreground="Gray" Margin="40,382,0,4" 
                    Grid.ColumnSpan="2" FontSize="14" TextWrapping="Wrap" HorizontalAlignment="Left"/>
         <controls:ProgressRing x:Name="loadingRing" Width="24" Height="24" IsActive="False" Margin="50,360,170,23" Grid.Column="2"
                                Foreground="#FFFFFFFF" Visibility="Hidden" Background="#00FFFFFF" BorderBrush="#00FFFFFF"/>
