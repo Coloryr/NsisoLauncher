@@ -39,6 +39,7 @@ namespace NsisoLauncher
         public string[] pic_file;
         public int filesnow = 0;
         public bool have_mp4 = false;
+        public bool pic_go = false;
         public string[] mp3_file;
         public string[] mp4_file;
         public BitmapImage now_img;
@@ -60,10 +61,11 @@ namespace NsisoLauncher
         //Color_yr Add Start
         public void Pic_cyclic()
         {
-            if (App.config.MainConfig.Customize.CustomBackGroundCyclic)
+            if (App.config.MainConfig.Customize.CustomBackGroundCyclic && pic_go == false)
             {
                 Task.Factory.StartNew(() =>
                 {
+                    pic_go = true;
                     while (true)
                     {
                         Dispatcher.Invoke(new Action(() =>
@@ -93,6 +95,7 @@ namespace NsisoLauncher
         {
             try
             {
+                mediaElement.Stop();
                 now = 0;
                 mediaElement.Source = new Uri(mp4_file[now]);
                 volumeButton.Visibility = Visibility.Visible;
@@ -106,6 +109,7 @@ namespace NsisoLauncher
         {
             try
             {
+                mediaElement.Stop();
                 now = 0;
                 mediaElement.Source = new Uri(mp3_file[now]);
                 volumeButton.Visibility = Visibility.Visible;
@@ -117,26 +121,22 @@ namespace NsisoLauncher
         }
         private void mediaElement_MediaEnded(object sender, RoutedEventArgs e)
         {
+            mediaElement.Stop();
             if (have_mp4 == true)
             {
-                if (now < mp4_file.Length)
-                    now++;
-                else if(mp4_file.Length == 0)
-                    now = 0;
+                now++;
+                if (now >= mp4_file.Length)
+                    now = 0;    
                 mediaElement.Source = new Uri(mp4_file[now]);
-                mediaElement.Stop();
-                mediaElement.Play();
             }
             else
             {
-                if (now < mp3_file.Length)
-                    now++;
-                else if(mp3_file.Length == 0)
+                now++;
+                if (now >= mp3_file.Length)
                     now = 0;
                 mediaElement.Source = new Uri(mp3_file[now]);
-                mediaElement.Stop();
-                mediaElement.Play();
             }
+            mediaElement.Play();
         }
         //Color_yr Add Stop
         private async void MainPanel_Launch(object sender, Controls.LaunchEventArgs obj)
