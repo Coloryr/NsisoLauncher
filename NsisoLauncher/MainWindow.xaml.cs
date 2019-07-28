@@ -93,7 +93,7 @@ namespace NsisoLauncher
         {
             try
             {
-                int now = 0;
+                now = 0;
                 mediaElement.Source = new Uri(mp4_file[now]);
                 volumeButton.Visibility = Visibility.Visible;
                 mediaElement.Visibility = Visibility.Visible;
@@ -106,6 +106,7 @@ namespace NsisoLauncher
         {
             try
             {
+                now = 0;
                 mediaElement.Source = new Uri(mp3_file[now]);
                 volumeButton.Visibility = Visibility.Visible;
                 mediaElement.Visibility = Visibility.Visible;
@@ -120,7 +121,7 @@ namespace NsisoLauncher
             {
                 if (now < mp4_file.Length)
                     now++;
-                else
+                else if(mp4_file.Length == 0)
                     now = 0;
                 mediaElement.Source = new Uri(mp4_file[now]);
                 mediaElement.Stop();
@@ -130,7 +131,7 @@ namespace NsisoLauncher
             {
                 if (now < mp3_file.Length)
                     now++;
-                else
+                else if(mp3_file.Length == 0)
                     now = 0;
                 mediaElement.Source = new Uri(mp3_file[now]);
                 mediaElement.Stop();
@@ -176,7 +177,12 @@ namespace NsisoLauncher
                     Mp4_cyclic();
                 }
                 else
+                {
                     have_mp4 = false;
+                    volumeButton.Visibility = Visibility.Hidden;
+                    mediaElement.Visibility = Visibility.Hidden;
+                    mediaElement.Stop();
+                }
             }
             if (App.config.MainConfig.Customize.CustomBackGroundPicture && have_mp4 == false)
             {
@@ -204,6 +210,12 @@ namespace NsisoLauncher
                 mp3_file = Directory.GetFiles(Path.GetDirectoryName(App.config.MainConfigPath), "*.mp3");
                 if (mp3_file.Length != 0)
                     Mp3_cyclic();
+                else
+                {
+                    volumeButton.Visibility = Visibility.Hidden;
+                    mediaElement.Visibility = Visibility.Hidden;
+                    mediaElement.Stop();
+                }
             }
             if (App.config.MainConfig.User.Nide8ServerDependence)
             {
@@ -251,7 +263,6 @@ namespace NsisoLauncher
             {
                 cancelLaunchButton.Background = b;
                 launchInfoBlock.Background = b;
-                loadingRing.Background = b;
             }
         }
 
@@ -812,8 +823,8 @@ namespace NsisoLauncher
                     }
                     this.WindowState = WindowState.Minimized;
 
-                    //Color_yr Remove
-                    //mainPanel.Refresh();
+                    mainPanel.is_re = true;
+                    mainPanel.Refresh();
 
                     //自定义处理
                     if (!string.IsNullOrWhiteSpace(App.config.MainConfig.Customize.GameWindowTitle))

@@ -18,7 +18,7 @@ namespace NsisoLauncher.Controls
     public partial class MainPanelControl : UserControl
     {
         //Color_yr Add
-        private bool first = true;
+        public bool is_re = false;
 
         public event Action<object, LaunchEventArgs> Launch;
 
@@ -33,15 +33,6 @@ namespace NsisoLauncher.Controls
             Refresh();
             //Color_yr Add Start
             APP_Color();
-            if (userList.Count != 0)
-            {
-                authTypeCombobox.SelectedValue = userList[0].Value.AuthModule;
-            }
-            else
-            {
-                authTypeCombobox.SelectedValue = 0;
-            }
-            PasswordBox.Password = "11111111111";
             //Color_yr Add Stop
         }
 
@@ -79,13 +70,6 @@ namespace NsisoLauncher.Controls
         {
             try
             {
-                //更新用户列表
-                userList.Clear();
-                foreach (var item in App.config.MainConfig.User.UserDatabase)
-                {
-                    userList.Add(item);
-                }
-
                 //更新验证模型列表
                 authNodeList.Clear();
                 authNodeList.Add(new KeyValuePair<string, AuthenticationNode>("offline", new AuthenticationNode()
@@ -102,7 +86,13 @@ namespace NsisoLauncher.Controls
                 {
                     authNodeList.Add(item);
                 }
-
+                //更新用户列表
+                userList.Clear();
+                foreach (var item in App.config.MainConfig.User.UserDatabase)
+                {
+                    userList.Add(item);
+                }
+                
                 //更新版本列表
                 List<NsisoLauncherCore.Modules.Version> versions = await App.handler.GetVersionsAsync();
                 versionList.Clear();
@@ -133,6 +123,18 @@ namespace NsisoLauncher.Controls
                     authTypeCombobox.IsEnabled = true;
                 }
                 //Color_yr Add Start
+                if (userComboBox.SelectedValue != null)
+                {
+                    UserNode node = GetSelectedAuthNode();
+                    authTypeCombobox.SelectedValue = node.AuthModule;
+                }
+                if (is_re == true)
+                {
+                    UserNode node = GetSelectedAuthNode();
+                    if (node != null)
+                        authTypeCombobox.SelectedValue = node.AuthModule;
+                    is_re = false;
+                }
                 if (App.config.MainConfig.User.Nide8ServerDependence)
                 {
                     downloadButton.Content = App.GetResourceString("String.Base.Register");
@@ -267,17 +269,16 @@ namespace NsisoLauncher.Controls
         //Color_yr Add Start
         private async void UserComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (first == true)
+            UserNode node = GetSelectedAuthNode();
+            if (is_re == true)
             {
-                first = false;
                 return;
             }
             if (userComboBox.SelectedValue == null)
                 PasswordBox.Password = null;
-            UserNode node = GetSelectedAuthNode();
             if (node == null)
                 return;
-            if (node.SelectProfileUUID != null && string.IsNullOrWhiteSpace(PasswordBox.Password) == false)
+            if (node.AuthModule != "offline" && node.SelectProfileUUID != null && string.IsNullOrWhiteSpace(PasswordBox.Password) == false)
                 PasswordBox.Password = "11111111111";
             else
             {
@@ -305,17 +306,11 @@ namespace NsisoLauncher.Controls
         }
         private void AuthTypeCombobox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (authTypeCombobox.SelectedValue != null && authTypeCombobox.SelectedValue.ToString() == "offline")
-            {
-                authTypeCombobox.SelectedIndex = 0;
-                PasswordBox.Visibility = Visibility.Hidden;
-                PasswordBox.Password = null;
-                if (userComboBox.SelectedValue != null)
-                    userComboBox.SelectedValue = null;
+            if (is_re == true)
                 return;
-            }
             AuthenticationNode node = GetSelectedAuthenticationNode();
-            if (node == null)
+            UserNode node1 = GetSelectedAuthNode();
+            if (node == null || node1 == null)
             {
                 return;
             }
@@ -324,13 +319,12 @@ namespace NsisoLauncher.Controls
                 case AuthenticationType.OFFLINE: //离线模式
                     PasswordBox.Visibility = Visibility.Hidden;
                     PasswordBox.Password = null;
-                    if (userComboBox.SelectedValue != null)
-                        userComboBox.SelectedValue = null;
                     break;
                 default: //非离线模式
                     PasswordBox.Visibility = Visibility.Visible;
-                    UserNode node1 = GetSelectedAuthNode();
-                    if (node1 != null && node1.SelectProfileUUID != null && string.IsNullOrWhiteSpace(PasswordBox.Password) == true)
+                    if (node1.AuthModule == "offline")
+                        PasswordBox.Password = null;
+                    else if (node1.SelectProfileUUID != null && string.IsNullOrWhiteSpace(PasswordBox.Password) == true)
                         PasswordBox.Password = "11111111111";
                     else if(string.IsNullOrWhiteSpace(PasswordBox.Password) == false && userComboBox.SelectedValue == null)
                         PasswordBox.Password = null;

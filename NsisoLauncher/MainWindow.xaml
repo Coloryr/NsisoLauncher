@@ -19,7 +19,7 @@
         </Grid.ColumnDefinitions>
 
         <Image x:Name="BG" Width="720" Height="405" Grid.ColumnSpan="3" Visibility="Visible" Source="/NsisoLauncher;component/Resource/bg.jpg" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,0,-2,0"/>
-        <MediaElement x:Name="mediaElement" LoadedBehavior="Manual" Grid.ColumnSpan="3" Margin="0,0,-8,0" Visibility="Hidden" MediaEnded="mediaElement_MediaEnded"/>
+        <MediaElement x:Name="mediaElement" Width="720" Height="405" LoadedBehavior="Manual" Grid.ColumnSpan="3" MediaEnded="mediaElement_MediaEnded" Visibility="Hidden"/>
         <Grid x:Name="userGrid" Grid.Column="2">
             <userControl:MainPanelControl x:Name="mainPanel"/>
         </Grid>
@@ -33,8 +33,8 @@
 
         <TextBlock x:Name="launchInfoBlock" TextAlignment="Right" Foreground="Gray" Margin="40,382,0,4" 
                    Grid.ColumnSpan="2" FontSize="14" TextWrapping="Wrap" HorizontalAlignment="Left"/>
-        <controls:ProgressRing x:Name="loadingRing" Width="24" Height="24" IsActive="False" Margin="50,360,170,23" Grid.Column="2"
-                               Foreground="#FFFFFFFF" Visibility="Hidden" Background="#00FFFFFF" BorderBrush="#00FFFFFF"/>
+        <controls:ProgressRing x:Name="loadingRing" Width="24" Height="29" IsActive="False" Margin="50,358,170,20" Grid.Column="2"
+                               Foreground="#FFFFFFFF" Background="#00FFFFFF" BorderBrush="#00FFFFFF" Visibility="Hidden"/>
         <Button x:Name="cancelLaunchButton" Height="30" Margin="440,0,0,2" VerticalAlignment="Bottom" Grid.Column="1"
                 Background="{x:Null}" BorderBrush="White" Foreground="White" FontSize="14" FontWeight="Bold" Visibility="Hidden">
             <iconPacks:FontAwesome Kind="BanSolid" />
