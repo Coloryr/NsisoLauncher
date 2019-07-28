@@ -15,7 +15,7 @@
             <ColumnDefinition Width="*"/>
 
         </Grid.ColumnDefinitions>
-        <Button x:Name="launchButton" Content="{DynamicResource String.Base.Launch}" Margin="10,0,10,10" Height="50" VerticalAlignment="Bottom"
+        <Button x:Name="launchButton" Content="{DynamicResource String.Base.Launch}" Margin="10,0,10,10" Height="50" VerticalAlignment="Bottom" IsDefault="True"
                     FontSize="14" BorderBrush="White" Foreground="White" Click="launchButton_Click" Grid.ColumnSpan="2" Background="{x:Null}"/>
 
         <userControl:HeadSculControl x:Name="headScul" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="61,10,61,0" Grid.ColumnSpan="2"/>
@@ -24,7 +24,7 @@
                   VerticalAlignment="Top" 
                   Background="{x:Null}" BorderBrush="#99FFFFFF"
                   DisplayMemberPath="Value.Name"
-                  SelectedValuePath="Key"             
+                  SelectedValuePath="Key"
                   controls:TextBoxHelper.Watermark="{DynamicResource String.MainWindow.ChooseAuthType}" Grid.ColumnSpan="2" Foreground="White" SelectionChanged="AuthTypeCombobox_SelectionChanged"/>
         <Button  x:Name="addauth" Grid.Column="1" Margin="0,151,10,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="35" ToolTip="{DynamicResource String.Mainwindow.Auth.Add}"
                  Background="{x:Null}" BorderBrush="White" Foreground="White" Height="26" Click="addAuthButton_Click">

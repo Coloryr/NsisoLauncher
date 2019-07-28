@@ -724,7 +724,7 @@ namespace NsisoLauncher
                 var lockAuthNode = App.config.MainConfig.User.GetLockAuthNode();
                 if (App.config.MainConfig.User.Nide8ServerDependence &&
                     (lockAuthNode != null) &&
-                        (lockAuthNode.AuthType == AuthenticationType.NIDE8))
+                        (lockAuthNode.AuthType == AuthenticationType.NIDE8) && App.config.MainConfig.Server.LaunchToServer)
                 {
                     var nide8ReturnResult = await (new NsisoLauncherCore.Net.Nide8API.APIHandler(lockAuthNode.Property["nide8ID"])).GetInfoAsync();
                     if (!string.IsNullOrWhiteSpace(nide8ReturnResult.Meta.ServerIP))

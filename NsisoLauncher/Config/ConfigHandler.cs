@@ -78,7 +78,8 @@ namespace NsisoLauncher.Config
             {
                 try
                 {
-                    File.WriteAllText(MainConfigPath, JsonConvert.SerializeObject(MainConfig));
+                    //Color_yr Change
+                    File.WriteAllText(MainConfigPath, JsonConvert.SerializeObject(MainConfig, Formatting.Indented));
                 }
                 catch (UnauthorizedAccessException)
                 {

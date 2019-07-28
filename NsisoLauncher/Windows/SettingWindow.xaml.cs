@@ -406,11 +406,23 @@ namespace NsisoLauncher.Windows
             {
                 checkBox1.IsEnabled = false;
                 checkBox2.IsEnabled = false;
+                if (checkBox1.IsChecked == true)
+                {
+                    checkBox4.IsEnabled = false;
+                    set.IsEnabled = false;
+                    Text.IsEnabled = false;
+                }
             }
             else if (checkBox3.IsChecked == false)
             {
                 checkBox1.IsEnabled = true;
                 checkBox2.IsEnabled = true;
+                if (checkBox1.IsChecked == true)
+                {
+                    checkBox4.IsEnabled = true;
+                    set.IsEnabled = true;
+                    Text.IsEnabled = true;
+                }
             }
         }
         private void CheckBox1_Checked(object sender, RoutedEventArgs e)
@@ -443,7 +455,7 @@ namespace NsisoLauncher.Windows
             {
                 checkBox3.IsEnabled = false;
             }
-            if (checkBox2.IsChecked == false)
+            if (checkBox2.IsChecked == false && checkBox1.IsChecked == false)
             {
                 checkBox3.IsEnabled = true;
             }
