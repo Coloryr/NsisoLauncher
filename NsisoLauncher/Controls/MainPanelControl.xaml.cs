@@ -106,7 +106,6 @@ namespace NsisoLauncher.Controls
                     (App.config.MainConfig.User.UserDatabase.ContainsKey(App.config.MainConfig.History.SelectedUserNodeID)))
                 {
                     this.userComboBox.SelectedValue = App.config.MainConfig.History.SelectedUserNodeID;
-                    await RefreshIcon();
                 }
 
                 //锁定验证模型处理
@@ -114,8 +113,10 @@ namespace NsisoLauncher.Controls
                 {
                     if (App.config.MainConfig.User.AuthenticationDic.ContainsKey(App.config.MainConfig.User.LockAuthName))
                     {
+                        is_re = true;
                         authTypeCombobox.SelectedValue = App.config.MainConfig.User.LockAuthName;
                         authTypeCombobox.IsEnabled = false;
+                        is_re = false;
                     }
                 }
                 else
@@ -123,7 +124,7 @@ namespace NsisoLauncher.Controls
                     authTypeCombobox.IsEnabled = true;
                 }
                 //Color_yr Add Start
-                if (userComboBox.SelectedValue != null)
+                if (userComboBox.SelectedValue != null && string.IsNullOrWhiteSpace(App.config.MainConfig.User.LockAuthName))
                 {
                     UserNode node = GetSelectedAuthNode();
                     authTypeCombobox.SelectedValue = node.AuthModule;
@@ -147,6 +148,7 @@ namespace NsisoLauncher.Controls
                     addauth.Visibility = Visibility.Visible;
                     authTypeCombobox.Margin = new Thickness(10, 151, 50, 0);
                 }
+                await RefreshIcon();
                 //Color_yr Add Stop
                 App.logHandler.AppendDebug("启动器主窗体数据重载完毕");
             }
@@ -310,26 +312,41 @@ namespace NsisoLauncher.Controls
                 return;
             AuthenticationNode node = GetSelectedAuthenticationNode();
             UserNode node1 = GetSelectedAuthNode();
-            if (node == null || node1 == null)
+            if (node == null)
             {
+                PasswordBox.Visibility = Visibility.Hidden;
+                PasswordBox.Password = null;
                 return;
             }
-            switch (node.AuthType)
-            {
-                case AuthenticationType.OFFLINE: //离线模式
-                    PasswordBox.Visibility = Visibility.Hidden;
-                    PasswordBox.Password = null;
-                    break;
-                default: //非离线模式
-                    PasswordBox.Visibility = Visibility.Visible;
-                    if (node1.AuthModule == "offline")
+            if (node1 == null)
+                switch (node.AuthType)
+                {
+                    case AuthenticationType.OFFLINE: //离线模式
+                        PasswordBox.Visibility = Visibility.Hidden;
                         PasswordBox.Password = null;
-                    else if (node1.SelectProfileUUID != null && string.IsNullOrWhiteSpace(PasswordBox.Password) == true)
-                        PasswordBox.Password = "11111111111";
-                    else if(string.IsNullOrWhiteSpace(PasswordBox.Password) == false && userComboBox.SelectedValue == null)
+                        break;
+                    default: //非离线模式
+                        PasswordBox.Visibility = Visibility.Visible;
                         PasswordBox.Password = null;
-                    break;
-            }
+                        break;
+                }
+            else
+                switch (node.AuthType)
+                {
+                    case AuthenticationType.OFFLINE: //离线模式
+                        PasswordBox.Visibility = Visibility.Hidden;
+                        PasswordBox.Password = null;
+                        break;
+                    default: //非离线模式
+                        PasswordBox.Visibility = Visibility.Visible;
+                        if (node1 != null && node1.AuthModule == "offline")
+                            PasswordBox.Password = null;
+                        else if (node1.SelectProfileUUID != null && string.IsNullOrWhiteSpace(PasswordBox.Password) == true)
+                            PasswordBox.Password = "11111111111";
+                        else if (string.IsNullOrWhiteSpace(PasswordBox.Password) == false && userComboBox.SelectedValue == null)
+                            PasswordBox.Password = null;
+                        break;
+                }
         }
         //Color_yr Add Stop
     }

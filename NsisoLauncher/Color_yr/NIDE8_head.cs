@@ -95,6 +95,8 @@ namespace NsisoLauncher.Color_yr
                 if (res.IsSuccessStatusCode)
                 {
                     int d = b.IndexOf("value");
+                    if (d == -1)
+                        return null;
                     b = b.PadLeft(d).Remove(0, d);
                     b = b.Replace("value\":\"", "");
                     b = b.Replace("\"}]}", "");
@@ -121,7 +123,7 @@ namespace NsisoLauncher.Color_yr
             {
                 
             }
-            return new BitmapImage(new Uri("/NsisoLauncher;component/Resource/Steve.jpg"));
+            return null;
         }
     }
 }
