@@ -78,17 +78,19 @@ namespace NsisoLauncher.Controls
                     AuthType = AuthenticationType.MOJANG,
                     Name = App.GetResourceString("String.MainWindow.Auth.Mojang")
                 }));
-                foreach (var item in App.config.MainConfig.User.AuthenticationDic)
-                {
-                    authNodeList.Add(item);
-                }
+                if (App.config.MainConfig.User.AuthenticationDic != null)
+                    foreach (var item in App.config.MainConfig.User.AuthenticationDic)
+                    {
+                        authNodeList.Add(item);
+                    }
 
                 //更新用户列表
                 userList.Clear();
-                foreach (var item in App.config.MainConfig.User.UserDatabase)
-                {
-                    userList.Add(item);
-                }
+                if (App.config.MainConfig.User.UserDatabase != null)
+                    foreach (var item in App.config.MainConfig.User.UserDatabase)
+                    {
+                        userList.Add(item);
+                    }
 
                 //更新版本列表
                 List<NsisoLauncherCore.Modules.Version> versions = await App.handler.GetVersionsAsync();
