@@ -105,9 +105,6 @@ namespace NsisoLauncher.Controls
                     (App.config.MainConfig.User.UserDatabase.ContainsKey(App.config.MainConfig.History.SelectedUserNodeID)))
                 {
                     userComboBox.SelectedValue = App.config.MainConfig.History.SelectedUserNodeID;
-                    UserNode node = GetSelectedAuthNode();
-                    if (node.AuthModule == "offline")
-                        userComboBox.SelectedItem = null;
                 }
 
                 //锁定验证模型处理
@@ -122,12 +119,20 @@ namespace NsisoLauncher.Controls
                         AuthenticationNode node = GetSelectedAuthenticationNode();
                         if (node.AuthType != AuthenticationType.OFFLINE)
                             PasswordBox.Visibility = Visibility.Visible;
+                        UserNode node1 = GetSelectedAuthNode();
+                        if (node1.AuthModule == "offline")
+                            userComboBox.SelectedItem = null;
                     }
                 }
                 else
                     authTypeCombobox.IsEnabled = true;
 
                 //Color_yr Add Start
+                if (userComboBox.SelectedValue != null && string.IsNullOrWhiteSpace(App.config.MainConfig.User.LockAuthName))
+                {
+                    UserNode node = GetSelectedAuthNode();
+                    authTypeCombobox.SelectedValue = node.AuthModule;
+                }
                 if (is_re == true)
                 {
                     UserNode node = GetSelectedAuthNode();
