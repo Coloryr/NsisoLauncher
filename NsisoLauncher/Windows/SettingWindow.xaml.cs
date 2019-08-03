@@ -191,8 +191,33 @@ namespace NsisoLauncher.Windows
                 }
             }
 
+            //Color_yr Add Start
             App.config.Save();
-            await this.ShowMessageAsync("保存成功", "所有设置已成功保存在本地");
+            saveButton.Content = App.GetResourceString("String.Settingwindow.Saving");
+            Config.Environment env = App.config.MainConfig.Environment;
+            Java java = null;
+            if (env.AutoJava)
+            {
+                java = Java.GetSuitableJava(App.javaList);
+            }
+            else
+            {
+                java = App.javaList.Find(x => x.Path == env.JavaPath);
+                if (java == null)
+                {
+                    java = Java.GetJavaInfo(env.JavaPath);
+                }
+            }
+            if (java != null)
+            {
+                App.handler.Java = java;
+                Close();
+            }
+            else
+            {
+                await this.ShowMessageAsync(App.GetResourceString("String.Settingwindow.SaveError"), App.GetResourceString("String.Settingwindow.JavaError"));
+            }
+            //Color_yr Add Stop
         }
 
         //取消按钮点击后

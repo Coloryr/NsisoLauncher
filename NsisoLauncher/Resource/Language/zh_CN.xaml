@@ -99,10 +99,12 @@
     <sys:String x:Key="String.MainWindow.Auth.AI">authlib-injector验证</sys:String>
     <sys:String x:Key="String.MainWindow.Auth.Custom">自定义验证</sys:String>
 
+    <sys:String x:Key="String.Downloadwindow.Windows">下载监视器</sys:String>
     <sys:String x:Key="String.Downloadwindow.TaskName">任务名称</sys:String>
     <sys:String x:Key="String.Downloadwindow.TaskProgress">下载进度</sys:String>
     <sys:String x:Key="String.Downloadwindow.TaskTo">下载到目标</sys:String>
-    <sys:String x:Key="String.Downloadwindow.TaskFrom">下载源</sys:String>
+    <sys:String x:Key="String.Downloadwindow.TaskState">任务状态</sys:String>
+    <sys:String x:Key="String.Downloadwindow.TaskFrom">下载地址</sys:String>
     <sys:String x:Key="String.Downloadwindow.CancelDownload">取消下载</sys:String>
     <sys:String x:Key="String.Downloadwindow.DownloadComplete">下载完成</sys:String>
     <sys:String x:Key="String.Downloadwindow.DownloadComplete2">所有任务已成功下载</sys:String>
@@ -205,4 +207,7 @@
     <sys:String x:Key="String.Settingwindow.User.Pro.Note">*此设置节点请勿随意改动,否则可能导致验证失败而无法启动</sys:String>
     <sys:String x:Key="String.Settingwindow.User.Pro.ProxyAddress">代理验证服务器地址(重启生效):</sys:String>
     <sys:String x:Key="String.Settingwindow.User.Pro.GUID">客户端GUID:</sys:String>
+    <sys:String x:Key="String.Settingwindow.Saving">保存中</sys:String>
+    <sys:String x:Key="String.Settingwindow.JavaError">JAVA无效，请检查</sys:String>
+    <sys:String x:Key="String.Settingwindow.SaveError">保存发生错误</sys:String>
 </ResourceDictionary>

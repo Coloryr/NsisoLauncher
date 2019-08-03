@@ -7,7 +7,7 @@
         xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
         xmlns:chart="http"
         mc:Ignorable="d"
-        Title="DownloadWindow" Height="450" Width="800" WindowStartupLocation="CenterScreen" 
+        Title="{DynamicResource String.Downloadwindow.Windows}" Height="450" Width="800" WindowStartupLocation="CenterScreen" 
                       Closing="MetroWindow_Closing" Loaded="MetroWindow_Loaded" ResizeMode="CanMinimize">
     <Grid>
         <Grid.RowDefinitions>
@@ -21,7 +21,7 @@
         <DataGrid x:Name="downloadList" Margin="10,43,10,0" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" Grid.Row="0">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="{DynamicResource String.Downloadwindow.TaskName}" Binding="{Binding Path=TaskName}" IsReadOnly="True"/>
-                <DataGridTextColumn Header="任务状态" Binding="{Binding Path=State, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True"/>
+                <DataGridTextColumn Header="{DynamicResource String.Downloadwindow.TaskState}" Binding="{Binding Path=State, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True"/>
                 <DataGridTemplateColumn Header="{DynamicResource String.Downloadwindow.TaskProgress}" IsReadOnly="True">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
