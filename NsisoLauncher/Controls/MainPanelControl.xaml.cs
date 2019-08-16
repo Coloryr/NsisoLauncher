@@ -120,7 +120,7 @@ namespace NsisoLauncher.Controls
                         if (node.AuthType != AuthenticationType.OFFLINE)
                             PasswordBox.Visibility = Visibility.Visible;
                         UserNode node1 = GetSelectedAuthNode();
-                        if (node1.AuthModule == "offline")
+                        if (node1 != null && node1.AuthModule == "offline")
                             userComboBox.SelectedItem = null;
                     }
                 }
