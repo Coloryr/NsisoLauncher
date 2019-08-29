@@ -18,6 +18,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
@@ -188,6 +189,11 @@ namespace NsisoLauncher
             {
                 string[] files = Directory.GetFiles(Path.GetDirectoryName(App.config.MainConfigPath), "*.png");
                 string[] files1 = Directory.GetFiles(Path.GetDirectoryName(App.config.MainConfigPath), "*.jpg");
+                string[] icon = Directory.GetFiles(Path.GetDirectoryName(App.config.MainConfigPath), "icon.ico");
+                if (icon.Length != 0)
+                {
+                    this.Icon = new BitmapImage(new Uri(icon[0]));
+                }
                 if (files.Count() + files1.Count() != 0)
                 {
                     pic_file = new string[files.Length + files1.Length];
