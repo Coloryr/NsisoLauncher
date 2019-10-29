@@ -10,7 +10,8 @@
         mc:Ignorable="d"
         BorderBrush="{DynamicResource AccentColorBrush}"
         WindowStartupLocation="CenterScreen"
-        Title="Nsiso Launcher(Unofficial Edit)" Height="436" Width="720" MinHeight="436" MinWidth="720" ShowMaxRestoreButton="False" ShowMinButton="True" Loaded="mainWindow_Loaded" Closing="mainWindow_Closing" WindowStyle="SingleBorderWindow" ResizeMode="CanMinimize">
+        Title="Nsiso Launcher(Unofficial Edit)" Height="436" Width="720" MinHeight="436" MinWidth="720" ShowMaxRestoreButton="False" 
+        ShowMinButton="True" Loaded="mainWindow_Loaded" Closing="mainWindow_Closing" WindowStyle="SingleBorderWindow" ResizeMode="CanMinimize">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="0*"/>

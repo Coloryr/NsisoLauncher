@@ -127,14 +127,19 @@ namespace NsisoLauncher.Controls
                 else
                     authTypeCombobox.IsEnabled = true;
 
-                //Color_yr Add Start
+                //Color_yr Add 
                 if (userComboBox.SelectedValue != null && string.IsNullOrWhiteSpace(App.config.MainConfig.User.LockAuthName))
                 {
                     UserNode node = GetSelectedAuthNode();
+                    //if(!authNodeList.Contains(node.AuthModule))
                     authTypeCombobox.SelectedValue = node.AuthModule;
                 }
                 if (is_re == true)
                 {
+                    if (authTypeCombobox.SelectedItem != null)
+                    { 
+                    
+                    }
                     UserNode node = GetSelectedAuthNode();
                     if (node != null)
                         authTypeCombobox.SelectedValue = node.AuthModule;
