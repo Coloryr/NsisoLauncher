@@ -105,6 +105,11 @@ namespace NsisoLauncher.Config
         /// 配置文件版本
         /// </summary>
         public string ConfigVersion { get; set; }
+
+        /// <summary>
+        /// 语言设置
+        /// </summary>
+        public string Lauguage { get; set; }
     }
 
     /// <summary>

@@ -237,7 +237,8 @@ namespace NsisoLauncher.Config
                     AccentColor = "Blue",
                     AppThme = "BaseLight"
                 },
-                ConfigVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString()
+                ConfigVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString(),
+                Lauguage = "中文"
             };
             Save();
         }

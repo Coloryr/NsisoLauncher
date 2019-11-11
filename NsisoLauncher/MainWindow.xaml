@@ -33,6 +33,9 @@
         <Button x:Name="volumeButton" Style ="{DynamicResource MahApps.Metro.Styles.MetroCircleButtonStyle}"
                 Width="30" Height="30" Margin="0,372,440,0" VerticalAlignment="Top" HorizontalAlignment="Right"
                 BorderBrush="Black" Foreground="Black" Click="volumeButton_Click" Grid.Column="1" Visibility="Hidden">
+            <Button.Effect>
+                <DropShadowEffect Opacity="0.5"/>
+            </Button.Effect>
             <iconPacks:PackIconFontAwesome x:Name="volumeButtonIcon" Kind="PauseSolid" />
         </Button>
 

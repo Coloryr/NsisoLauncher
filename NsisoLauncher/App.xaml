@@ -18,6 +18,7 @@
                 <ResourceDictionary Source="pack://application:,,,/Resource/Style/Fonts.xaml"/>
                 <!-- Language -->
                 <ResourceDictionary Source="pack://application:,,,/Resource/Language/zh_CN.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/Resource/Language/en_US.xaml"/>
                 
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>

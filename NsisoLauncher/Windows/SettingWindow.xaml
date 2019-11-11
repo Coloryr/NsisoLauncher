@@ -168,8 +168,11 @@
                         </Expander>
                         <Expander Header="{DynamicResource String.Settingwindow.Env.Habbit}" Margin="0,0,0,5">
                             <StackPanel>
-                                <CheckBox Content="{DynamicResource String.Settingwindow.Env.Habbit.Exit}" IsChecked="{Binding Environment.ExitAfterLaunch}" Margin="0,0,0,5"/>
+                                <Label Content="{DynamicResource String.Settingwindow.User.Lauguage}" Margin="0,0,0,0"/>
+                                <ComboBox HorizontalAlignment="Left" Margin="0,0,0,0" Width="120" Text="{Binding Lauguage}" Name="Lauguage"/>
+                                <CheckBox Content="{DynamicResource String.Settingwindow.Env.Habbit.Exit}" IsChecked="{Binding Environment.ExitAfterLaunch}" Margin="0,5,0,5"/>
                             </StackPanel>
+
                         </Expander>
                         <Expander Header="{DynamicResource String.Settingwindow.Env.Debug}" Margin="0,0,0,5">
                             <StackPanel>

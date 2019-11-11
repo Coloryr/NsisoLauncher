@@ -66,6 +66,9 @@ namespace NsisoLauncher.Windows
 
             VersionsComboBox.ItemsSource = await App.handler.GetVersionsAsync();
 
+            Lauguage.ItemsSource = new List<string>() { "中文", "日本語", "English" };
+            Lauguage.SelectedItem = config.Lauguage;
+
         #endregion
 
             if (App.config.MainConfig.Environment.VersionIsolation)
@@ -77,6 +80,8 @@ namespace NsisoLauncher.Windows
                 VersionsComboBox.IsEnabled = false;
                 versionOptionsGrid.ItemsSource = await GameHelper.GetOptionsAsync(App.handler, new NsisoLauncherCore.Modules.Version() { ID = "null" });
             }
+
+
 
             //debug
         }

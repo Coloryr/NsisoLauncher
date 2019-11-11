@@ -259,6 +259,33 @@ namespace NsisoLauncher
             {
                 serverInfoControl.SetServerInfo(App.config.MainConfig.Server);
             }
+
+            string lang = App.config.MainConfig.Lauguage;
+            if (lang == "中文")
+            {
+                lang = "zh_CN";
+            }
+            else if(lang == "English")
+            {
+                lang = "en_US";
+            }
+            ResourceDictionary langRd = null;
+            try
+            {
+                langRd = Application.LoadComponent(new Uri("/NsisoLauncher;component/Resource/Language/" + lang + ".xaml", UriKind.Relative)) as ResourceDictionary;
+            }
+            catch
+            {
+            }
+            if (langRd != null)
+            {
+                if (Resources.MergedDictionaries.Count > 0)
+                {
+                    this.Resources.MergedDictionaries.Clear();
+                }
+                this.Resources.MergedDictionaries.Add(langRd);
+            }
+
             APP_Color();
         }
 
@@ -270,8 +297,7 @@ namespace NsisoLauncher
             {
                 cancelLaunchButton.Background = b;
                 launchInfoBlock.Background = b;
-                volumeButton.BorderBrush = volumeButton.Foreground =
-                    new SolidColorBrush((Color)ColorConverter.ConvertFromString(App.config.MainConfig.Customize.AccentColor));
+                volumeButton.BorderBrush = volumeButton.Foreground = b;
             }
         }
 

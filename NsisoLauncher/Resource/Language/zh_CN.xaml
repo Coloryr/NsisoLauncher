@@ -207,6 +207,7 @@
     <sys:String x:Key="String.Settingwindow.User.Pro.Note">*此设置节点请勿随意改动,否则可能导致验证失败而无法启动</sys:String>
     <sys:String x:Key="String.Settingwindow.User.Pro.ProxyAddress">代理验证服务器地址(重启生效):</sys:String>
     <sys:String x:Key="String.Settingwindow.User.Pro.GUID">客户端GUID:</sys:String>
+    <sys:String x:Key="String.Settingwindow.User.Lauguage">语言设置</sys:String>
     <sys:String x:Key="String.Settingwindow.Saving">保存中</sys:String>
     <sys:String x:Key="String.Settingwindow.JavaError">JAVA无效，请检查</sys:String>
     <sys:String x:Key="String.Settingwindow.SaveError">保存发生错误</sys:String>
