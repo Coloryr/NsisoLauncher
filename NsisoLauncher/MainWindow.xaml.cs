@@ -20,6 +20,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using System.Windows.Media.Effects;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 
@@ -102,7 +103,7 @@ namespace NsisoLauncher
                 volumeButton.Visibility = Visibility.Visible;
                 mediaElement.Visibility = Visibility.Visible;
                 mediaElement.Play();
-                mediaElement.Volume = 0.3;
+                mediaElement.Volume = 0.1;
             }
             catch (Exception) { }
         }
@@ -116,7 +117,7 @@ namespace NsisoLauncher
                 volumeButton.Visibility = Visibility.Visible;
                 mediaElement.Visibility = Visibility.Visible;
                 mediaElement.Play();
-                mediaElement.Volume = 0.3;
+                mediaElement.Volume = 0.1;
             }
             catch (Exception) { }
         }
@@ -269,6 +270,8 @@ namespace NsisoLauncher
             {
                 cancelLaunchButton.Background = b;
                 launchInfoBlock.Background = b;
+                volumeButton.BorderBrush = volumeButton.Foreground =
+                    new SolidColorBrush((Color)ColorConverter.ConvertFromString(App.config.MainConfig.Customize.AccentColor));
             }
         }
 

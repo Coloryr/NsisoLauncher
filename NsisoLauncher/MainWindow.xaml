@@ -22,13 +22,17 @@
         <Image x:Name="BG" Width="720" Height="405" Grid.ColumnSpan="3" Visibility="Visible" Source="/NsisoLauncher;component/Resource/bg.jpg" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,0,-2,0"/>
         <MediaElement x:Name="mediaElement" Width="720" Height="405" LoadedBehavior="Manual" Grid.ColumnSpan="3" MediaEnded="mediaElement_MediaEnded" Visibility="Hidden"/>
         <Grid x:Name="userGrid" Grid.Column="2">
+            <Grid.Effect>
+                <DropShadowEffect Direction="300" Color="#FF000000" BlurRadius="3"/>
+            </Grid.Effect>
             <userControl:MainPanelControl x:Name="mainPanel"/>
         </Grid>
+
         <userControl:ServerInfoControl x:Name="serverInfoControl" Margin="10,10,42,0" VerticalAlignment="Top" Grid.ColumnSpan="1" Grid.Column="1" Visibility="Hidden"/>
 
         <Button x:Name="volumeButton" Style ="{DynamicResource MahApps.Metro.Styles.MetroCircleButtonStyle}"
                 Width="30" Height="30" Margin="0,372,440,0" VerticalAlignment="Top" HorizontalAlignment="Right"
-                BorderBrush="White" Foreground="White" Click="volumeButton_Click" Grid.Column="1" Visibility="Hidden">
+                BorderBrush="Black" Foreground="Black" Click="volumeButton_Click" Grid.Column="1" Visibility="Hidden">
             <iconPacks:PackIconFontAwesome x:Name="volumeButtonIcon" Kind="PauseSolid" />
         </Button>
 
@@ -40,6 +44,7 @@
                 Background="{x:Null}" BorderBrush="White" Foreground="White" FontSize="14" FontWeight="Bold" Visibility="Hidden">
             <iconPacks:FontAwesome Kind="BanSolid" />
         </Button>
+        <StackPanel HorizontalAlignment="Left" Height="407" VerticalAlignment="Top" Width="244" x:Name="targetPanel"/>
 
     </Grid>
 </controls:MetroWindow>
