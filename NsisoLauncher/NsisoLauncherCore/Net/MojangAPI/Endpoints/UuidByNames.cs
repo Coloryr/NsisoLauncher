@@ -75,5 +75,4 @@ namespace NsisoLauncherCore.Net.MojangApi.Endpoints
             }
         }
     }
-
 }

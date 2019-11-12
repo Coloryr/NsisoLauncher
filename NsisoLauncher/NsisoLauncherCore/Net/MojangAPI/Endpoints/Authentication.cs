@@ -257,7 +257,4 @@ namespace NsisoLauncherCore.Net.MojangApi.Endpoints
                 return new Response(Error.GetError(this.Response));
         }
     }
-
-
-
 }

@@ -142,8 +142,8 @@ namespace NsisoLauncher.Controls
                 if (is_re == true)
                 {
                     if (authTypeCombobox.SelectedItem != null)
-                    { 
-                    
+                    {
+
                     }
                     UserNode node = GetSelectedAuthNode();
                     if (node != null)

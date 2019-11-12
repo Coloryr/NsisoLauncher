@@ -105,5 +105,4 @@ namespace NsisoLauncherCore.Net.MojangApi.Endpoints
             ScrollsAccountsSold
         }
     }
-
 }

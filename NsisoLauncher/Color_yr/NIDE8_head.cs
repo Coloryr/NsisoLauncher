@@ -3,7 +3,6 @@ using NsisoLauncherCore.Net;
 using System;
 using System.Drawing;
 using System.IO;
-using System.Security.RightsManagement;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media;
@@ -80,7 +79,7 @@ namespace NsisoLauncher.Color_yr
             bitmap_top.Dispose();
             return BitmapToBitmapImage(Zoom(save, 8));
         }
-        
+
     }
     public class APIHandler_nide8
     {
@@ -121,7 +120,7 @@ namespace NsisoLauncher.Color_yr
             }
             catch
             {
-                
+
             }
             return null;
         }
