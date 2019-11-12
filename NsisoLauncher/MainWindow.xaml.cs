@@ -18,9 +18,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Media;
-using System.Windows.Media.Effects;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 
@@ -297,7 +295,8 @@ namespace NsisoLauncher
             {
                 cancelLaunchButton.Background = b;
                 launchInfoBlock.Background = b;
-                volumeButton.BorderBrush = volumeButton.Foreground = b;
+                volumeButton.BorderBrush = volumeButton.Foreground =
+                    new SolidColorBrush((Color)ColorConverter.ConvertFromString(App.config.MainConfig.Customize.AccentColor));
             }
         }
 
@@ -614,10 +613,12 @@ namespace NsisoLauncher
                             args.UserNode.ClearAuthCache();
                             await this.ShowMessageAsync("验证失败：您的登陆信息已过期",
                                 string.Format("请您重新进行登陆。具体信息：{0}", authResult.Error.ErrorMessage));
+                            mainPanel.PasswordBox.Password = null;
                             return;
                         case AuthState.ERR_INVALID_CRDL:
                             await this.ShowMessageAsync("验证失败：您的登陆账号或密码错误",
                                 string.Format("请您确认您输入的账号密码正确。具体信息：{0}", authResult.Error.ErrorMessage));
+                            mainPanel.PasswordBox.Password = null;
                             return;
                         case AuthState.ERR_NOTFOUND:
                             if (args.AuthNode.AuthType == AuthenticationType.CUSTOM_SERVER || args.AuthNode.AuthType == AuthenticationType.AUTHLIB_INJECTOR)
@@ -876,6 +877,7 @@ namespace NsisoLauncher
             finally
             {
                 //Color_yr Add Start
+                mainPanel.use_switch(true);
                 mainPanel.launchButton.Content = App.GetResourceString("String.Base.Launch");
                 loadingRing.Visibility = Visibility.Hidden;
                 launchInfoBlock.Visibility = Visibility.Hidden;

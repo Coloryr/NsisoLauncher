@@ -23,7 +23,7 @@
         <MediaElement x:Name="mediaElement" Width="720" Height="405" LoadedBehavior="Manual" Grid.ColumnSpan="3" MediaEnded="mediaElement_MediaEnded" Visibility="Hidden"/>
         <Grid x:Name="userGrid" Grid.Column="2">
             <Grid.Effect>
-                <DropShadowEffect Direction="300" Color="#FF000000" BlurRadius="3"/>
+                <DropShadowEffect Direction="300" Color="#FF000000" BlurRadius="3" Opacity="0.65"/>
             </Grid.Effect>
             <userControl:MainPanelControl x:Name="mainPanel"/>
         </Grid>

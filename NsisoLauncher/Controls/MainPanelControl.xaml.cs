@@ -1,7 +1,6 @@
 ﻿using MahApps.Metro.Controls.Dialogs;
 using NsisoLauncher.Color_yr;
 using NsisoLauncher.Config;
-using NsisoLauncher;
 using NsisoLauncher.Windows;
 using System;
 using System.Collections.Generic;
@@ -20,6 +19,7 @@ namespace NsisoLauncher.Controls
     {
         //Color_yr Add
         public bool is_re = false;
+        private bool is_use = false;
 
         public event Action<object, LaunchEventArgs> Launch;
 
@@ -105,6 +105,7 @@ namespace NsisoLauncher.Controls
                     (App.config.MainConfig.User.UserDatabase.ContainsKey(App.config.MainConfig.History.SelectedUserNodeID)))
                 {
                     userComboBox.SelectedValue = App.config.MainConfig.History.SelectedUserNodeID;
+                    UserComboBox_SelectionChanged(null, null);
                 }
 
                 //锁定验证模型处理
@@ -122,10 +123,14 @@ namespace NsisoLauncher.Controls
                         UserNode node1 = GetSelectedAuthNode();
                         if (node1 != null && node1.AuthModule == "offline")
                             userComboBox.SelectedItem = null;
+                        is_use = true;
                     }
                 }
                 else
+                {
                     authTypeCombobox.IsEnabled = true;
+                    is_use = false;
+                }
 
                 //Color_yr Add 
                 if (userComboBox.SelectedValue != null && string.IsNullOrWhiteSpace(App.config.MainConfig.User.LockAuthName))
@@ -192,6 +197,7 @@ namespace NsisoLauncher.Controls
         //启动游戏按钮点击
         private void launchButton_Click(object sender, RoutedEventArgs e)
         {
+            use_switch(false);
             //获取启动版本
             NsisoLauncherCore.Modules.Version launchVersion = null;
             if (launchVersionCombobox.SelectedItem != null)
@@ -364,6 +370,17 @@ namespace NsisoLauncher.Controls
                             PasswordBox.Password = null;
                         break;
                 }
+        }
+        public void use_switch(bool use)
+        {
+            launchVersionCombobox.IsEnabled = userComboBox.IsEnabled =
+                configButton.IsEnabled = downloadButton.IsEnabled =
+                launchButton.IsEnabled = PasswordBox.IsEnabled = use;
+            if (is_use == false)
+            {
+                authTypeCombobox.IsEnabled = use;
+                addauth.IsEnabled = use;
+            }
         }
         //Color_yr Add Stop
     }
