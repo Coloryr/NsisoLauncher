@@ -19,7 +19,7 @@ namespace NsisoLauncherCore.Net
         {
             using (HttpClient client = new HttpClient())
             {
-                ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3;
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
                 return await client.GetStringAsync(uri);
             }
         }
