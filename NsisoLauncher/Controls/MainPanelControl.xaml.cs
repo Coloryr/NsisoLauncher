@@ -270,6 +270,7 @@ namespace NsisoLauncher.Controls
             Refresh();
             ((MainWindow)Window.GetWindow(this)).CustomizeRefresh();
             //Color_yr Add
+            App.lan();
             APP_Color();
         }
         #endregion

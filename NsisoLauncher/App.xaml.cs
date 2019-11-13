@@ -164,7 +164,29 @@ namespace NsisoLauncher
             }
             #endregion
 
+            lan();
+
             //debug
+        }
+
+        public static void lan()
+        {
+            string lang = config.MainConfig.Lauguage;
+            if (lang == "中文")
+            {
+                lang = "zh_CN.xaml";
+            }
+            else if (lang == "English")
+            {
+                lang = "en_US.xaml";
+            }
+            try
+            {
+                Current.Resources.MergedDictionaries.Add(LoadComponent(new Uri("/NsisoLauncher;component/Resource/Language/" + lang, UriKind.Relative)) as ResourceDictionary);
+            }
+            catch
+            {
+            }
         }
 
         private void Application_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)

@@ -126,7 +126,7 @@ namespace NsisoLauncher
             {
                 now++;
                 if (now >= mp4_file.Length)
-                    now = 0;    
+                    now = 0;
                 mediaElement.Source = new Uri(mp4_file[now]);
             }
             else
@@ -152,8 +152,8 @@ namespace NsisoLauncher
                 this.WindowState = WindowState.Normal;
                 if (!arg.IsNormalExit())
                 {
-                    this.ShowMessageAsync("游戏非正常退出",
-                        string.Format("这很有可能是因为游戏崩溃导致的，退出代码:{0}，游戏持续时间:{1}",
+                    this.ShowMessageAsync(App.GetResourceString("String.Mainwindow.GameExit.Error"),
+                        string.Format(App.GetResourceString("String.Mainwindow.GameExit.Error_t"),
                         arg.ExitCode, arg.Duration));
                 }
             }));
@@ -257,33 +257,6 @@ namespace NsisoLauncher
             {
                 serverInfoControl.SetServerInfo(App.config.MainConfig.Server);
             }
-
-            string lang = App.config.MainConfig.Lauguage;
-            if (lang == "中文")
-            {
-                lang = "zh_CN";
-            }
-            else if(lang == "English")
-            {
-                lang = "en_US";
-            }
-            ResourceDictionary langRd = null;
-            try
-            {
-                langRd = Application.LoadComponent(new Uri("/NsisoLauncher;component/Resource/Language/" + lang + ".xaml", UriKind.Relative)) as ResourceDictionary;
-            }
-            catch
-            {
-            }
-            if (langRd != null)
-            {
-                if (Resources.MergedDictionaries.Count > 0)
-                {
-                    this.Resources.MergedDictionaries.Clear();
-                }
-                this.Resources.MergedDictionaries.Add(langRd);
-            }
-
             APP_Color();
         }
 
@@ -430,9 +403,10 @@ namespace NsisoLauncher
                         }
                         else
                         {
-                            if (string.IsNullOrWhiteSpace(mainPanel.PasswordBox.Password))
+                            if (string.IsNullOrWhiteSpace(mainPanel.PasswordBox.Password) || string.IsNullOrWhiteSpace(args.UserNode.UserName))
                             {
-                                await this.ShowMessageAsync("您输入的账号或密码为空", "请检查您是否正确填写登陆信息");
+                                await this.ShowMessageAsync(App.GetResourceString("String.Mainwindow.Auth.Error.Password"),
+                                    App.GetResourceString("String.Mainwindow.Auth.Error.Check_Login"));
                                 return;
                             }
                             else
@@ -458,9 +432,10 @@ namespace NsisoLauncher
                                 App.GetResourceString("String.Mainwindow.Auth.Nide8.NoID2"));
                             return;
                         }
-                        if (string.IsNullOrWhiteSpace(mainPanel.PasswordBox.Password))
+                        if (string.IsNullOrWhiteSpace(mainPanel.PasswordBox.Password) || string.IsNullOrWhiteSpace(args.UserNode.UserName))
                         {
-                            await this.ShowMessageAsync("您输入的账号或密码为空", "请检查您是否正确填写登陆信息");
+                            await this.ShowMessageAsync(App.GetResourceString("String.Mainwindow.Auth.Error.Password"),
+                                    App.GetResourceString("String.Mainwindow.Auth.Error.Check_Login"));
                             return;
                         }
                         if (isRemember)
@@ -495,6 +470,12 @@ namespace NsisoLauncher
                         }
                         else
                         {
+                            if (string.IsNullOrWhiteSpace(mainPanel.PasswordBox.Password) || string.IsNullOrWhiteSpace(args.UserNode.UserName))
+                            {
+                                await this.ShowMessageAsync(App.GetResourceString("String.Mainwindow.Auth.Error.Password"),
+                                    App.GetResourceString("String.Mainwindow.Auth.Error.Check_Login"));
+                                return;
+                            }
                             if (isRemember)
                             {
                                 var cYggTokenCator = new AuthlibInjectorTokenAuthenticator(aiRootAddr,
@@ -504,25 +485,14 @@ namespace NsisoLauncher
                             }
                             else
                             {
-                                var customLoginDResult = await this.ShowLoginAsync(App.GetResourceString("String.Mainwindow.Auth.Custom.Login"),
-                               App.GetResourceString("String.Mainwindow.Auth.Custom.Login2"),
-                               loginDialogSettings);
-                                if (IsValidateLoginData(customLoginDResult))
-                                {
-                                    var cYggAuthenticator = new AuthlibInjectorAuthenticator(
+                                var cYggAuthenticator = new AuthlibInjectorAuthenticator(
                                         aiRootAddr,
                                         new Credentials()
                                         {
-                                            Username = customLoginDResult.Username,
-                                            Password = customLoginDResult.Password
+                                            Username = args.UserNode.UserName,
+                                            Password = mainPanel.PasswordBox.Password
                                         });
-                                    authenticator = cYggAuthenticator;
-                                }
-                                else
-                                {
-                                    await this.ShowMessageAsync("您输入的账号或密码为空", "请检查您是否正确填写登陆信息");
-                                    return;
-                                }
+                                authenticator = cYggAuthenticator;
                             }
                         }
                         break;
@@ -548,24 +518,19 @@ namespace NsisoLauncher
                             }
                             else
                             {
-                                var customLoginDResult = await this.ShowLoginAsync(App.GetResourceString("String.Mainwindow.Auth.Custom.Login"),
-                               App.GetResourceString("String.Mainwindow.Auth.Custom.Login2"),
-                               loginDialogSettings);
-                                if (IsValidateLoginData(customLoginDResult))
+                                if (string.IsNullOrWhiteSpace(mainPanel.PasswordBox.Password) || string.IsNullOrWhiteSpace(args.UserNode.UserName))
                                 {
-                                    var cYggAuthenticator = new YggdrasilAuthenticator(new Credentials()
-                                    {
-                                        Username = customLoginDResult.Username,
-                                        Password = customLoginDResult.Password
-                                    });
-                                    cYggAuthenticator.ProxyAuthServerAddress = customAuthServer;
-                                    authenticator = cYggAuthenticator;
-                                }
-                                else
-                                {
-                                    await this.ShowMessageAsync("您输入的账号或密码为空", "请检查您是否正确填写登陆信息");
+                                    await this.ShowMessageAsync(App.GetResourceString("String.Mainwindow.Auth.Error.Password"),
+                                    App.GetResourceString("String.Mainwindow.Auth.Error.Check_Login"));
                                     return;
                                 }
+                                var cYggAuthenticator = new YggdrasilAuthenticator(new Credentials()
+                                {
+                                    Username = args.UserNode.UserName,
+                                    Password = mainPanel.PasswordBox.Password
+                                });
+                                cYggAuthenticator.ProxyAuthServerAddress = customAuthServer;
+                                authenticator = cYggAuthenticator;
                             }
                         }
                         break;
@@ -590,8 +555,20 @@ namespace NsisoLauncher
                 //如果验证方式不是离线验证
                 if (args.AuthNode.AuthType != AuthenticationType.OFFLINE)
                 {
-
+                    if(authenticator == null)
+                    {
+                        await this.ShowMessageAsync(App.GetResourceString("String.Mainwindow.Auth.Error.Login_Error"),
+                            App.GetResourceString("String.Mainwindow.Auth.Error.Null"));
+                        return;
+                    }
                     var authResult = await authenticator.DoAuthenticateAsync();
+
+                    if (authResult == null)
+                    {
+                        await this.ShowMessageAsync(App.GetResourceString("String.Mainwindow.Auth.Error.Login_Error"),
+                            App.GetResourceString("String.Mainwindow.Auth.Error.Null"));
+                        return;
+                    }
 
                     switch (authResult.State)
                     {
@@ -611,39 +588,42 @@ namespace NsisoLauncher
                             break;
                         case AuthState.REQ_LOGIN:
                             args.UserNode.ClearAuthCache();
-                            await this.ShowMessageAsync("验证失败：您的登陆信息已过期",
-                                string.Format("请您重新进行登陆。具体信息：{0}", authResult.Error.ErrorMessage));
+                            await this.ShowMessageAsync(App.GetResourceString("String.Mainwindow.Auth.Error.Login_Error"),
+                                string.Format(App.GetResourceString("String.Mainwindow.Auth.Error.Login_Save_out"), authResult.Error.ErrorMessage));
                             mainPanel.PasswordBox.Password = null;
                             return;
                         case AuthState.ERR_INVALID_CRDL:
-                            await this.ShowMessageAsync("验证失败：您的登陆账号或密码错误",
-                                string.Format("请您确认您输入的账号密码正确。具体信息：{0}", authResult.Error.ErrorMessage));
+                            await this.ShowMessageAsync(App.GetResourceString("String.Mainwindow.Auth.Error.Login_Error"),
+                                string.Format(App.GetResourceString("String.Mainwindow.Auth.Error.Password_Error"), authResult.Error.ErrorMessage));
                             mainPanel.PasswordBox.Password = null;
                             return;
                         case AuthState.ERR_NOTFOUND:
                             if (args.AuthNode.AuthType == AuthenticationType.CUSTOM_SERVER || args.AuthNode.AuthType == AuthenticationType.AUTHLIB_INJECTOR)
                             {
-                                await this.ShowMessageAsync("验证失败：代理验证服务器地址有误或账号未找到",
-                                string.Format("请确认您的Authlib-Injector验证服务器（Authlib-Injector验证）或自定义验证服务器（自定义验证）地址正确或确认账号和游戏角色存在。具体信息：{0}",
+                                await this.ShowMessageAsync(App.GetResourceString("String.Mainwindow.Auth.Error.Login_Error"),
+                                string.Format(App.GetResourceString("String.Mainwindow.Auth.Error.Auth_Error_notfound"),
                                 authResult.Error.ErrorMessage));
                             }
                             else
                             {
-                                await this.ShowMessageAsync("验证失败：您的账号未找到",
-                                string.Format("请确认您的账号和游戏角色存在。具体信息：{0}", authResult.Error.ErrorMessage));
+                                await this.ShowMessageAsync(App.GetResourceString("String.Mainwindow.Auth.Error.Login_Error"),
+                                string.Format(App.GetResourceString("String.Mainwindow.Auth.Error.Player_notfound"),
+                                authResult.Error.ErrorMessage));
                             }
                             return;
                         case AuthState.ERR_OTHER:
-                            await this.ShowMessageAsync("验证失败：其他错误",
-                                string.Format("具体信息：{0}", authResult.Error.ErrorMessage));
+                            await this.ShowMessageAsync(App.GetResourceString("String.Mainwindow.Auth.Error.Login_Error"),
+                                string.Format(App.GetResourceString("String.Mainwindow.Auth.Error.Other"),
+                                authResult.Error.ErrorMessage));
                             return;
                         case AuthState.ERR_INSIDE:
-                            await this.ShowMessageAsync("验证失败：启动器内部错误",
-                                string.Format("建议您联系启动器开发者进行解决。具体信息：{0}", authResult.Error.ErrorMessage));
+                            await this.ShowMessageAsync(App.GetResourceString("String.Mainwindow.Auth.Error.Login_Error"),
+                                string.Format(App.GetResourceString("String.Mainwindow.Auth.Error.Core_Error"),
+                                authResult.Error.ErrorMessage));
                             return;
                         default:
-                            await this.ShowMessageAsync("验证失败：未知错误",
-                                "建议您联系启动器开发者进行解决。");
+                            await this.ShowMessageAsync(App.GetResourceString("String.Mainwindow.Auth.Error.Login_Error"),
+                                App.GetResourceString("String.Mainwindow.Auth.Error.Error"));
                             return;
                     }
                 }
@@ -841,7 +821,7 @@ namespace NsisoLauncher
                     }
                     catch (Exception ex)
                     {
-                        await this.ShowMessageAsync("启动后等待游戏窗口响应异常", "这可能是由于游戏进程发生意外（闪退）导致的。具体原因:" + ex.Message);
+                        await this.ShowMessageAsync(App.GetResourceString("String.Mainwindow.LaunchError"), App.GetResourceString("String.Mainwindow.Launch.LaunchError") + ex.Message);
                         return;
                     }
                     #endregion
@@ -932,8 +912,8 @@ namespace NsisoLauncher
         {
             if (App.downloader.IsBusy)
             {
-                var choose = this.ShowModalMessageExternal("后台正在下载中", "是否确认关闭程序？这将会取消下载"
-                , MessageDialogStyle.AffirmativeAndNegative,
+                var choose = this.ShowModalMessageExternal(App.GetResourceString("String.Downloadwindow.BackDown"),
+                    App.GetResourceString("String.Downloadwindow.BackDown_S"), MessageDialogStyle.AffirmativeAndNegative,
                 new MetroDialogSettings()
                 {
                     AffirmativeButtonText = App.GetResourceString("String.Base.Yes"),
@@ -952,22 +932,6 @@ namespace NsisoLauncher
         #endregion
 
         #region Tools
-        private bool IsValidateLoginData(LoginDialogData data)
-        {
-            if (data == null)
-            {
-                return false;
-            }
-            if (string.IsNullOrWhiteSpace(data.Username))
-            {
-                return false;
-            }
-            if (string.IsNullOrWhiteSpace(data.Password))
-            {
-                return false;
-            }
-            return true;
-        }
 
         private void CancelLaunching(LaunchResult result)
         {

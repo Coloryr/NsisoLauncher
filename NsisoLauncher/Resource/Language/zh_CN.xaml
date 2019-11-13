@@ -42,46 +42,28 @@
     <sys:String x:Key="String.Mainwindow.Launching">启动中...</sys:String>
      
     <!--#region 登陆-->
-    <sys:String x:Key="String.Mainwindow.Auth.Mojang.Verifying">在线正版验证中...</sys:String>
-    <sys:String x:Key="String.Mainwindow.Auth.Mojang.Verifying2">这可能需要几秒的时间，我们正在进行处理（正在使用Mojang正版验证）</sys:String>
-    <sys:String x:Key="String.Mainwindow.Auth.Mojang.AutoVerifying">在线正版验证中(自动验证)...</sys:String>
-    <sys:String x:Key="String.Mainwindow.Auth.Mojang.AutoVerifying2">这可能需要几秒的时间，我们正在进行处理（正在使用Mojang正版验证）</sys:String>
-    <sys:String x:Key="String.Mainwindow.Auth.Mojang.VerificationFailed">正版验证失败</sys:String>
-    <sys:String x:Key="String.Mainwindow.Auth.Mojang.VerificationFailed2">请确认您的正版账号密码填写无误，并已购买正版。账户异常也可能导致登陆错误，您可以进入Mojang官网进行查询。错误信息:</sys:String>
-    <sys:String x:Key="String.Mainwindow.Auth.Mojang.AutoVerificationFailed">自动正版验证失败</sys:String>
-    <sys:String x:Key="String.Mainwindow.Auth.Mojang.AutoVerificationFailed2">保存的验证信息已过期，请重新登陆（正在使用Mojang正版验证）</sys:String>
-    <sys:String x:Key="String.Mainwindow.Auth.Mojang.Login">请键入登陆信息</sys:String>
-    <sys:String x:Key="String.Mainwindow.Auth.Mojang.Login2">您启用了在线验证（Mojang官方正版）</sys:String>
-
-    <sys:String x:Key="String.Mainwindow.Auth.Nide8.Verifying">在线验证中（统一通行证）...</sys:String>
-    <sys:String x:Key="String.Mainwindow.Auth.Nide8.Verifying2">这可能需要几秒的时间，我们正在进行处理（正在使用服务器统一通行证验证）</sys:String>
-    <sys:String x:Key="String.Mainwindow.Auth.Nide8.AutoVerifying">在线验证中(自动验证)...</sys:String>
-    <sys:String x:Key="String.Mainwindow.Auth.Nide8.AutoVerifying2">这可能需要几秒的时间，我们正在进行处理。（正在使用服务器统一通行证验证）</sys:String>
-    <sys:String x:Key="String.Mainwindow.Auth.Nide8.VerificationFailed">统一通行证验证失败</sys:String>
-    <sys:String x:Key="String.Mainwindow.Auth.Nide8.VerificationFailed2">请确认您的统一通行证账号密码填写无误，您可以联系服主咨询。错误信息:</sys:String>
-    <sys:String x:Key="String.Mainwindow.Auth.Nide8.AutoVerificationFailed">自动验证失败</sys:String>
-    <sys:String x:Key="String.Mainwindow.Auth.Nide8.AutoVerificationFailed2">保存的验证信息已过期，请重新登陆（正在使用服务器统一通行证验证）</sys:String>
-    <sys:String x:Key="String.Mainwindow.Auth.Nide8.Login">请键入登陆信息</sys:String>
-    <sys:String x:Key="String.Mainwindow.Auth.Nide8.Login2">您正在登陆服务器统一通行证</sys:String>
     <sys:String x:Key="String.Mainwindow.Auth.Nide8.NoID">没有设置服务器ID</sys:String>
     <sys:String x:Key="String.Mainwindow.Auth.Nide8.NoID2">统一验证服务器ID为空，如果您是服主，请在用户设置中填写通行证后台提供的服务器ID。</sys:String>
 
-    <sys:String x:Key="String.Mainwindow.Auth.Custom.Verifying">在线验证中...</sys:String>
-    <sys:String x:Key="String.Mainwindow.Auth.Custom.Verifying2">这可能需要几秒的时间，我们正在进行处理（正在使用自定义验证）</sys:String>
-    <sys:String x:Key="String.Mainwindow.Auth.Custom.AutoVerifying">在线验证中(自动验证)...</sys:String>
-    <sys:String x:Key="String.Mainwindow.Auth.Custom.AutoVerifying2">这可能需要几秒的时间，我们正在进行处理（正在使用自定义验证）</sys:String>
-    <sys:String x:Key="String.Mainwindow.Auth.Custom.VerificationFailed">验证失败</sys:String>
-    <sys:String x:Key="String.Mainwindow.Auth.Custom.VerificationFailed2">请确认您的账号密码填写无误，以及验证服务器是否正常。错误信息:</sys:String>
-    <sys:String x:Key="String.Mainwindow.Auth.Custom.AutoVerificationFailed">自动验证失败</sys:String>
-    <sys:String x:Key="String.Mainwindow.Auth.Custom.AutoVerificationFailed2">保存的验证信息已过期，请重新登陆（正在使用自定义验证）</sys:String>
-    <sys:String x:Key="String.Mainwindow.Auth.Custom.Login">请键入登陆信息</sys:String>
-    <sys:String x:Key="String.Mainwindow.Auth.Custom.Login2">您启用了自定义验证</sys:String>
     <sys:String x:Key="String.Mainwindow.Auth.Custom.NoAdrress">未设置自定义验证服务器地址</sys:String>
     <sys:String x:Key="String.Mainwindow.Auth.Custom.NoAdrress2">请在设置：用户验证设置：高级验证中设置自定义验证服务器(authlib或其它验证系统)</sys:String>
 
     <sys:String x:Key="String.Mainwindow.Auth.Add">添加新验证方式</sys:String>
+
+    <sys:String x:Key="String.Mainwindow.Auth.Error.Password">您输入的账号或密码为空</sys:String>
+    <sys:String x:Key="String.Mainwindow.Auth.Error.Check_Login">请检查您是否正确填写登陆信息</sys:String>
+    <sys:String x:Key="String.Mainwindow.Auth.Error.Login_Error">登录失败</sys:String>
+    <sys:String x:Key="String.Mainwindow.Auth.Error.Null">发生空指针异常</sys:String>
+    <sys:String x:Key="String.Mainwindow.Auth.Error.Login_Save_out">您的登陆信息已过期，请您重新进行登陆\n{0}</sys:String>
+    <sys:String x:Key="String.Mainwindow.Auth.Error.Password_Error">请您确认您输入的账号密码正确\n{0}</sys:String>
+    <sys:String x:Key="String.Mainwindow.Auth.Error.Auth_Error_notfound">请确认您的Authlib-Injector验证服务器（Authlib-Injector验证）或自定义验证服务器（自定义验证）地址正确或确认账号和游戏角色存在。\n{0}</sys:String>
+    <sys:String x:Key="String.Mainwindow.Auth.Error.Player_notfound">请确认您的账号和游戏角色存在\n{0}</sys:String>
+    <sys:String x:Key="String.Mainwindow.Auth.Error.Other">其他错误\n{0}</sys:String>
+    <sys:String x:Key="String.Mainwindow.Auth.Error.Core_Error">启动器内部错误\n{0}</sys:String>
+    <sys:String x:Key="String.Mainwindow.Auth.Error.Error">未知错误\n{0}</sys:String>
     <!--#endregion-->
 
+    <sys:String x:Key="String.Mainwindow.Launch.LaunchError">启动后等待游戏窗口响应异常", "这可能是由于游戏进程发生意外（闪退）导致的。\n</sys:String>
     <sys:String x:Key="String.Mainwindow.LaunchError">启动错误</sys:String>
     <sys:String x:Key="String.Mainwindow.GameExitWithNoWindow">游戏进程在未显示出窗口前退出</sys:String>
     <sys:String x:Key="String.Mainwindow.GameExitWithNoWindow2">可能游戏启动时发生错误</sys:String>
@@ -99,6 +81,9 @@
     <sys:String x:Key="String.MainWindow.Auth.AI">authlib-injector验证</sys:String>
     <sys:String x:Key="String.MainWindow.Auth.Custom">自定义验证</sys:String>
 
+    <sys:String x:Key="String.Mainwindow.GameExit.Error">游戏非正常退出</sys:String>
+    <sys:String x:Key="String.Mainwindow.GameExit.Error_t">这很有可能是因为游戏崩溃导致的，退出代码:{0}，游戏持续时间:{1}</sys:String>
+
     <sys:String x:Key="String.Downloadwindow.Windows">下载监视器</sys:String>
     <sys:String x:Key="String.Downloadwindow.TaskName">任务名称</sys:String>
     <sys:String x:Key="String.Downloadwindow.TaskProgress">下载进度</sys:String>
@@ -113,6 +98,9 @@
     <sys:String x:Key="String.Downloadwindow.MakesureCancel">您确定要取消下载?</sys:String>
     <sys:String x:Key="String.Downloadwindow.MakesureCancel2">现在后悔还来得及</sys:String>
     <sys:String x:Key="String.Downloadwindow.NewTask">新建下载任务</sys:String>
+
+    <sys:String x:Key="String.Downloadwindow.BackDown">后台正在下载中</sys:String>
+    <sys:String x:Key="String.Downloadwindow.BackDown_S">是否确认关闭程序？这将会取消下载</sys:String>
 
     <sys:String x:Key="String.NewDownloadTaskWindow">新建下载任务窗口</sys:String>
     <sys:String x:Key="String.NewDownloadTaskWindow.Loading">加载中</sys:String>
