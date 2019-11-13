@@ -403,7 +403,7 @@ namespace NsisoLauncher.Windows
 
         public async void SaveAuthModule(KeyValuePair<string, AuthenticationNode> node)
         {
-            await this.ShowMessageAsync("保存成功", "记得点击应用按钮保存噢");
+            await this.ShowMessageAsync("保存成功", "已修改你的设置");
         }
 
         public async void DeleteAuthModule(KeyValuePair<string, AuthenticationNode> node)

@@ -150,7 +150,7 @@ namespace NsisoLauncher.Controls
                         authTypeCombobox.SelectedValue = node.AuthModule;
                     is_re = false;
                 }
-                if (App.config.MainConfig.User.Nide8ServerDependence)
+                if (string.IsNullOrWhiteSpace(App.config.MainConfig.User.LockAuthName) == false)
                 {
                     downloadButton.Content = App.GetResourceString("String.Base.Register");
                     addauth.Visibility = Visibility.Hidden;
@@ -253,7 +253,18 @@ namespace NsisoLauncher.Controls
                                 App.GetResourceString("String.Mainwindow.Auth.Nide8.NoID2"));
                     return;
                 }
-                System.Diagnostics.Process.Start(string.Format("https://login2.nide8.com:233/{0}/loginreg", node.Property["nide8ID"]));
+                new Register(string.Format("https://login2.nide8.com:233/{0}/loginreg", node.Property["nide8ID"])).ShowDialog();
+            }
+            else if (string.IsNullOrWhiteSpace(App.config.MainConfig.User.LockAuthName) == false)
+            {
+                AuthenticationNode node = GetSelectedAuthenticationNode();
+                if (string.IsNullOrWhiteSpace(node.REG) == true)
+                {
+                    await DialogManager.ShowMessageAsync(null, App.GetResourceString("String.Mainwindow.Auth.REG.NoID"),
+                                App.GetResourceString("String.Mainwindow.Auth.REG.NoID_t"));
+                    return;
+                }
+                new Register(node.REG).ShowDialog();
             }
             else
             {

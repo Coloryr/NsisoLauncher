@@ -35,14 +35,17 @@ namespace NsisoLauncher.Controls
                     case AuthenticationType.NIDE8:
                         nide8Radio.IsChecked = true;
                         authDataTextbox.Text = authModule.Value.Property["nide8ID"];
+                        REGISTER.Visibility = Visibility.Hidden;
                         break;
                     case AuthenticationType.AUTHLIB_INJECTOR:
                         aiRadio.IsChecked = true;
                         authDataTextbox.Text = authModule.Value.Property["authserver"];
+                        REGISTER.Visibility = Visibility.Visible;
                         break;
                     case AuthenticationType.CUSTOM_SERVER:
                         customRadio.IsChecked = true;
                         authDataTextbox.Text = authModule.Value.Property["authserver"];
+                        REGISTER.Visibility = Visibility.Visible;
                         break;
                     default:
                         return;
@@ -58,18 +61,21 @@ namespace NsisoLauncher.Controls
         {
             authmoduleLable.Content = "统一通行证ID：";
             authenticationType = AuthenticationType.NIDE8;
+            REGISTER.Visibility = Visibility.Hidden;
         }
 
         private void AI_Checked(object sender, RoutedEventArgs e)
         {
             authmoduleLable.Content = "验证地址：";
             authenticationType = AuthenticationType.AUTHLIB_INJECTOR;
+            REGISTER.Visibility = Visibility.Visible;
         }
 
         private void Custom_Checked(object sender, RoutedEventArgs e)
         {
             authmoduleLable.Content = "代理服务器地址：";
             authenticationType = AuthenticationType.CUSTOM_SERVER;
+            REGISTER.Visibility = Visibility.Visible;
         }
 
         public void ClearAll()
@@ -92,7 +98,7 @@ namespace NsisoLauncher.Controls
             {
                 string authName = authmoduleNameTextbox.Text;
                 string authData = authDataTextbox.Text;
-                AuthenticationNode node = new AuthenticationNode() { AuthType = authenticationType, Name = authName };
+                AuthenticationNode node = new AuthenticationNode() { AuthType = authenticationType, Name = authName, REG = REGISTER_URI.Text };
                 switch (authenticationType)
                 {
                     case AuthenticationType.NIDE8:
@@ -139,6 +145,7 @@ namespace NsisoLauncher.Controls
                 string authData = authDataTextbox.Text;
                 authModule.Value.Property.Clear();
                 authModule.Value.AuthType = authenticationType;
+                authModule.Value.REG = REGISTER_URI.Text;
                 switch (authenticationType)
                 {
                     case AuthenticationType.NIDE8:

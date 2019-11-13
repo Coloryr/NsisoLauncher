@@ -45,6 +45,9 @@
     <sys:String x:Key="String.Mainwindow.Auth.Nide8.NoID">没有设置服务器ID</sys:String>
     <sys:String x:Key="String.Mainwindow.Auth.Nide8.NoID2">统一验证服务器ID为空，如果您是服主，请在用户设置中填写通行证后台提供的服务器ID。</sys:String>
 
+    <sys:String x:Key="String.Mainwindow.Auth.REG.NoID">没有设置注册链接</sys:String>
+    <sys:String x:Key="String.Mainwindow.Auth.REG.NoID_t">请联系服主获取注册链接</sys:String>
+
     <sys:String x:Key="String.Mainwindow.Auth.Custom.NoAdrress">未设置自定义验证服务器地址</sys:String>
     <sys:String x:Key="String.Mainwindow.Auth.Custom.NoAdrress2">请在设置：用户验证设置：高级验证中设置自定义验证服务器(authlib或其它验证系统)</sys:String>
 

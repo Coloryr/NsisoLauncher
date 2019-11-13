@@ -488,6 +488,11 @@ namespace NsisoLauncher.Config
         /// nide8ID:NIDE8的验证ID
         /// </summary>
         public Dictionary<string, string> Property { get; set; } = new Dictionary<string, string>();
+
+        /// <summary>
+        /// 注册的地址
+        /// </summary>
+        public string REG { get; set; }
     }
 
     /// <summary>
