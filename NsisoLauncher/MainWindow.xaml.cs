@@ -352,21 +352,6 @@ namespace NsisoLauncher
                 }
                 #endregion
 
-                #region 多语言支持变量
-                LoginDialogSettings loginDialogSettings = new LoginDialogSettings()
-                {
-                    NegativeButtonText = App.GetResourceString("String.Base.Cancel"),
-                    AffirmativeButtonText = App.GetResourceString("String.Base.Login"),
-                    RememberCheckBoxText = App.GetResourceString("String.Base.ShouldRememberLogin"),
-                    UsernameWatermark = App.GetResourceString("String.Base.Username"),
-                    InitialUsername = args.UserNode.UserName,
-                    RememberCheckBoxVisibility = Visibility,
-                    EnablePasswordPreview = true,
-                    PasswordWatermark = App.GetResourceString("String.Base.Password"),
-                    NegativeButtonVisibility = Visibility.Visible
-                };
-                #endregion
-
                 //主验证器接口
                 IAuthenticator authenticator = null;
 
@@ -482,6 +467,7 @@ namespace NsisoLauncher
                                     args.UserNode.AccessToken,
                                     args.UserNode.GetSelectProfileUUID(),
                                     args.UserNode.UserData);
+                                authenticator = cYggTokenCator;
                             }
                             else
                             {
@@ -589,12 +575,12 @@ namespace NsisoLauncher
                         case AuthState.REQ_LOGIN:
                             args.UserNode.ClearAuthCache();
                             await this.ShowMessageAsync(App.GetResourceString("String.Mainwindow.Auth.Error.Login_Error"),
-                                string.Format(App.GetResourceString("String.Mainwindow.Auth.Error.Login_Save_out"), authResult.Error.ErrorMessage));
+                                App.GetResourceString("String.Mainwindow.Auth.Error.Login_Save_out"));
                             mainPanel.PasswordBox.Password = null;
                             return;
                         case AuthState.ERR_INVALID_CRDL:
                             await this.ShowMessageAsync(App.GetResourceString("String.Mainwindow.Auth.Error.Login_Error"),
-                                string.Format(App.GetResourceString("String.Mainwindow.Auth.Error.Password_Error"), authResult.Error.ErrorMessage));
+                                App.GetResourceString("String.Mainwindow.Auth.Error.Password_Error"));
                             mainPanel.PasswordBox.Password = null;
                             return;
                         case AuthState.ERR_NOTFOUND:

@@ -54,13 +54,13 @@
     <sys:String x:Key="String.Mainwindow.Auth.Error.Check_Login">请检查您是否正确填写登陆信息</sys:String>
     <sys:String x:Key="String.Mainwindow.Auth.Error.Login_Error">登录失败</sys:String>
     <sys:String x:Key="String.Mainwindow.Auth.Error.Null">发生空指针异常</sys:String>
-    <sys:String x:Key="String.Mainwindow.Auth.Error.Login_Save_out">您的登陆信息已过期，请您重新进行登陆\n{0}</sys:String>
-    <sys:String x:Key="String.Mainwindow.Auth.Error.Password_Error">请您确认您输入的账号密码正确\n{0}</sys:String>
-    <sys:String x:Key="String.Mainwindow.Auth.Error.Auth_Error_notfound">请确认您的Authlib-Injector验证服务器（Authlib-Injector验证）或自定义验证服务器（自定义验证）地址正确或确认账号和游戏角色存在。\n{0}</sys:String>
-    <sys:String x:Key="String.Mainwindow.Auth.Error.Player_notfound">请确认您的账号和游戏角色存在\n{0}</sys:String>
-    <sys:String x:Key="String.Mainwindow.Auth.Error.Other">其他错误\n{0}</sys:String>
-    <sys:String x:Key="String.Mainwindow.Auth.Error.Core_Error">启动器内部错误\n{0}</sys:String>
-    <sys:String x:Key="String.Mainwindow.Auth.Error.Error">未知错误\n{0}</sys:String>
+    <sys:String x:Key="String.Mainwindow.Auth.Error.Login_Save_out">您的登陆信息已过期，请您重新进行登陆</sys:String>
+    <sys:String x:Key="String.Mainwindow.Auth.Error.Password_Error">请您确认您输入的账号密码正确</sys:String>
+    <sys:String x:Key="String.Mainwindow.Auth.Error.Auth_Error_notfound">请确认您的Authlib-Injector验证服务器（Authlib-Injector验证）或自定义验证服务器（自定义验证）地址正确或确认账号和游戏角色存在。</sys:String>
+    <sys:String x:Key="String.Mainwindow.Auth.Error.Player_notfound">请确认您的账号和游戏角色存在</sys:String>
+    <sys:String x:Key="String.Mainwindow.Auth.Error.Other">其他错误:{0}</sys:String>
+    <sys:String x:Key="String.Mainwindow.Auth.Error.Core_Error">启动器内部错误:{0}</sys:String>
+    <sys:String x:Key="String.Mainwindow.Auth.Error.Error">未知错误:{0}</sys:String>
     <!--#endregion-->
 
     <sys:String x:Key="String.Mainwindow.Launch.LaunchError">启动后等待游戏窗口响应异常", "这可能是由于游戏进程发生意外（闪退）导致的。\n</sys:String>

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -18,6 +19,7 @@ namespace NsisoLauncherCore.Net
         {
             using (HttpClient client = new HttpClient())
             {
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3;
                 return await client.GetStringAsync(uri);
             }
         }
