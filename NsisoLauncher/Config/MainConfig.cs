@@ -269,6 +269,11 @@ namespace NsisoLauncher.Config
         /// 是否禁止数据追踪
         /// </summary>
         public bool NoTracking { get; set; }
+        
+        /// <summary>
+        /// 是否检查更新
+        /// </summary>
+        public bool CheckUpdate { get; set; }
     }
 
     /// <summary>
@@ -305,6 +310,11 @@ namespace NsisoLauncher.Config
         /// 代理服务器密码
         /// </summary>
         public string ProxyUserPassword { get; set; }
+        
+        /// <summary>
+        /// 下载后是否检查哈希值（前提为可用）
+        /// </summary>
+        public bool CheckDownloadFileHash { get; set; }
     }
 
     /// <summary>

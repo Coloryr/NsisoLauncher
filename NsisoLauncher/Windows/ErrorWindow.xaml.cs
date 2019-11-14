@@ -15,6 +15,7 @@ namespace NsisoLauncher.Windows
     public partial class ErrorWindow : MetroWindow
     {
         Exception exception;
+        string report;
 
         string[] funny = {
             "你所不知道的事实：参与这个启动器的开发者只有一个人，而且整个开发工作室也只有这一个人",
@@ -45,30 +46,6 @@ namespace NsisoLauncher.Windows
             catch (Exception)
             {
             }
-        }
-
-        private async void RebootButton_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                var progress = await this.ShowProgressAsync("正在处理中", "请稍后...");
-                progress.SetIndeterminate();
-                string msg = exception.ToString();
-                await App.nsisoAPIHandler.PostLogAsync(NsisoLauncherCore.Modules.LogLevel.FATAL, msg);
-            }
-            catch (Exception ex)
-            {
-                App.logHandler.AppendError(ex);
-            }
-            finally
-            {
-                App.Reboot(false);
-            }
-        }
-
-        private void CloseButton_Click(object sender, RoutedEventArgs e)
-        {
-            this.Close();
         }
 
         private void CopyButton_Click(object sender, RoutedEventArgs e)

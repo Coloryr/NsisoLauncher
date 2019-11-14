@@ -710,9 +710,21 @@ namespace NsisoLauncher
 
                 if (losts.Count != 0)
                 {
-                    App.downloader.SetDownloadTasks(losts);
-                    App.downloader.StartDownload();
-                    await new Windows.DownloadWindow().ShowWhenDownloading();
+                     if (!App.downloader.IsBusy)
+                    {
+                        App.downloader.SetDownloadTasks(losts);
+                        App.downloader.StartDownload();
+                        var downloadResult = await new DownloadWindow().ShowWhenDownloading();
+                        if (downloadResult?.ErrorList?.Count != 0)
+                        {
+                            await this.ShowMessageAsync(string.Format("有{0}个文件下载补全失败", downloadResult.ErrorList.Count),
+                                "这可能是因为本地网络问题或下载源问题，您可以尝试检查网络环境或在设置中切换首选下载源，启动器将继续尝试启动");
+                        }
+                    }
+                    else
+                    {
+                        await this.ShowMessageAsync("无法下载补全：当前有正在下载中的任务", "请等待其下载完毕或取消下载，启动器将尝试继续启动");
+                    }
                 }
 
                 #endregion
@@ -730,14 +742,14 @@ namespace NsisoLauncher
                 }
                 else if (args.AuthNode.AuthType == AuthenticationType.AUTHLIB_INJECTOR)
                 {
-                    launchSetting.JavaAgent += string.Format(" \"{0}\"={1}", App.handler.GetAIJarPath(), args.AuthNode.Property["authserver"] + "/authserver");
+                    launchSetting.JavaAgent += string.Format(" \"{0}\"={1}", App.handler.GetAIJarPath(), args.AuthNode.Property["authserver"]);
                 }
 
                 //直连服务器设置
                 var lockAuthNode = App.config.MainConfig.User.GetLockAuthNode();
                 if (App.config.MainConfig.User.Nide8ServerDependence &&
                     (lockAuthNode != null) &&
-                        (lockAuthNode.AuthType == AuthenticationType.NIDE8) && App.config.MainConfig.Server.LaunchToServer)
+                        (lockAuthNode.AuthType == AuthenticationType.NIDE8))
                 {
                     var nide8ReturnResult = await (new NsisoLauncherCore.Net.Nide8API.APIHandler(lockAuthNode.Property["nide8ID"])).GetInfoAsync();
                     if (!string.IsNullOrWhiteSpace(nide8ReturnResult.Meta.ServerIP))
@@ -892,6 +904,12 @@ namespace NsisoLauncher
                 }
             }
             #endregion
+            #region 检查更新
+            if (App.config.MainConfig.Launcher.CheckUpdate)
+            {
+                await CheckUpdate();
+            }
+            #endregion
         }
 
         private void mainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
@@ -918,12 +936,41 @@ namespace NsisoLauncher
         #endregion
 
         #region Tools
+        private bool IsValidateLoginData(LoginDialogData data)
+        {
+            if (data == null)
+            {
+                return false;
+            }
+            if (string.IsNullOrWhiteSpace(data.Username))
+            {
+                return false;
+            }
+            if (string.IsNullOrWhiteSpace(data.Password))
+            {
+                return false;
+            }
+            return true;
+        }
 
         private void CancelLaunching(LaunchResult result)
         {
             if (!result.Process.HasExited)
             {
                 result.Process.Kill();
+            }
+        }
+        private async Task CheckUpdate()
+        {
+            var ver = await App.nsisoAPIHandler.GetLatestLauncherVersion();
+            if (ver != null)
+            {
+                System.Version currentVersion = Application.ResourceAssembly.GetName().Version;
+                if ((ver.Version > currentVersion) &&
+                    ver.ReleaseType.Equals("release", StringComparison.OrdinalIgnoreCase))
+                {
+                    new UpdateWindow(ver).Show();
+                }
             }
         }
         #endregion

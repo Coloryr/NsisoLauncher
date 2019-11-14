@@ -219,7 +219,7 @@ namespace NsisoLauncher.Controls
             string userName = userComboBox.Text;
             string selectedUserUUID = (string)userComboBox.SelectedValue;
             bool isNewUser = string.IsNullOrWhiteSpace(selectedUserUUID);
-            UserNode userNode;
+            UserNode userNode = null;
             if (!string.IsNullOrWhiteSpace(userName))
             {
                 if (!isNewUser)

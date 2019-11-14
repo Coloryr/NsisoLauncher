@@ -46,14 +46,38 @@ namespace NsisoLauncher.Windows
             {
                 speedValues.Add(0);
             }
+            plotter.Series = new SeriesCollection() { new LineSeries() { Values = speedValues, PointGeometry = null, LineSmoothness = 0, Title = "下载速度" } };
+            YAxis.LabelFormatter = value =>
+           {
+               string speedUnit;
+               double speedValue;
+               if (value > 1048576)
+               {
+                   speedUnit = "MB/s";
+                   speedValue = Math.Round(value / 1048576);
+               }
+               else if (value > 1024)
+               {
+                   speedUnit = "KB/s";
+                   speedValue = Math.Round(value / 1024);
+               }
+               else
+               {
+                   speedUnit = "B/s";
+                   speedValue = value;
+               }
+               return string.Format("{0}{1}", speedValue, speedUnit);
+           };
+            plotter.DisableAnimations = true;
         }
 
-        public async Task ShowWhenDownloading()
+        public async Task<DownloadCompletedArg> ShowWhenDownloading()
         {
             this.Topmost = true;
             this.Show();
-            await Task.Factory.StartNew(() =>
+            return await Task.Factory.StartNew(() =>
             {
+                DownloadCompletedArg completedArg = null;
                 try
                 {
                     EventWaitHandle _waitHandle = new AutoResetEvent(false);
@@ -68,6 +92,7 @@ namespace NsisoLauncher.Windows
                             catch (Exception) { }
                         }));
                         _waitHandle.Set();
+                        completedArg = b;
                     };
                     _waitHandle.WaitOne();
                 }
@@ -79,6 +104,7 @@ namespace NsisoLauncher.Windows
                     };
                     App.CatchAggregateException(this, args);
                 }
+                return completedArg;
             });
         }
 
@@ -133,18 +159,25 @@ namespace NsisoLauncher.Windows
 
         private async void Button_Click(object sender, RoutedEventArgs e)
         {
-            var result = await this.ShowMessageAsync(App.GetResourceString("String.Downloadwindow.MakesureCancel"),
-                App.GetResourceString("String.Downloadwindow.MakesureCancel"),
-                MessageDialogStyle.AffirmativeAndNegative,
-                new MetroDialogSettings()
-                {
-                    AffirmativeButtonText = App.GetResourceString("String.Base.Yes"),
-                    NegativeButtonText = App.GetResourceString("String.Base.Cancel")
-                });
-            if (result == MessageDialogResult.Affirmative)
+            if (App.downloader.IsBusy)
             {
-                App.downloader.RequestStop();
-                this.progressBar.Value = 0;
+                var result = await this.ShowMessageAsync(App.GetResourceString("String.Downloadwindow.MakesureCancel"),
+                    App.GetResourceString("String.Downloadwindow.MakesureCancel"),
+                    MessageDialogStyle.AffirmativeAndNegative,
+                    new MetroDialogSettings()
+                    {
+                        AffirmativeButtonText = App.GetResourceString("String.Base.Yes"),
+                        NegativeButtonText = App.GetResourceString("String.Base.Cancel")
+                    });
+                if (result == MessageDialogResult.Affirmative)
+                {
+                    App.downloader.RequestStop();
+                    this.progressBar.Value = 0;
+                }
+            }
+            else
+            {
+                await this.ShowMessageAsync("没有需要取消下载的任务", "当前下载器并没有在工作");
             }
         }
 

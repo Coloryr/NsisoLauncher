@@ -172,16 +172,12 @@
                                 <ComboBox HorizontalAlignment="Left" Margin="0,0,0,0" Width="120" Text="{Binding Lauguage}" Name="Lauguage"/>
                                 <CheckBox Content="{DynamicResource String.Settingwindow.Env.Habbit.Exit}" IsChecked="{Binding Environment.ExitAfterLaunch}" Margin="0,5,0,5"/>
                             </StackPanel>
-
                         </Expander>
-                        <Expander Header="{DynamicResource String.Settingwindow.Env.Debug}" Margin="0,0,0,5">
+                        <Expander Header="{DynamicResource String.Settingwindow.Env.Launcher}" Margin="0,0,0,5">
                             <StackPanel>
-                                <CheckBox Content="{DynamicResource String.Settingwindow.Env.Debug.Mode}" IsChecked="{Binding Launcher.Debug}"/>
-                            </StackPanel>
-                        </Expander>
-                        <Expander Header="隐私" Margin="0,0,0,5">
-                            <StackPanel>
-                                <CheckBox Content="禁用数据收集" IsChecked="{Binding Launcher.NoTracking}"/>
+                                <CheckBox Content="自动检查启动器更新" IsChecked="{Binding Launcher.CheckUpdate}" Margin="0,0,0,5"/>
+                                <CheckBox Content="{DynamicResource String.Settingwindow.Env.Launcher.DebugMode}" IsChecked="{Binding Launcher.Debug}" Margin="0,0,0,5"/>
+                                <CheckBox Content="禁用数据收集" IsChecked="{Binding Launcher.NoTracking}" Margin="0,0,0,5"/>
                             </StackPanel>
                         </Expander>
                         <TextBlock TextWrapping="Wrap" Text="{DynamicResource String.Settingwindow.Env.Note}"/>
@@ -225,6 +221,11 @@
                                 <TextBox Text="{Binding Download.ProxyUserName}" Margin="0,0,0,5"/>
                                 <Label Content="{DynamicResource String.Settingwindow.Download.Proxy.Password}"/>
                                 <TextBox Text="{Binding Download.ProxyUserPassword}" Margin="0,0,0,5"/>
+                            </StackPanel>
+                        </Expander>
+                        <Expander Header="高级下载设置" Margin="0,0,0,5">
+                            <StackPanel>
+                                <CheckBox Content="校验下载文件哈希值" IsChecked="{Binding Download.CheckDownloadFileHash}"/>
                             </StackPanel>
                         </Expander>
                     </StackPanel>
@@ -287,9 +288,10 @@
                         <Expander Header="全局用户设置">
                             <StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                                    <Label Content="全局使用验证模型："/>
                                     <ComboBox x:Name="lockauthCombobox" Width="200" Margin="0,0,5,0"
                                     DisplayMemberPath="Value.Name" ItemsSource="{Binding User.AuthenticationDic}"              
-                                    SelectedValuePath="Key" SelectedValue="{Binding User.LockAuthName}" Controls:TextBoxHelper.Watermark="选择全局验证模型"/>
+                                    SelectedValuePath="Key" SelectedValue="{Binding User.LockAuthName}"/>
                                     <Button Width="100" Content="清除全局验证选择" Click="clearAllauthButton_Click"/>
                                 </StackPanel>
                                 <CheckBox Margin="0,0,0,10" Content="统一通行证服务器依赖（仅在全局使用统一通行证验证模型，且统一通行证后台正确设置后生效）" IsChecked="{Binding User.Nide8ServerDependence}"/>
@@ -424,7 +426,9 @@
                 Margin="0,0,10,10" Style="{StaticResource AccentedSquareButtonStyle}" Height="35" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="120" Click="saveButton_Click"/>
         <Button x:Name="cancelButton" Content="{DynamicResource String.Base.Cancel}" 
                 Margin="0,0,135,10" Style="{DynamicResource SquareButtonStyle}" Height="35" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="120" Click="cancelButton_Click"/>
-        <TextBlock x:Name="versionTextBlock" Opacity="0.5" HorizontalAlignment="Left" Margin="10,0,0,10" TextWrapping="Wrap" Text="0.0.0.0" Height="15" VerticalAlignment="Bottom"/>
-
+        <StackPanel Orientation="Horizontal" Margin="10,0,0,10" VerticalAlignment="Bottom">
+            <TextBlock Opacity="0.5" TextWrapping="Wrap" Text="NsisoLauncher" Height="15" Margin="0,0,10,0"/>
+            <TextBlock x:Name="versionTextBlock" Opacity="0.5" TextWrapping="Wrap" Text="0.0.0.0" Height="15"/>
+        </StackPanel>
     </Grid>
 </Controls:MetroWindow>
