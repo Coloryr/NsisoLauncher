@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Security.Cryptography;
-using System.Text;
 
 namespace NsisoLauncherCore.Util.Checker
 {
@@ -18,7 +15,7 @@ namespace NsisoLauncherCore.Util.Checker
             {
                 throw new ArgumentException("检验器缺少校验值");
             }
-            return string.Equals(CheckSum, GetFileChecksum());
+            return string.Equals(CheckSum, GetFileChecksum(), StringComparison.OrdinalIgnoreCase);
         }
 
         public string GetFileChecksum()
@@ -33,7 +30,7 @@ namespace NsisoLauncherCore.Util.Checker
             md5.Dispose();//释放当前实例使用的所有资源
             file.Dispose();
             string result = BitConverter.ToString(md5Bytes);//将运算结果转为string类型
-            result = result.Replace("-", "").ToUpper();
+            result = result.Replace("-", "");
             return result;
         }
     }

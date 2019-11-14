@@ -46,29 +46,6 @@ namespace NsisoLauncher.Windows
             {
                 speedValues.Add(0);
             }
-            plotter.Series = new SeriesCollection() { new LineSeries() { Values = speedValues, PointGeometry = null, LineSmoothness = 0, Title = "下载速度" } };
-            YAxis.LabelFormatter = value =>
-           {
-               string speedUnit;
-               double speedValue;
-               if (value > 1048576)
-               {
-                   speedUnit = "MB/s";
-                   speedValue = Math.Round(value / 1048576);
-               }
-               else if (value > 1024)
-               {
-                   speedUnit = "KB/s";
-                   speedValue = Math.Round(value / 1024);
-               }
-               else
-               {
-                   speedUnit = "B/s";
-                   speedValue = value;
-               }
-               return string.Format("{0}{1}", speedValue, speedUnit);
-           };
-            plotter.DisableAnimations = true;
         }
 
         public async Task<DownloadCompletedArg> ShowWhenDownloading()

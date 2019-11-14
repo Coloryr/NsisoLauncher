@@ -969,7 +969,7 @@ namespace NsisoLauncher
                 if ((ver.Version > currentVersion) &&
                     ver.ReleaseType.Equals("release", StringComparison.OrdinalIgnoreCase))
                 {
-                    new UpdateWindow(ver).Show();
+
                 }
             }
         }
