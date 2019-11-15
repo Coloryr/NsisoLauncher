@@ -1,0 +1,202 @@
+﻿ <ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+    <!--Color_yr Add Start-->
+    <sys:String x:Key="String.Base.Setting"></sys:String>
+    <sys:String x:Key="String.Mainwindow.Loging">ログイン中...</sys:String>
+    <sys:String x:Key="String.Mainwindow.Staring">読み込み中...</sys:String>
+    <sys:String x:Key="String.Mainwindow.InputPassWord">パスワードを入力してください</sys:String>
+    <!--Color_yr Add Stop-->
+
+    <sys:String x:Key="String.LanguageInfo.Lang">日本語</sys:String>
+    <sys:String x:Key="String.LanguageInfo.Author">Nsiso</sys:String>
+    
+    <sys:String x:Key="String.Base.LauncherName">Nsisoランチャー</sys:String>
+    <sys:String x:Key="String.Base.Launch">プレイ</sys:String>
+    <sys:String x:Key="String.Base.Download">ダウンロード</sys:String>
+    <sys:String x:Key="String.Base.Cancel">キャンセル</sys:String>
+    <sys:String x:Key="String.Base.Unremember">メッセージを表示しない</sys:String>
+    <sys:String x:Key="String.Base.Apply">適用する</sys:String>
+    <sys:String x:Key="String.Base.Login">ログイン</sys:String>
+    <sys:String x:Key="String.Base.Yes">確認する</sys:String>
+    <sys:String x:Key="String.Base.Username">ユーザー名</sys:String>
+    <sys:String x:Key="String.Base.Password">パスワード</sys:String>
+    <sys:String x:Key="String.Base.Register">新規登録</sys:String>
+    <sys:String x:Key="String.Base.Choose">選択する</sys:String>
+    <sys:String x:Key="String.Base.ShouldRememberLogin">ログイン状態を保存する</sys:String>
+
+    <sys:String x:Key="String.Message.EmptyAuthType">認証方法を選択されていない</sys:String>
+    <sys:String x:Key="String.Message.EmptyAuthType2">右側の認証方法フィールドに表示されている認証方法を選択してください</sys:String>
+    <sys:String x:Key="String.Message.EmptyUsername">ユーザー名は空です</sys:String>
+    <sys:String x:Key="String.Message.EmptyUsername2">右側のユーザー名フィールドに表示されているユーザー名を入力してください</sys:String>
+    <sys:String x:Key="String.Message.EmptyLaunchVersion">您未选择启动版本</sys:String>
+    <sys:String x:Key="String.Message.EmptyLaunchVersion2">请在右侧启动版本栏选择您要启动的版本</sys:String>
+    <sys:String x:Key="String.Message.NoJava">Javaをインストールされていない</sys:String>
+    <sys:String x:Key="String.Message.NoJava2">Javaをインストールしますか</sys:String>
+    <sys:String x:Key="String.Message.NoFrameworkUpdate">当前电脑环境缺少KB2468871v2补丁</sys:String>
+    <sys:String x:Key="String.Message.NoFrameworkUpdate2">该启动器依赖于Framework KB2468871v2补丁，您的系统由于缺少该补丁导致Nsiso启动器无法启动。您需要安装Framework KB2468871v2补丁。是否帮您打开帮助页面？否将尝试启动。</sys:String>
+
+    <sys:String x:Key="String.MainWindow.ChooseLaunchVersion">ゲームバージョンを選択する</sys:String>
+    <sys:String x:Key="String.MainWindow.ChooseAuthType">検証方法を選択する</sys:String>
+    <sys:String x:Key="String.Mainwindow.InputPlayerName">アカウント又はゲームの名前を選択/入力してください</sys:String>
+    <sys:String x:Key="String.Mainwindow.Launching">起動中...</sys:String>
+     
+    <!--#region 登陆-->
+    <sys:String x:Key="String.Mainwindow.Auth.Nide8.NoID">サーバーIDを設定されていない</sys:String>
+    <sys:String x:Key="String.Mainwindow.Auth.Nide8.NoID2">統一認証サーバーIDは空です，如果您是服主，请在用户设置中填写通行证后台提供的服务器ID。</sys:String>
+
+    <sys:String x:Key="String.Mainwindow.Auth.Custom.NoAdrress">認証サーバーのアドレスを設定されていない</sys:String>
+    <sys:String x:Key="String.Mainwindow.Auth.Custom.NoAdrress2">请在设置：用户验证设置：高级验证中设置自定义验证服务器(authlib或其它验证系统)</sys:String>
+
+    <sys:String x:Key="String.Mainwindow.Auth.Add">認証方法への追加</sys:String>
+
+    <sys:String x:Key="String.Mainwindow.Auth.Error.Password">パスワード又はアカウントは空です</sys:String>
+    <sys:String x:Key="String.Mainwindow.Auth.Error.Check_Login">ログイン情報は間違っているかどうかをチェックしてください</sys:String>
+    <sys:String x:Key="String.Mainwindow.Auth.Error.Login_Error">ログイン失敗しました</sys:String>
+    <sys:String x:Key="String.Mainwindow.Auth.Error.Null">ヌルポインタエクセプションが発生しました</sys:String>
+    <sys:String x:Key="String.Mainwindow.Auth.Error.Login_Save_out">ログイン情報の有効期限が切れています，もう一度ログインしてください\n{0}</sys:String>
+    <sys:String x:Key="String.Mainwindow.Auth.Error.Password_Error">アカウントまたはパスワードが間違っています。\n{0}</sys:String>
+    <sys:String x:Key="String.Mainwindow.Auth.Error.Auth_Error_notfound">请确认您的Authlib-Injector验证服务器（Authlib-Injector验证）或自定义验证服务器（自定义验证）地址正确或确认账号和游戏角色存在。\n{0}</sys:String>
+    <sys:String x:Key="String.Mainwindow.Auth.Error.Player_notfound">アカウントは登録されていない\n{0}</sys:String>
+    <sys:String x:Key="String.Mainwindow.Auth.Error.Other">他のエラー\n{0}</sys:String>
+    <sys:String x:Key="String.Mainwindow.Auth.Error.Core_Error">ランチャーのコアエラー\n{0}</sys:String>
+    <sys:String x:Key="String.Mainwindow.Auth.Error.Error">未知エラー\n{0}</sys:String>
+    <!--#endregion-->
+
+    <sys:String x:Key="String.Mainwindow.Launch.LaunchError">启动后等待游戏窗口响应异常", "这可能是由于游戏进程发生意外（闪退）导致的。\n</sys:String>
+    <sys:String x:Key="String.Mainwindow.LaunchError">ランチャーはエラーが発生しました</sys:String>
+    <sys:String x:Key="String.Mainwindow.GameExitWithNoWindow">游戏进程在未显示出窗口前退出</sys:String>
+    <sys:String x:Key="String.Mainwindow.GameExitWithNoWindow2">ゲーム起動中にエラーが発生しました</sys:String>
+    <sys:String x:Key="String.Mainwindow.ServerName">サーバーネーム</sys:String>
+    <sys:String x:Key="String.Mainwindow.ServerGettingNum">サーバーの人数を取得しています...</sys:String>
+    <sys:String x:Key="String.Mainwindow.ServerGettingVer">サーバーのバージョンを取得しています...</sys:String>
+    <sys:String x:Key="String.Mainwindow.ServerGettingPing">サーバーの遅延を取得しています...</sys:String>
+    <sys:String x:Key="String.Mainwindow.NeedDownloadDepend">需要下载补全依赖库</sys:String>
+    <sys:String x:Key="String.Mainwindow.NeedDownloadDepend2">您当前启动的版本缺少了必要的依赖库文件。若不下载补全，可能导致无法启动</sys:String>
+    <sys:String x:Key="String.Mainwindow.NeedDownloadAssets">可以下载补全资源文件</sys:String>
+    <sys:String x:Key="String.Mainwindow.NeedDownloadAssets2">您当前启动的版本缺少了部分资源文件。若不下载补全，可能导致游戏内容不完整（如无声音），但并不影响正常使用</sys:String>
+    <sys:String x:Key="String.MainWindow.Auth.Offline">オフライン認証</sys:String>
+    <sys:String x:Key="String.MainWindow.Auth.Mojang">Mojang認証</sys:String>
+    <sys:String x:Key="String.MainWindow.Auth.Nide8">統一通行証認証</sys:String>
+    <sys:String x:Key="String.MainWindow.Auth.AI">authlib-injector認証</sys:String>
+    <sys:String x:Key="String.MainWindow.Auth.Custom">カスタム認証</sys:String>
+
+    <sys:String x:Key="String.Mainwindow.GameExit.Error">ゲームが異常終了しました</sys:String>
+    <sys:String x:Key="String.Mainwindow.GameExit.Error_t">这很有可能是因为游戏崩溃导致的，退出代码:{0}，游戏持续时间:{1}</sys:String>
+
+    <sys:String x:Key="String.Downloadwindow.Windows">ダウンロードモニター</sys:String>
+    <sys:String x:Key="String.Downloadwindow.TaskName">タスクネーム</sys:String>
+    <sys:String x:Key="String.Downloadwindow.TaskProgress">ダウンロード進度</sys:String>
+    <sys:String x:Key="String.Downloadwindow.TaskTo">ダウンロード先</sys:String>
+    <sys:String x:Key="String.Downloadwindow.TaskState">タスクステータス</sys:String>
+    <sys:String x:Key="String.Downloadwindow.TaskFrom">ダウンロードアドレス</sys:String>
+    <sys:String x:Key="String.Downloadwindow.CancelDownload">ダウンロードをキャンセルする</sys:String>
+    <sys:String x:Key="String.Downloadwindow.DownloadComplete">ダウンロード完成しました</sys:String>
+    <sys:String x:Key="String.Downloadwindow.DownloadComplete2">タスクのダウンロード全部終わりました</sys:String>
+    <sys:String x:Key="String.Downloadwindow.DownloadCompleteWithError">ダウンロード完成したがエラーが発生しました</sys:String>
+    <sys:String x:Key="String.Downloadwindow.DownloadCompleteWithError2">一共有{0}个任务下载失败,其中一个原因:{1}</sys:String>
+    <sys:String x:Key="String.Downloadwindow.MakesureCancel">ダウンロードをキャンセルしますか</sys:String>
+    <sys:String x:Key="String.Downloadwindow.MakesureCancel2">本当にキャンセルしますか</sys:String>
+    <sys:String x:Key="String.Downloadwindow.NewTask">新規ダウンロード</sys:String>
+
+    <sys:String x:Key="String.Downloadwindow.BackDown">バックグラウンドがダウンロード中</sys:String>
+    <sys:String x:Key="String.Downloadwindow.BackDown_S">本当に終了しますか、ダウンロードはキャンセルされます</sys:String>
+
+    <sys:String x:Key="String.NewDownloadTaskWindow">新規ダウンロードウィンドウ</sys:String>
+    <sys:String x:Key="String.NewDownloadTaskWindow.Loading">読み込み中</sys:String>
+    <sys:String x:Key="String.NewDownloadTaskWindow.Version">ゲームをダウンロード</sys:String>
+    <sys:String x:Key="String.NewDownloadTaskWindow.Version.ID">バージョンID</sys:String>
+    <sys:String x:Key="String.NewDownloadTaskWindow.Version.Type">タイプ</sys:String>
+    <sys:String x:Key="String.NewDownloadTaskWindow.Version.Time">修改時間</sys:String>
+    <sys:String x:Key="String.NewDownloadTaskWindow.Version.ReleaseTime">发布时间</sys:String>
+    <sys:String x:Key="String.NewDownloadTaskWindow.Version.Refresh">刷新</sys:String>
+    <sys:String x:Key="String.NewDownloadTaskWindow.Version.Download">下载选中版本</sys:String>
+    <sys:String x:Key="String.NewDownloadTaskWindow.Forge">Forgeをダウンロード</sys:String>
+    <sys:String x:Key="String.NewDownloadTaskWindow.Liteloader">Liteloaderをダウンロード</sys:String>
+
+    <sys:String x:Key="String.Settingwindow.Title">設定ウィンドウ</sys:String>
+    <sys:String x:Key="String.Settingwindow.Env">グローバル設定</sys:String>
+    <sys:String x:Key="String.Settingwindow.Env.Java">Java設定</sys:String>
+    <sys:String x:Key="String.Settingwindow.Env.Java.AutoOn">JAVAの自動選択: オン</sys:String>
+    <sys:String x:Key="String.Settingwindow.Env.Java.AutoOff">JAVAの自動選択: オフ</sys:String>
+    <sys:String x:Key="String.Settingwindow.Env.Java.Path">JAVA路径:</sys:String>
+    <sys:String x:Key="String.Settingwindow.Env.Java.Select">选择自定义JAVA路径</sys:String>
+    <sys:String x:Key="String.Settingwindow.Env.Root">游戏根目录设置</sys:String>
+    <sys:String x:Key="String.Settingwindow.Env.Root.VersionIsolationOn">版本隔离: 开</sys:String>
+    <sys:String x:Key="String.Settingwindow.Env.Root.VersionIsolationOff">版本隔离: 关</sys:String>
+    <sys:String x:Key="String.Settingwindow.Env.Root.TypeTitle">游戏根目录位置:</sys:String>
+    <sys:String x:Key="String.Settingwindow.Env.Root.Root">启动器根目录</sys:String>
+    <sys:String x:Key="String.Settingwindow.Env.Root.AppData">ユーザーのAppDataフォルダ</sys:String>
+    <sys:String x:Key="String.Settingwindow.Env.Root.Programe">システムのプログラムフォルダ</sys:String>
+    <sys:String x:Key="String.Settingwindow.Env.Root.Custom">カスタム</sys:String>
+    <sys:String x:Key="String.Settingwindow.Env.Root.Choose">選択</sys:String>
+    <sys:String x:Key="String.Settingwindow.Env.Memory">メモリ設定</sys:String>
+    <sys:String x:Key="String.Settingwindow.Env.Memory.AutoOn">内存の自動設定: オン</sys:String>
+    <sys:String x:Key="String.Settingwindow.Env.Memory.AutoOff">内存の自動設定: オフ</sys:String>
+    <sys:String x:Key="String.Settingwindow.Env.Memory.Min">最小メモリ(MB):</sys:String>
+    <sys:String x:Key="String.Settingwindow.Env.Memory.Max">最大メモリ(MB):</sys:String>
+    <sys:String x:Key="String.Settingwindow.Env.Window">ゲームウィンドウの設定</sys:String>
+    <sys:String x:Key="String.Settingwindow.Env.Window.WH">长 x 宽</sys:String>
+    <sys:String x:Key="String.Settingwindow.Env.Window.Full">全画面</sys:String>
+    <sys:String x:Key="String.Settingwindow.Env.Pro">高度な設定</sys:String>
+    <sys:String x:Key="String.Settingwindow.Env.Pro.Agent">JavaAgent参数:（无需再添加-javaagent前缀）</sys:String>
+    <sys:String x:Key="String.Settingwindow.Env.Pro.GC">GCタイプ</sys:String>
+    <sys:String x:Key="String.Settingwindow.Env.Pro.GC.G1">G1GC (Garbage First Garbage Collector)</sys:String>
+    <sys:String x:Key="String.Settingwindow.Env.Pro.GC.Serial">SerialGC (串行垃圾回收器)</sys:String>
+    <sys:String x:Key="String.Settingwindow.Env.Pro.GC.Paralle">ParallelGC (并行垃圾回收器)</sys:String>
+    <sys:String x:Key="String.Settingwindow.Env.Pro.GC.CMS">CMSGC (并发标记扫描垃圾回收器)</sys:String>
+    <sys:String x:Key="String.Settingwindow.Env.Pro.GC.Arg">GC(垃圾回收器)参数:</sys:String>
+    <sys:String x:Key="String.Settingwindow.Env.Pro.JVMArg">附加JVM启动参数:</sys:String>
+    <sys:String x:Key="String.Settingwindow.Env.Pro.GameArg">附加游戏启动参数:</sys:String>
+    <sys:String x:Key="String.Settingwindow.Env.Pro.ArgNote">*请勿随意增添参数，可能会造成无法启动。附加参数已自动包含-Dfml参数</sys:String>
+    <sys:String x:Key="String.Settingwindow.Env.AutoFill">自动补全设置</sys:String>
+    <sys:String x:Key="String.Settingwindow.Env.AutoFill.Lib">自动补全丢失的依赖库</sys:String>
+    <sys:String x:Key="String.Settingwindow.Env.AutoFill.Assets">自动补全丢失的资源库</sys:String>
+    <sys:String x:Key="String.Settingwindow.Env.Habbit">习惯设置</sys:String>
+    <sys:String x:Key="String.Settingwindow.Env.Habbit.Exit">ゲームを起動した後ランチャーを閉じる</sys:String>
+    <sys:String x:Key="String.Settingwindow.Env.Debug">開発者向けオプション</sys:String>
+    <sys:String x:Key="String.Settingwindow.Env.Debug.Mode">DEBUGモード</sys:String>
+    <sys:String x:Key="String.Settingwindow.Env.Note">*请注意：本页面(全局设置)中大部分设置需要重启启动器后才能生效</sys:String>
+    <sys:String x:Key="String.Settingwindow.Download">ダウンロード設定</sys:String>
+    <sys:String x:Key="String.Settingwindow.Download.Source">首选下载源</sys:String>
+    <sys:String x:Key="String.Settingwindow.Download.Source.Mojang">Mojang官方</sys:String>
+    <sys:String x:Key="String.Settingwindow.Download.Source.BMCLAPI">BMCLAPI (bangbang93's minecraft launcher api)</sys:String>
+    <sys:String x:Key="String.Settingwindow.Download.Source.Note">*选择的是首选下载源，部分功能仍依赖于独立下载源。在此感谢BMCLAPI提供大量功能</sys:String>
+    <sys:String x:Key="String.Settingwindow.Download.Thread">下载线程设置</sys:String>
+    <sys:String x:Key="String.Settingwindow.Download.Thread.Num">下载线程数量(最大10):</sys:String>
+    <sys:String x:Key="String.Settingwindow.Download.Proxy">下载代理</sys:String>
+    <sys:String x:Key="String.Settingwindow.Download.Proxy.Address">代理服务器地址:</sys:String>
+    <sys:String x:Key="String.Settingwindow.Download.Proxy.Port">代理服务器端口:</sys:String>
+    <sys:String x:Key="String.Settingwindow.Download.Proxy.User">代理服务器账号:</sys:String>
+    <sys:String x:Key="String.Settingwindow.Download.Proxy.Password">代理服务器密码:</sys:String>
+    <sys:String x:Key="String.Settingwindow.Version">バージョン設定</sys:String>
+    <sys:String x:Key="String.Settingwindow.Version.ChooseText">これから設定するバージョンを選択:</sys:String>
+    <sys:String x:Key="String.Settingwindow.Version.Refresh">刷新版本列表</sys:String>
+    <sys:String x:Key="String.Settingwindow.Version.Options">版本Options设置</sys:String>
+    <sys:String x:Key="String.Settingwindow.Version.Options.T">设置项</sys:String>
+    <sys:String x:Key="String.Settingwindow.Version.Options.V">设置值</sys:String>
+    <sys:String x:Key="String.Settingwindow.Version.Options.Note">*双击设置值即可进行更改。若设置列表为空说明Options.txt文件不存在或未选择版本。</sys:String>
+    <sys:String x:Key="String.Settingwindow.Version.Control">バージョンコントロール</sys:String>
+    <sys:String x:Key="String.Settingwindow.User">用户验证设置</sys:String>
+    <sys:String x:Key="String.Settingwindow.User.Type">启动验证类型设置</sys:String>
+    <sys:String x:Key="String.Settingwindow.User.Type.Online">Mojang認証</sys:String>
+    <sys:String x:Key="String.Settingwindow.User.Type.Offline">オフライン認証</sys:String>
+    <sys:String x:Key="String.Settingwindow.User.Nide8">统一通行证验证设置</sys:String>
+    <sys:String x:Key="String.Settingwindow.User.Nide8.ID">统一通行证服务器ID</sys:String>
+    <sys:String x:Key="String.Settingwindow.User.Nide8.UsingNide8ServerIP">全局统一通行证设置(强制使用统一通行证，主界面显示服务器信息，启动后自动进服) *需要在后台设置服务器IP</sys:String>
+    <sys:String x:Key="String.Settingwindow.User.Info">認証情報を設定する</sys:String>
+    <sys:String x:Key="String.Settingwindow.User.Info.Note">*在线验证将在启动时进行登陆</sys:String>
+    <sys:String x:Key="String.Settingwindow.User.Info.UnRemember">ログアウト</sys:String>
+    <sys:String x:Key="String.Settingwindow.User.Info.Pack">将用户信息设置为服务器客户端发布状态</sys:String>
+    <sys:String x:Key="String.Settingwindow.User.Info.Clear">ユーザー情報をリセット</sys:String>
+    <sys:String x:Key="String.Settingwindow.User.Info.Del">ユーザーを削除する</sys:String>
+    <sys:String x:Key="String.Settingwindow.User.Info.Note2">*操作完后点击应用按钮生效</sys:String>
+    <sys:String x:Key="String.Settingwindow.User.Pro">高级验证信息设置</sys:String>
+    <sys:String x:Key="String.Settingwindow.User.Pro.Note">*此设置节点请勿随意改动,否则可能导致验证失败而无法启动</sys:String>
+    <sys:String x:Key="String.Settingwindow.User.Pro.ProxyAddress">代理验证服务器地址(重启生效):</sys:String>
+    <sys:String x:Key="String.Settingwindow.User.Pro.GUID">客户端GUID:</sys:String>
+    <sys:String x:Key="String.Settingwindow.User.Lauguage">言語設定</sys:String>
+    <sys:String x:Key="String.Settingwindow.Saving">保存中</sys:String>
+    <sys:String x:Key="String.Settingwindow.JavaError">JAVAは無効です，チェックしてください</sys:String>
+    <sys:String x:Key="String.Settingwindow.SaveError">保存中にエラーが発生しました</sys:String>
+</ResourceDictionary>

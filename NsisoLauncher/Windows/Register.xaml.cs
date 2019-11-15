@@ -1,5 +1,4 @@
 ﻿using MahApps.Metro.Controls;
-using System;
 
 namespace NsisoLauncher.Windows
 {
@@ -13,7 +12,7 @@ namespace NsisoLauncher.Windows
         {
             this.uri = uri;
             InitializeComponent();
-            Bro.Navigate(new Uri(uri));
+            Bro.Address = uri;
         }
     }
 }

@@ -6,10 +6,12 @@
         xmlns:local="clr-namespace:NsisoLauncher.Windows"
         xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
         xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
-        mc:Ignorable="d"
-        Title="注册" Height="450" Width="800" WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize">
+                      xmlns:wpf="clr-namespace:CefSharp.Wpf;assembly=CefSharp.Wpf"
+                      mc:Ignorable="d"
+        Title="注册" Height="613.875" Width="1203.125" WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize">
     <Grid>
-        <WebBrowser HorizontalAlignment="Left" Height="421" VerticalAlignment="Top" Width="798" Name="Bro"/>
+        <wpf:ChromiumWebBrowser HorizontalAlignment="Left" Height="585" VerticalAlignment="Top" Width="1197" Name="Bro"/>
+
 
     </Grid>
 </controls:MetroWindow>

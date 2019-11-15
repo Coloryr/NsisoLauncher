@@ -181,6 +181,10 @@ namespace NsisoLauncher
             {
                 lang = "en_US.xaml";
             }
+            else if (lang == "日本語")
+            {
+                lang = "ja_JP.xaml";
+            }
             try
             {
                 Current.Resources.MergedDictionaries.Add(LoadComponent(new Uri("/NsisoLauncher;component/Resource/Language/" + lang, UriKind.Relative)) as ResourceDictionary);
