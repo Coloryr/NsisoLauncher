@@ -503,6 +503,11 @@ namespace NsisoLauncher.Config
         /// 注册的地址
         /// </summary>
         public string REG { get; set; }
+
+        /// <summary>
+        /// 使用内部浏览器
+        /// </summary>
+        public bool use_in { get; set; }
     }
 
     /// <summary>

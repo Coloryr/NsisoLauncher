@@ -5,6 +5,7 @@ using NsisoLauncher.Windows;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -253,7 +254,10 @@ namespace NsisoLauncher.Controls
                                 App.GetResourceString("String.Mainwindow.Auth.Nide8.NoID2"));
                     return;
                 }
-                new Register(string.Format("https://login2.nide8.com:233/{0}/loginreg", node.Property["nide8ID"])).ShowDialog();
+                if (node.use_in)
+                    new Register(string.Format("https://login2.nide8.com:233/{0}/loginreg", node.Property["nide8ID"])).ShowDialog();
+                else
+                    Process.Start(string.Format("https://login2.nide8.com:233/{0}/loginreg", node.Property["nide8ID"]));
             }
             else if (string.IsNullOrWhiteSpace(App.config.MainConfig.User.LockAuthName) == false)
             {
@@ -264,7 +268,10 @@ namespace NsisoLauncher.Controls
                                 App.GetResourceString("String.Mainwindow.Auth.REG.NoID_t"));
                     return;
                 }
-                new Register(node.REG).ShowDialog();
+                if (node.use_in)
+                    new Register(node.REG).ShowDialog();
+                else
+                    Process.Start(node.REG);
             }
             else
             {

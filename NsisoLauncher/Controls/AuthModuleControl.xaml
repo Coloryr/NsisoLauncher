@@ -13,6 +13,7 @@
                 <RadioButton x:Name="nide8Radio" Content="统一通行证" Margin="0,0,10,0" Checked="Nide8_Checked"/>
                 <RadioButton x:Name="aiRadio" Content="authlib-injector" Margin="0,0,10,0" Checked="AI_Checked"/>
                 <RadioButton x:Name="customRadio" Content="其它Yggdrasil验证器代理" Margin="0,0,10,0" Checked="Custom_Checked"/>
+                <CheckBox Content="使用内部浏览器打开注册链接" x:Name="Bro_IN"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
                 <Label Content="验证模型名称："/>
