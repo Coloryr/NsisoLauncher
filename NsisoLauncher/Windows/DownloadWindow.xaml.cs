@@ -50,7 +50,6 @@ namespace NsisoLauncher.Windows
 
         public async Task<DownloadCompletedArg> ShowWhenDownloading()
         {
-            this.Topmost = true;
             this.Show();
             return await Task.Factory.StartNew(() =>
             {

@@ -254,10 +254,7 @@ namespace NsisoLauncher.Controls
                                 App.GetResourceString("String.Mainwindow.Auth.Nide8.NoID2"));
                     return;
                 }
-                if (node.use_in)
-                    new Register(string.Format("https://login2.nide8.com:233/{0}/loginreg", node.Property["nide8ID"])).ShowDialog();
-                else
-                    Process.Start(string.Format("https://login2.nide8.com:233/{0}/loginreg", node.Property["nide8ID"]));
+                new Register(string.Format("https://login2.nide8.com:233/{0}/loginreg", node.Property["nide8ID"])).ShowDialog();
             }
             else if (string.IsNullOrWhiteSpace(App.config.MainConfig.User.LockAuthName) == false)
             {
