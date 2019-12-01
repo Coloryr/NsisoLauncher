@@ -10,20 +10,18 @@ namespace NsisoLauncher.Color_yr.updata
     class updata_check
     {
         /// <summary>
-        /// 本地mod信息
-        /// </summary>
-        private Dictionary<string, updata_mod> local_mods;
-        /// <summary>
         /// 更新信息
         /// </summary>
         private updata_obj updata_obj;
         /// <summary>
         /// mod检查
         /// </summary>
-        public async Task<List<DownloadTask>> updata()
+        public async Task<List<DownloadTask>> check()
         {
-            mod_check();
             List<DownloadTask> task = new List<DownloadTask>();
+            mod_md5 mod = new mod_md5();
+            var local_mods = await mod.ReadModInfo(App.handler.GameRootPath);
+            
             string Url = App.config.MainConfig.Server.Mods_Check.Address;
             try
             {
@@ -44,13 +42,13 @@ namespace NsisoLauncher.Color_yr.updata
                             else
                             {
                                 File.Delete(lo.local);
-                                task.Add(new DownloadTask("更新Mod", th.url, App.handler.GameRootPath + @"\mods"));
+                                task.Add(new DownloadTask("更新Mod", th.url, App.handler.GameRootPath + @"\mods\" + th.filename));
                                 updata_obj.mods.Remove(th);
                             }
                         }
                         else
                         {
-                            task.Add(new DownloadTask("缺失Mod", th.url, App.handler.GameRootPath + @"\mods"));
+                            task.Add(new DownloadTask("缺失Mod", th.url, App.handler.GameRootPath + @"\mods\" + th.filename));
                         }
                     }
                 }
@@ -60,14 +58,6 @@ namespace NsisoLauncher.Color_yr.updata
 
             }
             return task;
-        }
-        /// <summary>
-        /// mod检查任务
-        /// </summary>
-        private void mod_check()
-        {
-            mod_md5 mod = new mod_md5();
-            local_mods = mod.ReadModInfo(App.handler.GameRootPath);
         }
     }
 }

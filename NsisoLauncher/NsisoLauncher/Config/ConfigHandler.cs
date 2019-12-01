@@ -226,7 +226,11 @@ namespace NsisoLauncher.Config
                 {
                     ShowServerInfo = false,
                     LaunchToServer = false,
-                    Port = 25565
+                    Port = 25565,
+                    Mods_Check = new Mods_Check
+                    {
+                        Enable = false
+                    }
                 },
                 Customize = new Customize()
                 {

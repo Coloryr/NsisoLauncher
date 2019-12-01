@@ -3,6 +3,7 @@ using Newtonsoft.Json.Linq;
 using NsisoLauncherCore.Util.Checker;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace NsisoLauncher.Color_yr.updata
 {
@@ -67,7 +68,7 @@ namespace NsisoLauncher.Color_yr.updata
                 public List<ModListItem> modList { get; set; }
             }
         }
-        public Dictionary<string, updata_mod> ReadModInfo(string path)
+        public async Task<Dictionary<string, updata_mod>> ReadModInfo(string path)
         {
             if (!Directory.Exists(path + @"\mods\"))
             {
@@ -77,9 +78,12 @@ namespace NsisoLauncher.Color_yr.updata
             Dictionary<string, updata_mod> list = new Dictionary<string, updata_mod>();
             foreach (string file in files)
             {
-                updata_mod save = GetModsInfo(path, file);
-                if (list.ContainsKey(save.name) == false)
-                    list.Add(save.name, save);
+                await Task.Factory.StartNew(() =>
+                 {
+                     updata_mod save = GetModsInfo(path, file);
+                     if (list.ContainsKey(save.name) == false)
+                         list.Add(save.name, save);
+                 });
             }
             return list;
         }

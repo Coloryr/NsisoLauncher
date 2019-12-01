@@ -725,8 +725,7 @@ namespace NsisoLauncher
                 {
                     mainPanel.launchButton.Content = App.GetResourceString("String.Mainwindow.Check.mods");
 
-                    updata_check check = new updata_check();
-                    var lost_mod = await check.updata();
+                    var lost_mod = await new updata_check().check();
                     losts.AddRange(lost_mod);
                 }
 
@@ -934,7 +933,7 @@ namespace NsisoLauncher
             #region 检查更新
             if (App.config.MainConfig.Launcher.CheckUpdate)
             {
-                await CheckUpdate();
+                //await CheckUpdate();
             }
             #endregion
         }
@@ -986,21 +985,6 @@ namespace NsisoLauncher
             {
                 result.Process.Kill();
             }
-        }
-        private async Task CheckUpdate()
-        {
-            /*
-            var ver = await App.nsisoAPIHandler.GetLatestLauncherVersion();
-            if (ver != null)
-            {
-                System.Version currentVersion = Application.ResourceAssembly.GetName().Version;
-                if ((ver.Version > currentVersion) &&
-                    ver.ReleaseType.Equals("release", StringComparison.OrdinalIgnoreCase))
-                {
-                    new UpdateWindow(ver).Show();
-                }
-            }
-            */
         }
         #endregion
     }

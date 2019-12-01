@@ -40,5 +40,9 @@ namespace NsisoLauncher.Color_yr.updata
         /// 本地地址
         /// </summary>
         public string local { get; set; }
+        /// <summary>
+        /// 文件名字
+        /// </summary>
+        public string filename { get; set; }
     }
 }
