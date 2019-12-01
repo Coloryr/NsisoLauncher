@@ -7,22 +7,22 @@
         xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
         xmlns:local="clr-namespace:NsisoLauncher.Windows"
         mc:Ignorable="d"
-        Title="错误窗口" Height="445" Width="720" WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize">
+        Title="{DynamicResource String.ErrorWindow.Title}" Height="445" Width="720" WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize">
     <Grid>
         <Grid HorizontalAlignment="Left" Height="100" Margin="10,10,0,0" VerticalAlignment="Top" Width="100">
             <iconPacks:PackIconFontAwesome Kind="TimesCircleSolid" Height="100" Width="100" Foreground="DarkRed"/>
         </Grid>
-        <Label x:Name="label" Content="程序在运行时遇到该死的的错误 :(" Margin="115,10,52,0" VerticalAlignment="Top" FontSize="36"/>
+        <Label x:Name="label" Content="{DynamicResource String.ErrorWindow.Text}" Margin="115,10,52,0" VerticalAlignment="Top" FontSize="36"/>
         <TextBlock x:Name="FunnyBlock"
                    Margin="115,71,10,0"
                    TextWrapping="Wrap"
-                   Text="如果你在这里看不到段子，那么不是我们启动器的问题，是你的电脑穿越了次元的问题"
+                   Text="{DynamicResource String.ErrorWindow.Text1}"
                    VerticalAlignment="Top"
                    Height="39"
                    FontSize="16"/>
         <TextBox x:Name="textBox" Margin="10,115,10,50" TextWrapping="Wrap" IsReadOnly="True"/>
-        <Button x:Name="CopyButton" Content="复制错误信息"
+        <Button x:Name="CopyButton" Content="{DynamicResource String.ErrorWindow.Copy}"
                 Style="{DynamicResource SquareButtonStyle}" Margin="0,0,10,9" FontSize="12" Click="CopyButton_Click" HorizontalAlignment="Right" Width="100" Height="35" VerticalAlignment="Bottom"/>
-        <Label Content="这个是非官方的版本，bug反馈请加群：571239090" HorizontalAlignment="Left" Height="33" Margin="10,374,0,0" VerticalAlignment="Top" Width="339" FontSize="14"/>
+        <Label Content="{DynamicResource String.ErrorWindow.Text2}" HorizontalAlignment="Left" Height="33" Margin="10,374,0,0" VerticalAlignment="Top" Width="339" FontSize="14"/>
     </Grid>
 </controls:MetroWindow>

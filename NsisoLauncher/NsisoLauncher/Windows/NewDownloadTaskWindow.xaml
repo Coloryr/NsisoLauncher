@@ -30,20 +30,20 @@
                     <Button Content="{DynamicResource String.NewDownloadTaskWindow.Version.Download}"
                             Margin="0,0,10,10" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="131" Style="{StaticResource AccentedSquareButtonStyle}"
                             Click="DownloadVerButton_Click"/>
-                    <Button Content="获取/刷新"
+                    <Button Content="{DynamicResource String.NewDownloadTaskWindow.Get}"
                             Margin="10,0,0,10" Style="{DynamicResource SquareButtonStyle}" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="100"
                             Click="RefreshVerButton_Click"/>
                 </Grid>
             </TabItem>
             <TabItem Header="{DynamicResource String.NewDownloadTaskWindow.Forge}" >
                 <Grid >
-                    <Label Content="要安装Forge的版本：" Margin="10,10,0,0" HorizontalAlignment="Left" Width="130" VerticalAlignment="Top"/>
+                    <Label Content="{DynamicResource String.NewDownloadTaskWindow.Chose.Forge}" Margin="10,10,0,0" HorizontalAlignment="Left" Width="130" VerticalAlignment="Top"/>
                     <ComboBox x:Name="verToInstallForgeComboBox" HorizontalAlignment="Left" Margin="140,10,0,0" VerticalAlignment="Top" Width="300" DisplayMemberPath="ID" SelectionChanged="VerToInstallForgeComboBox_SelectionChanged"/>
                     <DataGrid x:Name="forgeListDataGrid" Margin="10,42,10,43" 
                               AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False"
                               SelectionMode="Single">
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="Forge版本" Binding="{Binding Path=Version}"
+                            <DataGridTextColumn Header="{DynamicResource String.NewDownloadTaskWindow.Version.Forge}" Binding="{Binding Path=Version}"
                                                 IsReadOnly="True"/>
                             <DataGridTextColumn Header="Build" Binding="{Binding Path=Build}"
                                                 IsReadOnly="True"/>
@@ -60,11 +60,11 @@
             </TabItem>
             <TabItem Header="{DynamicResource String.NewDownloadTaskWindow.Liteloader}" IsEnabled="False">
                 <Grid>
-                    <Label Content="要安装Liteloader的版本：" Margin="10,10,0,0" HorizontalAlignment="Left" Width="150" VerticalAlignment="Top"/>
+                    <Label Content="{DynamicResource String.NewDownloadTaskWindow.Chose.Liteloader}" Margin="10,10,0,0" HorizontalAlignment="Left" Width="150" VerticalAlignment="Top"/>
                     <ComboBox x:Name="verToInstallLiteComboBox" HorizontalAlignment="Left" Margin="165,10,0,0" VerticalAlignment="Top" Width="300" DisplayMemberPath="ID" SelectionChanged="VerToInstallLiteComboBox_SelectionChanged"/>
                     <DataGrid x:Name="liteloaderListDataGrid" Margin="10,42,10,43" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" SelectionMode="Single">
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="Liteloader版本" Binding="{Binding Path=Version}" IsReadOnly="True"/>
+                            <DataGridTextColumn Header="{DynamicResource String.NewDownloadTaskWindow.Version.Liteloader}" Binding="{Binding Path=Version}" IsReadOnly="True"/>
                         </DataGrid.Columns>
                         <DataGrid.Resources>
                             <ResourceDictionary Source="/NsisoLauncher;component/Resource/Style/DataGridEmptyHelperControl.xaml"/>

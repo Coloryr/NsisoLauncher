@@ -127,7 +127,7 @@
                                          InputMethod.IsInputMethodEnabled="False"
                                          Text="{Binding Environment.WindowSize.Height}"
                                          IsEnabled="{Binding Environment.WindowSize.FullScreen, Converter={StaticResource BoolToOppositeBoolConverter}}" Width="50"/>
-                                <Label Content="(填写0为游戏默认)" Margin="0,0,20,0"/>
+                                <Label Content="{DynamicResource String.Settingwindow.Env.Window.Text}" Margin="0,0,20,0"/>
                                 <CheckBox Content="{DynamicResource String.Settingwindow.Env.Window.Full}"
                                           IsChecked="{Binding Environment.WindowSize.FullScreen}"/>
                             </StackPanel>
@@ -274,78 +274,78 @@
                                     <ComboBox x:Name="userComboBox" Width="250"
                                               SelectedValuePath="Key" ItemsSource="{Binding User.UserDatabase}"
                                               DisplayMemberPath="Value.UserName"/>
-                                    <Label Content="*在主界面输入要新建的用户名并启动即可新建用户"/>
+                                    <Label Content="{DynamicResource String.Settingwindow.User.Text}"/>
                                 </StackPanel>
                                 <Button Style="{DynamicResource SquareButtonStyle}" Content="{DynamicResource String.Settingwindow.User.Info.UnRemember}" Margin="0,5,0,5" Click="forgetUserButton_Click"/>
                                 <Button Style="{DynamicResource SquareButtonStyle}" Content="{DynamicResource String.Settingwindow.User.Info.Clear}" Margin="0,0,0,5" Click="clearUserButton_Click"/>
                                 <Button Style="{DynamicResource SquareButtonStyle}" Content="{DynamicResource String.Settingwindow.User.Info.Del}" Click="delUserButton_Click" Background="IndianRed" Foreground="White"/>
                             </StackPanel>
                         </Expander>
-                        <Expander Header="全局用户设置">
+                        <Expander Header="{DynamicResource String.Settingwindow.User.All}">
                             <StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                                    <Label Content="全局使用验证模型："/>
+                                    <Label Content="{DynamicResource String.Settingwindow.User.All.Auth}"/>
                                     <ComboBox x:Name="lockauthCombobox" Width="200" Margin="0,0,5,0"
                                     DisplayMemberPath="Value.Name" ItemsSource="{Binding User.AuthenticationDic}"              
                                     SelectedValuePath="Key" SelectedValue="{Binding User.LockAuthName}"/>
-                                    <Button Width="100" Content="清除全局验证选择" Click="clearAllauthButton_Click"/>
+                                    <Button Width="100" Content="{DynamicResource String.Settingwindow.User.All.Clear}" Click="clearAllauthButton_Click"/>
                                 </StackPanel>
-                                <CheckBox Margin="0,0,0,10" Content="统一通行证服务器依赖（仅在全局使用统一通行证验证模型，且统一通行证后台正确设置后生效）" IsChecked="{Binding User.Nide8ServerDependence}"/>
-                                <Button Style="{DynamicResource SquareButtonStyle}" Content="删除全部验证模型" Background="IndianRed" Foreground="White" Margin="0,0,0,5" Click="delAllAuthnodeButton_Click"/>
-                                <Button Style="{DynamicResource SquareButtonStyle}" Content="删除全部用户" Background="IndianRed" Foreground="White" Click="delAllUserButton_Click"/>
+                                <CheckBox Margin="0,0,0,10" Content="{DynamicResource String.Settingwindow.User.All.Nide}" IsChecked="{Binding User.Nide8ServerDependence}"/>
+                                <Button Style="{DynamicResource SquareButtonStyle}" Content="{DynamicResource String.Settingwindow.User.All.Delete}" Background="IndianRed" Foreground="White" Margin="0,0,0,5" Click="delAllAuthnodeButton_Click"/>
+                                <Button Style="{DynamicResource SquareButtonStyle}" Content="{DynamicResource String.Settingwindow.User.All.DeleteAll}" Background="IndianRed" Foreground="White" Click="delAllUserButton_Click"/>
                             </StackPanel>
                         </Expander>
                     </StackPanel>
                 </ScrollViewer>
             </TabItem>
-            <TabItem Header="自定义">
+            <TabItem Header="{DynamicResource String.Settingwindow.Custom}">
                 <ScrollViewer>
                     <StackPanel x:Name="customGrid" Margin="10,0,10,0">
-                        <Expander Header="启动器主题设置" Margin="0,0,0,5">
+                        <Expander Header="{DynamicResource String.Settingwindow.Custom.Launch}" Margin="0,0,0,5">
                             <StackPanel>
-                                <Label Content="启动器主题颜色:"/>
+                                <Label Content="{DynamicResource String.Settingwindow.Custom.Color}"/>
                                 <ComboBox x:Name="AccentColorComboBox" DisplayMemberPath="Name" SelectionChanged="AccentColorComboBox_SelectionChanged"
                                           Text="{Binding Customize.AccentColor}" HorizontalAlignment="Left" Width="200"/>
-                                <Label Content="启动器主题:"/>
+                                <Label Content="{DynamicResource String.Settingwindow.Custom.Main}"/>
                                 <ComboBox x:Name="appThmeComboBox" SelectionChanged="appThmeComboBox_SelectionChanged" DisplayMemberPath="Name"
                                           Text="{Binding Customize.AppThme}" HorizontalAlignment="Left" Width="200"/>
                             </StackPanel>
                         </Expander>
 
-                        <Expander Header="启动器背景元素设置" Margin="0,0,0,5">
+                        <Expander Header="{DynamicResource String.Settingwindow.Custom.Backgroud}" Margin="0,0,0,5">
                             <StackPanel>
                                 <!--Color_yr Add Start-->
-                                <CheckBox x:Name="checkBox3" Content="开启自定义背景视频" IsChecked="{Binding Customize.CustomBackGroundViode}" Margin="0,0,442,2" Click="CheckBox3_Checked"/>
-                                <CheckBox x:Name="checkBox2" Content="开启自定义背景音乐" IsChecked="{Binding Customize.CustomBackGroundMusic}" Margin="0,0,442,2" Click="CheckBox2_Checked"/>
-                                <CheckBox x:Name="checkBox1" Content="开启自定义背景图片" IsChecked="{Binding Customize.CustomBackGroundPicture}" Margin="0,0,442,2" Click="CheckBox1_Checked" Checked="CheckBox1_Checked"/>
-                                <CheckBox x:Name="checkBox4" Content="开启自定义背景图片循环播放" IsChecked="{Binding Customize.CustomBackGroundCyclic}" Margin="0,0,442,2" IsEnabled="False"/>
-                                <Label x:Name="set" Content="循环背景图片时间，单位毫秒" IsEnabled="False"/>
+                                <CheckBox x:Name="checkBox3" Content="{DynamicResource String.Settingwindow.Custom.Backgroud.Vedio}" IsChecked="{Binding Customize.CustomBackGroundViode}" Margin="0,0,442,2" Click="CheckBox3_Checked"/>
+                                <CheckBox x:Name="checkBox2" Content="{DynamicResource String.Settingwindow.Custom.Backgroud.Music}" IsChecked="{Binding Customize.CustomBackGroundMusic}" Margin="0,0,442,2" Click="CheckBox2_Checked"/>
+                                <CheckBox x:Name="checkBox1" Content="{DynamicResource String.Settingwindow.Custom.Backgroud.Pic}" IsChecked="{Binding Customize.CustomBackGroundPicture}" Margin="0,0,442,2" Click="CheckBox1_Checked" Checked="CheckBox1_Checked"/>
+                                <CheckBox x:Name="checkBox4" Content="{DynamicResource String.Settingwindow.Custom.Backgroud.Pic.Cyclic}" IsChecked="{Binding Customize.CustomBackGroundCyclic}" Margin="0,0,442,2" IsEnabled="False"/>
+                                <Label x:Name="set" Content="{DynamicResource String.Settingwindow.Custom.Backgroud.Pic.Cyclic.Time}" IsEnabled="False"/>
                                 <TextBox x:Name="Text" HorizontalAlignment="Left" Height="3" Margin="0,0,0,0" TextWrapping="Wrap" Text="{Binding Customize.CustomBackGroundCyclic_time}" Width="132" TextChanged="TextBox_TextChanged" IsEnabled="False"/>
-                                <Label Content="把文件放进config文件夹即可，支持jpg和png，自定义视频启用后自定义图片和音乐不可用。"/>
+                                <Label Content="{DynamicResource String.Settingwindow.Custom.Backgroud.Text}"/>
                                 <!--Color_yr Add Stop-->
                             </StackPanel>
                         </Expander>
 
-                        <Expander Header="自定义内容设置" Margin="0,0,0,5">
+                        <Expander Header="{DynamicResource String.Settingwindow.Custom.Game}" Margin="0,0,0,5">
                             <StackPanel>
-                                <Label Content="启动器窗口标题:"/>
+                                <Label Content="{DynamicResource String.Settingwindow.Custom.Game.LaunchTitle}"/>
                                 <TextBox TextWrapping="NoWrap" Text="{Binding Customize.LauncherTitle}"/>
-                                <Label Content="游戏窗口标题（需保持启动器在启动后不被关闭的状态）:" Margin="0,10,0,0"/>
+                                <Label Content="{DynamicResource String.Settingwindow.Custom.Game.GameTitle}" Margin="0,10,0,0"/>
                                 <TextBox TextWrapping="NoWrap" Text="{Binding Customize.GameWindowTitle}"/>
-                                <Label Content="游戏版本信息（游戏主界面左下角版本信息，高版本才支持）:" Margin="0,10,0,0"/>
+                                <Label Content="{DynamicResource String.Settingwindow.Custom.Game.Info}" Margin="0,10,0,0"/>
                                 <TextBox TextWrapping="NoWrap" Text="{Binding Customize.VersionInfo}"/>
                             </StackPanel>
                         </Expander>
 
-                        <Expander Header="Minecraft服务器设置" Margin="0,0,0,5">
+                        <Expander Header="{DynamicResource String.Settingwindow.Custom.Server}" Margin="0,0,0,5">
                             <StackPanel>
-                                <CheckBox Content="在主界面显示服务器信息" IsChecked="{Binding Server.ShowServerInfo}" Margin="0,0,0,5"/>
-                                <CheckBox Content="启动后自动进入服务器" IsChecked="{Binding Server.LaunchToServer}" Margin="0,0,0,5"/>
-                                <Label Content="服务器名称:"/>
+                                <CheckBox Content="{DynamicResource String.Settingwindow.Custom.Server.Show}" IsChecked="{Binding Server.ShowServerInfo}" Margin="0,0,0,5"/>
+                                <CheckBox Content="{DynamicResource String.Settingwindow.Custom.Server.Join}" IsChecked="{Binding Server.LaunchToServer}" Margin="0,0,0,5"/>
+                                <Label Content="{DynamicResource String.Settingwindow.Custom.Server.Name}"/>
                                 <TextBox TextWrapping="NoWrap" Text="{Binding Server.ServerName}" HorizontalAlignment="Left" Width="300"/>
-                                <Label Content="服务器地址:"/>
+                                <Label Content="{DynamicResource String.Settingwindow.Custom.Server.Addres}"/>
                                 <TextBox TextWrapping="NoWrap" Text="{Binding Server.Address}" HorizontalAlignment="Left" Width="300"/>
-                                <Label Content="服务器端口(SRV填写0):"/>
+                                <Label Content="{DynamicResource String.Settingwindow.Custom.Server.Pore}"/>
                                 <TextBox Text="{Binding Server.Port}"
                                      PreviewTextInput="textBox1_PreviewTextInput"
                                      InputMethod.IsInputMethodEnabled="False"
@@ -353,10 +353,10 @@
                                      />
                             </StackPanel>
                         </Expander>
-                        <Expander Header="资源更新检查" Margin="0,0,0,5">
+                        <Expander Header="{DynamicResource String.Settingwindow.Custom.Mods}" Margin="0,0,0,5">
                             <StackPanel>
-                                <CheckBox Content="启用资源检查" IsChecked="{Binding Server.Mods_Check.Enable}" Margin="0,0,0,5"/>
-                                <Label Content="服务器地址:"/>
+                                <CheckBox Content="{DynamicResource String.Settingwindow.Custom.Mods.Enable}" IsChecked="{Binding Server.Mods_Check.Enable}" Margin="0,0,0,5"/>
+                                <Label Content="{DynamicResource String.Settingwindow.Custom.Mods.Addres}"/>
                                 <TextBox TextWrapping="NoWrap" Text="{Binding Server.Mods_Check.Address}" HorizontalAlignment="Left" Width="300"/>
                             </StackPanel>
                         </Expander>
@@ -364,7 +364,7 @@
                 </ScrollViewer>
 
             </TabItem>
-            <TabItem Header="关于">
+            <TabItem Header="{DynamicResource String.Settingwindow.Custom.About}">
                 <StackPanel>
                     <TextBlock Margin="10,0" FontSize="18">
                         启动器原来的仓库

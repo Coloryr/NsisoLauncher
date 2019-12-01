@@ -360,7 +360,7 @@ namespace NsisoLauncher.Windows
             config.User.AuthenticationDic.Add("mojang", new AuthenticationNode()
             {
                 AuthType = AuthenticationType.MOJANG,
-                Name = App.GetResourceString("String.MainWindow.Auth.Mojang")
+                Name = App.GetResourceString("String.Mainwindow.Auth.Mojang")
             });
             this.ShowMessageAsync("清除成功", "请保存以生效");
         }

@@ -73,7 +73,7 @@ namespace NsisoLauncher.Controls
                 authNodeList.Add(new KeyValuePair<string, AuthenticationNode>("offline", new AuthenticationNode()
                 {
                     AuthType = AuthenticationType.OFFLINE,
-                    Name = App.GetResourceString("String.MainWindow.Auth.Offline")
+                    Name = App.GetResourceString("String.Mainwindow.Auth.Offline")
                 }));
                 if (App.config.MainConfig.User.AuthenticationDic != null)
                     foreach (var item in App.config.MainConfig.User.AuthenticationDic)

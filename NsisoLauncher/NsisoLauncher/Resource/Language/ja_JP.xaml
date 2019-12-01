@@ -36,8 +36,8 @@
     <sys:String x:Key="String.Message.NoFrameworkUpdate">PC環境に KB2468871v2 のパッチがありません</sys:String>
     <sys:String x:Key="String.Message.NoFrameworkUpdate2">このランチャーは、Framework KB2468871v2 パッチに依存しており、このパッチがないため、システムが Nsiso ランチャーを起動できませんでした。 Framework KB2468871v2 のパッチをインストールする必要があります。</sys:String>
 
-    <sys:String x:Key="String.MainWindow.ChooseLaunchVersion">ゲームバージョンを選択する</sys:String>
-    <sys:String x:Key="String.MainWindow.ChooseAuthType">検証方法を選択する</sys:String>
+    <sys:String x:Key="String.Mainwindow.ChooseLaunchVersion">ゲームバージョンを選択する</sys:String>
+    <sys:String x:Key="String.Mainwindow.ChooseAuthType">検証方法を選択する</sys:String>
     <sys:String x:Key="String.Mainwindow.InputPlayerName">アカウント又はゲームの名前を選択/入力してください</sys:String>
     <sys:String x:Key="String.Mainwindow.Launching">起動中...</sys:String>
 
@@ -79,11 +79,11 @@
     <sys:String x:Key="String.Mainwindow.NeedDownloadDepend2">起動しているバージョンに必要な依存ライブラリ ファイルがありません。ダウンロードしないと，起動しない可能性があります</sys:String>
     <sys:String x:Key="String.Mainwindow.NeedDownloadAssets">アセットをダウンロードしますか</sys:String>
     <sys:String x:Key="String.Mainwindow.NeedDownloadAssets2">起動しているバージョンからアセットファイルの一部が欠落しています。ダウンロードしないと，ゲーム内容が不完全になる可能性があります(音声がないとか)</sys:String>
-    <sys:String x:Key="String.MainWindow.Auth.Offline">オフライン認証</sys:String>
-    <sys:String x:Key="String.MainWindow.Auth.Mojang">Mojang認証</sys:String>
-    <sys:String x:Key="String.MainWindow.Auth.Nide8">統一通行証認証</sys:String>
-    <sys:String x:Key="String.MainWindow.Auth.AI">authlib-injector認証</sys:String>
-    <sys:String x:Key="String.MainWindow.Auth.Custom">カスタム認証</sys:String>
+    <sys:String x:Key="String.Mainwindow.Auth.Offline">オフライン認証</sys:String>
+    <sys:String x:Key="String.Mainwindow.Auth.Mojang">Mojang認証</sys:String>
+    <sys:String x:Key="String.Mainwindow.Auth.Nide8">統一通行証認証</sys:String>
+    <sys:String x:Key="String.Mainwindow.Auth.AI">authlib-injector認証</sys:String>
+    <sys:String x:Key="String.Mainwindow.Auth.Custom">カスタム認証</sys:String>
 
     <sys:String x:Key="String.Mainwindow.GameExit.Error">ゲームが異常終了しました</sys:String>
     <sys:String x:Key="String.Mainwindow.GameExit.Error_t">これはゲームが強制終了した可能性があります，終了コード:{0}，ゲームの実行時間:{1}</sys:String>
