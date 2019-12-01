@@ -24,7 +24,7 @@ namespace NsisoLauncher.Color_yr.updata
         {
             mod_check();
             List<DownloadTask> task = new List<DownloadTask>();
-            string Url = "http://www.coloryr.xyz/server/server.json";
+            string Url = App.config.MainConfig.Server.Mods_Check.Address;
             try
             {
                 var res = await APIRequester.HttpGetAsync(Url);

@@ -7,13 +7,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NsisoLauncher", "NsisoLaunc
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "NsisoLauncherCore", "NsisoLauncher\NsisoLauncherCore\NsisoLauncherCore.shproj", "{5C2D381D-748D-4809-BFE3-179CCCA2DC0D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NsisoLauncher.Test", "NsisoLauncher\NsisoLauncher.Test\NsisoLauncher.Test.csproj", "{99AF489E-FD2D-4E64-B470-70ADA4E3E591}"
-EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		NsisoLauncher\NsisoLauncherCore\NsisoLauncherCore.projitems*{5c2d381d-748d-4809-bfe3-179ccca2dc0d}*SharedItemsImports = 13
 		NsisoLauncher\NsisoLauncherCore\NsisoLauncherCore.projitems*{6d9dfdaf-8762-4cfa-b8ca-ebf68934f936}*SharedItemsImports = 4
-		NsisoLauncher\NsisoLauncherCore\NsisoLauncherCore.projitems*{99af489e-fd2d-4e64-b470-70ada4e3e591}*SharedItemsImports = 4
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,14 +27,6 @@ Global
 		{6D9DFDAF-8762-4CFA-B8CA-EBF68934F936}.Release|Any CPU.Build.0 = Release|Any CPU
 		{6D9DFDAF-8762-4CFA-B8CA-EBF68934F936}.Release|x64.ActiveCfg = Release|Any CPU
 		{6D9DFDAF-8762-4CFA-B8CA-EBF68934F936}.Release|x64.Build.0 = Release|Any CPU
-		{99AF489E-FD2D-4E64-B470-70ADA4E3E591}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{99AF489E-FD2D-4E64-B470-70ADA4E3E591}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{99AF489E-FD2D-4E64-B470-70ADA4E3E591}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{99AF489E-FD2D-4E64-B470-70ADA4E3E591}.Debug|x64.Build.0 = Debug|Any CPU
-		{99AF489E-FD2D-4E64-B470-70ADA4E3E591}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{99AF489E-FD2D-4E64-B470-70ADA4E3E591}.Release|Any CPU.Build.0 = Release|Any CPU
-		{99AF489E-FD2D-4E64-B470-70ADA4E3E591}.Release|x64.ActiveCfg = Release|Any CPU
-		{99AF489E-FD2D-4E64-B470-70ADA4E3E591}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

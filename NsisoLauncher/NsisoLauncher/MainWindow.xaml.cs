@@ -721,12 +721,14 @@ namespace NsisoLauncher
                     }
                 }
 
+                if (App.config.MainConfig.Server.Mods_Check.Enable)
+                {
+                    mainPanel.launchButton.Content = App.GetResourceString("String.Mainwindow.Check.mods");
 
-                mainPanel.launchButton.Content = App.GetResourceString("String.Mainwindow.Check.mods");
-
-                updata_check check = new updata_check();
-                var lost_mod = await check.updata();
-                losts.AddRange(lost_mod);
+                    updata_check check = new updata_check();
+                    var lost_mod = await check.updata();
+                    losts.AddRange(lost_mod);
+                }
 
                 if (losts.Count != 0)
                 {
