@@ -98,6 +98,9 @@
     </ApplicationDefinition>
     <Compile Include="Color_yr\Brush_Color.cs" />
     <Compile Include="Color_yr\NIDE8_head.cs" />
+    <Compile Include="Color_yr\updata\mod_md5.cs" />
+    <Compile Include="Color_yr\updata\updata_check.cs" />
+    <Compile Include="Color_yr\updata\updata_obj.cs" />
     <Compile Include="Config\ConfigHandler.cs" />
     <Compile Include="Config\LauncherProfilesConfig.cs" />
     <Compile Include="Config\MainConfig.cs" />

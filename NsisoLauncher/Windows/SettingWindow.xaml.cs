@@ -357,6 +357,11 @@ namespace NsisoLauncher.Windows
         private void delAllAuthnodeButton_Click(object sender, RoutedEventArgs e)
         {
             config.User.AuthenticationDic.Clear();
+            config.User.AuthenticationDic.Add("mojang", new AuthenticationNode()
+            {
+                AuthType = AuthenticationType.MOJANG,
+                Name = App.GetResourceString("String.MainWindow.Auth.Mojang")
+            });
             this.ShowMessageAsync("清除成功", "请保存以生效");
         }
 

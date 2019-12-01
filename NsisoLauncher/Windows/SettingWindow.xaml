@@ -235,17 +235,19 @@
                 <Grid>
                     <Label x:Name="label6" Content="{DynamicResource String.Settingwindow.Version.ChooseText}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,1,0,0"/>
                     <ComboBox x:Name="VersionsComboBox" Margin="148,0,155,0" VerticalAlignment="Top" DisplayMemberPath="ID" SelectionChanged="VersionsComboBox_SelectionChanged"/>
-                    <GroupBox x:Name="groupBox7" Header="{DynamicResource String.Settingwindow.Version.Options}" Margin="10,31,10,0">
-                        <Grid>
-                            <DataGrid x:Name="versionOptionsGrid" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" Margin="0,0,0,20" CellEditEnding="VersionOptionsGrid_CellEditEnding">
-                                <DataGrid.Columns>
-                                    <DataGridTextColumn Header="{DynamicResource String.Settingwindow.Version.Options.T}" Binding="{Binding Key}" IsReadOnly="True"/>
-                                    <DataGridTextColumn Header="{DynamicResource String.Settingwindow.Version.Options.V}" Binding="{Binding Value}"/>
-                                </DataGrid.Columns>
-                            </DataGrid>
-                            <TextBlock TextWrapping="Wrap" Text="{DynamicResource String.Settingwindow.Version.Options.Note}" VerticalAlignment="Bottom"/>
-                        </Grid>
-                    </GroupBox>
+                    <StackPanel>
+                        <Expander x:Name="groupBox7" Header="{DynamicResource String.Settingwindow.Version.Options}" Margin="10,31,10,0">
+                            <Grid Height="238">
+                                <DataGrid x:Name="versionOptionsGrid" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" Margin="0,0,0,20" CellEditEnding="VersionOptionsGrid_CellEditEnding">
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Header="{DynamicResource String.Settingwindow.Version.Options.T}" Binding="{Binding Key}" IsReadOnly="True"/>
+                                        <DataGridTextColumn Header="{DynamicResource String.Settingwindow.Version.Options.V}" Binding="{Binding Value}"/>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                                <TextBlock TextWrapping="Wrap" Text="{DynamicResource String.Settingwindow.Version.Options.Note}" VerticalAlignment="Bottom"/>
+                            </Grid>
+                        </Expander>
+                    </StackPanel>
                     <Button x:Name="refreshVersionsButton" Content="{DynamicResource String.Settingwindow.Version.Refresh}"
                             VerticalAlignment="Top" HorizontalAlignment="Right" Width="140" Click="refreshVersionsButton_Click" Margin="0,-1,10,0"/>
                     <!--

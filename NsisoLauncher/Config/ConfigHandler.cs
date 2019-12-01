@@ -243,6 +243,11 @@ namespace NsisoLauncher.Config
                 ConfigVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString(),
                 Lauguage = "中文"
             };
+            MainConfig.User.AuthenticationDic.Add("mojang", new AuthenticationNode()
+            {
+                AuthType = AuthenticationType.MOJANG,
+                Name = App.GetResourceString("String.MainWindow.Auth.Mojang")
+            });
             Save();
         }
     }

@@ -74,11 +74,6 @@ namespace NsisoLauncher.Controls
                     AuthType = AuthenticationType.OFFLINE,
                     Name = App.GetResourceString("String.MainWindow.Auth.Offline")
                 }));
-                authNodeList.Add(new KeyValuePair<string, AuthenticationNode>("mojang", new AuthenticationNode()
-                {
-                    AuthType = AuthenticationType.MOJANG,
-                    Name = App.GetResourceString("String.MainWindow.Auth.Mojang")
-                }));
                 if (App.config.MainConfig.User.AuthenticationDic != null)
                     foreach (var item in App.config.MainConfig.User.AuthenticationDic)
                     {

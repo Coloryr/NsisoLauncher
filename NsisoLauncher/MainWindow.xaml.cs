@@ -2,6 +2,7 @@
 using MahApps.Metro.Controls.Dialogs;
 using MahApps.Metro.IconPacks;
 using NsisoLauncher.Color_yr;
+using NsisoLauncher.Color_yr.updata;
 using NsisoLauncher.Config;
 using NsisoLauncher.Windows;
 using NsisoLauncherCore;
@@ -708,6 +709,12 @@ namespace NsisoLauncher
                     }
                 }
 
+                mainPanel.launchButton.Content = "检查更新中";
+
+                updata_check check = new updata_check();
+                var lost_mod = await check.updata();
+                losts.AddRange(lost_mod);
+
                 if (losts.Count != 0)
                 {
                      if (!App.downloader.IsBusy)
@@ -748,7 +755,7 @@ namespace NsisoLauncher
                 //直连服务器设置
                 var lockAuthNode = App.config.MainConfig.User.GetLockAuthNode();
                 if (App.config.MainConfig.User.Nide8ServerDependence &&
-                    (lockAuthNode != null) &&
+                    (lockAuthNode != null) && App.config.MainConfig.Server.LaunchToServer &&
                         (lockAuthNode.AuthType == AuthenticationType.NIDE8))
                 {
                     var nide8ReturnResult = await (new NsisoLauncherCore.Net.Nide8API.APIHandler(lockAuthNode.Property["nide8ID"])).GetInfoAsync();
@@ -771,7 +778,11 @@ namespace NsisoLauncher
                 }
                 else if (App.config.MainConfig.Server.LaunchToServer)
                 {
-                    launchSetting.LaunchToServer = new NsisoLauncherCore.Modules.Server() { Address = App.config.MainConfig.Server.Address, Port = App.config.MainConfig.Server.Port };
+                    launchSetting.LaunchToServer = new NsisoLauncherCore.Modules.Server() 
+                    { 
+                        Address = App.config.MainConfig.Server.Address, 
+                        Port = App.config.MainConfig.Server.Port 
+                    };
                 }
 
                 //自动内存设置
@@ -962,6 +973,7 @@ namespace NsisoLauncher
         }
         private async Task CheckUpdate()
         {
+            /*
             var ver = await App.nsisoAPIHandler.GetLatestLauncherVersion();
             if (ver != null)
             {
@@ -972,6 +984,7 @@ namespace NsisoLauncher
 
                 }
             }
+            */
         }
         #endregion
     }
