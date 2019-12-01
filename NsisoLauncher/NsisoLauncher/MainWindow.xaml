@@ -13,12 +13,13 @@
         Title="Nsiso Launcher(Unofficial Edit)" Height="436" Width="720" MinHeight="436" MinWidth="720" ShowMaxRestoreButton="False" 
         ShowMinButton="True" Loaded="mainWindow_Loaded" Closing="mainWindow_Closing" WindowStyle="SingleBorderWindow" ResizeMode="CanMinimize">
     <Grid>
+        
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="0*"/>
             <ColumnDefinition Width="243*"/>
             <ColumnDefinition Width="126*"/>
         </Grid.ColumnDefinitions>
-
+        
         <Image x:Name="BG" Width="720" Height="405" Grid.ColumnSpan="3" Visibility="Visible" Source="/NsisoLauncher;component/Resource/bg.jpg" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,0,-2,0"/>
         <MediaElement x:Name="mediaElement" Width="720" Height="405" LoadedBehavior="Manual" Grid.ColumnSpan="3" MediaEnded="mediaElement_MediaEnded" Visibility="Hidden"/>
         <Grid x:Name="userGrid" Grid.Column="2">

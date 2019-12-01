@@ -14,6 +14,7 @@ using NsisoLauncherCore.Net.MojangApi.Endpoints;
 using NsisoLauncherCore.Util;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -986,6 +987,7 @@ namespace NsisoLauncher
         }
         private async Task CheckUpdate()
         {
+            /*
             var ver = await App.nsisoAPIHandler.GetLatestLauncherVersion();
             if (ver != null)
             {
@@ -996,6 +998,7 @@ namespace NsisoLauncher
                     new UpdateWindow(ver).Show();
                 }
             }
+            */
         }
         #endregion
     }
