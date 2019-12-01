@@ -64,6 +64,8 @@
     <sys:String x:Key="String.Mainwindow.Auth.Error.Other">其他错误:{0}</sys:String>
     <sys:String x:Key="String.Mainwindow.Auth.Error.Core_Error">启动器内部错误:{0}</sys:String>
     <sys:String x:Key="String.Mainwindow.Auth.Error.Error">未知错误:{0}</sys:String>
+
+    <sys:String x:Key="String.Mainwindow.Check.mods">检查资源更新</sys:String>
     <!--#endregion-->
 
     <sys:String x:Key="String.Mainwindow.Launch.LaunchError">启动后等待游戏窗口响应异常", "这可能是由于游戏进程发生意外（闪退）导致的。\n</sys:String>
@@ -160,6 +162,8 @@
     <sys:String x:Key="String.Settingwindow.Env.Launcher.DebugMode">DEBUG模式</sys:String>
     <sys:String x:Key="String.Settingwindow.Env.Note">*请注意：本页面(全局设置)中大部分设置需要重启启动器后才能生效</sys:String>
     <sys:String x:Key="String.Settingwindow.Download">下载设置</sys:String>
+    <sys:String x:Key="String.Settingwindow.Download.Advance">高级下载设置</sys:String>
+    <sys:String x:Key="String.Settingwindow.Download.Check">校验下载文件哈希值</sys:String>
     <sys:String x:Key="String.Settingwindow.Download.Source">首选下载源</sys:String>
     <sys:String x:Key="String.Settingwindow.Download.Source.Mojang">Mojang官方</sys:String>
     <sys:String x:Key="String.Settingwindow.Download.Source.BMCLAPI">BMCLAPI (bangbang93's minecraft launcher api)</sys:String>
@@ -180,6 +184,9 @@
     <sys:String x:Key="String.Settingwindow.Version.Options.Note">*双击设置值即可进行更改。若设置列表为空说明Options.txt文件不存在或未选择版本。</sys:String>
     <sys:String x:Key="String.Settingwindow.Version.Control">版本操作</sys:String>
     <sys:String x:Key="String.Settingwindow.User">用户验证设置</sys:String>
+    <sys:String x:Key="String.Settingwindow.User.Add">选择新添加</sys:String>
+    <sys:String x:Key="String.Settingwindow.User.Set">自定义验证模型设置</sys:String>
+    <sys:String x:Key="String.Settingwindow.User.Chose">选择要管理的验证模型：</sys:String>
     <sys:String x:Key="String.Settingwindow.User.Type">启动验证类型设置</sys:String>
     <sys:String x:Key="String.Settingwindow.User.Type.Online">使用正版验证登录 (需要联网验证)</sys:String>
     <sys:String x:Key="String.Settingwindow.User.Type.Offline">使用离线验证登录 (无需正版账号)</sys:String>
@@ -198,7 +205,11 @@
     <sys:String x:Key="String.Settingwindow.User.Pro.ProxyAddress">代理验证服务器地址(重启生效):</sys:String>
     <sys:String x:Key="String.Settingwindow.User.Pro.GUID">客户端GUID:</sys:String>
     <sys:String x:Key="String.Settingwindow.User.Lauguage">语言设置</sys:String>
+    <sys:String x:Key="String.Settingwindow.User.Setting">用户设置</sys:String>
+    <sys:String x:Key="String.Settingwindow.User.Setting.Chose">要进行设置的用户：</sys:String>
     <sys:String x:Key="String.Settingwindow.Saving">保存中</sys:String>
     <sys:String x:Key="String.Settingwindow.JavaError">JAVA无效，请检查</sys:String>
     <sys:String x:Key="String.Settingwindow.SaveError">保存发生错误</sys:String>
+    <sys:String x:Key="String.Settingwindow.Env.Autoupdata">自动检查启动器更新</sys:String>
+    <sys:String x:Key="String.Settingwindow.Env.Disabledata">禁用数据收集</sys:String>
 </ResourceDictionary>

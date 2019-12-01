@@ -1,10 +1,8 @@
 ﻿using ICSharpCode.SharpZipLib.Zip;
 using Newtonsoft.Json.Linq;
 using NsisoLauncherCore.Util.Checker;
-using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Security.Cryptography;
 
 namespace NsisoLauncher.Color_yr.updata
 {
@@ -65,13 +63,7 @@ namespace NsisoLauncher.Color_yr.updata
         {
             public class Root
             {
-                /// <summary>
-                /// 
-                /// </summary>
                 public int modListVersion { get; set; }
-                /// <summary>
-                /// 
-                /// </summary>
                 public List<ModListItem> modList { get; set; }
             }
         }
@@ -154,7 +146,7 @@ namespace NsisoLauncher.Color_yr.updata
                 mod.local = fileName;
                 return mod;
             }
-            catch (Exception e)
+            catch
             {
                 return new updata_mod { name = fileName.Replace(path + "\\", "") };
             }

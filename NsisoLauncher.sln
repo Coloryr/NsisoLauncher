@@ -5,6 +5,10 @@ VisualStudioVersion = 16.0.29102.190
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NsisoLauncher", "NsisoLauncher\NsisoLauncher.csproj", "{6D9DFDAF-8762-4CFA-B8CA-EBF68934F936}"
 EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "NsisoLauncherCore", "NsisoLauncherCore\NsisoLauncherCore.shproj", "{14E2FA92-77F6-4BFF-9654-38FA29034AA9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NsisoLauncher.Test", "NsisoLauncher.Test\NsisoLauncher.Test.csproj", "{99AF489E-FD2D-4E64-B470-70ADA4E3E591}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

@@ -31,6 +31,11 @@ namespace NsisoLauncher
         public string Name { get; set; }
     }
 
+    public class MainWindowViewModel : INotifyPropertyChanged
+    {
+        public event PropertyChangedEventHandler PropertyChanged;
+    }
+
     /// <summary>
     /// MainWindow.xaml 的交互逻辑
     /// </summary>
@@ -326,6 +331,7 @@ namespace NsisoLauncher
 
                 #region 保存启动数据
                 App.config.MainConfig.History.LastLaunchVersion = args.LaunchVersion.ID;
+                App.config.MainConfig.History.LastLaunchTime = DateTime.Now;
                 #endregion
 
                 LaunchSetting launchSetting = new LaunchSetting()
@@ -355,6 +361,7 @@ namespace NsisoLauncher
 
                 //主验证器接口
                 IAuthenticator authenticator = null;
+                bool shouldRemember = false;
 
                 //bool isSameAuthType = (authNode.AuthenticationType == auth);
                 bool isRemember = (!string.IsNullOrWhiteSpace(args.UserNode.AccessToken)) && (args.UserNode.SelectProfileUUID != null);
@@ -567,6 +574,10 @@ namespace NsisoLauncher
                                 args.UserNode.Profiles.Clear();
                                 authResult.Profiles.ForEach(x => args.UserNode.Profiles.Add(x.Value, x));
                             }
+                            if (shouldRemember)
+                            {
+                                args.UserNode.AccessToken = authResult.AccessToken;
+                            }
 
                             //Color_yr Change
                             args.UserNode.AccessToken = authResult.AccessToken;
@@ -709,7 +720,8 @@ namespace NsisoLauncher
                     }
                 }
 
-                mainPanel.launchButton.Content = "检查更新中";
+
+                mainPanel.launchButton.Content = App.GetResourceString("String.Mainwindow.Check.mods");
 
                 updata_check check = new updata_check();
                 var lost_mod = await check.updata();
@@ -842,6 +854,7 @@ namespace NsisoLauncher
                     await App.nsisoAPIHandler.RefreshUsingTimesCounter();
                     #endregion
 
+                    App.config.MainConfig.History.LastLaunchUsingMs = result.LaunchUsingMs;
                     if (App.config.MainConfig.Environment.ExitAfterLaunch)
                     {
                         Application.Current.Shutdown();
@@ -973,7 +986,6 @@ namespace NsisoLauncher
         }
         private async Task CheckUpdate()
         {
-            /*
             var ver = await App.nsisoAPIHandler.GetLatestLauncherVersion();
             if (ver != null)
             {
@@ -981,10 +993,9 @@ namespace NsisoLauncher
                 if ((ver.Version > currentVersion) &&
                     ver.ReleaseType.Equals("release", StringComparison.OrdinalIgnoreCase))
                 {
-
+                    new UpdateWindow(ver).Show();
                 }
             }
-            */
         }
         #endregion
     }

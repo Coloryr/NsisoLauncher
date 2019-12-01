@@ -372,6 +372,20 @@ namespace NsisoLauncher.Config
         /// 服务器端口
         /// </summary>
         public ushort Port { get; set; }
+
+        public Mods_Check Mods_Check { get; set; }
+    }
+
+    public class Mods_Check
+    { 
+        /// <summary>
+        /// 启用资源检查
+        /// </summary>
+        public bool Enable { get; set; }
+        /// <summary>
+        /// 资源更新检查地址
+        /// </summary>
+        public string Address { get; set; }
     }
 
     /// <summary>

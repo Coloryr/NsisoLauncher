@@ -123,6 +123,8 @@ namespace NsisoLauncher.Controls
                         break;
                 }
                 ((SettingWindow)Window.GetWindow(this)).AddAuthModule(authName, node);
+                SaveButton_Click(null, null);
+                ((MetroWindow)Window.GetWindow(this)).ShowMessageAsync("已添加", "已保存你添加的登录模型");
             }
         }
 
@@ -176,7 +178,13 @@ namespace NsisoLauncher.Controls
 
         private void DelButton_Click(object sender, RoutedEventArgs e)
         {
+            if (authModule.Value.Name == "mojang")
+            {
+                ((MetroWindow)Window.GetWindow(this)).ShowMessageAsync("删除失败", "无法删除正版登录");
+                return;
+            }
             ((SettingWindow)Window.GetWindow(this)).DeleteAuthModule(authModule);
+
         }
     }
 }

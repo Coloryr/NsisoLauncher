@@ -67,6 +67,7 @@ namespace NsisoLauncher.Controls
         {
             try
             {
+
                 //更新验证模型列表
                 authNodeList.Clear();
                 authNodeList.Add(new KeyValuePair<string, AuthenticationNode>("offline", new AuthenticationNode()
