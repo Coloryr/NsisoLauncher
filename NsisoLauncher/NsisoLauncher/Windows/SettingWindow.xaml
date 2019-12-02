@@ -358,6 +358,10 @@
                                 <CheckBox Content="{DynamicResource String.Settingwindow.Custom.Mods.Enable}" IsChecked="{Binding Server.Mods_Check.Enable}" Margin="0,0,0,5"/>
                                 <Label Content="{DynamicResource String.Settingwindow.Custom.Mods.Addres}"/>
                                 <TextBox TextWrapping="NoWrap" Text="{Binding Server.Mods_Check.Address}" HorizontalAlignment="Left" Width="300"/>
+                                <Label Content="{DynamicResource String.Settingwindow.Custom.Mods.Packname}"/>
+                                <Label Content="{Binding Server.Mods_Check.packname}" Name="Pack_Name"/>
+                                <Label Content="{DynamicResource String.Settingwindow.Custom.Mods.Vision}"/>
+                                <Label Content="{Binding Server.Mods_Check.Vision}" Name="Pack_Vision"/>
                             </StackPanel>
                         </Expander>
                     </StackPanel>

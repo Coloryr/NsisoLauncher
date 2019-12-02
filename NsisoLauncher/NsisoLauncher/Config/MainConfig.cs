@@ -386,6 +386,14 @@ namespace NsisoLauncher.Config
         /// 资源更新检查地址
         /// </summary>
         public string Address { get; set; }
+        /// <summary>
+        /// 整合包名字
+        /// </summary>
+        public string packname { get; set; }
+        /// <summary>
+        /// 整合包版本
+        /// </summary>
+        public string Vision { get; set; }
     }
 
     /// <summary>

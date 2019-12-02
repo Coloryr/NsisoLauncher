@@ -229,18 +229,18 @@ namespace NsisoLauncher.Config
                     Port = 25565,
                     Mods_Check = new Mods_Check
                     {
-                        Enable = false
+                        Enable = false,
+                        Vision = "0.0.0",
+                        packname = "modpack"
                     }
                 },
                 Customize = new Customize()
                 {
                     CustomBackGroundMusic = false,
                     CustomBackGroundPicture = false,
-                    //Color_yr Add Start
                     CustomBackGroundViode = false,
                     CustomBackGroundCyclic = false,
                     CustomBackGroundCyclic_time = 10000,
-                    //Color_yr Add Stop
                     AccentColor = "Blue",
                     AppThme = "BaseLight"
                 },

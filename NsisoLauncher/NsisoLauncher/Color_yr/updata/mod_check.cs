@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace NsisoLauncher.Color_yr.updata
 {
-    class mod_md5
+    class mod_check
     {
         class ModListItem
         {
@@ -68,31 +68,32 @@ namespace NsisoLauncher.Color_yr.updata
                 public List<ModListItem> modList { get; set; }
             }
         }
-        public async Task<Dictionary<string, updata_mod>> ReadModInfo(string path)
+        public async Task<Dictionary<string, updata_item>> ReadModInfo(string path)
         {
-            if (!Directory.Exists(path + @"\mods\"))
+            path += @"\mods\";
+            if (!Directory.Exists(path))
             {
-                return new Dictionary<string, updata_mod>();
+                return new Dictionary<string, updata_item>();
             }
-            string[] files = Directory.GetFiles(path + @"\mods\", "*.jar");
-            Dictionary<string, updata_mod> list = new Dictionary<string, updata_mod>();
+            string[] files = Directory.GetFiles(path, "*.jar");
+            Dictionary<string, updata_item> list = new Dictionary<string, updata_item>();
             foreach (string file in files)
             {
                 await Task.Factory.StartNew(() =>
-                 {
-                     updata_mod save = GetModsInfo(path, file);
+                {
+                     updata_item save = GetModsInfo(path, file);
                      if (list.ContainsKey(save.name) == false)
                          list.Add(save.name, save);
-                 });
+                });
             }
             return list;
         }
-        public updata_mod GetModsInfo(string path, string fileName)
+        public updata_item GetModsInfo(string path, string fileName)
         {
             try
             {
                 JToken modinfo = null;
-                updata_mod mod = new updata_mod();
+                updata_item mod = new updata_item();
                 try
                 {
                     ZipFile zip = new ZipFile(fileName);
@@ -136,7 +137,6 @@ namespace NsisoLauncher.Color_yr.updata
                     if (b.modid != null)
                     {
                         mod.name = b.name;
-                        mod.vision = b.version;
                     }
                 }
             a:
@@ -152,7 +152,7 @@ namespace NsisoLauncher.Color_yr.updata
             }
             catch
             {
-                return new updata_mod { name = fileName.Replace(path + "\\", "") };
+                return null;
             }
         }
     }

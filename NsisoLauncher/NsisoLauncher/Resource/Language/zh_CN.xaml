@@ -57,6 +57,8 @@
     <sys:String x:Key="String.Mainwindow.Auth.Error.Core_Error">启动器内部错误:{0}</sys:String>
     <sys:String x:Key="String.Mainwindow.Auth.Error.Error">未知错误:{0}</sys:String>
     <sys:String x:Key="String.Mainwindow.Check.mods">检查资源更新</sys:String>
+    <sys:String x:Key="String.Mainwindow.Check.new">有新版本的资源文件</sys:String>
+    <sys:String x:Key="String.Mainwindow.Check.new.ask">是否更新客户端的资源文件</sys:String>
     <sys:String x:Key="String.Mainwindow.Launch.LaunchError">启动后等待游戏窗口响应异常", "这可能是由于游戏进程发生意外（闪退）导致的。\n</sys:String>
     <sys:String x:Key="String.Mainwindow.LaunchError">启动错误</sys:String>
     <sys:String x:Key="String.Mainwindow.GameExitWithNoWindow">游戏进程在未显示出窗口前退出</sys:String>
@@ -232,6 +234,8 @@
     <sys:String x:Key="String.Settingwindow.Custom.Server.Addres">服务器地址：</sys:String>
     <sys:String x:Key="String.Settingwindow.Custom.Server.Pore">服务器端口(SRV填写0)：</sys:String>
     <sys:String x:Key="String.Settingwindow.Custom.Mods">资源更新检查</sys:String>
+    <sys:String x:Key="String.Settingwindow.Custom.Mods.Packname">整合包名字：</sys:String>
+    <sys:String x:Key="String.Settingwindow.Custom.Mods.Vision">整合包版本：</sys:String>
     <sys:String x:Key="String.Settingwindow.Custom.Mods.Enable">启用资源检查</sys:String>
     <sys:String x:Key="String.Settingwindow.Custom.Mods.Addres">检测更新文件：（文件为 http://xxx.xxx.xxx/*.json）</sys:String>
     <sys:String x:Key="String.Settingwindow.Custom.About">关于</sys:String>

@@ -721,17 +721,39 @@ namespace NsisoLauncher
                     }
                 }
 
+                updata_pack pack = null;
+                bool isupdata = false;
+                string packname = null;
+                string vision = null;
+
                 if (App.config.MainConfig.Server.Mods_Check.Enable)
                 {
                     mainPanel.launchButton.Content = App.GetResourceString("String.Mainwindow.Check.mods");
+                    pack = new updata_pack();
 
                     var lost_mod = await new updata_check().check();
-                    losts.AddRange(lost_mod);
+                    if (lost_mod != null)
+                    {
+                        if (await this.ShowMessageAsync(App.GetResourceString("String.Mainwindow.Check.new"),
+                            App.GetResourceString("String.Mainwindow.Check.new.ask"),
+                            MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings()
+                            {
+                                AffirmativeButtonText = App.GetResourceString("String.Base.Download"),
+                                NegativeButtonText = App.GetResourceString("String.Base.Cancel"),
+                                DefaultButtonFocus = MessageDialogResult.Affirmative
+                            }) == MessageDialogResult.Affirmative)
+                        {
+                            losts.AddRange(await lost_mod.setupdata(pack));
+                            packname = lost_mod.getpackname();
+                            vision = lost_mod.getvision();
+                            isupdata = true;
+                        }
+                    }
                 }
 
                 if (losts.Count != 0)
                 {
-                     if (!App.downloader.IsBusy)
+                    if (!App.downloader.IsBusy)
                     {
                         App.downloader.SetDownloadTasks(losts);
                         App.downloader.StartDownload();
@@ -740,6 +762,15 @@ namespace NsisoLauncher
                         {
                             await this.ShowMessageAsync(string.Format("有{0}个文件下载补全失败", downloadResult.ErrorList.Count),
                                 "这可能是因为本地网络问题或下载源问题，您可以尝试检查网络环境或在设置中切换首选下载源，启动器将继续尝试启动");
+                        }
+                        if (pack != null)
+                        {
+                            await pack.pack();
+                        }
+                        if (isupdata)
+                        {
+                            App.config.MainConfig.Server.Mods_Check.packname = packname;
+                            App.config.MainConfig.Server.Mods_Check.Vision = vision;
                         }
                     }
                     else
