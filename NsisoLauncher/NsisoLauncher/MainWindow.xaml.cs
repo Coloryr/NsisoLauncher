@@ -763,14 +763,17 @@ namespace NsisoLauncher
                             await this.ShowMessageAsync(string.Format("有{0}个文件下载补全失败", downloadResult.ErrorList.Count),
                                 "这可能是因为本地网络问题或下载源问题，您可以尝试检查网络环境或在设置中切换首选下载源，启动器将继续尝试启动");
                         }
-                        if (pack != null)
+                        else
                         {
-                            await pack.pack();
-                        }
-                        if (isupdata)
-                        {
-                            App.config.MainConfig.Server.Mods_Check.packname = packname;
-                            App.config.MainConfig.Server.Mods_Check.Vision = vision;
+                            if (pack != null)
+                            {
+                                await pack.pack();
+                            }
+                            if (isupdata)
+                            {
+                                App.config.MainConfig.Server.Mods_Check.packname = packname;
+                                App.config.MainConfig.Server.Mods_Check.Vision = vision;
+                            }
                         }
                     }
                     else

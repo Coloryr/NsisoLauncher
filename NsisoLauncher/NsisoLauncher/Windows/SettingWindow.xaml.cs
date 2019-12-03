@@ -316,7 +316,6 @@ namespace NsisoLauncher.Windows
                 this.ShowMessageAsync("您未选择要进行操作的用户", "请先选择您要进行操作的用户");
                 return;
             }
-
             KeyValuePair<string, UserNode> selectedItem = (KeyValuePair<string, UserNode>)userComboBox.SelectedItem;
             UserNode node = selectedItem.Value;
             //todo （后）恢复注销用户功能
