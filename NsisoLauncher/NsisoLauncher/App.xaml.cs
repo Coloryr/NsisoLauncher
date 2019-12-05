@@ -52,7 +52,7 @@ namespace NsisoLauncher
             #endregion
 
             config = new ConfigHandler();
-
+            
             #region DEBUG初始化（基于配置文件）
             if (config.MainConfig.Launcher.Debug && !e.Args.Contains("-debug"))
             {
