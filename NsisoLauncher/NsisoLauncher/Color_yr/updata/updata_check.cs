@@ -61,9 +61,12 @@ namespace NsisoLauncher.Color_yr.updata
                     else if (local_mods.ContainsKey(th.Key))
                     {
                         updata_item lo = local_mods[th.Value.name];
-                        if (string.Equals(lo.check, th.Value.check, StringComparison.OrdinalIgnoreCase))
+                        if (lo.local.Contains(th.Value.filename))
                         {
-                            local_mods.Remove(th.Key);
+                            if (string.Equals(lo.check, th.Value.check, StringComparison.OrdinalIgnoreCase))
+                            {
+                                local_mods.Remove(th.Key);
+                            }
                         }
                         else
                         {
