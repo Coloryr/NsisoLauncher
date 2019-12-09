@@ -760,6 +760,12 @@ namespace NsisoLauncher
                         var downloadResult = await new DownloadWindow().ShowWhenDownloading();
                         if (downloadResult?.ErrorList?.Count != 0)
                         {
+                            foreach (KeyValuePair<DownloadTask, Exception> task in downloadResult?.ErrorList)
+                            {
+                                string filename = task.Key.To + ".downloadtask";
+                                if (File.Exists(filename))
+                                    File.Delete(filename);
+                            }
                             await this.ShowMessageAsync(string.Format("有{0}个文件下载补全失败", downloadResult.ErrorList.Count),
                                 "这可能是因为本地网络问题或下载源问题，您可以尝试检查网络环境或在设置中切换首选下载源。");
                             return;
@@ -768,7 +774,7 @@ namespace NsisoLauncher
                         {
                             if (pack != null)
                             {
-                                await pack.pack();
+                                isupdata = await pack.pack();
                             }
                             if (isupdata)
                             {

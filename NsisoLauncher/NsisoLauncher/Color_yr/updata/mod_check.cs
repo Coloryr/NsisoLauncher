@@ -1,6 +1,7 @@
 ﻿using ICSharpCode.SharpZipLib.Zip;
 using Newtonsoft.Json.Linq;
 using NsisoLauncherCore.Util.Checker;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
@@ -71,22 +72,31 @@ namespace NsisoLauncher.Color_yr.updata
         public async Task<Dictionary<string, updata_item>> ReadModInfo(string path)
         {
             path += @"\mods\";
-            if (!Directory.Exists(path))
+            App.logHandler.AppendInfo("检查mod:" + path);
+            try
             {
-                return new Dictionary<string, updata_item>();
-            }
-            string[] files = Directory.GetFiles(path, "*.jar");
-            Dictionary<string, updata_item> list = new Dictionary<string, updata_item>();
-            foreach (string file in files)
-            {
-                await Task.Factory.StartNew(() =>
+                if (!Directory.Exists(path))
                 {
-                     updata_item save = GetModsInfo(path, file);
-                     if (list.ContainsKey(save.name) == false)
-                         list.Add(save.name, save);
-                });
+                    return new Dictionary<string, updata_item>();
+                }
+                string[] files = Directory.GetFiles(path, "*.jar");
+                Dictionary<string, updata_item> list = new Dictionary<string, updata_item>();
+                foreach (string file in files)
+                {
+                    await Task.Factory.StartNew(() =>
+                    {
+                        updata_item save = GetModsInfo(path, file);
+                        if (list.ContainsKey(save.name) == false)
+                            list.Add(save.name, save);
+                    });
+                }
+                return list;
             }
-            return list;
+            catch (Exception e)
+            {
+                App.logHandler.AppendInfo("检查mod错误" + e.Source);
+            }
+            return new Dictionary<string, updata_item>();
         }
         public updata_item GetModsInfo(string path, string fileName)
         {
