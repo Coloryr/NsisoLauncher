@@ -80,7 +80,7 @@ namespace NsisoLauncher.Windows
                 VersionsComboBox.IsEnabled = false;
                 versionOptionsGrid.ItemsSource = await GameHelper.GetOptionsAsync(App.handler, new NsisoLauncherCore.Modules.Version() { ID = "null" });
             }
-
+            CheckBox_Checked(null, null);
 
 
             //debug
@@ -435,46 +435,51 @@ namespace NsisoLauncher.Windows
         }
 
         //Color_yr Add Start
-        private void CheckBox3_Checked(object sender, RoutedEventArgs e)
-        {
-            if (checkBox3.IsChecked == true)
-            {
-                checkBox1.IsEnabled = false;
-                checkBox2.IsEnabled = false;
-                if (checkBox1.IsChecked == true)
-                {
-                    checkBox4.IsEnabled = false;
-                    set.IsEnabled = false;
-                    Text.IsEnabled = false;
-                }
-            }
-            else if (checkBox3.IsChecked == false)
-            {
-                checkBox1.IsEnabled = true;
-                checkBox2.IsEnabled = true;
-                if (checkBox1.IsChecked == true)
-                {
-                    checkBox4.IsEnabled = true;
-                    set.IsEnabled = true;
-                    Text.IsEnabled = true;
-                }
-            }
-        }
-        private void CheckBox1_Checked(object sender, RoutedEventArgs e)
+        private void CheckBox_Checked(object sender, RoutedEventArgs e)
         {
             if (checkBox1.IsChecked == true)
             {
+                checkBox2.IsEnabled = false;
                 checkBox3.IsEnabled = false;
-                checkBox4.IsEnabled = true;
-                set.IsEnabled = true;
-                Text.IsEnabled = true;
+                checkBox1_s.IsEnabled = true;
+                set1.IsEnabled = true;
+                Text1.IsEnabled = true;
             }
-            if (checkBox1.IsChecked == false)
+            else if (checkBox1.IsChecked == false)
             {
-                checkBox3.IsEnabled = true;
-                checkBox4.IsEnabled = false;
-                set.IsEnabled = false;
-                Text.IsEnabled = false;
+                checkBox1_s.IsEnabled = false;
+                if (checkBox2.IsChecked == true)
+                {
+                    checkBox2_s.IsEnabled = true;
+                    set1.IsEnabled = true;
+                    Text1.IsEnabled = true;
+                }
+                if (checkBox2.IsChecked == false)
+                {
+                    checkBox2_s.IsEnabled = false;
+                    set1.IsEnabled = false;
+                    Text1.IsEnabled = false;
+                }
+                if (checkBox3.IsChecked == true)
+                {
+                    checkBox3_s.IsEnabled = true;
+                    if (checkBox3_s.IsChecked == true)
+                    {
+                        set.IsEnabled = true;
+                        Text.IsEnabled = true;
+                    }
+                    else if(checkBox3_s.IsChecked == false)
+                    {
+                        set.IsEnabled = false;
+                        Text.IsEnabled = false;
+                    }
+                }
+                if (checkBox3.IsChecked == false)
+                {
+                    checkBox3_s.IsEnabled = true;
+                    set.IsEnabled = false;
+                    Text.IsEnabled = false;
+                }
             }
         }
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
@@ -484,17 +489,7 @@ namespace NsisoLauncher.Windows
                 e.Handled = true;
             }
         }
-        private void CheckBox2_Checked(object sender, RoutedEventArgs e)
-        {
-            if (checkBox2.IsChecked == true)
-            {
-                checkBox3.IsEnabled = false;
-            }
-            if (checkBox2.IsChecked == false && checkBox1.IsChecked == false)
-            {
-                checkBox3.IsEnabled = true;
-            }
-        }
+        
         //Color_yr Add Start
     }
 }

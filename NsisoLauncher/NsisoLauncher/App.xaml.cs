@@ -1,5 +1,4 @@
-﻿
-using MahApps.Metro;
+﻿using MahApps.Metro;
 using NsisoLauncher.Config;
 using NsisoLauncher.Core.Util;
 using NsisoLauncherCore;
@@ -27,6 +26,7 @@ namespace NsisoLauncher
         public static LogHandler logHandler;
         public static event EventHandler<AggregateExceptionArgs> AggregateExceptionCatched;
         public static List<Java> javaList;
+        public static MainWindow MainWindow_;
 
         #region API静态变量
         public static NsisoLauncherCore.Net.PhalAPI.APIHandler nsisoAPIHandler;

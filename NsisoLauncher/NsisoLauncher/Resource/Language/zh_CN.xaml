@@ -218,10 +218,13 @@
     <sys:String x:Key="String.Settingwindow.Custom.Main">启动器主题：</sys:String>
     <sys:String x:Key="String.Settingwindow.Custom.Backgroud">启动器背景设置</sys:String>
     <sys:String x:Key="String.Settingwindow.Custom.Backgroud.Vedio">开启自定义背景视频</sys:String>
+    <sys:String x:Key="String.Settingwindow.Custom.Backgroud.Vedio.Cyc">开启自定义背景视频循环播放</sys:String>
     <sys:String x:Key="String.Settingwindow.Custom.Backgroud.Music">开启自定义背景音乐</sys:String>
+    <sys:String x:Key="String.Settingwindow.Custom.Backgroud.Music.Cyc">开启自定义背景音乐循环播放</sys:String>
     <sys:String x:Key="String.Settingwindow.Custom.Backgroud.Pic">开启自定义背景图片</sys:String>
-    <sys:String x:Key="String.Settingwindow.Custom.Backgroud.Pic.Cyclic">开启自定义背景图片循环播放</sys:String>
-    <sys:String x:Key="String.Settingwindow.Custom.Backgroud.Pic.Cyclic.Time">循环背景图片时间，单位毫秒</sys:String>
+    <sys:String x:Key="String.Settingwindow.Custom.Backgroud.Pic.Cyc">开启自定义背景图片循环播放</sys:String>
+    <sys:String x:Key="String.Settingwindow.Custom.Backgroud.Pic.Cyc.Time">循环背景图片时间设置，单位毫秒：</sys:String>
+    <sys:String x:Key="String.Settingwindow.Custom.Backgroud.Sound">音量大小</sys:String>
     <sys:String x:Key="String.Settingwindow.Custom.Backgroud.Text">把文件放进config文件夹即可，支持jpg和png，自定义视频启用后自定义图片和音乐不可用。</sys:String>
     <sys:String x:Key="String.Settingwindow.Custom.Game">自定义游戏内容设置</sys:String>
     <sys:String x:Key="String.Settingwindow.Custom.Game.LaunchTitle">启动器窗口标题：</sys:String>

@@ -314,15 +314,25 @@
 
                         <Expander Header="{DynamicResource String.Settingwindow.Custom.Backgroud}" Margin="0,0,0,5">
                             <StackPanel>
-                                <!--Color_yr Add Start-->
-                                <CheckBox x:Name="checkBox3" Content="{DynamicResource String.Settingwindow.Custom.Backgroud.Vedio}" IsChecked="{Binding Customize.CustomBackGroundViode}" Margin="0,0,442,2" Click="CheckBox3_Checked"/>
-                                <CheckBox x:Name="checkBox2" Content="{DynamicResource String.Settingwindow.Custom.Backgroud.Music}" IsChecked="{Binding Customize.CustomBackGroundMusic}" Margin="0,0,442,2" Click="CheckBox2_Checked"/>
-                                <CheckBox x:Name="checkBox1" Content="{DynamicResource String.Settingwindow.Custom.Backgroud.Pic}" IsChecked="{Binding Customize.CustomBackGroundPicture}" Margin="0,0,442,2" Click="CheckBox1_Checked" Checked="CheckBox1_Checked"/>
-                                <CheckBox x:Name="checkBox4" Content="{DynamicResource String.Settingwindow.Custom.Backgroud.Pic.Cyclic}" IsChecked="{Binding Customize.CustomBackGroundCyclic}" Margin="0,0,442,2" IsEnabled="False"/>
-                                <Label x:Name="set" Content="{DynamicResource String.Settingwindow.Custom.Backgroud.Pic.Cyclic.Time}" IsEnabled="False"/>
-                                <TextBox x:Name="Text" HorizontalAlignment="Left" Height="3" Margin="0,0,0,0" TextWrapping="Wrap" Text="{Binding Customize.CustomBackGroundCyclic_time}" Width="132" TextChanged="TextBox_TextChanged" IsEnabled="False"/>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                                    <CheckBox x:Name="checkBox1" Content="{DynamicResource String.Settingwindow.Custom.Backgroud.Vedio}" IsChecked="{Binding Customize.CustomBackGroundViode}" Click="CheckBox_Checked"/>
+                                    <CheckBox x:Name="checkBox1_s" Content="{DynamicResource String.Settingwindow.Custom.Backgroud.Vedio.Cyc}" Margin="5,0,0,0" IsChecked="{Binding Customize.CustomBackGroundViode_Cyclic}" IsEnabled="False"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,2">
+                                    <CheckBox x:Name="checkBox2" Content="{DynamicResource String.Settingwindow.Custom.Backgroud.Music}" IsChecked="{Binding Customize.CustomBackGroundMusic}" Click="CheckBox_Checked"/>
+                                    <CheckBox x:Name="checkBox2_s" Content="{DynamicResource String.Settingwindow.Custom.Backgroud.Music.Cyc}" Margin="5,0,0,0" IsChecked="{Binding Customize.CustomBackGroundMusic_Cyclic}" IsEnabled="False"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
+                                    <CheckBox x:Name="checkBox3" Content="{DynamicResource String.Settingwindow.Custom.Backgroud.Pic}" IsChecked="{Binding Customize.CustomBackGroundPicture}" Click="CheckBox_Checked"/>
+                                    <CheckBox x:Name="checkBox3_s" Content="{DynamicResource String.Settingwindow.Custom.Backgroud.Pic.Cyc}" Margin="5,0,0,0" IsChecked="{Binding Customize.CustomBackGroundPicture_Cyclic}" IsEnabled="False" Click="CheckBox_Checked"/>
+                                    <Label x:Name="set" Content="{DynamicResource String.Settingwindow.Custom.Backgroud.Pic.Cyc.Time}" IsEnabled="False"/>
+                                    <TextBox x:Name="Text" HorizontalAlignment="Left" Height="3" TextWrapping="Wrap" Text="{Binding Customize.CustomBackGroundPicture_Cyclic_time}" Width="132" TextChanged="TextBox_TextChanged" IsEnabled="False"/>
+                                </StackPanel>
+                                <Grid>
+                                    <Label x:Name="set1" Content="{DynamicResource String.Settingwindow.Custom.Backgroud.Sound}" IsEnabled="False"/>
+                                    <Slider x:Name="Text1" HorizontalAlignment="Left" Height="16" Margin="61,5,0,4" Value="{Binding Customize.CustomBackGroundSound}" Width="132" IsEnabled="False" SmallChange="1"/>
+                                </Grid>
                                 <Label Content="{DynamicResource String.Settingwindow.Custom.Backgroud.Text}"/>
-                                <!--Color_yr Add Stop-->
                             </StackPanel>
                         </Expander>
 

@@ -24,7 +24,7 @@ namespace NsisoLauncherCore.Util
         {
             if (java != null)
             {
-                int rm = Convert.ToInt32(Math.Floor(GetRunmemory() * 0.6));
+                int rm = Convert.ToInt32(Math.Floor(GetTotalMemory() * 0.6));
                 switch (java.Arch)
                 {
                     case ArchEnum.x32:

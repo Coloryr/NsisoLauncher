@@ -101,7 +101,7 @@ namespace NsisoLauncher.Windows
                {
                    await this.ShowMessageAsync(App.GetResourceString("String.Downloadwindow.DownloadComplete"),
                        App.GetResourceString("String.Downloadwindow.DownloadComplete2"));
-                   this.Close();
+                   Close();
                }
                else
                {
@@ -159,7 +159,7 @@ namespace NsisoLauncher.Windows
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            new NewDownloadTaskWindow().ShowDialog();
+            new NewDownloadTaskWindow(true).ShowDialog();
             Refresh();
         }
 

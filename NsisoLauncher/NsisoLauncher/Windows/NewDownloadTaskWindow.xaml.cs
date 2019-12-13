@@ -29,7 +29,7 @@ namespace NsisoLauncher.Windows
 
         private FunctionAPIHandler apiHandler;
 
-        public NewDownloadTaskWindow()
+        public NewDownloadTaskWindow(bool res = false)
         {
             apiHandler = new FunctionAPIHandler(App.config.MainConfig.Download.DownloadSource);
             InitializeComponent();
@@ -41,6 +41,8 @@ namespace NsisoLauncher.Windows
             vwV.SortDescriptions.Add(new SortDescription("Type", ListSortDirection.Ascending));
             ICollectionView vwF = CollectionViewSource.GetDefaultView(forgeList);
             vwF.SortDescriptions.Add(new SortDescription("Version", ListSortDirection.Descending));
+            if(res == true)
+                RefreshVerButton_Click(null, null);
         }
 
         private async void MetroWindow_Loaded(object sender, RoutedEventArgs e)
@@ -109,7 +111,7 @@ namespace NsisoLauncher.Windows
             }
             var loading = await this.ShowProgressAsync("获取Forge列表中", "请稍后");
             loading.SetIndeterminate();
-            List<JWForge> result = null;
+            List<JWForge> result;
             forgeList.Clear();
             try
             {

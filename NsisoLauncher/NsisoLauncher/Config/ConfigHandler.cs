@@ -207,7 +207,10 @@ namespace NsisoLauncher.Config
                     GCEnabled = true,
                     GCType = NsisoLauncherCore.Modules.GCType.G1GC,
                     AutoJava = true,
-                    WindowSize = new NsisoLauncherCore.Modules.WindowSize() { FullScreen = false },
+                    WindowSize = new NsisoLauncherCore.Modules.WindowSize() 
+                    { 
+                        FullScreen = false 
+                    },
                     ExitAfterLaunch = false
                 },
                 Download = new Download()
@@ -236,11 +239,13 @@ namespace NsisoLauncher.Config
                 },
                 Customize = new Customize()
                 {
-                    CustomBackGroundMusic = false,
-                    CustomBackGroundPicture = false,
                     CustomBackGroundViode = false,
-                    CustomBackGroundCyclic = false,
-                    CustomBackGroundCyclic_time = 10000,
+                    CustomBackGroundViode_Cyclic = false,
+                    CustomBackGroundMusic = false,
+                    CustomBackGroundMusic_Cyclic = false,
+                    CustomBackGroundPicture = false,
+                    CustomBackGroundPicture_Cyclic = false,
+                    CustomBackGroundPicture_Cyclic_time = 10000,
                     AccentColor = "Blue",
                     AppThme = "BaseLight"
                 },

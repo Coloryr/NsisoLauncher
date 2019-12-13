@@ -308,6 +308,20 @@ namespace NsisoLauncherCore.Net
                 {
                     File.Delete(buffFilename);
                 }
+
+                if (Maplist.ContainsKey(task.From))
+                {
+                    task.From = Maplist[task.From];
+                }
+
+                if (task.From.Contains(@"https://"))
+                {
+                    ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+                }
+                else
+                {
+                    ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls;
+                }
                 HttpWebRequest request = WebRequest.Create(task.From) as HttpWebRequest;
                 request.Timeout = 5000;
                 if (Proxy != null)
@@ -412,5 +426,11 @@ namespace NsisoLauncherCore.Net
         {
             SendLog(new Log() { Exception = ex, LogLevel = LogLevel.ERROR, Message = string.Format("任务{0}下载失败,源地址:{1}原因:{2}", task.TaskName, task.From, ex.Message) });
         }
+
+        private Dictionary<string, string> Maplist = new Dictionary<string, string>()
+        {
+            {@"http://files.minecraftforge.net/maven/net/minecraftforge/forge/1.7.10-10.13.4.1614-1.7.10/forge-1.7.10-10.13.4.1614-1.7.10.jar"
+            ,@"https://files.minecraftforge.net/maven/net/minecraftforge/forge/1.7.10-10.13.4.1614-1.7.10/forge-1.7.10-10.13.4.1614-1.7.10-universal.jar"}
+        };
     }
 }

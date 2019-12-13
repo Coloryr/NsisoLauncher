@@ -67,7 +67,6 @@ namespace NsisoLauncher.Controls
         {
             try
             {
-
                 //更新验证模型列表
                 authNodeList.Clear();
                 authNodeList.Add(new KeyValuePair<string, AuthenticationNode>("offline", new AuthenticationNode()
@@ -246,7 +245,7 @@ namespace NsisoLauncher.Controls
                 AuthenticationNode node = GetSelectedAuthenticationNode();
                 if (node == null)
                 {
-                    await DialogManager.ShowMessageAsync(null, App.GetResourceString("String.Mainwindow.Auth.Nide8.NoID"),
+                    await DialogManager.ShowMessageAsync(App.MainWindow_, App.GetResourceString("String.Mainwindow.Auth.Nide8.NoID"),
                                 App.GetResourceString("String.Mainwindow.Auth.Nide8.NoID2"));
                     return;
                 }
@@ -257,7 +256,7 @@ namespace NsisoLauncher.Controls
                 AuthenticationNode node = GetSelectedAuthenticationNode();
                 if (string.IsNullOrWhiteSpace(node.REG) == true)
                 {
-                    await DialogManager.ShowMessageAsync(null, App.GetResourceString("String.Mainwindow.Auth.REG.NoID"),
+                    await DialogManager.ShowMessageAsync(App.MainWindow_, App.GetResourceString("String.Mainwindow.Auth.REG.NoID"),
                                 App.GetResourceString("String.Mainwindow.Auth.REG.NoID_t"));
                     return;
                 }

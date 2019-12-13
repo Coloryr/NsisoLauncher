@@ -63,12 +63,14 @@ namespace NsisoLauncher
             //Color_yr Add
             BG.Width = 720;
             BG.Height = 405;
+            App.MainWindow_ = this;
             CustomizeRefresh();
         }
         //Color_yr Add Start
         public void Pic_cyclic()
         {
-            if (App.config.MainConfig.Customize.CustomBackGroundCyclic && pic_go == false)
+            if (App.config.MainConfig.Customize.CustomBackGroundPicture_Cyclic && pic_go == false
+                && pic_file.Length > 1)
             {
                 Task.Factory.StartNew(() =>
                 {
@@ -86,7 +88,7 @@ namespace NsisoLauncher
                         filesnow++;
                         if (filesnow >= pic_file.Length)
                             filesnow = 0;
-                        Thread.Sleep(App.config.MainConfig.Customize.CustomBackGroundCyclic_time);
+                        Thread.Sleep(App.config.MainConfig.Customize.CustomBackGroundPicture_Cyclic_time);
                     }
                 });
             }
@@ -108,7 +110,7 @@ namespace NsisoLauncher
                 volumeButton.Visibility = Visibility.Visible;
                 mediaElement.Visibility = Visibility.Visible;
                 mediaElement.Play();
-                mediaElement.Volume = 0.1;
+                mediaElement.Volume = (double) App.config.MainConfig.Customize.CustomBackGroundSound / 100;
             }
             catch (Exception) { }
         }
@@ -122,27 +124,28 @@ namespace NsisoLauncher
                 volumeButton.Visibility = Visibility.Visible;
                 mediaElement.Visibility = Visibility.Visible;
                 mediaElement.Play();
-                mediaElement.Volume = 0.1;
+                mediaElement.Volume = (double)App.config.MainConfig.Customize.CustomBackGroundSound / 100;
             }
             catch (Exception) { }
         }
         private void mediaElement_MediaEnded(object sender, RoutedEventArgs e)
         {
             mediaElement.Stop();
-            if (have_mp4 == true)
+            if (have_mp4 == true && App.config.MainConfig.Customize.CustomBackGroundViode_Cyclic == true)
             {
                 now++;
                 if (now >= mp4_file.Length)
                     now = 0;
                 mediaElement.Source = new Uri(mp4_file[now]);
             }
-            else
+            else if(App.config.MainConfig.Customize.CustomBackGroundMusic_Cyclic == true)
             {
                 now++;
                 if (now >= mp3_file.Length)
                     now = 0;
                 mediaElement.Source = new Uri(mp3_file[now]);
             }
+            mediaElement.Volume = (double)App.config.MainConfig.Customize.CustomBackGroundSound / 100;
             mediaElement.Play();
         }
         //Color_yr Add Stop
@@ -343,7 +346,6 @@ namespace NsisoLauncher
                 //Color_yr Add Start
                 loadingRing.Visibility = Visibility.Visible;
                 launchInfoBlock.Visibility = Visibility.Visible;
-                cancelLaunchButton.Visibility = Visibility.Visible;
                 //Color_yr Add Stop
                 this.loadingRing.IsActive = true;
 
@@ -725,7 +727,16 @@ namespace NsisoLauncher
                 bool isupdata = false;
                 string packname = null;
                 string vision = null;
-
+                if (App.config.MainConfig.Server.Mods_Check == null)
+                {
+                    App.config.MainConfig.Server.Mods_Check = new Mods_Check()
+                    {
+                        Enable = false,
+                        Address = "",
+                        packname = "modpack",
+                        Vision = "0.0.0"
+                    };
+                }
                 if (App.config.MainConfig.Server.Mods_Check.Enable)
                 {
                     mainPanel.launchButton.Content = App.GetResourceString("String.Mainwindow.Check.mods");
@@ -860,6 +871,7 @@ namespace NsisoLauncher
                 #endregion
 
                 #region 启动
+                cancelLaunchButton.Visibility = Visibility.Visible;
                 mainPanel.launchButton.Content = App.GetResourceString("String.Mainwindow.Staring");
                 App.logHandler.OnLog += (a, b) => { this.Invoke(() => { launchInfoBlock.Text = b.Message; }); };
                 var result = await App.handler.LaunchAsync(launchSetting);

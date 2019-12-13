@@ -15,7 +15,6 @@ namespace NsisoLauncher.Windows
     public partial class ErrorWindow : MetroWindow
     {
         Exception exception;
-        string report;
 
         string[] funny = {
             "你所不知道的事实：参与这个启动器的开发者只有一个人，而且整个开发工作室也只有这一个人",

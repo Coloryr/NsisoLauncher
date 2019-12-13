@@ -402,9 +402,14 @@ namespace NsisoLauncher.Config
     public class Customize
     {
         /// <summary>
-        /// 是否使用自定义壁纸
+        /// 是否使用自定义背景视频
         /// </summary>
-        public bool CustomBackGroundPicture { get; set; }
+        public bool CustomBackGroundViode { get; set; }
+
+        /// <summary>
+        /// 是否使用自定义背景视频循环播放
+        /// </summary>
+        public bool CustomBackGroundViode_Cyclic { get; set; }
 
         /// <summary>
         /// 是否使用自定义背景音乐
@@ -412,19 +417,28 @@ namespace NsisoLauncher.Config
         public bool CustomBackGroundMusic { get; set; }
 
         /// <summary>
-        /// 是否使用自定义背景视频
+        /// 是否使用自定义音乐循环播放
         /// </summary>
-        public bool CustomBackGroundViode { get; set; }
+        public bool CustomBackGroundMusic_Cyclic { get; set; }
 
         /// <summary>
-        /// 是否使用自定义背景视频
+        /// 是否使用自定义壁纸
         /// </summary>
-        public bool CustomBackGroundCyclic { get; set; }
+        public bool CustomBackGroundPicture { get; set; }
+        /// <summary>
+        /// 是否使用自定义壁纸循环
+        /// </summary>
+        public bool CustomBackGroundPicture_Cyclic { get; set; }
 
         /// <summary>
-        /// 是否使用自定义背景视频
+        /// 是否使用自定义壁纸循环时间
         /// </summary>
-        public int CustomBackGroundCyclic_time { get; set; }
+        public int CustomBackGroundPicture_Cyclic_time { get; set; }
+
+        /// <summary>
+        /// 背景音乐大小
+        /// </summary>
+        public int CustomBackGroundSound { get; set; }
 
         /// <summary>
         /// 主题颜色
