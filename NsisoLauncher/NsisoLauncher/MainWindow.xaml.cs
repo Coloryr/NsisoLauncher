@@ -298,8 +298,6 @@ namespace NsisoLauncher
                 volumeButtonIcon.Kind = PackIconFontAwesomeKind.PlaySolid;
             }
         }
-
-        //Color_yr Add Stop
         #endregion
 
         private async Task LaunchGameFromArgs(Controls.LaunchEventArgs args)
@@ -343,11 +341,9 @@ namespace NsisoLauncher
                     Version = args.LaunchVersion
                 };
 
-                //Color_yr Add Start
                 loadingRing.Visibility = Visibility.Visible;
                 launchInfoBlock.Visibility = Visibility.Visible;
-                //Color_yr Add Stop
-                this.loadingRing.IsActive = true;
+                loadingRing.IsActive = true;
 
                 #region 验证
 
@@ -366,9 +362,7 @@ namespace NsisoLauncher
                 IAuthenticator authenticator = null;
                 bool shouldRemember = false;
 
-                //bool isSameAuthType = (authNode.AuthenticationType == auth);
                 bool isRemember = (!string.IsNullOrWhiteSpace(args.UserNode.AccessToken)) && (args.UserNode.SelectProfileUUID != null);
-                //bool isSameName = userName == App.config.MainConfig.User.UserName;
                 mainPanel.launchButton.Content = App.GetResourceString("String.Mainwindow.Loging");
                 switch (args.AuthNode.AuthType)
                 {
@@ -582,7 +576,6 @@ namespace NsisoLauncher
                                 args.UserNode.AccessToken = authResult.AccessToken;
                             }
 
-                            //Color_yr Change
                             args.UserNode.AccessToken = authResult.AccessToken;
 
                             launchSetting.AuthenticateResult = authResult;
@@ -796,7 +789,8 @@ namespace NsisoLauncher
                     }
                     else
                     {
-                        await this.ShowMessageAsync("无法下载补全：当前有正在下载中的任务", "请等待其下载完毕或取消下载，启动器将尝试继续启动");
+                        await this.ShowMessageAsync("无法下载补全：当前有正在下载中的任务", "请等待其下载完毕或取消下载。");
+                        return;
                     }
                 }
 
@@ -897,7 +891,7 @@ namespace NsisoLauncher
                     }
                     catch (Exception ex)
                     {
-                        await this.ShowMessageAsync(App.GetResourceString("String.Mainwindow.LaunchError"), App.GetResourceString("String.Mainwindow.Launch.LaunchError") + ex.Message);
+                        App.logHandler.AppendFatal(ex);
                         return;
                     }
                     #endregion

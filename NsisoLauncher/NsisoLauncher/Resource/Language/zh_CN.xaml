@@ -99,8 +99,8 @@
     <sys:String x:Key="String.NewDownloadTaskWindow">新建下载任务窗口</sys:String>
     <sys:String x:Key="String.NewDownloadTaskWindow.Get">获取/刷新</sys:String>
     <sys:String x:Key="String.NewDownloadTaskWindow.Loading">加载中</sys:String>
-    <sys:String x:Key="String.NewDownloadTaskWindow.Chose.Forge">要安装Forge的版本：</sys:String>
-    <sys:String x:Key="String.NewDownloadTaskWindow.Chose.Liteloader">要安装Liteloader的版本：</sys:String>
+    <sys:String x:Key="String.NewDownloadTaskWindow.Chose.Forge">要安装Forge的MC版本：</sys:String>
+    <sys:String x:Key="String.NewDownloadTaskWindow.Chose.Liteloader">要安装Liteloader的MC版本：</sys:String>
     <sys:String x:Key="String.NewDownloadTaskWindow.Version">下载游戏版本</sys:String>
     <sys:String x:Key="String.NewDownloadTaskWindow.Version.Forge">Forge版本</sys:String>
     <sys:String x:Key="String.NewDownloadTaskWindow.Version.Liteloader">Liteloader版本</sys:String>
