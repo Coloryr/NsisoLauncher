@@ -14,7 +14,13 @@ namespace NsisoLauncherCore.Net
             using (HttpClient client = new HttpClient())
             {
                 client.Timeout = TimeSpan.FromSeconds(10);
-                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+
+                if (uri.Contains("https://"))
+                {
+                    ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+                }
+                else
+                    ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls;
                 while (a < 5)
                 {
                     try

@@ -86,7 +86,11 @@ namespace NsisoLauncher.Color_yr.updata
                     await Task.Factory.StartNew(() =>
                     {
                         updata_item save = GetModsInfo(path, file);
-                        if (list.ContainsKey(save.name) == false)
+                        if (list.ContainsKey(save.name))
+                        {
+                            save.name += "1";
+                        }
+                        if (list.ContainsValue(save) == false)
                             list.Add(save.name, save);
                     });
                 }
@@ -104,6 +108,7 @@ namespace NsisoLauncher.Color_yr.updata
             {
                 JToken modinfo = null;
                 updata_item mod = new updata_item();
+                mod.filename = fileName.Replace(path, "");
                 try
                 {
                     ZipFile zip = new ZipFile(fileName);
@@ -111,6 +116,13 @@ namespace NsisoLauncher.Color_yr.updata
                     if (zp == null)
                     {
                         zip.Close();
+                        foreach (string name in tran_1_12_list)
+                        {
+                            if (mod.filename.Contains(name))
+                            {
+                                mod.name = name;
+                            }
+                        }
                         goto a;
                     }
                     Stream stream = zip.GetInputStream(zp);
@@ -136,18 +148,18 @@ namespace NsisoLauncher.Color_yr.updata
                     }
                     zip.Close();
                     stream.Close();
+                    if (modinfo != null)
+                    {
+                        var c = modinfo.ToObject<ModListItem>();
+                        if (c.name != null)
+                        {
+                            mod.name = c.name;
+                        }
+                    }
                 }
                 catch
                 {
-
-                }
-                if (modinfo != null)
-                {
-                    var b = modinfo.ToObject<ModListItem>();
-                    if (b.modid != null)
-                    {
-                        mod.name = b.name;
-                    }
+                    
                 }
             a:
                 if (string.IsNullOrWhiteSpace(mod.name))
@@ -165,5 +177,10 @@ namespace NsisoLauncher.Color_yr.updata
                 return null;
             }
         }
+        private static List<string> tran_1_12_list = new List<string>()
+        {
+            "AppleCore", "BetterFps", "jehc", "MakeZoomZoom", "MCMultiPart",
+            "Rally+Health", "SelfControl", "BNBGamingCore", "rftoolspower"
+        };
     }
 }

@@ -28,7 +28,7 @@ namespace NsisoLauncher.Color_yr.updata
                     updata_obj = json.ToObject<updata_obj>();
                     if (string.IsNullOrWhiteSpace(App.config.MainConfig.Server.Mods_Check.packname))
                         return this;
-                    else if (App.config.MainConfig.Server.Mods_Check.Vision != updata_obj.Vision)
+                    else if (App.config.MainConfig.Server.Mods_Check.Vision != updata_obj.Version)
                         return this;
                     else
                         return null;
@@ -46,39 +46,37 @@ namespace NsisoLauncher.Color_yr.updata
             List<DownloadTask> task = new List<DownloadTask>();
             if (updata_obj.mods.Count != 0)
             {
-                var local_mods = await new mod_check().ReadModInfo(App.handler.GameRootPath);
-                foreach (KeyValuePair<string, updata_item> th in updata_obj.mods)
+                try
                 {
-                    if (th.Value.function == "delete")
+                    var local_mods = await new mod_check().ReadModInfo(App.handler.GameRootPath);
+                    foreach (KeyValuePair<string, updata_item> th in updata_obj.mods)
                     {
-                        FileInfo file = new FileInfo(App.handler.GameRootPath + @"\mods\" + th.Value.filename);
-                        if (file.Exists)
+                        if (th.Value.function == "delete")
                         {
-                            local_mods.Remove(th.Key);
-                            file.Delete();
-                        }
-                    }
-                    else if (local_mods.ContainsKey(th.Key))
-                    {
-                        updata_item lo = local_mods[th.Value.name];
-                        if (lo.local.Contains(th.Value.filename))
-                        {
-                            if (string.Equals(lo.check, th.Value.check, StringComparison.OrdinalIgnoreCase))
+                            FileInfo file = new FileInfo(App.handler.GameRootPath + @"\mods\" + th.Value.filename);
+                            if (file.Exists)
                             {
-                                local_mods.Remove(th.Key);
+                                file.Delete();
+                            }
+                        }
+                        else if (local_mods.ContainsKey(th.Key))
+                        {
+                            updata_item lo = local_mods[th.Value.name]; 
+                            if (!string.Equals(lo.check, th.Value.check, StringComparison.OrdinalIgnoreCase))
+                            {
+                                File.Delete(lo.local);
+                                task.Add(new DownloadTask("更新Mod", th.Value.url, App.handler.GameRootPath + @"\mods\" + th.Value.filename));
                             }
                         }
                         else
                         {
-                            File.Delete(lo.local);
-                            task.Add(new DownloadTask("更新Mod", th.Value.url, App.handler.GameRootPath + @"\mods\" + th.Value.filename));
-                            local_mods.Remove(th.Key);
+                            task.Add(new DownloadTask("缺失Mod", th.Value.url, App.handler.GameRootPath + @"\mods\" + th.Value.filename));
                         }
                     }
-                    else
-                    {
-                        task.Add(new DownloadTask("缺失Mod", th.Value.url, App.handler.GameRootPath + @"\mods\" + th.Value.filename));
-                    }
+                }
+                catch (Exception e)
+                {
+                    App.logHandler.AppendFatal(e);
                 }
             }
             if (updata_obj.scripts.Count != 0)
@@ -152,7 +150,7 @@ namespace NsisoLauncher.Color_yr.updata
         }
         public string getvision()
         {
-            return updata_obj == null ? "0.0.0" : updata_obj.Vision;
+            return updata_obj == null ? "0.0.0" : updata_obj.Version;
         }
         public string getpackname()
         {

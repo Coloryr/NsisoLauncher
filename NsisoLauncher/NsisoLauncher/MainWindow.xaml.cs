@@ -155,7 +155,7 @@ namespace NsisoLauncher
         }
 
         #region 启动核心事件处理
-        private void Handler_GameExit(object sender, GameExitArg arg)
+        public void Handler_GameExit(object sender, GameExitArg arg)
         {
             this.Dispatcher.Invoke(new Action(() =>
             {

@@ -18,7 +18,7 @@ namespace NsisoLauncher.Color_yr.updata
         /// <summary>
         /// 版本
         /// </summary>
-        public string Vision { get; set; }
+        public string Version { get; set; }
         /// <summary>
         /// mod列表
         /// </summary>
