@@ -7,7 +7,7 @@
              xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              mc:Ignorable="d"
-             Height="235" d:DesignWidth="500">
+             Height="280" d:DesignWidth="500">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition/>
@@ -24,7 +24,7 @@
         <TextBlock x:Name="serverPeopleTextBlock" HorizontalAlignment="Left" Margin="105,25,0,0" TextWrapping="Wrap" Text="{DynamicResource String.Mainwindow.ServerGettingNum}" FontSize="15" Foreground="White" Opacity="0.8" VerticalAlignment="Top" Height="20"/>
         <TextBlock x:Name="serverVersionTextBlock" HorizontalAlignment="Left" Margin="105,50,0,0" TextWrapping="Wrap" Text="{DynamicResource String.Mainwindow.ServerGettingVer}" FontSize="15" Foreground="White" Opacity="0.8" VerticalAlignment="Top" Height="20"/>
         <TextBlock x:Name="serverPingTextBlock" HorizontalAlignment="Left" Margin="105,75,0,0" TextWrapping="Wrap" Text="{DynamicResource String.Mainwindow.ServerGettingPing}" FontSize="15" Foreground="White" Opacity="0.8" VerticalAlignment="Top" Height="20"/>
-        <TextBlock x:Name="serverMotdTextBlock" Margin="0,100,10.2,5" FontSize="15" Foreground="White" Opacity="0.8" Background="#AF3F5966" VerticalAlignment="Top" HorizontalAlignment="Left"/>
+        <TextBlock x:Name="serverMotdTextBlock" Margin="0,100,0,0" FontSize="15" Foreground="White" Opacity="0.8" Background="#AF3F5966" VerticalAlignment="Top" HorizontalAlignment="Left" TextWrapping="Wrap"/>
         <controls:MetroProgressBar  x:Name="serverLoadingBar" VerticalAlignment="Top" Height="20" IsIndeterminate="False" Margin="0,105,0,0" HorizontalAlignment="Left"/>
     </Grid>
 </UserControl>

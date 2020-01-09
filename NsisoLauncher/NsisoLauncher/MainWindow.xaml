@@ -30,7 +30,7 @@
             </Expander>
         </Grid>
         <Button Margin="265,145,0,0" VerticalAlignment="Top" Height="100" Name="Side" Click="Side_Click" Grid.Column="2"/>
-        <userControl:ServerInfoControl x:Name="serverInfoControl" Margin="10,10,42,0" VerticalAlignment="Top" Grid.ColumnSpan="1" Grid.Column="1" Visibility="Hidden"/>
+        <userControl:ServerInfoControl x:Name="serverInfoControl" Margin="5,5,0,0" VerticalAlignment="Top" Grid.ColumnSpan="1" Grid.Column="1" Visibility="Hidden"/>
 
         <Button x:Name="volumeButton" Style ="{DynamicResource MahApps.Metro.Styles.MetroCircleButtonStyle}"
                 Width="30" Height="30" Margin="0,373,409,0" VerticalAlignment="Top" HorizontalAlignment="Right"
