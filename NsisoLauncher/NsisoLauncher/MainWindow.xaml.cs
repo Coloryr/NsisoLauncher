@@ -42,7 +42,6 @@ namespace NsisoLauncher
     /// </summary>
     public partial class MainWindow : MetroWindow
     {
-        //Color_yr Add Start
         public string[] pic_file;
         public int filesnow = 0;
         public bool have_mp4 = false;
@@ -51,7 +50,6 @@ namespace NsisoLauncher
         public string[] mp4_file;
         public BitmapImage now_img;
         int now = 0;
-        //Color_yr Add Stop
 
         //TODO:增加取消启动按钮
         public MainWindow()
@@ -60,13 +58,12 @@ namespace NsisoLauncher
             App.logHandler.AppendDebug("启动器主窗体已载入");
             mainPanel.Launch += MainPanel_Launch;
             App.handler.GameExit += Handler_GameExit;
-            //Color_yr Add
             BG.Width = 720;
             BG.Height = 405;
             App.MainWindow_ = this;
             CustomizeRefresh();
         }
-        //Color_yr Add Start
+
         public void Pic_cyclic()
         {
             if (App.config.MainConfig.Customize.CustomBackGroundPicture_Cyclic && pic_go == false
@@ -148,7 +145,6 @@ namespace NsisoLauncher
             mediaElement.Volume = (double)App.config.MainConfig.Customize.CustomBackGroundSound / 100;
             mediaElement.Play();
         }
-        //Color_yr Add Stop
         private async void MainPanel_Launch(object sender, Controls.LaunchEventArgs obj)
         {
             await LaunchGameFromArgs(obj);
@@ -170,7 +166,6 @@ namespace NsisoLauncher
         }
         #endregion
 
-        //Color_yr Add Start
         #region 自定义
         public async void CustomizeRefresh()
         {
@@ -278,8 +273,9 @@ namespace NsisoLauncher
             {
                 cancelLaunchButton.Background = b;
                 launchInfoBlock.Background = b;
+                Side.Background = b;
                 volumeButton.BorderBrush = volumeButton.Foreground =
-                    new SolidColorBrush((Color)ColorConverter.ConvertFromString(App.config.MainConfig.Customize.AccentColor));
+                new SolidColorBrush((Color)ColorConverter.ConvertFromString(App.config.MainConfig.Customize.AccentColor));
             }
         }
 
@@ -304,6 +300,9 @@ namespace NsisoLauncher
         {
             try
             {
+                App.logHandler.OnLog += (a, b) => { this.Invoke(() => { launchInfoBlock.Text = b.Message; }); };
+                Side_E.IsExpanded = false;
+                App.logHandler.AppendInfo("检查有效数据...");
                 #region 检查有效数据
                 if (args.LaunchVersion == null)
                 {
@@ -359,6 +358,7 @@ namespace NsisoLauncher
                 #endregion
 
                 //主验证器接口
+                App.logHandler.AppendInfo("登陆中...");
                 IAuthenticator authenticator = null;
                 bool shouldRemember = false;
 
@@ -639,7 +639,7 @@ namespace NsisoLauncher
                 #region 检查游戏完整
                 List<DownloadTask> losts = new List<DownloadTask>();
 
-                App.logHandler.AppendInfo("检查丢失的依赖库文件中...");
+                App.logHandler.AppendInfo("检查丢失的文件中...");
                 var lostDepend = await FileHelper.GetLostDependDownloadTaskAsync(
                     App.config.MainConfig.Download.DownloadSource,
                     App.handler,
@@ -687,7 +687,6 @@ namespace NsisoLauncher
 
                 }
 
-                App.logHandler.AppendInfo("检查丢失的资源文件中...");
                 if (App.config.MainConfig.Environment.DownloadLostAssets && (await FileHelper.IsLostAssetsAsync(App.config.MainConfig.Download.DownloadSource,
                     App.handler, launchSetting.Version)))
                 {
@@ -732,6 +731,7 @@ namespace NsisoLauncher
                 }
                 if (App.config.MainConfig.Server.Mods_Check.Enable)
                 {
+                    App.logHandler.AppendInfo("检查客户端更新...");
                     mainPanel.launchButton.Content = App.GetResourceString("String.Mainwindow.Check.mods");
                     pack = new updata_pack();
 
@@ -797,6 +797,7 @@ namespace NsisoLauncher
                 #endregion
 
                 #region 根据配置文件设置
+                App.logHandler.AppendInfo("准备启动...");
                 launchSetting.AdvencedGameArguments += App.config.MainConfig.Environment.AdvencedGameArguments;
                 launchSetting.AdvencedJvmArguments += App.config.MainConfig.Environment.AdvencedJvmArguments;
                 launchSetting.GCArgument += App.config.MainConfig.Environment.GCArgument;
@@ -865,11 +866,12 @@ namespace NsisoLauncher
                 #endregion
 
                 #region 启动
+                App.logHandler.AppendInfo("开始启动...");
                 cancelLaunchButton.Visibility = Visibility.Visible;
                 mainPanel.launchButton.Content = App.GetResourceString("String.Mainwindow.Staring");
-                App.logHandler.OnLog += (a, b) => { this.Invoke(() => { launchInfoBlock.Text = b.Message; }); };
+
+                //启动游戏
                 var result = await App.handler.LaunchAsync(launchSetting);
-                App.logHandler.OnLog -= (a, b) => { this.Invoke(() => { launchInfoBlock.Text = b.Message; }); };
 
                 //程序猿是找不到女朋友的了 :) 
                 if (!result.IsSuccess)
@@ -927,13 +929,13 @@ namespace NsisoLauncher
             }
             finally
             {
-                //Color_yr Add Start
+                App.logHandler.OnLog -= (a, b) => { this.Invoke(() => { launchInfoBlock.Text = b.Message; }); };
                 mainPanel.use_switch(true);
+                Side_E.IsExpanded = true;
                 mainPanel.launchButton.Content = App.GetResourceString("String.Base.Launch");
                 loadingRing.Visibility = Visibility.Hidden;
                 launchInfoBlock.Visibility = Visibility.Hidden;
                 cancelLaunchButton.Visibility = Visibility.Hidden;
-                //Color_yr Add Stop
                 this.loadingRing.IsActive = false;
             }
         }
@@ -1034,5 +1036,11 @@ namespace NsisoLauncher
             }
         }
         #endregion
+
+        private void Side_Click(object sender, RoutedEventArgs e)
+        {
+            var now = Side_E.IsExpanded;
+            Side_E.IsExpanded = !now;
+        }
     }
 }

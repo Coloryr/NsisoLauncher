@@ -13,26 +13,27 @@
         Title="Nsiso Launcher(Unofficial Edit)" Height="436" Width="720" MinHeight="436" MinWidth="720" ShowMaxRestoreButton="False" 
         ShowMinButton="True" Loaded="mainWindow_Loaded" Closing="mainWindow_Closing" WindowStyle="SingleBorderWindow" ResizeMode="CanMinimize">
     <Grid>
-        
+
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="0*"/>
             <ColumnDefinition Width="243*"/>
-            <ColumnDefinition Width="126*"/>
+            <ColumnDefinition Width="150*"/>
         </Grid.ColumnDefinitions>
-        
         <Image x:Name="BG" Width="720" Height="405" Grid.ColumnSpan="3" Visibility="Visible" Source="/NsisoLauncher;component/Resource/bg.jpg" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,0,-2,0"/>
         <MediaElement x:Name="mediaElement" Width="720" Height="405" LoadedBehavior="Manual" Grid.ColumnSpan="3" MediaEnded="mediaElement_MediaEnded" Visibility="Hidden"/>
         <Grid x:Name="userGrid" Grid.Column="2">
             <Grid.Effect>
                 <DropShadowEffect Direction="300" Color="#FF000000" BlurRadius="3" Opacity="0.65"/>
             </Grid.Effect>
-            <userControl:MainPanelControl x:Name="mainPanel"/>
+            <Expander ExpandDirection="Left" Margin="0,0,-26,0" Name="Side_E" BorderBrush="#00000000" IsExpanded="True">
+                <userControl:MainPanelControl x:Name="mainPanel"/>
+            </Expander>
         </Grid>
-
+        <Button Margin="265,145,0,0" VerticalAlignment="Top" Height="100" Name="Side" Click="Side_Click" Grid.Column="2"/>
         <userControl:ServerInfoControl x:Name="serverInfoControl" Margin="10,10,42,0" VerticalAlignment="Top" Grid.ColumnSpan="1" Grid.Column="1" Visibility="Hidden"/>
 
         <Button x:Name="volumeButton" Style ="{DynamicResource MahApps.Metro.Styles.MetroCircleButtonStyle}"
-                Width="30" Height="30" Margin="0,372,440,0" VerticalAlignment="Top" HorizontalAlignment="Right"
+                Width="30" Height="30" Margin="0,373,409,0" VerticalAlignment="Top" HorizontalAlignment="Right"
                 BorderBrush="Black" Foreground="Black" Click="volumeButton_Click" Grid.Column="1" Visibility="Hidden">
             <Button.Effect>
                 <DropShadowEffect Opacity="0.5"/>
@@ -40,11 +41,11 @@
             <iconPacks:PackIconFontAwesome x:Name="volumeButtonIcon" Kind="PauseSolid" />
         </Button>
 
-        <TextBlock x:Name="launchInfoBlock" TextAlignment="Right" Foreground="Gray" Margin="40,382,0,4" 
-                   Grid.ColumnSpan="2" FontSize="14" TextWrapping="Wrap" HorizontalAlignment="Left"/>
-        <controls:ProgressRing x:Name="loadingRing" Width="24" Height="29" IsActive="False" Margin="50,358,170,20" Grid.Column="2"
+        <TextBlock x:Name="launchInfoBlock" TextAlignment="Right" Foreground="Gray" Margin="65,374,0,4"
+                   Grid.ColumnSpan="3" FontSize="20" TextWrapping="Wrap" HorizontalAlignment="Left"/>
+        <controls:ProgressRing x:Name="loadingRing" Width="24" IsActive="False" Margin="37,373,380,5" Grid.Column="1"
                                Foreground="#FFFFFFFF" Background="#00FFFFFF" BorderBrush="#00FFFFFF" Visibility="Hidden"/>
-        <Button x:Name="cancelLaunchButton" Height="30" Margin="440,0,0,2" VerticalAlignment="Bottom" Grid.Column="1"
+        <Button x:Name="cancelLaunchButton" Height="30" Margin="233,0,10,9" VerticalAlignment="Bottom" Grid.Column="2"
                 Background="{x:Null}" BorderBrush="White" Foreground="White" FontSize="14" FontWeight="Bold" Visibility="Hidden">
             <iconPacks:FontAwesome Kind="BanSolid" />
         </Button>
