@@ -41,7 +41,7 @@ namespace NsisoLauncher.Windows
             vwV.SortDescriptions.Add(new SortDescription("Type", ListSortDirection.Ascending));
             ICollectionView vwF = CollectionViewSource.GetDefaultView(forgeList);
             vwF.SortDescriptions.Add(new SortDescription("Version", ListSortDirection.Descending));
-            if(res == true)
+            if (res == true)
                 RefreshVerButton_Click(null, null);
         }
 

@@ -31,11 +31,16 @@ namespace NsisoLauncherCore.Util
         {
             return Key.Trim() + ':' + Value.Trim();
         }
+        public enum Type
+        {
+            options,
+            optionsof
+        }
     }
 
     public static class GameHelper
     {
-        public async static Task<List<VersionOption>> GetOptionsAsync(LaunchHandler core, Modules.Version version)
+        public async static Task<List<VersionOption>> GetOptionsAsync(VersionOption.Type type, LaunchHandler core, Modules.Version version)
         {
             return await Task.Factory.StartNew(() =>
             {
@@ -43,21 +48,41 @@ namespace NsisoLauncherCore.Util
                 {
                     try
                     {
-                        string optionsPath = core.GetVersionOptionsPath(version);
-                        if (!File.Exists(optionsPath))
+                        string Path = "";
+                        switch (type)
+                        {
+                            case VersionOption.Type.options:
+                                Path = core.GetVersionOptionsPath(version);
+                                break;
+                            case VersionOption.Type.optionsof:
+                                Path = core.GetVersionOptionsofPath(version);
+                                break;
+                            default:
+                                return null;
+                        }
+                        
+                        if (!File.Exists(Path))
                         {
                             return null;
                         }
-                        string[] lines = File.ReadAllLines(optionsPath);
+                        string[] lines = File.ReadAllLines(Path);
                         List<VersionOption> options = new List<VersionOption>();
                         foreach (var item in lines)
                         {
                             string[] kv = item.Split(':');
-                            if (kv.Length != 2)
+                            if (kv.Length < 2)
+                                continue;
+                            if (kv.Length > 2)
                             {
-                                return null;
+                                string a = kv[1];
+                                for (int i = 2; i < kv.Length; i++)
+                                {
+                                    a += ":" + kv[i];
+                                }
+                                options.Add(new VersionOption() { Key = kv[0], Value = a });
                             }
-                            options.Add(new VersionOption() { Key = kv[0], Value = kv[1] });
+                            else
+                                options.Add(new VersionOption() { Key = kv[0], Value = kv[1] });
                         }
                         return options;
                     }
@@ -93,7 +118,7 @@ namespace NsisoLauncherCore.Util
             });
         }
 
-        public async static Task SaveOptionsAsync(List<VersionOption> opts, LaunchHandler core, Modules.Version version)
+        public async static Task SaveOptionsAsync(VersionOption.Type type, List<VersionOption> opts, LaunchHandler core, Modules.Version version)
         {
             await Task.Factory.StartNew(() =>
             {
@@ -106,7 +131,17 @@ namespace NsisoLauncherCore.Util
                         {
                             optLines.Add(item.ToString());
                         }
-                        File.WriteAllLines(core.GetVersionOptionsPath(version), optLines.ToArray());
+                        string Path = "";
+                        switch (type)
+                        {
+                            case VersionOption.Type.options:
+                                Path = core.GetVersionOptionsPath(version);
+                                break;
+                            case VersionOption.Type.optionsof:
+                                Path = core.GetVersionOptionsofPath(version);
+                                break;
+                        }
+                        File.WriteAllLines(Path, optLines.ToArray());
                     }
                 }
                 catch (Exception) { }

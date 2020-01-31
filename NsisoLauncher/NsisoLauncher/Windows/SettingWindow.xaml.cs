@@ -52,38 +52,31 @@ namespace NsisoLauncher.Windows
             //绑定content设置
             this.DataContext = config;
 
-            #region 元素初始化
             javaPathComboBox.ItemsSource = App.javaList;
             memorySlider.Maximum = SystemTools.GetTotalMemory();
 
-            #region 自定义验证模型
             authModules.Clear();
             foreach (var item in config.User.AuthenticationDic)
             {
                 authModules.Add(new KeyValuePair<string, AuthenticationNode>(item.Key, item.Value));
             }
-            #endregion
 
             VersionsComboBox.ItemsSource = await App.handler.GetVersionsAsync();
 
             Lauguage.ItemsSource = new List<string>() { "中文", "日本語", "English" };
             Lauguage.SelectedItem = config.Lauguage;
 
-        #endregion
-
             if (App.config.MainConfig.Environment.VersionIsolation)
             {
-                VersionsComboBox.IsEnabled = true;
+                VersionChose.Visibility = Visibility.Visible;
             }
             else
             {
-                VersionsComboBox.IsEnabled = false;
-                versionOptionsGrid.ItemsSource = await GameHelper.GetOptionsAsync(App.handler, new NsisoLauncherCore.Modules.Version() { ID = "null" });
+                VersionChose.Visibility = Visibility.Collapsed;
+                versionOptionsGrid.ItemsSource = await GameHelper.GetOptionsAsync(VersionOption.Type.options, App.handler, new NsisoLauncherCore.Modules.Version() { ID = "null" });
+                versionOptionsofGrid.ItemsSource = await GameHelper.GetOptionsAsync(VersionOption.Type.optionsof,  App.handler, new NsisoLauncherCore.Modules.Version() { ID = "null" });
             }
             CheckBox_Checked(null, null);
-
-
-            //debug
         }
 
         public void ShowAddAuthModule()
@@ -134,7 +127,6 @@ namespace NsisoLauncher.Windows
                 config.Environment.GamePath = dialog.SelectedPath.Trim();
             }
         }
-        #region 全局设置部分
         private void memorySlider_UpperValueChanged(object sender, RangeParameterChangedEventArgs e)
         {
             config.Environment.MaxMemory = Convert.ToInt32(((RangeSlider)sender).UpperValue);
@@ -144,7 +136,6 @@ namespace NsisoLauncher.Windows
         {
             config.Environment.MinMemory = Convert.ToInt32(((RangeSlider)sender).LowerValue);
         }
-        #endregion
 
         private void textBox1_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
@@ -155,7 +146,6 @@ namespace NsisoLauncher.Windows
         //保存按钮点击后
         private async void saveButton_Click(object sender, RoutedEventArgs e)
         {
-            #region 实时修改
             switch (config.Environment.GamePathType)
             {
                 case GameDirEnum.ROOT:
@@ -175,7 +165,6 @@ namespace NsisoLauncher.Windows
             }
             App.handler.VersionIsolation = config.Environment.VersionIsolation;
             App.downloader.CheckFileHash = config.Download.CheckDownloadFileHash;
-            #endregion
 
             App.config.MainConfig = config;
 
@@ -183,21 +172,29 @@ namespace NsisoLauncher.Windows
             {
                 if (App.config.MainConfig.Environment.VersionIsolation)
                 {
-                    await GameHelper.SaveOptionsAsync(
+                    await GameHelper.SaveOptionsAsync(VersionOption.Type.options,
                     (List<VersionOption>)versionOptionsGrid.ItemsSource,
                     App.handler,
                     (NsisoLauncherCore.Modules.Version)VersionsComboBox.SelectedItem);
+
+                    await GameHelper.SaveOptionsAsync(VersionOption.Type.optionsof,
+                   (List<VersionOption>)versionOptionsofGrid.ItemsSource,
+                   App.handler,
+                   (NsisoLauncherCore.Modules.Version)VersionsComboBox.SelectedItem);
                 }
                 else
                 {
-                    await GameHelper.SaveOptionsAsync(
+                    await GameHelper.SaveOptionsAsync(VersionOption.Type.options,
                     (List<VersionOption>)versionOptionsGrid.ItemsSource,
+                    App.handler,
+                    new NsisoLauncherCore.Modules.Version() { ID = "null" });
+                    await GameHelper.SaveOptionsAsync(VersionOption.Type.optionsof,
+                    (List<VersionOption>)versionOptionsofGrid.ItemsSource,
                     App.handler,
                     new NsisoLauncherCore.Modules.Version() { ID = "null" });
                 }
             }
 
-            //Color_yr Add Start
             App.config.Save();
             saveButton.Content = App.GetResourceString("String.Settingwindow.Saving");
             Config.Environment env = App.config.MainConfig.Environment;
@@ -223,13 +220,12 @@ namespace NsisoLauncher.Windows
             {
                 await this.ShowMessageAsync(App.GetResourceString("String.Settingwindow.SaveError"), App.GetResourceString("String.Settingwindow.JavaError"));
             }
-            //Color_yr Add Stop
         }
 
         //取消按钮点击后
         private void cancelButton_Click(object sender, RoutedEventArgs e)
         {
-            this.Close();
+            Close();
         }
 
         private async void VersionsComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -238,7 +234,8 @@ namespace NsisoLauncher.Windows
 
             if (comboBox.SelectedItem != null)
             {
-                versionOptionsGrid.ItemsSource = await GameHelper.GetOptionsAsync(App.handler, (NsisoLauncherCore.Modules.Version)comboBox.SelectedItem);
+                versionOptionsGrid.ItemsSource = await GameHelper.GetOptionsAsync(VersionOption.Type.options, App.handler, (NsisoLauncherCore.Modules.Version)comboBox.SelectedItem);
+                versionOptionsofGrid.ItemsSource = await GameHelper.GetOptionsAsync(VersionOption.Type.optionsof, App.handler, (NsisoLauncherCore.Modules.Version)comboBox.SelectedItem);
             }
             else
             {
@@ -273,7 +270,6 @@ namespace NsisoLauncher.Windows
             }
         }
 
-        #region Tools
         private static T DeepCloneObject<T>(T t) where T : class
         {
             T model = Activator.CreateInstance<T>();                     //实例化一个T类型对象
@@ -295,7 +291,6 @@ namespace NsisoLauncher.Windows
             }
             return model;
         }
-        #endregion
         private void javaPathComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             Java java = (Java)(((System.Windows.Controls.ComboBox)sender).SelectedItem);
@@ -309,7 +304,7 @@ namespace NsisoLauncher.Windows
             }
         }
 
-        private /*async*/ void forgetUserButton_Click(object sender, RoutedEventArgs e)
+        private void forgetUserButton_Click(object sender, RoutedEventArgs e)
         {
             if (userComboBox.SelectedItem == null)
             {
@@ -376,7 +371,7 @@ namespace NsisoLauncher.Windows
             // 激活的是当前默认的浏览器
             Process.Start(new ProcessStartInfo(link.NavigateUri.AbsoluteUri));
         }
-        #region 自定义验证模型
+
         ObservableCollection<KeyValuePair<string, AuthenticationNode>> authModules = new ObservableCollection<KeyValuePair<string, AuthenticationNode>>();
 
         private void AuthModuleCombobox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -422,7 +417,6 @@ namespace NsisoLauncher.Windows
         {
             authModuleCombobox.SelectedItem = null;
         }
-        #endregion
 
         private void clearAllauthButton_Click(object sender, RoutedEventArgs e)
         {
@@ -434,7 +428,11 @@ namespace NsisoLauncher.Windows
             _isGameSettingChanged = true;
         }
 
-        //Color_yr Add Start
+        private void VersionOptionsofGrid_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
+        {
+            _isGameSettingChanged = true;
+        }
+
         private void CheckBox_Checked(object sender, RoutedEventArgs e)
         {
             if (checkBox1.IsChecked == true)
@@ -489,7 +487,5 @@ namespace NsisoLauncher.Windows
                 e.Handled = true;
             }
         }
-        
-        //Color_yr Add Start
     }
 }

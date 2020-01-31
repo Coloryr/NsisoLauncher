@@ -47,37 +47,6 @@
                                     />
                             </StackPanel>
                         </Expander>
-                        <Expander Header="{DynamicResource String.Settingwindow.Env.Root}" Margin="0,0,0,5">
-                            <StackPanel>
-                                <Controls:ToggleSwitch
-                                OnLabel="{DynamicResource String.Settingwindow.Env.Root.VersionIsolationOn}"
-                                OffLabel="{DynamicResource String.Settingwindow.Env.Root.VersionIsolationOff}"
-                                Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}"
-                                IsChecked="{Binding Environment.VersionIsolation}"
-                                />
-
-                                <Label Content="{DynamicResource String.Settingwindow.Env.Root.TypeTitle}" Margin="0,10,0,0"/>
-                                <RadioButton Margin="0,0,0,5"
-                                             Content="{DynamicResource String.Settingwindow.Env.Root.Root}" IsChecked="{Binding Path=Environment.GamePathType,
-                                    Converter={StaticResource SettingDirRadioButtonConverter},ConverterParameter=0}"/>
-                                <RadioButton Margin="0,0,0,5"
-                                             Content="{DynamicResource String.Settingwindow.Env.Root.AppData}" 
-                                             IsChecked="{Binding Path=Environment.GamePathType,
-                                    Converter={StaticResource SettingDirRadioButtonConverter},ConverterParameter=1}"/>
-                                <RadioButton Margin="0,0,0,5" 
-                                             Content="{DynamicResource String.Settingwindow.Env.Root.Programe}"
-                                             IsChecked="{Binding Path=Environment.GamePathType,
-                                    Converter={StaticResource SettingDirRadioButtonConverter},ConverterParameter=2}"/>
-                                <RadioButton x:Name="dir_customRadio" Margin="0,0,0,5" 
-                                             Content="{DynamicResource String.Settingwindow.Env.Root.Custom}"
-                                             IsChecked="{Binding Path=Environment.GamePathType,
-                                    Converter={StaticResource SettingDirRadioButtonConverter},ConverterParameter=3}"/>
-                                <TextBox x:Name="gamedirPathTextBox"  Margin="0,0,0,5"
-                                         IsEnabled="{Binding IsChecked, ElementName=dir_customRadio}" Text="{Binding Path=Environment.GamePath}"/>
-                                <Button x:Name="gamedirChooseButton"
-                                        Content="{DynamicResource String.Settingwindow.Env.Root.Choose}" IsEnabled="{Binding IsChecked, ElementName=dir_customRadio}" Click="gamedirChooseButton_Click"/>
-                            </StackPanel>
-                        </Expander>
                         <Expander Header="{DynamicResource String.Settingwindow.Env.Memory}" Margin="0,0,0,5">
                             <Grid >
                                 <Controls:ToggleSwitch 
@@ -112,24 +81,6 @@
                                 <Label Content="{DynamicResource String.Settingwindow.Env.Memory.Max}" HorizontalAlignment="Right" Margin="0,0,61,0" VerticalAlignment="Bottom"/>
                             </Grid>
                         </Expander>
-                        <Expander Header="{DynamicResource String.Settingwindow.Env.Window}" Margin="0,0,0,5">
-                            <StackPanel Orientation="Horizontal">
-                                <TextBox TextWrapping="Wrap" 
-                                         PreviewTextInput="textBox1_PreviewTextInput"
-                                         InputMethod.IsInputMethodEnabled="False"
-                                         Text="{Binding Environment.WindowSize.Width}" 
-                                         IsEnabled="{Binding Environment.WindowSize.FullScreen, Converter={StaticResource BoolToOppositeBoolConverter}}" Width="50"/>
-                                <Label Content="{DynamicResource String.Settingwindow.Env.Window.WH}"/>
-                                <TextBox TextWrapping="Wrap"
-                                         PreviewTextInput="textBox1_PreviewTextInput"
-                                         InputMethod.IsInputMethodEnabled="False"
-                                         Text="{Binding Environment.WindowSize.Height}"
-                                         IsEnabled="{Binding Environment.WindowSize.FullScreen, Converter={StaticResource BoolToOppositeBoolConverter}}" Width="50"/>
-                                <Label Content="{DynamicResource String.Settingwindow.Env.Window.Text}" Margin="0,0,20,0"/>
-                                <CheckBox Content="{DynamicResource String.Settingwindow.Env.Window.Full}"
-                                          IsChecked="{Binding Environment.WindowSize.FullScreen}"/>
-                            </StackPanel>
-                        </Expander>
                         <Expander Header="{DynamicResource String.Settingwindow.Env.Pro}" Margin="0,0,0,5">
                             <StackPanel>
                                 <Label Content="{DynamicResource String.Settingwindow.Env.Pro.Agent}"/>
@@ -157,22 +108,66 @@
 
                             </StackPanel>
                         </Expander>
+                        <Expander Header="{DynamicResource String.Settingwindow.Env.Root}" Margin="0,0,0,5">
+                            <StackPanel>
+                                <Controls:ToggleSwitch
+                                OnLabel="{DynamicResource String.Settingwindow.Env.Root.VersionIsolationOn}"
+                                OffLabel="{DynamicResource String.Settingwindow.Env.Root.VersionIsolationOff}"
+                                Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}"
+                                IsChecked="{Binding Environment.VersionIsolation}"
+                                />
 
+                                <Label Content="{DynamicResource String.Settingwindow.Env.Root.TypeTitle}" Margin="0,10,0,0"/>
+                                <RadioButton Margin="0,0,0,5"
+                                             Content="{DynamicResource String.Settingwindow.Env.Root.Root}" IsChecked="{Binding Path=Environment.GamePathType,
+                                    Converter={StaticResource SettingDirRadioButtonConverter},ConverterParameter=0}"/>
+                                <RadioButton Margin="0,0,0,5"
+                                             Content="{DynamicResource String.Settingwindow.Env.Root.AppData}" 
+                                             IsChecked="{Binding Path=Environment.GamePathType,
+                                    Converter={StaticResource SettingDirRadioButtonConverter},ConverterParameter=1}"/>
+                                <RadioButton Margin="0,0,0,5" 
+                                             Content="{DynamicResource String.Settingwindow.Env.Root.Programe}"
+                                             IsChecked="{Binding Path=Environment.GamePathType,
+                                    Converter={StaticResource SettingDirRadioButtonConverter},ConverterParameter=2}"/>
+                                <RadioButton x:Name="dir_customRadio" Margin="0,0,0,5" 
+                                             Content="{DynamicResource String.Settingwindow.Env.Root.Custom}"
+                                             IsChecked="{Binding Path=Environment.GamePathType,
+                                    Converter={StaticResource SettingDirRadioButtonConverter},ConverterParameter=3}"/>
+                                <TextBox x:Name="gamedirPathTextBox"  Margin="0,0,0,5"
+                                         IsEnabled="{Binding IsChecked, ElementName=dir_customRadio}" Text="{Binding Path=Environment.GamePath}"/>
+                                <Button x:Name="gamedirChooseButton"
+                                        Content="{DynamicResource String.Settingwindow.Env.Root.Choose}" IsEnabled="{Binding IsChecked, ElementName=dir_customRadio}" Click="gamedirChooseButton_Click"/>
+                            </StackPanel>
+                        </Expander>
+                        <Expander Header="{DynamicResource String.Settingwindow.Env.Window}" Margin="0,0,0,5">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBox TextWrapping="Wrap" 
+                                         PreviewTextInput="textBox1_PreviewTextInput"
+                                         InputMethod.IsInputMethodEnabled="False"
+                                         Text="{Binding Environment.WindowSize.Width}" 
+                                         IsEnabled="{Binding Environment.WindowSize.FullScreen, Converter={StaticResource BoolToOppositeBoolConverter}}" Width="50"/>
+                                <Label Content="{DynamicResource String.Settingwindow.Env.Window.WH}"/>
+                                <TextBox TextWrapping="Wrap"
+                                         PreviewTextInput="textBox1_PreviewTextInput"
+                                         InputMethod.IsInputMethodEnabled="False"
+                                         Text="{Binding Environment.WindowSize.Height}"
+                                         IsEnabled="{Binding Environment.WindowSize.FullScreen, Converter={StaticResource BoolToOppositeBoolConverter}}" Width="50"/>
+                                <Label Content="{DynamicResource String.Settingwindow.Env.Window.Text}" Margin="0,0,20,0"/>
+                                <CheckBox Content="{DynamicResource String.Settingwindow.Env.Window.Full}"
+                                          IsChecked="{Binding Environment.WindowSize.FullScreen}"/>
+                            </StackPanel>
+                        </Expander>
                         <Expander Header="{DynamicResource String.Settingwindow.Env.AutoFill}" Margin="0,0,0,5">
                             <StackPanel>
                                 <CheckBox Content="{DynamicResource String.Settingwindow.Env.AutoFill.Lib}" IsChecked="{Binding Environment.DownloadLostDepend}" Margin="0,0,0,5"/>
                                 <CheckBox Content="{DynamicResource String.Settingwindow.Env.AutoFill.Assets}" IsChecked="{Binding Environment.DownloadLostAssets}"/>
                             </StackPanel>
                         </Expander>
-                        <Expander Header="{DynamicResource String.Settingwindow.Env.Habbit}" Margin="0,0,0,5">
+                        <Expander Header="{DynamicResource String.Settingwindow.Env.Launcher}" Margin="0,0,0,5">
                             <StackPanel>
                                 <Label Content="{DynamicResource String.Settingwindow.User.Lauguage}" Margin="0,0,0,0"/>
                                 <ComboBox HorizontalAlignment="Left" Margin="0,0,0,0" Width="120" Text="{Binding Lauguage}" Name="Lauguage"/>
-                                <CheckBox Content="{DynamicResource String.Settingwindow.Env.Habbit.Exit}" IsChecked="{Binding Environment.ExitAfterLaunch}" Margin="0,5,0,5"/>
-                            </StackPanel>
-                        </Expander>
-                        <Expander Header="{DynamicResource String.Settingwindow.Env.Launcher}" Margin="0,0,0,5">
-                            <StackPanel>
+                                <CheckBox Content="{DynamicResource String.Settingwindow.Env.Launcher.Exit}" IsChecked="{Binding Environment.ExitAfterLaunch}" Margin="0,5,0,5"/>
                                 <CheckBox Content="{DynamicResource String.Settingwindow.Env.Autoupdata}" IsChecked="{Binding Launcher.CheckUpdate}" Margin="0,0,0,5"/>
                                 <CheckBox Content="{DynamicResource String.Settingwindow.Env.Launcher.DebugMode}" IsChecked="{Binding Launcher.Debug}" Margin="0,0,0,5"/>
                                 <CheckBox Content="{DynamicResource String.Settingwindow.Env.Disabledata}" IsChecked="{Binding Launcher.NoTracking}" Margin="0,0,0,5"/>
@@ -231,10 +226,15 @@
             </TabItem>
             <TabItem Header="{DynamicResource String.Settingwindow.Version}">
                 <Grid>
-                    <Label x:Name="label6" Content="{DynamicResource String.Settingwindow.Version.ChooseText}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,1,0,0"/>
-                    <ComboBox x:Name="VersionsComboBox" Margin="148,0,155,0" VerticalAlignment="Top" DisplayMemberPath="ID" SelectionChanged="VersionsComboBox_SelectionChanged"/>
                     <StackPanel>
-                        <Expander x:Name="groupBox7" Header="{DynamicResource String.Settingwindow.Version.Options}" Margin="10,31,10,0">
+                        <StackPanel Orientation="Horizontal" Margin="0,5,0,5" Name="VersionChose">
+                            <Label x:Name="label6" Content="{DynamicResource String.Settingwindow.Version.ChooseText}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,1,0,0"/>
+                            <ComboBox x:Name="VersionsComboBox" Margin="5,0,5,0" VerticalAlignment="Top" DisplayMemberPath="ID" SelectionChanged="VersionsComboBox_SelectionChanged"
+                                      Width="480"/>
+                            <Button x:Name="refreshVersionsButton" Content="{DynamicResource String.Settingwindow.Version.Refresh}"
+                            VerticalAlignment="Top" HorizontalAlignment="Right" Width="140" Click="refreshVersionsButton_Click" Margin="0,-1,10,0"/>
+                        </StackPanel>
+                        <Expander x:Name="groupBox7" Header="{DynamicResource String.Settingwindow.Version.Options}" Margin="10,0,10,5">
                             <Grid Height="238">
                                 <DataGrid x:Name="versionOptionsGrid" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" Margin="0,0,0,20" CellEditEnding="VersionOptionsGrid_CellEditEnding">
                                     <DataGrid.Columns>
@@ -245,9 +245,18 @@
                                 <TextBlock TextWrapping="Wrap" Text="{DynamicResource String.Settingwindow.Version.Options.Note}" VerticalAlignment="Bottom"/>
                             </Grid>
                         </Expander>
+                        <Expander x:Name="groupBox8" Header="{DynamicResource String.Settingwindow.Version.Optionsof}" Margin="10,0,10,5">
+                            <Grid Height="238">
+                                <DataGrid x:Name="versionOptionsofGrid" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" Margin="0,0,0,20" CellEditEnding="VersionOptionsofGrid_CellEditEnding">
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Header="{DynamicResource String.Settingwindow.Version.Options.T}" Binding="{Binding Key}" IsReadOnly="True"/>
+                                        <DataGridTextColumn Header="{DynamicResource String.Settingwindow.Version.Options.V}" Binding="{Binding Value}"/>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                                <TextBlock TextWrapping="Wrap" Text="{DynamicResource String.Settingwindow.Version.Optionsof.Note}" VerticalAlignment="Bottom"/>
+                            </Grid>
+                        </Expander>
                     </StackPanel>
-                    <Button x:Name="refreshVersionsButton" Content="{DynamicResource String.Settingwindow.Version.Refresh}"
-                            VerticalAlignment="Top" HorizontalAlignment="Right" Width="140" Click="refreshVersionsButton_Click" Margin="0,-1,10,0"/>
                 </Grid>
             </TabItem>
             <TabItem Header="{DynamicResource String.Settingwindow.User}">
@@ -276,7 +285,8 @@
                                 </StackPanel>
                                 <Button Style="{DynamicResource SquareButtonStyle}" Content="{DynamicResource String.Settingwindow.User.Info.UnRemember}" Margin="0,5,0,5" Click="forgetUserButton_Click"/>
                                 <Button Style="{DynamicResource SquareButtonStyle}" Content="{DynamicResource String.Settingwindow.User.Info.Clear}" Margin="0,0,0,5" Click="clearUserButton_Click"/>
-                                <Button Style="{DynamicResource SquareButtonStyle}" Content="{DynamicResource String.Settingwindow.User.Info.Del}" Click="delUserButton_Click" Background="IndianRed" Foreground="White"/>
+                                <Button Style="{DynamicResource SquareButtonStyle}" Content="{DynamicResource String.Settingwindow.User.Info.Del}" Margin="0,0,0,5" Click="delUserButton_Click" Background="IndianRed" Foreground="White"/>
+                                <Button Style="{DynamicResource SquareButtonStyle}" Content="{DynamicResource String.Settingwindow.User.All.DeleteAll}" Background="IndianRed" Foreground="White" Click="delAllUserButton_Click"/>
                             </StackPanel>
                         </Expander>
                         <Expander Header="{DynamicResource String.Settingwindow.User.All}">
@@ -290,7 +300,6 @@
                                 </StackPanel>
                                 <CheckBox Margin="0,0,0,10" Content="{DynamicResource String.Settingwindow.User.All.Nide}" IsChecked="{Binding User.Nide8ServerDependence}"/>
                                 <Button Style="{DynamicResource SquareButtonStyle}" Content="{DynamicResource String.Settingwindow.User.All.Delete}" Background="IndianRed" Foreground="White" Margin="0,0,0,5" Click="delAllAuthnodeButton_Click"/>
-                                <Button Style="{DynamicResource SquareButtonStyle}" Content="{DynamicResource String.Settingwindow.User.All.DeleteAll}" Background="IndianRed" Foreground="White" Click="delAllUserButton_Click"/>
                             </StackPanel>
                         </Expander>
                     </StackPanel>

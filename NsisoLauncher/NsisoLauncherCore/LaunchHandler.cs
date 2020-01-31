@@ -278,6 +278,10 @@ namespace NsisoLauncherCore
         {
             return PathManager.GetVersionOptionsPath(VersionIsolation, GameRootPath, version);
         }
+        public string GetVersionOptionsofPath(Modules.Version version)
+        {
+            return PathManager.GetVersionOptionsofPath(VersionIsolation, GameRootPath, version);
+        }
         #endregion
 
         #region DEBUG方法
