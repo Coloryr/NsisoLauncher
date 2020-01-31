@@ -1,16 +1,13 @@
-# NsisoLauncher
+# NsisoLauncher(Color_yr edit)
 A New Minecraft Launcher (unofficial) from Nsiso
 
-感谢您关注到我们Nsiso启动器的开源项目
-此开源项目是为了帮助各位学习，方便纠错，以及证明用户安全保
-作者：Nsiso工作室-siso
-请注意该项目遵循GNU GPL3.0开源协议
+该版本为NsisoLauncher延申版本，为了符合服务器的使用增加了一些功能和修改。  
+启动器原库https://github.com/Nsiso/NsisoLauncher  
+（因为一些原因不知道为何不在它的fork下面了）  
+作者：Nsiso工作室-siso/Color_yr  
+请注意该项目遵循GNU GPL3.0开源协议  
 
-注意：
-Nsiso启动器的启动核心目前单独分离开源。
-Nsiso启动器通过核心开源<->应用开源的分离结构，以便稳定更新。同时封装后的启动核心会更方便其他人使用Nsiso启动核心。
-启动核心Github源：https://github.com/Nsiso/NsisoLauncherCore
-此项目需要依赖nsiso launcher core
+非官方版本启动器交流群：571239090  
 
 
 ## 使用组件（由名字字母排序）：
@@ -28,12 +25,6 @@ BMCLAPI和BMCL不同，属于非开源项目
 禁止在BMCLAPI上二次封装其他协议
 捐助
 服务器的开销是有费用的，若你觉得BMCLAPI对你有帮助，欢迎捐助，支付宝：bangbang93@bangbang93.com服务器的开销是有费用的，若你觉得BMCLAPI对你有帮助，欢迎捐助，支付宝：bangbang93@bangbang93.com
-
-------------
-
-#### mcbbs新闻API
-http://www.mcbbs.net/thread-538691-1-1.html
-来源：mcbbs
 
 ------------
 
