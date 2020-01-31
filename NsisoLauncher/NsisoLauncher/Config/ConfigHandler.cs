@@ -216,7 +216,6 @@ namespace NsisoLauncher.Config
                 Launcher = new Launcher()
                 {
                     Debug = false,
-                    CheckUpdate = true,
                     NoTracking = false
                 },
                 Server = new Server()

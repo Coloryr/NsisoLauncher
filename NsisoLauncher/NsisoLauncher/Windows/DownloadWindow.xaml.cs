@@ -1,6 +1,7 @@
 ﻿using LiveCharts;
 using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
+using Microsoft.WindowsAPICodePack.Taskbar;
 using NsisoLauncherCore.Net;
 using System;
 using System.Collections.ObjectModel;
@@ -27,14 +28,14 @@ namespace NsisoLauncher.Windows
             App.downloader.DownloadSpeedChanged += Downloader_DownloadSpeedChanged;
             App.downloader.DownloadCompleted += Downloader_DownloadCompleted;
             Refresh();
-            time = new Timer(new TimerCallback(Time), null, 20, -1);
+            time = new Timer(new TimerCallback(Time), null, 100, -1);
         }
 
         private void Time(object state)
         {
             Dispatcher.Invoke(() =>
             {
-                new NewDownloadTaskWindow(true).ShowDialog();
+                NewDownload(null, null);
             });
             time.Dispose();
         }
@@ -111,7 +112,10 @@ namespace NsisoLauncher.Windows
             {
                 progressBar.Maximum = e.TaskCount;
                 progressBar.Value = e.TaskCount - e.LastTaskCount;
-                progressPerTextBlock.Text = ((double)(e.TaskCount - e.LastTaskCount) / (double)e.TaskCount).ToString("0%");
+                double progress = ((double)(e.TaskCount - e.LastTaskCount) / (double)e.TaskCount);
+                if (progress > 0)
+                    TaskbarManager.Instance.SetProgressValue((int)(progress * 100), 100);
+                progressPerTextBlock.Text = progress.ToString("0%");
                 Tasks.Remove(e.DoneTask);
             }));
         }

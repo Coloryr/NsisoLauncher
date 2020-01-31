@@ -139,10 +139,10 @@
     <sys:String x:Key="String.NewDownloadTaskWindow.LiteloaderListFail.Text">请检查您的网络是否正常或稍后再试</sys:String>
     <sys:String x:Key="String.NewDownloadTaskWindow.LiteloaderListNull.Title">没有匹配该版本的Liteloader</sys:String>
     <sys:String x:Key="String.NewDownloadTaskWindow.LiteloaderListNull.Text">貌似没有支持这个版本的Liteloader，请尝试更换另一个版本</sys:String>
-    <sys:String x:Key="String.NewDownloadTaskWindow.Type.release">正式版(Release)</sys:String>
-    <sys:String x:Key="String.NewDownloadTaskWindow.Type.snapshot">版本快照(snapshot)</sys:String>
-    <sys:String x:Key="String.NewDownloadTaskWindow.Type.old_alpha">旧alpha版本(old_alpha)</sys:String>
-    <sys:String x:Key="String.NewDownloadTaskWindow.Type.old_beta">旧beta版本(old_beta)</sys:String>
+    <sys:String x:Key="String.NewDownloadTaskWindow.Type.release">1-正式版(Release)</sys:String>
+    <sys:String x:Key="String.NewDownloadTaskWindow.Type.snapshot">2-版本快照(snapshot)</sys:String>
+    <sys:String x:Key="String.NewDownloadTaskWindow.Type.old_alpha">3-旧alpha版本(old_alpha)</sys:String>
+    <sys:String x:Key="String.NewDownloadTaskWindow.Type.old_beta">4-旧beta版本(old_beta)</sys:String>
     <sys:String x:Key="String.NewDownloadTaskWindow.Source">资源引导</sys:String>
     <sys:String x:Key="String.NewDownloadTaskWindow.Version">下载游戏版本</sys:String>
     <sys:String x:Key="String.NewDownloadTaskWindow.Version.Forge">Forge版本</sys:String>
@@ -315,7 +315,6 @@
     <sys:String x:Key="String.UpdateWindow.Describe">描述</sys:String>
     <sys:String x:Key="String.UpdateWindow.Vision">版本号：</sys:String>
     <sys:String x:Key="String.UpdateWindow.Updatatime">更新时间：</sys:String>
-    <sys:String x:Key="String.UpdateWindow.Nocheck">不再自动检查更新</sys:String>
     <sys:String x:Key="String.UpdateWindow.Ignore">忽略</sys:String>
     <sys:String x:Key="String.UpdateWindow.Download">前往下载</sys:String>
 </ResourceDictionary>

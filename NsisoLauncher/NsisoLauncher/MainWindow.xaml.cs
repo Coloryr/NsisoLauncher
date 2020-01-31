@@ -14,7 +14,6 @@ using NsisoLauncherCore.Net.MojangApi.Endpoints;
 using NsisoLauncherCore.Util;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -26,16 +25,6 @@ using System.Windows.Threading;
 
 namespace NsisoLauncher
 {
-    public class AuthTypeItem
-    {
-        public Config.AuthenticationType Type { get; set; }
-        public string Name { get; set; }
-    }
-
-    public class MainWindowViewModel : INotifyPropertyChanged
-    {
-        public event PropertyChangedEventHandler PropertyChanged;
-    }
 
     /// <summary>
     /// MainWindow.xaml 的交互逻辑
@@ -150,7 +139,6 @@ namespace NsisoLauncher
             await LaunchGameFromArgs(obj);
         }
 
-        #region 启动核心事件处理
         public void Handler_GameExit(object sender, GameExitArg arg)
         {
             this.Dispatcher.Invoke(new Action(() =>
@@ -164,9 +152,7 @@ namespace NsisoLauncher
                 }
             }));
         }
-        #endregion
 
-        #region 自定义
         public async void CustomizeRefresh()
         {
             if (!string.IsNullOrWhiteSpace(App.config.MainConfig.Customize.LauncherTitle))
@@ -197,6 +183,7 @@ namespace NsisoLauncher
                 if (icon.Length != 0)
                 {
                     this.Icon = new BitmapImage(new Uri(icon[0]));
+                    ShowIconOnTitleBar = false;
                 }
                 if (files.Count() + files1.Count() != 0)
                 {
@@ -294,7 +281,6 @@ namespace NsisoLauncher
                 volumeButtonIcon.Kind = PackIconFontAwesomeKind.PlaySolid;
             }
         }
-        #endregion
 
         private async Task LaunchGameFromArgs(Controls.LaunchEventArgs args)
         {
@@ -303,7 +289,7 @@ namespace NsisoLauncher
                 App.logHandler.OnLog += (a, b) => { this.Invoke(() => { launchInfoBlock.Text = b.Message; }); };
                 Side_E.IsExpanded = false;
                 App.logHandler.AppendInfo("检查有效数据...");
-                #region 检查有效数据
+
                 if (args.LaunchVersion == null)
                 {
                     await this.ShowMessageAsync(App.GetResourceString("String.Message.EmptyLaunchVersion"),
@@ -327,13 +313,9 @@ namespace NsisoLauncher
                     await this.ShowMessageAsync(App.GetResourceString("String.Message.NoJava"), App.GetResourceString("String.Message.NoJava2"));
                     return;
                 }
-                #endregion
 
-
-                #region 保存启动数据
                 App.config.MainConfig.History.LastLaunchVersion = args.LaunchVersion.ID;
                 App.config.MainConfig.History.LastLaunchTime = DateTime.Now;
-                #endregion
 
                 LaunchSetting launchSetting = new LaunchSetting()
                 {
@@ -344,9 +326,6 @@ namespace NsisoLauncher
                 launchInfoBlock.Visibility = Visibility.Visible;
                 loadingRing.IsActive = true;
 
-                #region 验证
-
-                #region 设置ClientToken
                 if (string.IsNullOrWhiteSpace(App.config.MainConfig.User.ClientToken))
                 {
                     App.config.MainConfig.User.ClientToken = Guid.NewGuid().ToString("N");
@@ -355,7 +334,6 @@ namespace NsisoLauncher
                 {
                     Requester.ClientToken = App.config.MainConfig.User.ClientToken;
                 }
-                #endregion
 
                 //主验证器接口
                 App.logHandler.AppendInfo("登陆中...");
@@ -366,7 +344,6 @@ namespace NsisoLauncher
                 mainPanel.launchButton.Content = App.GetResourceString("String.Mainwindow.Loging");
                 switch (args.AuthNode.AuthType)
                 {
-                    #region 离线验证
                     case AuthenticationType.OFFLINE:
                         if (args.IsNewUser)
                         {
@@ -379,9 +356,6 @@ namespace NsisoLauncher
                                 args.UserNode.SelectProfileUUID);
                         }
                         break;
-                    #endregion
-
-                    #region MOJANG验证
                     case AuthenticationType.MOJANG:
                         if (isRemember)
                         {
@@ -411,9 +385,6 @@ namespace NsisoLauncher
                             }
                         }
                         break;
-                    #endregion
-
-                    #region NIDE8验证
                     case AuthenticationType.NIDE8:
                         string nide8ID = args.AuthNode.Property["nide8ID"];
                         if (string.IsNullOrWhiteSpace(nide8ID))
@@ -447,9 +418,6 @@ namespace NsisoLauncher
                             authenticator = nYggCator;
                         }
                         break;
-                    #endregion
-
-                    #region AUTHLIB验证
                     case AuthenticationType.AUTHLIB_INJECTOR:
                         string aiRootAddr = args.AuthNode.Property["authserver"];
                         if (string.IsNullOrWhiteSpace(aiRootAddr))
@@ -487,9 +455,6 @@ namespace NsisoLauncher
                             }
                         }
                         break;
-                    #endregion
-
-                    #region 自定义验证
                     case AuthenticationType.CUSTOM_SERVER:
                         string customAuthServer = args.AuthNode.Property["authserver"];
                         if (string.IsNullOrWhiteSpace(customAuthServer))
@@ -525,9 +490,6 @@ namespace NsisoLauncher
                             }
                         }
                         break;
-                    #endregion
-
-                    #region 意外情况
                     default:
                         if (args.IsNewUser)
                         {
@@ -540,7 +502,6 @@ namespace NsisoLauncher
                                 args.UserNode.SelectProfileUUID);
                         }
                         break;
-                        #endregion
                 }
 
                 //如果验证方式不是离线验证
@@ -634,9 +595,7 @@ namespace NsisoLauncher
                 {
                     App.config.MainConfig.User.UserDatabase.Add(args.UserNode.UserData.Uuid, args.UserNode);
                 }
-                #endregion
 
-                #region 检查游戏完整
                 List<DownloadTask> losts = new List<DownloadTask>();
 
                 App.logHandler.AppendInfo("检查丢失的文件中...");
@@ -794,9 +753,6 @@ namespace NsisoLauncher
                     }
                 }
 
-                #endregion
-
-                #region 根据配置文件设置
                 App.logHandler.AppendInfo("准备启动...");
                 launchSetting.AdvencedGameArguments += App.config.MainConfig.Environment.AdvencedGameArguments;
                 launchSetting.AdvencedJvmArguments += App.config.MainConfig.Environment.AdvencedJvmArguments;
@@ -859,13 +815,9 @@ namespace NsisoLauncher
                 }
                 launchSetting.VersionType = App.config.MainConfig.Customize.VersionInfo;
                 launchSetting.WindowSize = App.config.MainConfig.Environment.WindowSize;
-                #endregion
 
-                #region 配置文件处理
                 App.config.Save();
-                #endregion
 
-                #region 启动
                 App.logHandler.AppendInfo("开始启动...");
                 cancelLaunchButton.Visibility = Visibility.Visible;
                 mainPanel.launchButton.Content = App.GetResourceString("String.Mainwindow.Staring");
@@ -883,7 +835,6 @@ namespace NsisoLauncher
                 {
                     cancelLaunchButton.Click += (x, y) => { CancelLaunching(result); };
 
-                    #region 等待游戏响应
                     try
                     {
                         await Task.Factory.StartNew(() =>
@@ -896,14 +847,11 @@ namespace NsisoLauncher
                         App.logHandler.AppendFatal(ex);
                         return;
                     }
-                    #endregion
 
                     cancelLaunchButton.Click -= (x, y) => { CancelLaunching(result); };
 
-                    #region 数据反馈
                     //API使用次数计数器+1
                     await App.nsisoAPIHandler.RefreshUsingTimesCounter();
-                    #endregion
 
                     App.config.MainConfig.History.LastLaunchUsingMs = result.LaunchUsingMs;
                     if (App.config.MainConfig.Environment.ExitAfterLaunch)
@@ -921,7 +869,6 @@ namespace NsisoLauncher
                         GameHelper.SetGameTitle(result, App.config.MainConfig.Customize.GameWindowTitle);
                     }
                 }
-                #endregion
             }
             catch (Exception ex)
             {
@@ -940,11 +887,8 @@ namespace NsisoLauncher
             }
         }
 
-        #region MainWindow event
-
         private async void mainWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            #region 无JAVA提示
             if (App.handler.Java == null)
             {
                 var result = await this.ShowMessageAsync(App.GetResourceString("String.Message.NoJava"),
@@ -978,13 +922,6 @@ namespace NsisoLauncher
                     }
                 }
             }
-            #endregion
-            #region 检查更新
-            if (App.config.MainConfig.Launcher.CheckUpdate)
-            {
-                //await CheckUpdate();
-            }
-            #endregion
         }
 
         private void mainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
@@ -1008,9 +945,6 @@ namespace NsisoLauncher
                 }
             }
         }
-        #endregion
-
-        #region Tools
         private bool IsValidateLoginData(LoginDialogData data)
         {
             if (data == null)
@@ -1035,7 +969,6 @@ namespace NsisoLauncher
                 result.Process.Kill();
             }
         }
-        #endregion
 
         private void Side_Click(object sender, RoutedEventArgs e)
         {

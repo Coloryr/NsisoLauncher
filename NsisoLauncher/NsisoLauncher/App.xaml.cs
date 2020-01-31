@@ -28,9 +28,7 @@ namespace NsisoLauncher
         public static List<Java> javaList;
         public static MainWindow MainWindow_;
 
-        #region API静态变量
         public static NsisoLauncherCore.Net.PhalAPI.APIHandler nsisoAPIHandler;
-        #endregion
 
         public static void CatchAggregateException(object sender, AggregateExceptionArgs arg)
         {
