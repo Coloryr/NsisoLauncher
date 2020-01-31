@@ -6,31 +6,31 @@
              xmlns:local="clr-namespace:NsisoLauncher.Controls"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <GroupBox Header="模型设置" Margin="0,5,0,0">
+    <GroupBox Header="{DynamicResource String.Settingwindow.AuthModule.TiTle}" Margin="0,5,0,0">
         <StackPanel>
             <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                <Label Content="验证模型："/>
-                <RadioButton x:Name="nide8Radio" Content="统一通行证" Margin="0,0,10,0" Checked="Nide8_Checked"/>
-                <RadioButton x:Name="aiRadio" Content="authlib-injector" Margin="0,0,10,0" Checked="AI_Checked"/>
-                <RadioButton x:Name="customRadio" Content="其它Yggdrasil验证器代理" Margin="0,0,10,0" Checked="Custom_Checked"/>
-                <CheckBox Content="使用内部浏览器打开注册链接" x:Name="Bro_IN"/>
+                <Label Content="{DynamicResource String.Settingwindow.AuthModule.Module}"/>
+                <RadioButton x:Name="nide8Radio" Content="{DynamicResource String.Settingwindow.AuthModule.Module.nide8}" Margin="0,0,10,0" Checked="Nide8_Checked"/>
+                <RadioButton x:Name="aiRadio" Content="{DynamicResource String.Settingwindow.AuthModule.Module.ai}" Margin="0,0,10,0" Checked="AI_Checked"/>
+                <RadioButton x:Name="customRadio" Content="{DynamicResource String.Settingwindow.AuthModule.Module.custom}" Margin="0,0,10,0" Checked="Custom_Checked"/>
+                <CheckBox Content="{DynamicResource String.Settingwindow.AuthModule.UseSelfBrowser}" x:Name="Bro_IN"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                <Label Content="验证模型名称："/>
+                <Label Content="{DynamicResource String.Settingwindow.AuthModule.Name}"/>
                 <TextBox x:Name="authmoduleNameTextbox" Width="200" />
             </StackPanel>
             <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                <Label x:Name="authmoduleLable" Content="数据："/>
+                <Label x:Name="authmoduleLable" Content="{DynamicResource String.Settingwindow.AuthModule.Address}"/>
                 <TextBox x:Name="authDataTextbox" Width="500" />
             </StackPanel>
             <StackPanel x:Name="REGISTER" Orientation="Horizontal" Margin="0,0,0,5">
-                <Label x:Name="REGISTER_HTTP" Content="注册网址："/>
+                <Label x:Name="REGISTER_HTTP" Content="{DynamicResource String.Settingwindow.AuthModule.RegisteAddress}"/>
                 <TextBox x:Name="REGISTER_URI" Width="500"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,0,5">
-                <Button x:Name="addButton" Width="50" Margin="0,0,5,0" Content="添加" Click="AddButton_Click"/>
-                <Button x:Name="saveButton" Width="50" Margin="0,0,5,0" Content="保存" Click="SaveButton_Click"/>
-                <Button x:Name="delButton" Width="50" Content="删除" Click="DelButton_Click"/>
+                <Button x:Name="addButton" Width="50" Margin="0,0,5,0" Content="{DynamicResource String.Settingwindow.AuthModule.Add}" Click="AddButton_Click"/>
+                <Button x:Name="saveButton" Width="50" Margin="0,0,5,0" Content="{DynamicResource String.Settingwindow.AuthModule.Save}" Click="SaveButton_Click"/>
+                <Button x:Name="delButton" Width="50" Content="{DynamicResource String.Settingwindow.AuthModule.Delete}" Click="DelButton_Click"/>
             </StackPanel>
         </StackPanel>
     </GroupBox>

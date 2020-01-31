@@ -1,34 +1,13 @@
-﻿using NsisoLauncherCore.Util.Checker;
+﻿using NsisoLauncher.Utils;
+using NsisoLauncherCore.Util.Checker;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 
-namespace NsisoLauncher.Color_yr.updata
+namespace NsisoLauncher.Updata
 {
-    class scripts_check
+    class ScriptsCheck
     {
-        private List<string> getFileName(string path)
-        {
-            List<string> files = new List<string>();
-            DirectoryInfo root = new DirectoryInfo(path);
-            foreach (FileInfo f in root.GetFiles())
-            {
-                files.Add(f.FullName);
-            }
-            return files;
-        }
-        private List<string> getDirectory(string path)
-        {
-            List<string> files = new List<string>();
-            files.AddRange(getFileName(path));
-            DirectoryInfo root = new DirectoryInfo(path);
-            foreach (DirectoryInfo d in root.GetDirectories())
-            {
-                files.AddRange(getDirectory(d.FullName));
-            }
-            return files;
-        }
-
         public async Task<Dictionary<string, updata_item>> ReadscriptsInfo(string path)
         {
             path += @"\scripts\";
@@ -40,7 +19,8 @@ namespace NsisoLauncher.Color_yr.updata
             IChecker checker = new MD5Checker();
             await Task.Factory.StartNew(() =>
             {
-                foreach (string FilePath in getDirectory(path))
+                var GetFiles = new GetFiles();
+                foreach (string FilePath in GetFiles.getDirectory(path))
                 {
                     checker.FilePath = FilePath;
                     updata_item mod = new updata_item();

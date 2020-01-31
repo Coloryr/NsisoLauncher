@@ -1,5 +1,5 @@
-﻿using NsisoLauncher.Color_yr;
-using NsisoLauncher.Config;
+﻿using NsisoLauncher.Config;
+using NsisoLauncher.Utils;
 using NsisoLauncherCore.Net.Server;
 using System;
 using System.Drawing;
@@ -21,18 +21,17 @@ namespace NsisoLauncher.Controls
         public ServerInfoControl()
         {
             InitializeComponent();
-            this.Visibility = Visibility.Hidden;
-            //Color_yr Add
+            Visibility = Visibility.Hidden;
             APP_Color();
         }
-        //Color_yr Add Start
+
         [System.ComponentModel.TypeConverter(typeof(LengthConverter))]
         [Localizability(LocalizationCategory.None, Readability = Readability.Unreadable)]
         public new double Width { get; set; }
         public void APP_Color()
         {
-            Brush_Color get = new Brush_Color();
-            Brush b = get.get_Bursh();
+            BrushColor get = new BrushColor();
+            Brush b = get.GetBursh();
             if (b != null)
             {
                 serverNameTextBlock.Background = b;
@@ -42,7 +41,7 @@ namespace NsisoLauncher.Controls
                 serverMotdTextBlock.Background = b;
             }
         }
-        //Color_yr Add Stop
+
         public async void SetServerInfo(Server server)
         {
             if (server.ShowServerInfo)
@@ -54,7 +53,7 @@ namespace NsisoLauncher.Controls
                 serverVersionTextBlock.Text = App.GetResourceString("String.Mainwindow.ServerGettingVer");
                 serverPingTextBlock.Text = App.GetResourceString("String.Mainwindow.ServerGettingPing");
                 serverMotdTextBlock.Text = null;
-                this.Visibility = Visibility.Visible;
+                Visibility = Visibility.Visible;
                 serverLoadingBar.Visibility = Visibility.Visible;
                 serverLoadingBar.IsIndeterminate = true;
 
@@ -72,12 +71,12 @@ namespace NsisoLauncher.Controls
                 switch (serverInfo.State)
                 {
                     case ServerInfo.StateType.GOOD:
-                        this.serverStateIcon.Kind = MahApps.Metro.IconPacks.PackIconFontAwesomeKind.CheckCircleSolid;
-                        this.serverStateIcon.Foreground = System.Windows.Media.Brushes.Green;
-                        this.serverPeopleTextBlock.Text = string.Format("人数:[{0}/{1}]", serverInfo.CurrentPlayerCount, serverInfo.MaxPlayerCount);
-                        this.serverVersionTextBlock.Text = serverInfo.GameVersion;
-                        this.serverVersionTextBlock.ToolTip = serverInfo.GameVersion;
-                        this.serverPingTextBlock.Text = string.Format("延迟:{0}ms", serverInfo.Ping);
+                        serverStateIcon.Kind = MahApps.Metro.IconPacks.PackIconFontAwesomeKind.CheckCircleSolid;
+                        serverStateIcon.Foreground = System.Windows.Media.Brushes.Green;
+                        serverPeopleTextBlock.Text = string.Format("人数:[{0}/{1}]", serverInfo.CurrentPlayerCount, serverInfo.MaxPlayerCount);
+                        serverVersionTextBlock.Text = serverInfo.GameVersion;
+                        serverVersionTextBlock.ToolTip = serverInfo.GameVersion;
+                        serverPingTextBlock.Text = string.Format("延迟:{0}ms", serverInfo.Ping);
                         if (serverInfo.MOTD != null)
                         {
                             serverMotdTextBlock.ToolTip = serverInfo.MOTD;
@@ -87,13 +86,13 @@ namespace NsisoLauncher.Controls
                         }
                         if (serverInfo.OnlinePlayersName != null)
                         {
-                            this.serverPeopleTextBlock.ToolTip = string.Join("\n", serverInfo.OnlinePlayersName);
+                            serverPeopleTextBlock.ToolTip = string.Join("\n", serverInfo.OnlinePlayersName);
                         }
                         if (serverInfo.IconData != null)
                         {
                             using (MemoryStream ms = new MemoryStream(serverInfo.IconData))
                             {
-                                this.serverIcon.Fill = new ImageBrush(ChangeBitmapToImageSource(new Bitmap(ms)));
+                                serverIcon.Fill = new ImageBrush(ChangeBitmapToImageSource(new Bitmap(ms)));
                             }
 
                         }
@@ -109,11 +108,10 @@ namespace NsisoLauncher.Controls
             }
             else
             {
-                this.Visibility = Visibility.Hidden;
+                Visibility = Visibility.Hidden;
             }
         }
 
-        #region 图形处理
         [DllImport("gdi32.dll", SetLastError = true)]
         private static extern bool DeleteObject(IntPtr hObject);
 
@@ -139,6 +137,5 @@ namespace NsisoLauncher.Controls
             return wpfBitmap;
 
         }
-        #endregion
     }
 }

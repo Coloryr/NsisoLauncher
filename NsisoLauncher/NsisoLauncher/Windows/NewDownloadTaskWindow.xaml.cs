@@ -54,9 +54,10 @@ namespace NsisoLauncher.Windows
 
         private async void RefreshVersion()
         {
-            var loading = await this.ShowProgressAsync("获取版本列表中", "请稍后");
+            var loading = await this.ShowProgressAsync(App.GetResourceString("String.NewDownloadTaskWindow.Get.Title"),
+                App.GetResourceString("String.NewDownloadTaskWindow.Get.Text"));
             loading.SetIndeterminate();
-            List<JWVersion> result = null;
+            List<JWVersion> result;
             try
             {
                 result = await apiHandler.GetVersionList();
@@ -69,29 +70,14 @@ namespace NsisoLauncher.Windows
             verList.Clear();
             if (result == null)
             {
-                await this.ShowMessageAsync("获取版本列表失败", "请检查您的网络是否正常或更改下载源");
+                await this.ShowProgressAsync(App.GetResourceString("String.NewDownloadTaskWindow.GetList.Title"),
+                App.GetResourceString("String.NewDownloadTaskWindow.GetList.Text"));
             }
             else
             {
                 foreach (var item in result)
                 {
-                    switch (item.Type)
-                    {
-                        case "release":
-                            item.Type = "1-正式版(Release)";
-                            break;
-                        case "snapshot":
-                            item.Type = "2-版本快照(snapshot)";
-                            break;
-                        case "old_alpha":
-                            item.Type = "3-旧alpha版本(old_alpha)";
-                            break;
-                        case "old_beta":
-                            item.Type = "4-旧beta版本(old_beta)";
-                            break;
-                        default:
-                            break;
-                    }
+                    item.Type = App.GetResourceString("String.NewDownloadTaskWindow.Type." + item.Type);
                     verList.Add(item);
                 }
             }
@@ -99,17 +85,19 @@ namespace NsisoLauncher.Windows
 
         private async void RefreshForge()
         {
-            Version ver = null;
+            Version ver;
             if (verToInstallForgeComboBox.SelectedItem != null)
             {
                 ver = (Version)verToInstallForgeComboBox.SelectedItem;
             }
             else
             {
-                await this.ShowMessageAsync("您未选择要安装Forge的版本", "您需要选择一个需要安装Forge的Minecraft本体");
+                await this.ShowMessageAsync(App.GetResourceString("String.NewDownloadTaskWindow.Forge.Title"),
+                App.GetResourceString("String.NewDownloadTaskWindow.Forge.Text"));
                 return;
             }
-            var loading = await this.ShowProgressAsync("获取Forge列表中", "请稍后");
+            var loading = await this.ShowProgressAsync(App.GetResourceString("String.NewDownloadTaskWindow.ForgeList.Title"),
+                App.GetResourceString("String.NewDownloadTaskWindow.ForgeList.Text"));
             loading.SetIndeterminate();
             List<JWForge> result;
             forgeList.Clear();
@@ -119,13 +107,15 @@ namespace NsisoLauncher.Windows
             }
             catch (WebException)
             {
-                await this.ShowMessageAsync("获取Forge列表失败", "请检查您的网络是否正常或稍后再试");
+                await this.ShowMessageAsync(App.GetResourceString("String.NewDownloadTaskWindow.ForgeListFail.Title"),
+                App.GetResourceString("String.NewDownloadTaskWindow.ForgeListFail.Text"));
                 return;
             }
             await loading.CloseAsync();
             if (result == null || result.Count == 0)
             {
-                await this.ShowMessageAsync("没有匹配该版本的Forge", "貌似没有支持这个版本的Forge，请尝试更换另一个版本");
+                await this.ShowMessageAsync(App.GetResourceString("String.NewDownloadTaskWindow.ForgeListNull.Title"),
+                App.GetResourceString("String.NewDownloadTaskWindow.ForgeListNull.Text"));
             }
             else
             {
@@ -145,12 +135,14 @@ namespace NsisoLauncher.Windows
             }
             else
             {
-                await this.ShowMessageAsync("您未选择要安装Liteloader的版本", "您需要选择一个需要安装Liteloader的Minecraft本体");
+                await this.ShowMessageAsync(App.GetResourceString("String.NewDownloadTaskWindow.Liteloader.Title"),
+                App.GetResourceString("String.NewDownloadTaskWindow.Liteloader.Text"));
                 return;
             }
-            var loading = await this.ShowProgressAsync("获取Liteloader列表中", "请稍后");
+            var loading = await this.ShowProgressAsync(App.GetResourceString("String.NewDownloadTaskWindow.LiteloaderList.Title"),
+                App.GetResourceString("String.NewDownloadTaskWindow.LiteloaderList.Text"));
             loading.SetIndeterminate();
-            JWLiteloader result = new JWLiteloader();
+            JWLiteloader result;
             liteloaderList.Clear();
             try
             {
@@ -158,13 +150,15 @@ namespace NsisoLauncher.Windows
             }
             catch (WebException)
             {
-                await this.ShowMessageAsync("获取Liteloader列表失败", "请检查您的网络是否正常或稍后再试");
+                await this.ShowMessageAsync(App.GetResourceString("String.NewDownloadTaskWindow.LiteloaderListFail.Title"),
+                App.GetResourceString("String.NewDownloadTaskWindow.LiteloaderListFail.Text"));
                 return;
             }
             await loading.CloseAsync();
             if (result == null)
             {
-                await this.ShowMessageAsync("没有匹配该版本的Liteloader", "貌似没有支持这个版本的Liteloader，请尝试更换另一个版本");
+                await this.ShowMessageAsync(App.GetResourceString("String.NewDownloadTaskWindow.LiteloaderListNull.Title"),
+                App.GetResourceString("String.NewDownloadTaskWindow.LiteloaderListNull.Text"));
             }
             else
             {
@@ -177,11 +171,12 @@ namespace NsisoLauncher.Windows
             IList selectItems = versionListDataGrid.SelectedItems;
             if (selectItems.Count == 0)
             {
-                await this.ShowMessageAsync("您未选中要下载的版本", "请在版本列表中选中您要下载的版本");
+                await this.ShowMessageAsync(App.GetResourceString("String.NewDownloadTaskWindow.Chose.Title"),
+                App.GetResourceString("String.NewDownloadTaskWindow.Chose.Text"));
             }
             else
             {
-                var loading = await this.ShowProgressAsync("准备进行下载", string.Format("即将为您下载{0}个版本", selectItems.Count));
+                var loading = await this.ShowProgressAsync(App.GetResourceString("String.NewDownloadTaskWindow.DownLoad.Title"), string.Format(App.GetResourceString("String.NewDownloadTaskWindow.DownLoad.Title"), selectItems.Count));
                 loading.SetIndeterminate();
                 await AppendVersionsDownloadTask(selectItems);
                 await loading.CloseAsync();
@@ -192,25 +187,27 @@ namespace NsisoLauncher.Windows
         //TODO:修复FORGE刷新不成功崩溃
         private async void DownloadForgeButton_Click(object sender, RoutedEventArgs e)
         {
-            Version ver = null;
+            Version ver;
             if (verToInstallForgeComboBox.SelectedItem != null)
             {
                 ver = (Version)verToInstallForgeComboBox.SelectedItem;
             }
             else
             {
-                await this.ShowMessageAsync("您未选择要安装Forge的Minecraft", "您需要选择一个需要安装Forge的Minecraft本体");
+                await this.ShowMessageAsync(App.GetResourceString("String.NewDownloadTaskWindow.ForgeChose.Title"),
+                App.GetResourceString("String.NewDownloadTaskWindow.ForgeChose.Text"));
                 return;
             }
 
-            JWForge forge = null;
+            JWForge forge;
             if (forgeListDataGrid.SelectedItem != null)
             {
                 forge = (JWForge)forgeListDataGrid.SelectedItem;
             }
             else
             {
-                await this.ShowMessageAsync("您未选择要安装的Forge", "您需要选择一个要安装Forge");
+                await this.ShowMessageAsync(App.GetResourceString("String.NewDownloadTaskWindow.ChoseForge.Title"),
+                App.GetResourceString("String.NewDownloadTaskWindow.ChoseForge.Text"));
                 return;
             }
 
@@ -220,14 +217,15 @@ namespace NsisoLauncher.Windows
 
         private async void DownloadLiteloaderButton_Click(object sender, RoutedEventArgs e)
         {
-            Version ver = null;
+            Version ver;
             if (verToInstallLiteComboBox.SelectedItem != null)
             {
                 ver = (Version)verToInstallLiteComboBox.SelectedItem;
             }
             else
             {
-                await this.ShowMessageAsync("您未选择要安装Liteloader的Minecraft", "您需要选择一个需要安装Liteloader的Minecraft本体");
+                await this.ShowMessageAsync(App.GetResourceString("String.NewDownloadTaskWindow.LiteloaderChose.Title"),
+                App.GetResourceString("String.NewDownloadTaskWindow.LiteloaderChose.Text"));
                 return;
             }
 
@@ -238,7 +236,8 @@ namespace NsisoLauncher.Windows
             }
             else
             {
-                await this.ShowMessageAsync("您未选择要安装的Liteloader", "您需要选择一个要安装Liteloader");
+                await this.ShowMessageAsync(App.GetResourceString("String.NewDownloadTaskWindow.ChoseLiteloader.Title"),
+                App.GetResourceString("String.NewDownloadTaskWindow.ChoseLiteloader.Text"));
                 return;
             }
 
@@ -266,7 +265,7 @@ namespace NsisoLauncher.Windows
 
                     List<DownloadTask> tasks = new List<DownloadTask>();
 
-                    tasks.Add(new DownloadTask("资源引导", apiHandler.DoURLReplace(ver.AssetIndex.URL), App.handler.GetAssetsIndexPath(ver.Assets)));
+                    tasks.Add(new DownloadTask(App.GetResourceString("String.NewDownloadTaskWindow.Source"), apiHandler.DoURLReplace(ver.AssetIndex.URL), App.handler.GetAssetsIndexPath(ver.Assets)));
 
                     tasks.AddRange(await NsisoLauncherCore.Util.FileHelper.GetLostDependDownloadTaskAsync(App.config.MainConfig.Download.DownloadSource, App.handler, ver));
 
@@ -278,7 +277,8 @@ namespace NsisoLauncher.Windows
             {
                 this.Dispatcher.Invoke(new Action(() =>
                 {
-                    this.ShowMessageAsync("获取版本信息失败", "请检查您的网络是否正常或更改下载源/n原因:" + ex.Message);
+                    this.ShowMessageAsync(App.GetResourceString("String.NewDownloadTaskWindow.Fail.Title"),
+                        App.GetResourceString("String.NewDownloadTaskWindow.Fail.Text") + ex.Message);
                 }));
             }
             catch (Exception ex)
@@ -295,7 +295,7 @@ namespace NsisoLauncher.Windows
         private void AppendForgeDownloadTask(Version ver, JWForge forge)
         {
             string forgePath = NsisoLauncherCore.PathManager.TempDirectory + string.Format(@"\Forge_{0}-Installer.jar", forge.Build);
-            DownloadTask dt = new DownloadTask("forge核心",
+            DownloadTask dt = new DownloadTask(App.GetResourceString("String.NewDownloadTaskWindow.Core.Forge"),
                 string.Format("https://bmclapi2.bangbang93.com/forge/download/{0}", forge.Build),
                 forgePath);
             dt.Todo = new Func<Exception>(() =>
@@ -317,7 +317,7 @@ namespace NsisoLauncher.Windows
         private void AppendLiteloaderDownloadTask(Version ver, JWLiteloader liteloader)
         {
             string liteloaderPath = NsisoLauncherCore.PathManager.TempDirectory + string.Format(@"\Liteloader_{0}-Installer.jar", liteloader.Version);
-            DownloadTask dt = new DownloadTask("liteloader核心",
+            DownloadTask dt = new DownloadTask(App.GetResourceString("String.NewDownloadTaskWindow.Core.Liteloader"),
                 string.Format("https://bmclapi2.bangbang93.com/liteloader/download?version={0}", liteloader.Version),
                 liteloaderPath);
             dt.Todo = new Func<Exception>(() =>

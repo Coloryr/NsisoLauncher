@@ -4,9 +4,9 @@ using System.Threading.Tasks;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
-namespace NsisoLauncherCore.Net.CrafatarAPI
+namespace NsisoLauncherCore.Net.Head
 {
-    public class APIHandler
+    public class OnlineHead
     {
         const string APIUrl = "https://crafatar.com/avatars/";
         bool overlay = true;
@@ -19,7 +19,6 @@ namespace NsisoLauncherCore.Net.CrafatarAPI
             }
             string url = APIUrl + uuid + arg;
             var res = await APIRequester.HttpGetAsync(url);
-            //var stream = await res.Content.ReadAsStreamAsync();
             if (res.IsSuccessStatusCode)
             {
                 using (Stream stream = await res.Content.ReadAsStreamAsync())

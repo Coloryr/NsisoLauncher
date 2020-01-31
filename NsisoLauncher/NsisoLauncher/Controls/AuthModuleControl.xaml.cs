@@ -30,8 +30,8 @@ namespace NsisoLauncher.Controls
             if (authModule.Value != null)
             {
                 authmoduleNameTextbox.Text = authModule.Value.Name;
-                REGISTER_URI.Text = authModule.Value.REG;
-                Bro_IN.IsChecked = authModule.Value.use_in;
+                REGISTER_URI.Text = authModule.Value.RegisteAddress;
+                Bro_IN.IsChecked = authModule.Value.UseSelfBrowser;
                 switch (authModule.Value.AuthType)
                 {
                     case AuthenticationType.NIDE8:
@@ -104,8 +104,8 @@ namespace NsisoLauncher.Controls
                 {
                     AuthType = authenticationType,
                     Name = authName,
-                    REG = REGISTER_URI.Text,
-                    use_in = Bro_IN.IsChecked == true ? true : false
+                    RegisteAddress = REGISTER_URI.Text,
+                    UseSelfBrowser = Bro_IN.IsChecked == true ? true : false
                 };
                 switch (authenticationType)
                 {
@@ -155,8 +155,8 @@ namespace NsisoLauncher.Controls
                 string authData = authDataTextbox.Text;
                 authModule.Value.Property.Clear();
                 authModule.Value.AuthType = authenticationType;
-                authModule.Value.REG = REGISTER_URI.Text;
-                authModule.Value.use_in = Bro_IN.IsChecked == true ? true : false;
+                authModule.Value.RegisteAddress = REGISTER_URI.Text;
+                authModule.Value.UseSelfBrowser = Bro_IN.IsChecked == true ? true : false;
                 switch (authenticationType)
                 {
                     case AuthenticationType.NIDE8:
@@ -178,9 +178,9 @@ namespace NsisoLauncher.Controls
 
         private void DelButton_Click(object sender, RoutedEventArgs e)
         {
-            if (authModule.Value.Name == "mojang")
+            if (authModule.Value.Name == "mojang" || authModule.Value.Name == "offline")
             {
-                ((MetroWindow)Window.GetWindow(this)).ShowMessageAsync("删除失败", "无法删除正版登录");
+                ((MetroWindow)Window.GetWindow(this)).ShowMessageAsync("删除失败", "无法删除该登录模型");
                 return;
             }
             ((SettingWindow)Window.GetWindow(this)).DeleteAuthModule(authModule);

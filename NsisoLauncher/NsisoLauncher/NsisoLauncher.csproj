@@ -97,14 +97,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Color_yr\Brush_Color.cs" />
-    <Compile Include="Color_yr\NIDE8_head.cs" />
-    <Compile Include="Color_yr\updata\mod_check.cs" />
-    <Compile Include="Color_yr\updata\resourcepacks_check.cs" />
-    <Compile Include="Color_yr\updata\scripts_check.cs" />
-    <Compile Include="Color_yr\updata\updata_check.cs" />
-    <Compile Include="Color_yr\updata\updata_obj.cs" />
-    <Compile Include="Color_yr\updata\updata_pack.cs" />
+    <Compile Include="Utils\BrushColor.cs" />
     <Compile Include="Config\ConfigHandler.cs" />
     <Compile Include="Config\LauncherProfilesConfig.cs" />
     <Compile Include="Config\MainConfig.cs" />
@@ -120,9 +113,15 @@
     <Compile Include="Controls\ServerInfoControl.xaml.cs">
       <DependentUpon>ServerInfoControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Utils\LogHandler.cs" />
+    <Compile Include="Updata\ModCheck.cs" />
+    <Compile Include="Updata\ResourcepacksCheck.cs" />
+    <Compile Include="Updata\ScriptsCheck.cs" />
+    <Compile Include="Updata\UpdataCheck.cs" />
+    <Compile Include="Updata\OtherCheck.cs" />
     <Compile Include="Utils\Converter.cs" />
     <Compile Include="Utils\DataChecker.cs" />
+    <Compile Include="Utils\GetFiles.cs" />
+    <Compile Include="Utils\LogHandler.cs" />
     <Compile Include="Windows\DebugWindow.xaml.cs">
       <DependentUpon>DebugWindow.xaml</DependentUpon>
     </Compile>
@@ -212,6 +211,9 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Compile Include="Updata\SaveObj.cs">
+      <Generator>MSBuild:Compile</Generator>
+    </Compile>
     <Page Include="Windows\DebugWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

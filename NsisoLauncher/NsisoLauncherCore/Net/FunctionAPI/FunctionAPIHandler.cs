@@ -14,8 +14,6 @@ namespace NsisoLauncherCore.Net.FunctionAPI
         const string BMCLBase = "https://bmclapi2.bangbang93.com";
 
         public string VersionListURL { get; set; }
-        public string JavaListURL { get; set; } = BMCLBase + "/java/list";
-        public string NewListURL { get; set; } = "https://authentication.x-speed.cc/mcbbsNews/";
         public string ForgeListURL { get; set; } = BMCLBase + "/forge/minecraft";
         public string LiteloaderListURL { get; set; } = BMCLBase + "/liteloader/list";
 
@@ -48,28 +46,6 @@ namespace NsisoLauncherCore.Net.FunctionAPI
             string json = await APIRequester.HttpGetStringAsync(VersionListURL);
             var e = JsonConvert.DeserializeObject<JWVersions>(json);
             return e.Versions;
-        }
-
-        /// <summary>
-        /// 联网获取JAVA列表
-        /// </summary>
-        /// <returns>JAVA列表</returns>
-        public async Task<List<JWJava>> GetJavaList()
-        {
-            string json = await APIRequester.HttpGetStringAsync(JavaListURL);
-            var e = JsonConvert.DeserializeObject<List<JWJava>>(json);
-            return e;
-        }
-
-        /// <summary>
-        /// 联网获取新闻列表
-        /// </summary>
-        /// <returns>新闻列表</returns>
-        public async Task<List<JWNews>> GetNewList()
-        {
-            string json = await APIRequester.HttpGetStringAsync(NewListURL);
-            var e = JsonConvert.DeserializeObject<List<JWNews>>(json);
-            return e;
         }
 
         /// <summary>

@@ -1,10 +1,10 @@
 ﻿using System.Windows.Media;
 
-namespace NsisoLauncher.Color_yr
+namespace NsisoLauncher.Utils
 {
-    class Brush_Color
+    class BrushColor
     {
-        public Brush get_Bursh()
+        public Brush GetBursh()
         {
             try
             {

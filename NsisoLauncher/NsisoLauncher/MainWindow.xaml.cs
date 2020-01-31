@@ -1,9 +1,9 @@
 ﻿using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
 using MahApps.Metro.IconPacks;
-using NsisoLauncher.Color_yr;
-using NsisoLauncher.Color_yr.updata;
 using NsisoLauncher.Config;
+using NsisoLauncher.Updata;
+using NsisoLauncher.Utils;
 using NsisoLauncher.Windows;
 using NsisoLauncherCore;
 using NsisoLauncherCore.Auth;
@@ -267,8 +267,8 @@ namespace NsisoLauncher
 
         public void APP_Color()
         {
-            Brush_Color get = new Brush_Color();
-            Brush b = get.get_Bursh();
+            BrushColor get = new BrushColor();
+            Brush b = get.GetBursh();
             if (b != null)
             {
                 cancelLaunchButton.Background = b;
@@ -715,13 +715,13 @@ namespace NsisoLauncher
                     }
                 }
 
-                updata_pack pack = null;
+                OtherCheck pack = null;
                 bool isupdata = false;
                 string packname = null;
                 string vision = null;
-                if (App.config.MainConfig.Server.Mods_Check == null)
+                if (App.config.MainConfig.Server.Updata_Check == null)
                 {
-                    App.config.MainConfig.Server.Mods_Check = new Mods_Check()
+                    App.config.MainConfig.Server.Updata_Check = new Updata_Check()
                     {
                         Enable = false,
                         Address = "",
@@ -729,13 +729,13 @@ namespace NsisoLauncher
                         Vision = "0.0.0"
                     };
                 }
-                if (App.config.MainConfig.Server.Mods_Check.Enable)
+                if (App.config.MainConfig.Server.Updata_Check.Enable)
                 {
                     App.logHandler.AppendInfo("检查客户端更新...");
                     mainPanel.launchButton.Content = App.GetResourceString("String.Mainwindow.Check.mods");
-                    pack = new updata_pack();
+                    pack = new OtherCheck();
 
-                    var lost_mod = await new updata_check().check();
+                    var lost_mod = await new UpdataCheck().Check();
                     if (lost_mod != null)
                     {
                         if (await this.ShowMessageAsync(App.GetResourceString("String.Mainwindow.Check.new"),
@@ -782,8 +782,8 @@ namespace NsisoLauncher
                             }
                             if (isupdata)
                             {
-                                App.config.MainConfig.Server.Mods_Check.packname = packname;
-                                App.config.MainConfig.Server.Mods_Check.Vision = vision;
+                                App.config.MainConfig.Server.Updata_Check.packname = packname;
+                                App.config.MainConfig.Server.Updata_Check.Vision = vision;
                             }
                         }
                     }
@@ -930,7 +930,7 @@ namespace NsisoLauncher
             finally
             {
                 App.logHandler.OnLog -= (a, b) => { this.Invoke(() => { launchInfoBlock.Text = b.Message; }); };
-                mainPanel.use_switch(true);
+                mainPanel.Lock(true);
                 Side_E.IsExpanded = true;
                 mainPanel.launchButton.Content = App.GetResourceString("String.Base.Launch");
                 loadingRing.Visibility = Visibility.Hidden;

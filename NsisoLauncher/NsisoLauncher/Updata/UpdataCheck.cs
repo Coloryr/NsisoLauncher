@@ -5,9 +5,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 
-namespace NsisoLauncher.Color_yr.updata
+namespace NsisoLauncher.Updata
 {
-    class updata_check
+    class UpdataCheck
     {
         /// <summary>
         /// 更新信息
@@ -16,9 +16,9 @@ namespace NsisoLauncher.Color_yr.updata
         /// <summary>
         /// 资源检查
         /// </summary>
-        public async Task<updata_check> check()
+        public async Task<UpdataCheck> Check()
         {
-            string Url = App.config.MainConfig.Server.Mods_Check.Address;
+            string Url = App.config.MainConfig.Server.Updata_Check.Address;
             try
             {
                 var res = await APIRequester.HttpGetAsync(Url);
@@ -26,9 +26,9 @@ namespace NsisoLauncher.Color_yr.updata
                 {
                     JObject json = JObject.Parse(await res.Content.ReadAsStringAsync());
                     updata_obj = json.ToObject<updata_obj>();
-                    if (string.IsNullOrWhiteSpace(App.config.MainConfig.Server.Mods_Check.packname))
+                    if (string.IsNullOrWhiteSpace(App.config.MainConfig.Server.Updata_Check.packname))
                         return this;
-                    else if (App.config.MainConfig.Server.Mods_Check.Vision != updata_obj.Version)
+                    else if (App.config.MainConfig.Server.Updata_Check.Vision != updata_obj.Version)
                         return this;
                     else
                         return null;
@@ -41,14 +41,14 @@ namespace NsisoLauncher.Color_yr.updata
             return null;
         }
 
-        public async Task<List<DownloadTask>> setupdata(updata_pack pack)
+        public async Task<List<DownloadTask>> setupdata(OtherCheck pack)
         {
             List<DownloadTask> task = new List<DownloadTask>();
             if (updata_obj.mods.Count != 0)
             {
                 try
                 {
-                    var local_mods = await new mod_check().ReadModInfo(App.handler.GameRootPath);
+                    var local_mods = await new ModCheck().ReadModInfo(App.handler.GameRootPath);
                     foreach (KeyValuePair<string, updata_item> th in updata_obj.mods)
                     {
                         if (th.Value.function == "delete")
@@ -81,7 +81,7 @@ namespace NsisoLauncher.Color_yr.updata
             }
             if (updata_obj.scripts.Count != 0)
             {
-                var local_scripts = await new scripts_check().ReadscriptsInfo(App.handler.GameRootPath);
+                var local_scripts = await new ScriptsCheck().ReadscriptsInfo(App.handler.GameRootPath);
                 foreach (updata_item th in updata_obj.scripts)
                 { 
                     if(local_scripts.ContainsKey(th.name))
@@ -113,7 +113,7 @@ namespace NsisoLauncher.Color_yr.updata
             }
             if (updata_obj.resourcepacks.Count != 0)
             {
-                var local_resourcepacks = await new resourcepacks_check().ReadresourcepacksInfo(App.handler.GameRootPath);
+                var local_resourcepacks = await new ResourcepacksCheck().ReadresourcepacksInfo(App.handler.GameRootPath);
                 foreach (updata_item th in updata_obj.resourcepacks)
                 {
                     if (local_resourcepacks.ContainsKey(th.name))

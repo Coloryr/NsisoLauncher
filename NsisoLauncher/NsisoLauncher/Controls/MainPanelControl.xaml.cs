@@ -1,6 +1,6 @@
 ﻿using MahApps.Metro.Controls.Dialogs;
-using NsisoLauncher.Color_yr;
 using NsisoLauncher.Config;
+using NsisoLauncher.Utils;
 using NsisoLauncher.Windows;
 using System;
 using System.Collections.Generic;
@@ -18,31 +18,29 @@ namespace NsisoLauncher.Controls
     /// </summary>
     public partial class MainPanelControl : UserControl
     {
-        //Color_yr Add
         public bool is_re = false;
         private bool is_use = false;
 
         public event Action<object, LaunchEventArgs> Launch;
 
-        private ObservableCollection<KeyValuePair<string, UserNode>> userList = new ObservableCollection<KeyValuePair<string, UserNode>>();
-        private ObservableCollection<KeyValuePair<string, AuthenticationNode>> authNodeList = new ObservableCollection<KeyValuePair<string, AuthenticationNode>>();
-        private ObservableCollection<NsisoLauncherCore.Modules.Version> versionList = new ObservableCollection<NsisoLauncherCore.Modules.Version>();
+        private ObservableCollection<KeyValuePair<string, UserNode>> UserList { get; set; } = new ObservableCollection<KeyValuePair<string, UserNode>>();
+        private ObservableCollection<KeyValuePair<string, AuthenticationNode>> AuthNodeList { get; set; } = new ObservableCollection<KeyValuePair<string, AuthenticationNode>>();
+        private ObservableCollection<NsisoLauncherCore.Modules.Version> VersionList { get; set; } = new ObservableCollection<NsisoLauncherCore.Modules.Version>();
 
         public MainPanelControl()
         {
             InitializeComponent();
             FirstBinding();
             Refresh();
-            //Color_yr Add Start
             APP_Color();
-            //Color_yr Add Stop
+            DataContext = this;
         }
 
         private void FirstBinding()
         {
-            authTypeCombobox.ItemsSource = authNodeList;
-            userComboBox.ItemsSource = userList;
-            launchVersionCombobox.ItemsSource = versionList;
+            authTypeCombobox.ItemsSource = AuthNodeList;
+            userComboBox.ItemsSource = UserList;
+            launchVersionCombobox.ItemsSource = VersionList;
         }
 
         private UserNode GetSelectedAuthNode()
@@ -52,7 +50,6 @@ namespace NsisoLauncher.Controls
                 return App.config.MainConfig.User.UserDatabase[userID];
             return null;
         }
-        //Color_yr Add Start
         private AuthenticationNode GetSelectedAuthenticationNode()
         {
             if (authTypeCombobox.SelectedItem != null)
@@ -62,14 +59,13 @@ namespace NsisoLauncher.Controls
             }
             return null;
         }
-        //Color_yr Add Stop
         public async void Refresh()
         {
             try
             {
                 //更新验证模型列表
-                authNodeList.Clear();
-                authNodeList.Add(new KeyValuePair<string, AuthenticationNode>("offline", new AuthenticationNode()
+                AuthNodeList.Clear();
+                AuthNodeList.Add(new KeyValuePair<string, AuthenticationNode>("offline", new AuthenticationNode()
                 {
                     AuthType = AuthenticationType.OFFLINE,
                     Name = App.GetResourceString("String.Mainwindow.Auth.Offline")
@@ -77,23 +73,23 @@ namespace NsisoLauncher.Controls
                 if (App.config.MainConfig.User.AuthenticationDic != null)
                     foreach (var item in App.config.MainConfig.User.AuthenticationDic)
                     {
-                        authNodeList.Add(item);
+                        AuthNodeList.Add(item);
                     }
 
                 //更新用户列表
-                userList.Clear();
+                UserList.Clear();
                 if (App.config.MainConfig.User.UserDatabase != null)
                     foreach (var item in App.config.MainConfig.User.UserDatabase)
                     {
-                        userList.Add(item);
+                        UserList.Add(item);
                     }
 
                 //更新版本列表
                 List<NsisoLauncherCore.Modules.Version> versions = await App.handler.GetVersionsAsync();
-                versionList.Clear();
+                VersionList.Clear();
                 foreach (var item in versions)
                 {
-                    versionList.Add(item);
+                    VersionList.Add(item);
                 }
 
                 launchVersionCombobox.Text = App.config.MainConfig.History.LastLaunchVersion;
@@ -128,11 +124,9 @@ namespace NsisoLauncher.Controls
                     is_use = false;
                 }
 
-                //Color_yr Add 
                 if (userComboBox.SelectedValue != null && string.IsNullOrWhiteSpace(App.config.MainConfig.User.LockAuthName))
                 {
                     UserNode node = GetSelectedAuthNode();
-                    //if(!authNodeList.Contains(node.AuthModule))
                     authTypeCombobox.SelectedValue = node.AuthModule;
                 }
                 if (is_re == true)
@@ -159,19 +153,20 @@ namespace NsisoLauncher.Controls
                     authTypeCombobox.Margin = new Thickness(10, 151, 50, 0);
                 }
                 await RefreshIcon();
-                //Color_yr Add Stop
                 App.logHandler.AppendDebug("启动器主窗体数据重载完毕");
             }
             catch (Exception e)
             {
-                App.CatchAggregateException(this, new AggregateExceptionArgs() { AggregateException = new AggregateException("启动器致命错误", e) });
+                App.CatchAggregateException(this, new AggregateExceptionArgs()
+                {
+                    AggregateException = new AggregateException("启动器致命错误", e)
+                });
             }
         }
 
         public async Task RefreshIcon()
         {
             //头像自定义显示皮肤
-            //Color_yr Add Start
             UserNode node = GetSelectedAuthNode();
             AuthenticationNode node1 = GetSelectedAuthenticationNode();
             if (node == null || node1 == null)
@@ -181,19 +176,16 @@ namespace NsisoLauncher.Controls
             if (isNeedRefreshIcon)
             {
                 if (node.AuthModule == "mojang")
-                    await headScul.RefreshIcon(node.SelectProfileUUID);
+                    await headScul.RefreshIcon_online(node.SelectProfileUUID);
                 else if (node1.AuthType == AuthenticationType.NIDE8)
                     await headScul.RefreshIcon_nide8(node.SelectProfileUUID, node1);
             }
-            //Color_yr Add Stop
         }
-
-        #region button click event
 
         //启动游戏按钮点击
         private void launchButton_Click(object sender, RoutedEventArgs e)
         {
-            use_switch(false);
+            Lock(false);
             //获取启动版本
             NsisoLauncherCore.Modules.Version launchVersion = null;
             if (launchVersionCombobox.SelectedItem != null)
@@ -215,29 +207,20 @@ namespace NsisoLauncher.Controls
             string userName = userComboBox.Text;
             string selectedUserUUID = (string)userComboBox.SelectedValue;
             bool isNewUser = string.IsNullOrWhiteSpace(selectedUserUUID);
-            UserNode userNode = null;
+            UserNode userNode;
             if (!string.IsNullOrWhiteSpace(userName))
             {
-                if (!isNewUser)
-                {
-                    userNode = ((KeyValuePair<string, UserNode>)userComboBox.SelectedItem).Value;
-                }
-                else
-                {
-                    userNode = new UserNode() { AuthModule = authNodeName, UserName = userName };
-                }
+                userNode = isNewUser ? new UserNode() { AuthModule = authNodeName, UserName = userName } : ((KeyValuePair<string, UserNode>)userComboBox.SelectedItem).Value;
             }
             else
             {
                 userNode = null;
             }
 
-
             Launch?.Invoke(this, new LaunchEventArgs() { AuthNode = authNode, UserNode = userNode, LaunchVersion = launchVersion, IsNewUser = isNewUser });
         }
 
         //下载按钮点击
-        //Color_yr Add Start
         private async void downloadButton_Click(object sender, RoutedEventArgs e)
         {
             if (App.config.MainConfig.User.Nide8ServerDependence)
@@ -254,16 +237,16 @@ namespace NsisoLauncher.Controls
             else if (string.IsNullOrWhiteSpace(App.config.MainConfig.User.LockAuthName) == false)
             {
                 AuthenticationNode node = GetSelectedAuthenticationNode();
-                if (string.IsNullOrWhiteSpace(node.REG) == true)
+                if (string.IsNullOrWhiteSpace(node.RegisteAddress) == true)
                 {
-                    await DialogManager.ShowMessageAsync(App.MainWindow_, App.GetResourceString("String.Mainwindow.Auth.REG.NoID"),
-                                App.GetResourceString("String.Mainwindow.Auth.REG.NoID_t"));
+                    await DialogManager.ShowMessageAsync(App.MainWindow_, App.GetResourceString("String.Mainwindow.Auth.Registe.NoID"),
+                                App.GetResourceString("String.Mainwindow.Auth.Registe.NoID_t"));
                     return;
                 }
-                if (node.use_in)
-                    new Register(node.REG).ShowDialog();
+                if (node.UseSelfBrowser)
+                    new Register(node.RegisteAddress).ShowDialog();
                 else
-                    Process.Start(node.REG);
+                    Process.Start(node.RegisteAddress);
             }
             else
             {
@@ -271,7 +254,6 @@ namespace NsisoLauncher.Controls
                 Refresh();
             }
         }
-        //Color_yr Add Stop
 
         //配置按钮点击
         private void configButton_Click(object sender, RoutedEventArgs e)
@@ -279,11 +261,9 @@ namespace NsisoLauncher.Controls
             new SettingWindow().ShowDialog();
             Refresh();
             ((MainWindow)Window.GetWindow(this)).CustomizeRefresh();
-            //Color_yr Add
             App.lan();
             APP_Color();
         }
-        #endregion
 
         private void addAuthButton_Click(object sender, RoutedEventArgs e)
         {
@@ -292,7 +272,6 @@ namespace NsisoLauncher.Controls
             a.ShowDialog();
             Refresh();
         }
-        //Color_yr Add Start
         private async void UserComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             UserNode node = GetSelectedAuthNode();
@@ -326,8 +305,8 @@ namespace NsisoLauncher.Controls
         }
         public void APP_Color()
         {
-            Brush_Color get = new Brush_Color();
-            Brush b = get.get_Bursh();
+            BrushColor get = new BrushColor();
+            Brush b = get.GetBursh();
             if (b != null)
             {
                 authTypeCombobox.Background = b;
@@ -382,7 +361,7 @@ namespace NsisoLauncher.Controls
                         break;
                 }
         }
-        public void use_switch(bool use)
+        public void Lock(bool use)
         {
             launchVersionCombobox.IsEnabled = userComboBox.IsEnabled =
                 configButton.IsEnabled = downloadButton.IsEnabled =
@@ -393,7 +372,6 @@ namespace NsisoLauncher.Controls
                 addauth.IsEnabled = use;
             }
         }
-        //Color_yr Add Stop
     }
 
     public class LaunchEventArgs : EventArgs

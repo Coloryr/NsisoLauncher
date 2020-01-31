@@ -39,12 +39,6 @@ namespace NsisoLauncherCore.Modules
         [JsonProperty("inheritsFrom")]
         public string InheritsVersion { get; set; }
 
-        ///// <summary>
-        ///// 库列表
-        ///// </summary>
-        //[JsonProperty("libraries")]
-        //public List<Library> Library { get; set; }
-
         /// <summary>
         /// 库列表
         /// </summary>

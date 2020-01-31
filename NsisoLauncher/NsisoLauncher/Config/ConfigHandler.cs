@@ -62,10 +62,6 @@ namespace NsisoLauncher.Config
             {
                 NewProfilesConfig();
             }
-            //else
-            //{
-            //    ReadProfilesConfig();
-            //}
 
         }
 
@@ -107,15 +103,6 @@ namespace NsisoLauncher.Config
                 try
                 {
                     MainConfig = JsonConvert.DeserializeObject<MainConfig>(File.ReadAllText(MainConfigPath));
-#if !DEBUG
-                    if (string.IsNullOrWhiteSpace(MainConfig.ConfigVersion) || 
-                        (!string.Equals(Assembly.GetExecutingAssembly().GetName().Version.ToString(), MainConfig.ConfigVersion)))
-                    {
-                        MessageBox.Show("启动器配置文件版本不符。\n" +
-                            "这可能是因为配置文件为旧版本启动器生成而导致的，继续使用可能导致bug出现，请重新生成（删除）原配置文件以保证平稳运行",
-                            "启动器配置文件版本不符", MessageBoxButton.OK, MessageBoxImage.Warning);
-                    }
-#endif
                 }
                 catch (UnauthorizedAccessException)
                 {
@@ -158,14 +145,6 @@ namespace NsisoLauncher.Config
             }
         }
 
-        //public void ReadProfilesConfig()
-        //{
-        //    lock (launcherProfilesLocker)
-        //    {
-        //        LauncherProfilesConfig = JsonConvert.DeserializeObject<LauncherProfilesConfig>(File.ReadAllText(MainConfigPath));
-        //    }
-        //}
-
         /// <summary>
         /// 新的官方用户配置文件
         /// </summary>
@@ -192,11 +171,26 @@ namespace NsisoLauncher.Config
                     ClientToken = Guid.NewGuid().ToString("N"),
                     UserDatabase = new Dictionary<string, UserNode>(),
                     AuthenticationDic = new Dictionary<string, AuthenticationNode>()
+                    { 
+                        {
+                            "offline", 
+                            new AuthenticationNode()
+                            {
+                                AuthType = AuthenticationType.OFFLINE, 
+                                Name="离线验证"
+                            } 
+                        },
+                        {
+                            "online", 
+                            new AuthenticationNode()
+                            {
+                                AuthType = AuthenticationType.MOJANG, 
+                                Name="正版验证"
+                            } 
+                        }
+                    }
                 },
-                History = new History()
-                {
-
-                },
+                History = new History(),
                 Environment = new Environment()
                 {
                     VersionIsolation = false,
@@ -230,7 +224,7 @@ namespace NsisoLauncher.Config
                     ShowServerInfo = false,
                     LaunchToServer = false,
                     Port = 25565,
-                    Mods_Check = new Mods_Check
+                    Updata_Check = new Updata_Check
                     {
                         Enable = false,
                         Vision = "0.0.0",
@@ -252,11 +246,6 @@ namespace NsisoLauncher.Config
                 ConfigVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString(),
                 Lauguage = "中文"
             };
-            MainConfig.User.AuthenticationDic.Add("mojang", new AuthenticationNode()
-            {
-                AuthType = AuthenticationType.MOJANG,
-                Name = App.GetResourceString("String.Mainwindow.Auth.Mojang")
-            });
             Save();
         }
     }

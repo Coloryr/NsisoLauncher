@@ -373,10 +373,13 @@ namespace NsisoLauncher.Config
         /// </summary>
         public ushort Port { get; set; }
 
-        public Mods_Check Mods_Check { get; set; }
+        /// <summary>
+        /// 检测更新
+        /// </summary>
+        public Updata_Check Updata_Check { get; set; }
     }
 
-    public class Mods_Check
+    public class Updata_Check
     { 
         /// <summary>
         /// 启用资源检查
@@ -501,13 +504,6 @@ namespace NsisoLauncher.Config
         /// </summary>
         public UserData UserData { get; set; }
 
-        //public event PropertyChangedEventHandler PropertyChanged;
-
-        //protected void OnPropertyChanged(string propertyName)
-        //{
-        //    this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        //}
-
         public Uuid GetSelectProfileUUID()
         {
             return Profiles[SelectProfileUUID];
@@ -538,12 +534,12 @@ namespace NsisoLauncher.Config
         /// <summary>
         /// 注册的地址
         /// </summary>
-        public string REG { get; set; }
+        public string RegisteAddress { get; set; }
 
         /// <summary>
         /// 使用内部浏览器
         /// </summary>
-        public bool use_in { get; set; }
+        public bool UseSelfBrowser { get; set; }
     }
 
     /// <summary>

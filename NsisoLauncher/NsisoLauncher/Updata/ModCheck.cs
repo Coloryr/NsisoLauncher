@@ -1,74 +1,16 @@
 ﻿using ICSharpCode.SharpZipLib.Zip;
 using Newtonsoft.Json.Linq;
+using NsisoLauncher;
 using NsisoLauncherCore.Util.Checker;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 
-namespace NsisoLauncher.Color_yr.updata
+namespace NsisoLauncher.Updata
 {
-    class mod_check
+    class ModCheck
     {
-        class ModListItem
-        {
-            /// <summary>
-            /// MOD id
-            /// </summary>
-            public string modid { get; set; }
-            /// <summary>
-            /// 名字
-            /// </summary>
-            public string name { get; set; }
-            /// <summary>
-            /// 描述
-            /// </summary>
-            public string description { get; set; }
-            /// <summary>
-            /// 版本
-            /// </summary>
-            public string version { get; set; }
-            /// <summary>
-            /// MC版本
-            /// </summary>
-            public string mcversion { get; set; }
-            /// <summary>
-            /// 网址
-            /// </summary>
-            public string url { get; set; }
-            /// <summary>
-            /// 更新网站
-            /// </summary>
-            public string updateUrl { get; set; }
-            /// <summary>
-            /// 作者列表
-            /// </summary>
-            public List<string> authorList { get; set; }
-            /// <summary>
-            /// 
-            /// </summary>
-            public string credits { get; set; }
-            /// <summary>
-            /// 日志文件
-            /// </summary>
-            public string logoFile { get; set; }
-            /// <summary>
-            /// 截图
-            /// </summary>
-            public List<string> screenshots { get; set; }
-            /// <summary>
-            /// 描述
-            /// </summary>
-            public List<string> dependencies { get; set; }
-        }
-        class mod_obj_2
-        {
-            public class Root
-            {
-                public int modListVersion { get; set; }
-                public List<ModListItem> modList { get; set; }
-            }
-        }
         public async Task<Dictionary<string, updata_item>> ReadModInfo(string path)
         {
             path += @"\mods\";
@@ -116,7 +58,7 @@ namespace NsisoLauncher.Color_yr.updata
                     if (zp == null)
                     {
                         zip.Close();
-                        foreach (string name in tran_1_12_list)
+                        foreach (string name in Tran_1_12_list)
                         {
                             if (mod.filename.Contains(name))
                             {
@@ -136,7 +78,7 @@ namespace NsisoLauncher.Color_yr.updata
                     {
                         try
                         {
-                            var a = JObject.Parse(b).ToObject<mod_obj_2.Root>().modList[0];
+                            var a = JObject.Parse(b).ToObject<Mod_Obj_List.Root>().modList[0];
                             modinfo = JObject.FromObject(a);
                         }
                         catch
@@ -150,7 +92,7 @@ namespace NsisoLauncher.Color_yr.updata
                     stream.Close();
                     if (modinfo != null)
                     {
-                        var c = modinfo.ToObject<ModListItem>();
+                        var c = modinfo.ToObject<Mod_Obj>();
                         if (c.name != null)
                         {
                             mod.name = c.name;
@@ -177,7 +119,7 @@ namespace NsisoLauncher.Color_yr.updata
                 return null;
             }
         }
-        private static List<string> tran_1_12_list = new List<string>()
+        private static List<string> Tran_1_12_list = new List<string>()
         {
             "AppleCore", "BetterFps", "jehc", "MakeZoomZoom", "MCMultiPart",
             "Rally+Health", "SelfControl", "BNBGamingCore", "rftoolspower"

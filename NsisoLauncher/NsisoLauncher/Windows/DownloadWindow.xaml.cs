@@ -1,5 +1,4 @@
 ﻿using LiveCharts;
-using LiveCharts.Wpf;
 using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
 using NsisoLauncherCore.Net;
@@ -19,8 +18,7 @@ namespace NsisoLauncher.Windows
     public partial class DownloadWindow : MetroWindow
     {
         private ObservableCollection<DownloadTask> Tasks;
-        private ChartValues<decimal> speedValues = new ChartValues<decimal>() { };
-
+        private Timer time;
 
         public DownloadWindow()
         {
@@ -29,28 +27,27 @@ namespace NsisoLauncher.Windows
             App.downloader.DownloadSpeedChanged += Downloader_DownloadSpeedChanged;
             App.downloader.DownloadCompleted += Downloader_DownloadCompleted;
             Refresh();
+            time = new Timer(new TimerCallback(Time), null, 20, -1);
+        }
+
+        private void Time(object state)
+        {
+            Dispatcher.Invoke(() =>
+            {
+                new NewDownloadTaskWindow(true).ShowDialog();
+            });
+            time.Dispose();
         }
 
         private void Refresh()
         {
-            if (App.downloader.DownloadTasks != null)
-            {
-                Tasks = new ObservableCollection<DownloadTask>(App.downloader.DownloadTasks);
-            }
-            else
-            {
-                Tasks = new ObservableCollection<DownloadTask>();
-            }
+            Tasks = App.downloader.DownloadTasks != null ? new ObservableCollection<DownloadTask>(App.downloader.DownloadTasks) : new ObservableCollection<DownloadTask>();
             downloadList.ItemsSource = Tasks;
-            for (int i = 0; i < 49; i++)
-            {
-                speedValues.Add(0);
-            }
         }
 
         public async Task<DownloadCompletedArg> ShowWhenDownloading()
         {
-            this.Show();
+            Show();
             return await Task.Factory.StartNew(() =>
             {
                 DownloadCompletedArg completedArg = null;
@@ -59,14 +56,7 @@ namespace NsisoLauncher.Windows
                     EventWaitHandle _waitHandle = new AutoResetEvent(false);
                     App.downloader.DownloadCompleted += (a, b) =>
                     {
-                        this.Dispatcher.Invoke(new Action(() =>
-                        {
-                            try
-                            {
-                                this.Close();
-                            }
-                            catch (Exception) { }
-                        }));
+                        Dispatcher.Invoke(new Action(Close));
                         _waitHandle.Set();
                         completedArg = b;
                     };
@@ -86,49 +76,42 @@ namespace NsisoLauncher.Windows
 
         private void Downloader_DownloadCompleted(object sender, DownloadCompletedArg e)
         {
-            this.Dispatcher.Invoke(new Action(async () =>
-           {
-               speedTextBlock.Text = "0Kb/s";
-               progressBar.Maximum = 1;
-               progressBar.Value = 0;
-               progressPerTextBlock.Text = "000%";
-               speedValues.Clear();
-               for (int i = 0; i < 49; i++)
-               {
-                   speedValues.Add(0);
-               }
-               if (e.ErrorList == null || e.ErrorList.Count == 0)
-               {
-                   await this.ShowMessageAsync(App.GetResourceString("String.Downloadwindow.DownloadComplete"),
-                       App.GetResourceString("String.Downloadwindow.DownloadComplete2"));
-                   Close();
-               }
-               else
-               {
-                   await this.ShowMessageAsync(App.GetResourceString("String.Downloadwindow.DownloadCompleteWithError"),
-                       string.Format(App.GetResourceString("String.Downloadwindow.DownloadCompleteWithError2"), e.ErrorList.Count, e.ErrorList.First().Value.Message));
-               }
+            Dispatcher.Invoke(new Action(async () =>
+            {
+                speedTextBlock.Text = "0Kb/s";
+                progressBar.Maximum = 1;
+                progressBar.Value = 0;
+                progressPerTextBlock.Text = "000%";
+                if (e.ErrorList == null || e.ErrorList.Count == 0)
+                {
+                    await this.ShowMessageAsync(App.GetResourceString("String.Downloadwindow.DownloadComplete"),
+                        App.GetResourceString("String.Downloadwindow.DownloadComplete2"));
+                    Close();
+                }
+                else
+                {
+                    await this.ShowMessageAsync(App.GetResourceString("String.Downloadwindow.DownloadCompleteWithError"),
+                        string.Format(App.GetResourceString("String.Downloadwindow.DownloadCompleteWithError2"), e.ErrorList.Count, e.ErrorList.First().Value.Message));
+                }
 
-           }));
+            }));
         }
 
         private void Downloader_DownloadSpeedChanged(object sender, DownloadSpeedChangedArg e)
         {
-            this.Dispatcher.Invoke(new Action(() =>
+            Dispatcher.Invoke(new Action(() =>
             {
                 speedTextBlock.Text = e.SpeedValue.ToString() + e.SpeedUnit;
-                speedValues.Add(e.SizePerSec);
-                speedValues.RemoveAt(0);
             }));
         }
 
         private void Downloader_DownloadProgressChanged(object sender, DownloadProgressChangedArg e)
         {
-            this.Dispatcher.Invoke(new Action(() =>
+            Dispatcher.Invoke(new Action(() =>
             {
-                this.progressBar.Maximum = e.TaskCount;
-                this.progressBar.Value = e.TaskCount - e.LastTaskCount;
-                this.progressPerTextBlock.Text = ((double)(e.TaskCount - e.LastTaskCount) / (double)e.TaskCount).ToString("0%");
+                progressBar.Maximum = e.TaskCount;
+                progressBar.Value = e.TaskCount - e.LastTaskCount;
+                progressPerTextBlock.Text = ((double)(e.TaskCount - e.LastTaskCount) / (double)e.TaskCount).ToString("0%");
                 Tasks.Remove(e.DoneTask);
             }));
         }
@@ -148,16 +131,17 @@ namespace NsisoLauncher.Windows
                 if (result == MessageDialogResult.Affirmative)
                 {
                     App.downloader.RequestStop();
-                    this.progressBar.Value = 0;
+                    progressBar.Value = 0;
                 }
             }
             else
             {
-                await this.ShowMessageAsync("没有需要取消下载的任务", "当前下载器并没有在工作");
+                await this.ShowMessageAsync(App.GetResourceString("String.Downloadwindow.Cancel.Title"),
+                    App.GetResourceString("String.Downloadwindow.Cancel.Text"));
             }
         }
 
-        private void Button_Click_1(object sender, RoutedEventArgs e)
+        private void NewDownload(object sender, RoutedEventArgs e)
         {
             new NewDownloadTaskWindow(true).ShowDialog();
             Refresh();
@@ -167,7 +151,8 @@ namespace NsisoLauncher.Windows
         {
             if (App.downloader.IsBusy)
             {
-                this.ShowModalMessageExternal("正在下载中", "将会在后台进行下载，再次打开下载窗口能查看或取消下载");
+                this.ShowModalMessageExternal(App.GetResourceString("String.Downloadwindow.Closing.Title"),
+                    App.GetResourceString("String.Downloadwindow.Closing.Text"));
             }
         }
 
@@ -175,7 +160,8 @@ namespace NsisoLauncher.Windows
         {
             if (App.downloader.Proxy != null)
             {
-                this.ShowMessageAsync("您开启了下载代理", "请注意您现在正在使用代理进行下载，若代理设置异常可能会导致下载错误。");
+                this.ShowMessageAsync(App.GetResourceString("String.Downloadwindow.Proxy.Title"),
+                    App.GetResourceString("String.Downloadwindow.Proxy.Text"));
             }
         }
     }

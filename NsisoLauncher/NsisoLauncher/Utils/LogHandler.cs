@@ -8,17 +8,13 @@ namespace NsisoLauncher.Core.Util
 {
     public class LogHandler
     {
-        public bool WriteToFile { get; set; } = false;
+        public bool WriteToFile { get; set; }
         public event EventHandler<Log> OnLog;
-        ReaderWriterLockSlim LogLock = new ReaderWriterLockSlim();
+        private readonly ReaderWriterLockSlim LogLock = new ReaderWriterLockSlim();
 
-        public LogHandler()
+        public LogHandler(bool writetofile = false)
         {
-        }
-
-        public LogHandler(bool write2file)
-        {
-            this.WriteToFile = write2file;
+            WriteToFile = writetofile;
         }
 
         public void AppendLog(object sender, Log log)

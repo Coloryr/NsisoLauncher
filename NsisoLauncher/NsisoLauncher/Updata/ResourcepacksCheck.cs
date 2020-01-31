@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 
-namespace NsisoLauncher.Color_yr.updata
+namespace NsisoLauncher.Updata
 {
-    class resourcepacks_check
+    class ResourcepacksCheck
     {
         public async Task<Dictionary<string, updata_item>> ReadresourcepacksInfo(string path)
         {

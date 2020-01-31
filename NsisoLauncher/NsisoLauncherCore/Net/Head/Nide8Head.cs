@@ -1,5 +1,4 @@
 ﻿using NsisoLauncher.Config;
-using NsisoLauncherCore.Net;
 using System;
 using System.Drawing;
 using System.IO;
@@ -8,11 +7,11 @@ using System.Threading.Tasks;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
-namespace NsisoLauncher.Color_yr
+namespace NsisoLauncherCore.Net.Head
 {
-    class NIDE8_head
+    class Nide8Head
     {
-        public BitmapImage BitmapToBitmapImage(Bitmap bitmap)
+        private BitmapImage BitmapToBitmapImage(Bitmap bitmap)
         {
             Bitmap bitmapSource = new Bitmap(bitmap.Width, bitmap.Height);
             int i, j;
@@ -34,7 +33,7 @@ namespace NsisoLauncher.Color_yr
         }
 
         //缩放
-        public Bitmap Zoom(Bitmap orgimg, int times)
+        private Bitmap Zoom(Bitmap orgimg, int times)
         {
             Bitmap newimg = new Bitmap(orgimg.Width * times, orgimg.Height * times);
             for (int i = 0; i < orgimg.Width; i++)
@@ -52,7 +51,7 @@ namespace NsisoLauncher.Color_yr
             }
             return newimg;
         }
-        public BitmapImage CaptureImage(System.Drawing.Image fromImage)
+        private BitmapImage CaptureImage(Image fromImage)
         {
             //创建新图位图
             Bitmap bitmap = new Bitmap(8, 8);
@@ -79,50 +78,41 @@ namespace NsisoLauncher.Color_yr
             bitmap_top.Dispose();
             return BitmapToBitmapImage(Zoom(save, 8));
         }
-
-    }
-    public class APIHandler_nide8
-    {
-        const string APIUrl = "/sessionserver/session/minecraft/profile/";
         public async Task<ImageSource> GetHeadSculSource(string uuid, AuthenticationNode args)
         {
-            string url = "https://auth2.nide8.com:233/" + args.Property["nide8ID"] + APIUrl + uuid;
+            string url = "https://auth2.nide8.com:233/" + args.Property["nide8ID"] + "/sessionserver/session/minecraft/profile/" + uuid;
             try
             {
                 var res = await APIRequester.HttpGetAsync(url);
-                string b = await res.Content.ReadAsStringAsync();//把流转换为字符串并显示在文本框中
+                string data = await res.Content.ReadAsStringAsync();//把流转换为字符串并显示在文本框中
                 if (res.IsSuccessStatusCode)
                 {
-                    int d = b.IndexOf("value");
-                    if (d == -1)
+                    int index = data.IndexOf("value");
+                    if (index == -1)
                         return null;
-                    b = b.PadLeft(d).Remove(0, d);
-                    b = b.Replace("value\":\"", "");
-                    b = b.Replace("\"}]}", "");
-                    byte[] inArray = Convert.FromBase64String(b);
-                    string c = Encoding.UTF8.GetString(inArray);
-                    d = c.IndexOf("https://");
-                    if (d != -1)
+                    data = data.PadLeft(index).Remove(0, index);
+                    data = data.Replace("value\":\"", "");
+                    data = data.Replace("\"}]}", "");
+                    byte[] inArray = Convert.FromBase64String(data);
+                    data = Encoding.UTF8.GetString(inArray);
+                    index = data.IndexOf("https://");
+                    if (index != -1)
                     {
-                        c = c.PadLeft(d).Remove(0, d);
-                        c = c.Replace("\",\"metadata\":", "");
-                        c = c.Replace("{\"model\":\"slim\"}}}}", "");
-                        c = c.Replace("\"}}}", "");
-                        res = await APIRequester.HttpGetAsync(c);
+                        data = data.PadLeft(index).Remove(0, index);
+                        data = data.Replace("\",\"metadata\":", "");
+                        data = data.Replace("{\"model\":\"slim\"}}}}", "");
+                        data = data.Replace("\"}}}", "");
+                        res = await APIRequester.HttpGetAsync(data);
                         using (Stream stream = await res.Content.ReadAsStreamAsync())
                         {
-                            Image saveImage = System.Drawing.Image.FromStream(stream);
-                            NIDE8_head lunzi = new NIDE8_head();
-                            return lunzi.CaptureImage(saveImage);
+                            Image saveImage = Image.FromStream(stream);
+                            return CaptureImage(saveImage);
                         }
                     }
                 }
             }
-            catch
-            {
-
-            }
-            return null;
+            catch { }
+            return new BitmapImage(new Uri("/NsisoLauncher;component/Resource/Steve.jpg"));
         }
     }
 }
