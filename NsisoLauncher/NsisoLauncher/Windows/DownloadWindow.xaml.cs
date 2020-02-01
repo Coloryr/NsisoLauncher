@@ -21,14 +21,15 @@ namespace NsisoLauncher.Windows
         private ObservableCollection<DownloadTask> Tasks;
         private Timer time;
 
-        public DownloadWindow()
+        public DownloadWindow(bool auto = false)
         {
             InitializeComponent();
             App.downloader.DownloadProgressChanged += Downloader_DownloadProgressChanged;
             App.downloader.DownloadSpeedChanged += Downloader_DownloadSpeedChanged;
             App.downloader.DownloadCompleted += Downloader_DownloadCompleted;
             Refresh();
-            time = new Timer(new TimerCallback(Time), null, 100, -1);
+            if(auto)
+                time = new Timer(new TimerCallback(Time), null, 100, -1);
         }
 
         private void Time(object state)

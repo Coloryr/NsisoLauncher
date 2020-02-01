@@ -22,12 +22,7 @@ namespace NsisoLauncher.Controls
         {
             InitializeComponent();
             Visibility = Visibility.Hidden;
-            APP_Color();
         }
-
-        [System.ComponentModel.TypeConverter(typeof(LengthConverter))]
-        [Localizability(LocalizationCategory.None, Readability = Readability.Unreadable)]
-        public new double Width { get; set; }
         public void APP_Color()
         {
             BrushColor get = new BrushColor();
@@ -44,6 +39,7 @@ namespace NsisoLauncher.Controls
 
         public async void SetServerInfo(Server server)
         {
+            APP_Color();
             if (server.ShowServerInfo)
             {
                 serverNameTextBlock.Text = server.ServerName;
@@ -121,8 +117,7 @@ namespace NsisoLauncher.Controls
         /// <param name="icon"></param>  
         /// <returns></returns>  
         private static ImageSource ChangeBitmapToImageSource(Bitmap bitmap)
-        {
-            //Bitmap bitmap = icon.ToBitmap();  
+        {;  
             IntPtr hBitmap = bitmap.GetHbitmap();
 
             ImageSource wpfBitmap = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(

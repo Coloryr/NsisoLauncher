@@ -29,6 +29,8 @@ namespace NsisoLauncher.Controls
             authModule = node;
             if (authModule.Value != null)
             {
+                addButton.Visibility = Visibility.Collapsed;
+                saveButton.Visibility = delButton.Visibility = Visibility.Visible;
                 authmoduleNameTextbox.Text = authModule.Value.Name;
                 REGISTER_URI.Text = authModule.Value.RegisteAddress;
                 Bro_IN.IsChecked = authModule.Value.UseSelfBrowser;
@@ -82,6 +84,9 @@ namespace NsisoLauncher.Controls
 
         public void ClearAll()
         {
+            addButton.Visibility = Visibility.Visible;
+            saveButton.Visibility = delButton.Visibility = Visibility.Collapsed;
+
             authmoduleNameTextbox.IsEnabled = true;
             nide8Radio.IsChecked = false;
             aiRadio.IsChecked = false;
@@ -124,7 +129,6 @@ namespace NsisoLauncher.Controls
                 }
                 ((SettingWindow)Window.GetWindow(this)).AddAuthModule(authName, node);
                 SaveButton_Click(null, null);
-                ((MetroWindow)Window.GetWindow(this)).ShowMessageAsync("已添加", "已保存你添加的登录模型");
             }
         }
 

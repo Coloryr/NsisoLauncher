@@ -675,7 +675,6 @@ namespace NsisoLauncher
                 }
 
                 OtherCheck pack = null;
-                bool isupdata = false;
                 string packname = null;
                 string vision = null;
                 if (App.config.MainConfig.Server.Updata_Check == null)
@@ -709,7 +708,6 @@ namespace NsisoLauncher
                             losts.AddRange(await lost_mod.setupdata(pack));
                             packname = lost_mod.getpackname();
                             vision = lost_mod.getvision();
-                            isupdata = true;
                         }
                     }
                 }
@@ -735,11 +733,7 @@ namespace NsisoLauncher
                         }
                         else
                         {
-                            if (pack != null)
-                            {
-                                isupdata = await pack.pack();
-                            }
-                            if (isupdata)
+                            if (await pack?.pack())
                             {
                                 App.config.MainConfig.Server.Updata_Check.packname = packname;
                                 App.config.MainConfig.Server.Updata_Check.Vision = vision;

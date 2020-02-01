@@ -294,10 +294,11 @@
                                     <Label Content="{DynamicResource String.Settingwindow.User.All.Auth}"/>
                                     <ComboBox x:Name="lockauthCombobox" Width="200" Margin="0,0,5,0"
                                     DisplayMemberPath="Value.Name" ItemsSource="{Binding User.AuthenticationDic}"              
-                                    SelectedValuePath="Key" SelectedValue="{Binding User.LockAuthName}"/>
+                                    SelectedValuePath="Key" SelectedValue="{Binding User.LockAuthName}" SelectionChanged="lockauthCombobox_SelectionChanged"/>
                                     <Button Width="100" Content="{DynamicResource String.Settingwindow.User.All.Clear}" Click="clearAllauthButton_Click"/>
                                 </StackPanel>
-                                <CheckBox Margin="0,0,0,10" Content="{DynamicResource String.Settingwindow.User.All.Nide}" IsChecked="{Binding User.Nide8ServerDependence}"/>
+                                <CheckBox Margin="0,0,0,10" Content="{DynamicResource String.Settingwindow.User.All.Nide}" IsChecked="{Binding User.Nide8ServerDependence}"
+                                          Name="NIDE8_C" Visibility="Collapsed"/>
                                 <Button Style="{DynamicResource SquareButtonStyle}" Content="{DynamicResource String.Settingwindow.User.All.Delete}" Background="IndianRed" Foreground="White" Margin="0,0,0,5" Click="delAllAuthnodeButton_Click"/>
                             </StackPanel>
                         </Expander>
@@ -371,13 +372,13 @@
                         </Expander>
                         <Expander Header="{DynamicResource String.Settingwindow.Custom.Mods}" Margin="0,0,0,5">
                             <StackPanel>
-                                <CheckBox Content="{DynamicResource String.Settingwindow.Custom.Mods.Enable}" IsChecked="{Binding Server.Mods_Check.Enable}" Margin="0,0,0,5"/>
+                                <CheckBox Content="{DynamicResource String.Settingwindow.Custom.Mods.Enable}" IsChecked="{Binding Server.Updata_Check.Enable}" Margin="0,0,0,5"/>
                                 <Label Content="{DynamicResource String.Settingwindow.Custom.Mods.Addres}"/>
-                                <TextBox TextWrapping="NoWrap" Text="{Binding Server.Mods_Check.Address}" HorizontalAlignment="Left" Width="300"/>
+                                <TextBox TextWrapping="NoWrap" Text="{Binding Server.Updata_Check.Address}" HorizontalAlignment="Left" Width="300"/>
                                 <Label Content="{DynamicResource String.Settingwindow.Custom.Mods.Packname}"/>
-                                <Label Content="{Binding Server.Mods_Check.packname}" Name="Pack_Name"/>
+                                <Label Content="{Binding Server.Updata_Check.packname}" Name="Pack_Name"/>
                                 <Label Content="{DynamicResource String.Settingwindow.Custom.Mods.Vision}"/>
-                                <Label Content="{Binding Server.Mods_Check.Vision}" Name="Pack_Vision"/>
+                                <Label Content="{Binding Server.Updata_Check.Vision}" Name="Pack_Vision"/>
                             </StackPanel>
                         </Expander>
                     </StackPanel>

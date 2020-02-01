@@ -250,7 +250,7 @@ namespace NsisoLauncher.Controls
             }
             else
             {
-                new DownloadWindow().ShowDialog();
+                new DownloadWindow(true).ShowDialog();
                 Refresh();
             }
         }

@@ -58,6 +58,8 @@ namespace NsisoLauncher.Windows
             authModules.Clear();
             foreach (var item in config.User.AuthenticationDic)
             {
+                if (item.Key == "offline" || item.Key == "online")
+                    continue;
                 authModules.Add(new KeyValuePair<string, AuthenticationNode>(item.Key, item.Value));
             }
 
@@ -74,7 +76,7 @@ namespace NsisoLauncher.Windows
             {
                 VersionChose.Visibility = Visibility.Collapsed;
                 versionOptionsGrid.ItemsSource = await GameHelper.GetOptionsAsync(VersionOption.Type.options, App.handler, new NsisoLauncherCore.Modules.Version() { ID = "null" });
-                versionOptionsofGrid.ItemsSource = await GameHelper.GetOptionsAsync(VersionOption.Type.optionsof,  App.handler, new NsisoLauncherCore.Modules.Version() { ID = "null" });
+                versionOptionsofGrid.ItemsSource = await GameHelper.GetOptionsAsync(VersionOption.Type.optionsof, App.handler, new NsisoLauncherCore.Modules.Version() { ID = "null" });
             }
             CheckBox_Checked(null, null);
         }
@@ -397,13 +399,12 @@ namespace NsisoLauncher.Windows
             var item = new KeyValuePair<string, AuthenticationNode>(name, authmodule);
             authModules.Add(item);
             config.User.AuthenticationDic.Add(name, authmodule);
-            await this.ShowMessageAsync("添加成功", "记得点击应用按钮保存噢");
             authModuleCombobox.SelectedItem = item;
         }
 
         public async void SaveAuthModule(KeyValuePair<string, AuthenticationNode> node)
         {
-            await this.ShowMessageAsync("保存成功", "已修改你的设置");
+            await this.ShowMessageAsync("保存更改", "已修改你的设置，点击应用保存");
         }
 
         public async void DeleteAuthModule(KeyValuePair<string, AuthenticationNode> node)
@@ -420,6 +421,7 @@ namespace NsisoLauncher.Windows
 
         private void clearAllauthButton_Click(object sender, RoutedEventArgs e)
         {
+            NIDE8_C.Visibility = Visibility.Collapsed;
             lockauthCombobox.SelectedItem = null;
         }
 
@@ -466,7 +468,7 @@ namespace NsisoLauncher.Windows
                         set.IsEnabled = true;
                         Text.IsEnabled = true;
                     }
-                    else if(checkBox3_s.IsChecked == false)
+                    else if (checkBox3_s.IsChecked == false)
                     {
                         set.IsEnabled = false;
                         Text.IsEnabled = false;
@@ -481,11 +483,18 @@ namespace NsisoLauncher.Windows
             }
         }
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
-        { 
+        {
             if (!int.TryParse(Text.Text, out int number))
             {
                 e.Handled = true;
             }
+        }
+
+        private void lockauthCombobox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            dynamic Node = lockauthCombobox.SelectedItem;
+            NIDE8_C.Visibility = Node.Value.AuthType == AuthenticationType.NIDE8 ? Visibility.Visible : Visibility.Collapsed;
+
         }
     }
 }

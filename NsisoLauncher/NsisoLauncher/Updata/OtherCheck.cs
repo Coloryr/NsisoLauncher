@@ -1,6 +1,7 @@
 ﻿using ICSharpCode.SharpZipLib.Zip;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace NsisoLauncher.Updata
@@ -19,8 +20,6 @@ namespace NsisoLauncher.Updata
             {
                 foreach (string file in pack_list)
                 {
-                    if (!File.Exists(App.handler.GameRootPath + @"\" + file))
-                        continue;
                     if (file.Contains(".zip"))
                         try
                         {
@@ -58,7 +57,20 @@ namespace NsisoLauncher.Updata
                         }
                         finally
                         {
-                            File.Delete(App.handler.GameRootPath + @"\" + file);
+                            //临时解决
+                            Task.Factory.StartNew(() =>
+                            {
+                            a:
+                                try
+                                {
+                                    Thread.Sleep(1000);
+                                    File.Delete(App.handler.GameRootPath + @"\" + file);
+                                }
+                                catch
+                                {
+                                    goto a;
+                                }
+                            });
                         }
                 }
             });

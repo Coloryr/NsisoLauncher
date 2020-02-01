@@ -167,7 +167,7 @@
     <sys:String x:Key="String.Settingwindow.AuthModule.Address">验证地址：</sys:String>
     <sys:String x:Key="String.Settingwindow.AuthModule.RegisteAddress">注册网址：</sys:String>
     <sys:String x:Key="String.Settingwindow.AuthModule.Add">添加</sys:String>
-    <sys:String x:Key="String.Settingwindow.AuthModule.Save">保存</sys:String>
+    <sys:String x:Key="String.Settingwindow.AuthModule.Save">修改</sys:String>
     <sys:String x:Key="String.Settingwindow.AuthModule.Delete">删除</sys:String>
     <sys:String x:Key="String.Settingwindow.Env">全局设置</sys:String>
     <sys:String x:Key="String.Settingwindow.Env.Java">Java路径设置</sys:String>
