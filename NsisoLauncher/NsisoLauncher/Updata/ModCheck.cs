@@ -14,7 +14,7 @@ namespace NsisoLauncher.Updata
         public async Task<Dictionary<string, updata_item>> ReadModInfo(string path)
         {
             path += @"\mods\";
-            App.logHandler.AppendInfo("检查mod:" + path);
+            App.LogHandler.AppendInfo("检查mod:" + path);
             try
             {
                 if (!Directory.Exists(path))
@@ -40,7 +40,7 @@ namespace NsisoLauncher.Updata
             }
             catch (Exception e)
             {
-                App.logHandler.AppendInfo("检查mod错误" + e.Source);
+                App.LogHandler.AppendInfo("检查mod错误" + e.Source);
             }
             return new Dictionary<string, updata_item>();
         }

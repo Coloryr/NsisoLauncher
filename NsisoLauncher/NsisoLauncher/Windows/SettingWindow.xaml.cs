@@ -47,12 +47,12 @@ namespace NsisoLauncher.Windows
         private async void Refresh()
         {
             //深度克隆设置
-            config = DeepCloneObject(App.config.MainConfig);
+            config = DeepCloneObject(App.Config.MainConfig);
 
             //绑定content设置
             this.DataContext = config;
 
-            javaPathComboBox.ItemsSource = App.javaList;
+            javaPathComboBox.ItemsSource = App.JavaList;
             memorySlider.Maximum = SystemTools.GetTotalMemory();
 
             authModules.Clear();
@@ -63,20 +63,20 @@ namespace NsisoLauncher.Windows
                 authModules.Add(new KeyValuePair<string, AuthenticationNode>(item.Key, item.Value));
             }
 
-            VersionsComboBox.ItemsSource = await App.handler.GetVersionsAsync();
+            VersionsComboBox.ItemsSource = await App.Handler.GetVersionsAsync();
 
             Lauguage.ItemsSource = new List<string>() { "中文", "日本語", "English" };
             Lauguage.SelectedItem = config.Lauguage;
 
-            if (App.config.MainConfig.Environment.VersionIsolation)
+            if (App.Config.MainConfig.Environment.VersionIsolation)
             {
                 VersionChose.Visibility = Visibility.Visible;
             }
             else
             {
                 VersionChose.Visibility = Visibility.Collapsed;
-                versionOptionsGrid.ItemsSource = await GameHelper.GetOptionsAsync(VersionOption.Type.options, App.handler, new NsisoLauncherCore.Modules.Version() { ID = "null" });
-                versionOptionsofGrid.ItemsSource = await GameHelper.GetOptionsAsync(VersionOption.Type.optionsof, App.handler, new NsisoLauncherCore.Modules.Version() { ID = "null" });
+                versionOptionsGrid.ItemsSource = await GameHelper.GetOptionsAsync(VersionOption.Type.options, App.Handler, new NsisoLauncherCore.Modules.Version() { ID = "null" });
+                versionOptionsofGrid.ItemsSource = await GameHelper.GetOptionsAsync(VersionOption.Type.optionsof, App.Handler, new NsisoLauncherCore.Modules.Version() { ID = "null" });
             }
             CheckBox_Checked(null, null);
         }
@@ -151,63 +151,63 @@ namespace NsisoLauncher.Windows
             switch (config.Environment.GamePathType)
             {
                 case GameDirEnum.ROOT:
-                    App.handler.GameRootPath = Path.GetFullPath(".minecraft");
+                    App.Handler.GameRootPath = Path.GetFullPath(".minecraft");
                     break;
                 case GameDirEnum.APPDATA:
-                    App.handler.GameRootPath = System.Environment.GetFolderPath(System.Environment.SpecialFolder.ApplicationData) + "\\.minecraft";
+                    App.Handler.GameRootPath = System.Environment.GetFolderPath(System.Environment.SpecialFolder.ApplicationData) + "\\.minecraft";
                     break;
                 case GameDirEnum.PROGRAMFILES:
-                    App.handler.GameRootPath = System.Environment.GetFolderPath(System.Environment.SpecialFolder.ProgramFiles) + "\\.minecraft";
+                    App.Handler.GameRootPath = System.Environment.GetFolderPath(System.Environment.SpecialFolder.ProgramFiles) + "\\.minecraft";
                     break;
                 case GameDirEnum.CUSTOM:
-                    App.handler.GameRootPath = config.Environment.GamePath + "\\.minecraft";
+                    App.Handler.GameRootPath = config.Environment.GamePath + "\\.minecraft";
                     break;
                 default:
                     throw new ArgumentException("判断游戏目录类型时出现异常，请检查配置文件中GamePathType节点");
             }
-            App.handler.VersionIsolation = config.Environment.VersionIsolation;
-            App.downloader.CheckFileHash = config.Download.CheckDownloadFileHash;
+            App.Handler.VersionIsolation = config.Environment.VersionIsolation;
+            App.Downloader.CheckFileHash = config.Download.CheckDownloadFileHash;
 
-            App.config.MainConfig = config;
+            App.Config.MainConfig = config;
 
             if (_isGameSettingChanged)
             {
-                if (App.config.MainConfig.Environment.VersionIsolation)
+                if (App.Config.MainConfig.Environment.VersionIsolation)
                 {
                     await GameHelper.SaveOptionsAsync(VersionOption.Type.options,
                     (List<VersionOption>)versionOptionsGrid.ItemsSource,
-                    App.handler,
+                    App.Handler,
                     (NsisoLauncherCore.Modules.Version)VersionsComboBox.SelectedItem);
 
                     await GameHelper.SaveOptionsAsync(VersionOption.Type.optionsof,
                    (List<VersionOption>)versionOptionsofGrid.ItemsSource,
-                   App.handler,
+                   App.Handler,
                    (NsisoLauncherCore.Modules.Version)VersionsComboBox.SelectedItem);
                 }
                 else
                 {
                     await GameHelper.SaveOptionsAsync(VersionOption.Type.options,
                     (List<VersionOption>)versionOptionsGrid.ItemsSource,
-                    App.handler,
+                    App.Handler,
                     new NsisoLauncherCore.Modules.Version() { ID = "null" });
                     await GameHelper.SaveOptionsAsync(VersionOption.Type.optionsof,
                     (List<VersionOption>)versionOptionsofGrid.ItemsSource,
-                    App.handler,
+                    App.Handler,
                     new NsisoLauncherCore.Modules.Version() { ID = "null" });
                 }
             }
 
-            App.config.Save();
+            App.Config.Save();
             saveButton.Content = App.GetResourceString("String.Settingwindow.Saving");
-            Config.Environment env = App.config.MainConfig.Environment;
+            Config.Environment env = App.Config.MainConfig.Environment;
             Java java = null;
             if (env.AutoJava)
             {
-                java = Java.GetSuitableJava(App.javaList);
+                java = Java.GetSuitableJava(App.JavaList);
             }
             else
             {
-                java = App.javaList.Find(x => x.Path == env.JavaPath);
+                java = App.JavaList.Find(x => x.Path == env.JavaPath);
                 if (java == null)
                 {
                     java = Java.GetJavaInfo(env.JavaPath);
@@ -215,7 +215,7 @@ namespace NsisoLauncher.Windows
             }
             if (java != null)
             {
-                App.handler.Java = java;
+                App.Handler.Java = java;
                 Close();
             }
             else
@@ -236,8 +236,8 @@ namespace NsisoLauncher.Windows
 
             if (comboBox.SelectedItem != null)
             {
-                versionOptionsGrid.ItemsSource = await GameHelper.GetOptionsAsync(VersionOption.Type.options, App.handler, (NsisoLauncherCore.Modules.Version)comboBox.SelectedItem);
-                versionOptionsofGrid.ItemsSource = await GameHelper.GetOptionsAsync(VersionOption.Type.optionsof, App.handler, (NsisoLauncherCore.Modules.Version)comboBox.SelectedItem);
+                versionOptionsGrid.ItemsSource = await GameHelper.GetOptionsAsync(VersionOption.Type.options, App.Handler, (NsisoLauncherCore.Modules.Version)comboBox.SelectedItem);
+                versionOptionsofGrid.ItemsSource = await GameHelper.GetOptionsAsync(VersionOption.Type.optionsof, App.Handler, (NsisoLauncherCore.Modules.Version)comboBox.SelectedItem);
             }
             else
             {
@@ -247,7 +247,7 @@ namespace NsisoLauncher.Windows
 
         private async void refreshVersionsButton_Click(object sender, RoutedEventArgs e)
         {
-            VersionsComboBox.ItemsSource = await App.handler.GetVersionsAsync();
+            VersionsComboBox.ItemsSource = await App.Handler.GetVersionsAsync();
         }
 
         private void AccentColorComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)

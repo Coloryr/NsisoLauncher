@@ -24,9 +24,9 @@ namespace NsisoLauncher.Windows
         public DownloadWindow(bool auto = false)
         {
             InitializeComponent();
-            App.downloader.DownloadProgressChanged += Downloader_DownloadProgressChanged;
-            App.downloader.DownloadSpeedChanged += Downloader_DownloadSpeedChanged;
-            App.downloader.DownloadCompleted += Downloader_DownloadCompleted;
+            App.Downloader.DownloadProgressChanged += Downloader_DownloadProgressChanged;
+            App.Downloader.DownloadSpeedChanged += Downloader_DownloadSpeedChanged;
+            App.Downloader.DownloadCompleted += Downloader_DownloadCompleted;
             Refresh();
             if(auto)
                 time = new Timer(new TimerCallback(Time), null, 100, -1);
@@ -43,7 +43,7 @@ namespace NsisoLauncher.Windows
 
         private void Refresh()
         {
-            Tasks = App.downloader.DownloadTasks != null ? new ObservableCollection<DownloadTask>(App.downloader.DownloadTasks) : new ObservableCollection<DownloadTask>();
+            Tasks = App.Downloader.DownloadTasks != null ? new ObservableCollection<DownloadTask>(App.Downloader.DownloadTasks) : new ObservableCollection<DownloadTask>();
             downloadList.ItemsSource = Tasks;
         }
 
@@ -56,7 +56,7 @@ namespace NsisoLauncher.Windows
                 try
                 {
                     EventWaitHandle _waitHandle = new AutoResetEvent(false);
-                    App.downloader.DownloadCompleted += (a, b) =>
+                    App.Downloader.DownloadCompleted += (a, b) =>
                     {
                         Dispatcher.Invoke(new Action(Close));
                         _waitHandle.Set();
@@ -123,7 +123,7 @@ namespace NsisoLauncher.Windows
 
         private async void Button_Click(object sender, RoutedEventArgs e)
         {
-            if (App.downloader.IsBusy)
+            if (App.Downloader.IsBusy)
             {
                 var result = await this.ShowMessageAsync(App.GetResourceString("String.Downloadwindow.MakesureCancel"),
                     App.GetResourceString("String.Downloadwindow.MakesureCancel"),
@@ -135,7 +135,7 @@ namespace NsisoLauncher.Windows
                     });
                 if (result == MessageDialogResult.Affirmative)
                 {
-                    App.downloader.RequestStop();
+                    App.Downloader.RequestStop();
                     progressBar.Value = 0;
                 }
             }
@@ -154,7 +154,7 @@ namespace NsisoLauncher.Windows
 
         private void MetroWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            if (App.downloader.IsBusy)
+            if (App.Downloader.IsBusy)
             {
                 this.ShowModalMessageExternal(App.GetResourceString("String.Downloadwindow.Closing.Title"),
                     App.GetResourceString("String.Downloadwindow.Closing.Text"));
@@ -163,7 +163,7 @@ namespace NsisoLauncher.Windows
 
         private void MetroWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            if (App.downloader.Proxy != null)
+            if (App.Downloader.Proxy != null)
             {
                 this.ShowMessageAsync(App.GetResourceString("String.Downloadwindow.Proxy.Title"),
                     App.GetResourceString("String.Downloadwindow.Proxy.Text"));

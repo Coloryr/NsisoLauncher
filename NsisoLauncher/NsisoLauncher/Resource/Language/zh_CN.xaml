@@ -211,8 +211,7 @@
     <sys:String x:Key="String.Settingwindow.Env.Launcher">启动器设置</sys:String>
     <sys:String x:Key="String.Settingwindow.Env.Launcher.DebugMode">DEBUG模式</sys:String>
     <sys:String x:Key="String.Settingwindow.Env.Note">*请注意：本页面(全局设置)中部分设置需要重启启动器后才能生效</sys:String>
-    <sys:String x:Key="String.Settingwindow.Env.Autoupdata">自动检查启动器更新</sys:String>
-    <sys:String x:Key="String.Settingwindow.Env.Disabledata">禁用数据收集</sys:String>
+    <sys:String x:Key="String.Settingwindow.Env.NoTracking">禁用数据收集</sys:String>
     <sys:String x:Key="String.Settingwindow.Download">下载设置</sys:String>
     <sys:String x:Key="String.Settingwindow.Download.Advance">高级下载设置</sys:String>
     <sys:String x:Key="String.Settingwindow.Download.Check">校验下载文件哈希值</sys:String>

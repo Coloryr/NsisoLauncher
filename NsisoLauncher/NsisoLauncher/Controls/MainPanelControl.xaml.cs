@@ -46,8 +46,8 @@ namespace NsisoLauncher.Controls
         private UserNode GetSelectedAuthNode()
         {
             string userID = (string)userComboBox.SelectedValue;
-            if ((userID != null) && App.config.MainConfig.User.UserDatabase.ContainsKey(userID))
-                return App.config.MainConfig.User.UserDatabase[userID];
+            if ((userID != null) && App.Config.MainConfig.User.UserDatabase.ContainsKey(userID))
+                return App.Config.MainConfig.User.UserDatabase[userID];
             return null;
         }
         private AuthenticationNode GetSelectedAuthenticationNode()
@@ -70,43 +70,43 @@ namespace NsisoLauncher.Controls
                     AuthType = AuthenticationType.OFFLINE,
                     Name = App.GetResourceString("String.Mainwindow.Auth.Offline")
                 }));
-                if (App.config.MainConfig.User.AuthenticationDic != null)
-                    foreach (var item in App.config.MainConfig.User.AuthenticationDic)
+                if (App.Config.MainConfig.User.AuthenticationDic != null)
+                    foreach (var item in App.Config.MainConfig.User.AuthenticationDic)
                     {
                         AuthNodeList.Add(item);
                     }
 
                 //更新用户列表
                 UserList.Clear();
-                if (App.config.MainConfig.User.UserDatabase != null)
-                    foreach (var item in App.config.MainConfig.User.UserDatabase)
+                if (App.Config.MainConfig.User.UserDatabase != null)
+                    foreach (var item in App.Config.MainConfig.User.UserDatabase)
                     {
                         UserList.Add(item);
                     }
 
                 //更新版本列表
-                List<NsisoLauncherCore.Modules.Version> versions = await App.handler.GetVersionsAsync();
+                List<NsisoLauncherCore.Modules.Version> versions = await App.Handler.GetVersionsAsync();
                 VersionList.Clear();
                 foreach (var item in versions)
                 {
                     VersionList.Add(item);
                 }
 
-                launchVersionCombobox.Text = App.config.MainConfig.History.LastLaunchVersion;
-                if ((App.config.MainConfig.History.SelectedUserNodeID != null) &&
-                    (App.config.MainConfig.User.UserDatabase.ContainsKey(App.config.MainConfig.History.SelectedUserNodeID)))
+                launchVersionCombobox.Text = App.Config.MainConfig.History.LastLaunchVersion;
+                if ((App.Config.MainConfig.History.SelectedUserNodeID != null) &&
+                    (App.Config.MainConfig.User.UserDatabase.ContainsKey(App.Config.MainConfig.History.SelectedUserNodeID)))
                 {
-                    userComboBox.SelectedValue = App.config.MainConfig.History.SelectedUserNodeID;
+                    userComboBox.SelectedValue = App.Config.MainConfig.History.SelectedUserNodeID;
                     UserComboBox_SelectionChanged(null, null);
                 }
 
                 //锁定验证模型处理
-                if (!string.IsNullOrWhiteSpace(App.config.MainConfig.User.LockAuthName))
+                if (!string.IsNullOrWhiteSpace(App.Config.MainConfig.User.LockAuthName))
                 {
-                    if (App.config.MainConfig.User.AuthenticationDic.ContainsKey(App.config.MainConfig.User.LockAuthName))
+                    if (App.Config.MainConfig.User.AuthenticationDic.ContainsKey(App.Config.MainConfig.User.LockAuthName))
                     {
                         is_re = true;
-                        authTypeCombobox.SelectedValue = App.config.MainConfig.User.LockAuthName;
+                        authTypeCombobox.SelectedValue = App.Config.MainConfig.User.LockAuthName;
                         authTypeCombobox.IsEnabled = false;
                         is_re = false;
                         AuthenticationNode node = GetSelectedAuthenticationNode();
@@ -124,7 +124,7 @@ namespace NsisoLauncher.Controls
                     is_use = false;
                 }
 
-                if (userComboBox.SelectedValue != null && string.IsNullOrWhiteSpace(App.config.MainConfig.User.LockAuthName))
+                if (userComboBox.SelectedValue != null && string.IsNullOrWhiteSpace(App.Config.MainConfig.User.LockAuthName))
                 {
                     UserNode node = GetSelectedAuthNode();
                     authTypeCombobox.SelectedValue = node.AuthModule;
@@ -140,7 +140,7 @@ namespace NsisoLauncher.Controls
                         authTypeCombobox.SelectedValue = node.AuthModule;
                     is_re = false;
                 }
-                if (string.IsNullOrWhiteSpace(App.config.MainConfig.User.LockAuthName) == false)
+                if (string.IsNullOrWhiteSpace(App.Config.MainConfig.User.LockAuthName) == false)
                 {
                     downloadButton.Content = App.GetResourceString("String.Base.Register");
                     addauth.Visibility = Visibility.Hidden;
@@ -153,7 +153,7 @@ namespace NsisoLauncher.Controls
                     authTypeCombobox.Margin = new Thickness(10, 151, 50, 0);
                 }
                 await RefreshIcon();
-                App.logHandler.AppendDebug("启动器主窗体数据重载完毕");
+                App.LogHandler.AppendDebug("启动器主窗体数据重载完毕");
             }
             catch (Exception e)
             {
@@ -223,7 +223,7 @@ namespace NsisoLauncher.Controls
         //下载按钮点击
         private async void downloadButton_Click(object sender, RoutedEventArgs e)
         {
-            if (App.config.MainConfig.User.Nide8ServerDependence)
+            if (App.Config.MainConfig.User.Nide8ServerDependence)
             {
                 AuthenticationNode node = GetSelectedAuthenticationNode();
                 if (node == null)
@@ -234,7 +234,7 @@ namespace NsisoLauncher.Controls
                 }
                 new Register(string.Format("https://login2.nide8.com:233/{0}/loginreg", node.Property["nide8ID"])).ShowDialog();
             }
-            else if (string.IsNullOrWhiteSpace(App.config.MainConfig.User.LockAuthName) == false)
+            else if (string.IsNullOrWhiteSpace(App.Config.MainConfig.User.LockAuthName) == false)
             {
                 AuthenticationNode node = GetSelectedAuthenticationNode();
                 if (string.IsNullOrWhiteSpace(node.RegisteAddress) == true)
@@ -261,7 +261,7 @@ namespace NsisoLauncher.Controls
             new SettingWindow().ShowDialog();
             Refresh();
             ((MainWindow)Window.GetWindow(this)).CustomizeRefresh();
-            App.lan();
+            App.Lauguage();
             APP_Color();
         }
 
@@ -280,8 +280,8 @@ namespace NsisoLauncher.Controls
             {
                 return;
             }
-            if ((App.config.MainConfig.History.SelectedUserNodeID != null) &&
-                    (App.config.MainConfig.User.UserDatabase.ContainsKey(App.config.MainConfig.History.SelectedUserNodeID)))
+            if ((App.Config.MainConfig.History.SelectedUserNodeID != null) &&
+                    (App.Config.MainConfig.User.UserDatabase.ContainsKey(App.Config.MainConfig.History.SelectedUserNodeID)))
             {
                 if (node1 != null && node1.AuthType != AuthenticationType.OFFLINE && node != null && node.AuthModule == "offline")
                 {

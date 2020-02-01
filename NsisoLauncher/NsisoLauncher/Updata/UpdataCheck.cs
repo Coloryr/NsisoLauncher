@@ -18,7 +18,7 @@ namespace NsisoLauncher.Updata
         /// </summary>
         public async Task<UpdataCheck> Check()
         {
-            string Url = App.config.MainConfig.Server.Updata_Check.Address;
+            string Url = App.Config.MainConfig.Server.Updata_Check.Address;
             try
             {
                 var res = await APIRequester.HttpGetAsync(Url);
@@ -26,9 +26,9 @@ namespace NsisoLauncher.Updata
                 {
                     JObject json = JObject.Parse(await res.Content.ReadAsStringAsync());
                     updata_obj = json.ToObject<updata_obj>();
-                    if (string.IsNullOrWhiteSpace(App.config.MainConfig.Server.Updata_Check.packname))
+                    if (string.IsNullOrWhiteSpace(App.Config.MainConfig.Server.Updata_Check.packname))
                         return this;
-                    else if (App.config.MainConfig.Server.Updata_Check.Vision != updata_obj.Version)
+                    else if (App.Config.MainConfig.Server.Updata_Check.Vision != updata_obj.Version)
                         return this;
                     else
                         return null;
@@ -48,12 +48,12 @@ namespace NsisoLauncher.Updata
             {
                 try
                 {
-                    var local_mods = await new ModCheck().ReadModInfo(App.handler.GameRootPath);
+                    var local_mods = await new ModCheck().ReadModInfo(App.Handler.GameRootPath);
                     foreach (KeyValuePair<string, updata_item> th in updata_obj.mods)
                     {
                         if (th.Value.function == "delete")
                         {
-                            FileInfo file = new FileInfo(App.handler.GameRootPath + @"\mods\" + th.Value.filename);
+                            FileInfo file = new FileInfo(App.Handler.GameRootPath + @"\mods\" + th.Value.filename);
                             if (file.Exists)
                             {
                                 file.Delete();
@@ -65,23 +65,23 @@ namespace NsisoLauncher.Updata
                             if (!string.Equals(lo.check, th.Value.check, StringComparison.OrdinalIgnoreCase))
                             {
                                 File.Delete(lo.local);
-                                task.Add(new DownloadTask("更新Mod", th.Value.url, App.handler.GameRootPath + @"\mods\" + th.Value.filename));
+                                task.Add(new DownloadTask("更新Mod", th.Value.url, App.Handler.GameRootPath + @"\mods\" + th.Value.filename));
                             }
                         }
                         else
                         {
-                            task.Add(new DownloadTask("缺失Mod", th.Value.url, App.handler.GameRootPath + @"\mods\" + th.Value.filename));
+                            task.Add(new DownloadTask("缺失Mod", th.Value.url, App.Handler.GameRootPath + @"\mods\" + th.Value.filename));
                         }
                     }
                 }
                 catch (Exception e)
                 {
-                    App.logHandler.AppendFatal(e);
+                    App.LogHandler.AppendFatal(e);
                 }
             }
             if (updata_obj.scripts.Count != 0)
             {
-                var local_scripts = await new ScriptsCheck().ReadscriptsInfo(App.handler.GameRootPath);
+                var local_scripts = await new ScriptsCheck().ReadscriptsInfo(App.Handler.GameRootPath);
                 foreach (updata_item th in updata_obj.scripts)
                 { 
                     if(local_scripts.ContainsKey(th.name))
@@ -94,13 +94,13 @@ namespace NsisoLauncher.Updata
                         else
                         {
                             File.Delete(lo.local);
-                            task.Add(new DownloadTask("更新魔改", th.url, App.handler.GameRootPath + @"\scripts\" + th.filename));
+                            task.Add(new DownloadTask("更新魔改", th.url, App.Handler.GameRootPath + @"\scripts\" + th.filename));
                             local_scripts.Remove(th.name);
                         }
                     }
                     else
                     {
-                        task.Add(new DownloadTask("缺失魔改", th.url, App.handler.GameRootPath + @"\scripts\" + th.filename));
+                        task.Add(new DownloadTask("缺失魔改", th.url, App.Handler.GameRootPath + @"\scripts\" + th.filename));
                     }
                 }
                 if(local_scripts.Count!=0)
@@ -113,7 +113,7 @@ namespace NsisoLauncher.Updata
             }
             if (updata_obj.resourcepacks.Count != 0)
             {
-                var local_resourcepacks = await new ResourcepacksCheck().ReadresourcepacksInfo(App.handler.GameRootPath);
+                var local_resourcepacks = await new ResourcepacksCheck().ReadresourcepacksInfo(App.Handler.GameRootPath);
                 foreach (updata_item th in updata_obj.resourcepacks)
                 {
                     if (local_resourcepacks.ContainsKey(th.name))
@@ -126,14 +126,14 @@ namespace NsisoLauncher.Updata
                         else
                         {
                             File.Delete(lo.local);
-                            task.Add(new DownloadTask("更新材质", th.url, App.handler.GameRootPath + @"\resourcepacks\" + th.filename));
+                            task.Add(new DownloadTask("更新材质", th.url, App.Handler.GameRootPath + @"\resourcepacks\" + th.filename));
                             updata_obj.scripts.Remove(th);
                             local_resourcepacks.Remove(th.name);
                         }
                     }
                     else
                     {
-                        task.Add(new DownloadTask("缺失材质", th.url, App.handler.GameRootPath + @"\resourcepacks\" + th.filename));
+                        task.Add(new DownloadTask("缺失材质", th.url, App.Handler.GameRootPath + @"\resourcepacks\" + th.filename));
                     }
                 }
             }
@@ -142,7 +142,7 @@ namespace NsisoLauncher.Updata
                 foreach (updata_item th in updata_obj.config)
                 {
                     pack.pack_list.Add(th.filename);
-                    task.Add(new DownloadTask("更新配置", th.url, App.handler.GameRootPath + @"\" + th.filename));
+                    task.Add(new DownloadTask("更新配置", th.url, App.Handler.GameRootPath + @"\" + th.filename));
                 }
             }
 

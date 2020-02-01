@@ -8,9 +8,9 @@ namespace NsisoLauncher.Utils
         {
             try
             {
-                if (App.config.MainConfig.Customize.AccentColor == null)
+                if (App.Config.MainConfig.Customize.AccentColor == null)
                     return new SolidColorBrush((Color)ColorConverter.ConvertFromString("#AF3F5966"));
-                switch (App.config.MainConfig.Customize.AccentColor)
+                switch (App.Config.MainConfig.Customize.AccentColor)
                 {
                     case "Red":
                         return new SolidColorBrush((Color)ColorConverter.ConvertFromString("#3CBE1707"));
