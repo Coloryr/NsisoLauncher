@@ -139,6 +139,17 @@
     <sys:String x:Key="String.NewDownloadTaskWindow.LiteloaderListFail.Text">请检查您的网络是否正常或稍后再试</sys:String>
     <sys:String x:Key="String.NewDownloadTaskWindow.LiteloaderListNull.Title">没有匹配该版本的Liteloader</sys:String>
     <sys:String x:Key="String.NewDownloadTaskWindow.LiteloaderListNull.Text">貌似没有支持这个版本的Liteloader，请尝试更换另一个版本</sys:String>
+    <sys:String x:Key="String.NewDownloadTaskWindow.ModPack">导入整合包</sys:String>
+    <sys:String x:Key="String.NewDownloadTaskWindow.ModPack.Note">注：只能识别标准的Curseforge整合包</sys:String>
+    <sys:String x:Key="String.NewDownloadTaskWindow.ModPack.Error.Title">无法安装整合包</sys:String>
+    <sys:String x:Key="String.NewDownloadTaskWindow.ModPack.Error.Text">整合包解析出现问题</sys:String>
+    <sys:String x:Key="String.NewDownloadTaskWindow.ModPack.Title">是否确认安装整合包</sys:String>
+    <sys:String x:Key="String.NewDownloadTaskWindow.ModPack.Text">这可能会覆盖游戏文件夹</sys:String>
+    <sys:String x:Key="String.NewDownloadTaskWindow.ModPack.Title2">正在处理整合包</sys:String>
+    <sys:String x:Key="String.NewDownloadTaskWindow.ModPack.Text2">处理完成后会下载所需文件</sys:String>
+    <sys:String x:Key="String.NewDownloadTaskWindow.ModPack.Select">选择本地整合包</sys:String>
+    <sys:String x:Key="String.NewDownloadTaskWindow.ModPack.Select.Button">选择</sys:String>
+    <sys:String x:Key="String.NewDownloadTaskWindow.ModPack.Select.Read">导入</sys:String>
     <sys:String x:Key="String.NewDownloadTaskWindow.Type.release">1-正式版(Release)</sys:String>
     <sys:String x:Key="String.NewDownloadTaskWindow.Type.snapshot">2-版本快照(snapshot)</sys:String>
     <sys:String x:Key="String.NewDownloadTaskWindow.Type.old_alpha">3-旧alpha版本(old_alpha)</sys:String>
@@ -218,7 +229,7 @@
     <sys:String x:Key="String.Settingwindow.Download.Source">首选下载源</sys:String>
     <sys:String x:Key="String.Settingwindow.Download.Source.Mojang">Mojang官方</sys:String>
     <sys:String x:Key="String.Settingwindow.Download.Source.BMCLAPI">BMCLAPI (bangbang93's minecraft launcher api)</sys:String>
-    <sys:String x:Key="String.Settingwindow.Download.Source.Note">*选择的是首选下载源，部分功能仍依赖于独立下载源。在此感谢BMCLAPI提供大量功能</sys:String>
+    <sys:String x:Key="String.Settingwindow.Download.Source.MCBBS">MCBBS源</sys:String>
     <sys:String x:Key="String.Settingwindow.Download.Thread">下载线程设置</sys:String>
     <sys:String x:Key="String.Settingwindow.Download.Thread.Num">下载线程数量(最大10):</sys:String>
     <sys:String x:Key="String.Settingwindow.Download.Proxy">下载代理</sys:String>

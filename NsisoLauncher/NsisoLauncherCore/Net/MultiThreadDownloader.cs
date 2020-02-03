@@ -168,7 +168,6 @@ namespace NsisoLauncherCore.Net
                     _threads = new Thread[ProcessorSize];
                     _timer.Start();
 
-                    #region 新建工作线程
                     for (int i = 0; i < ProcessorSize; i++)
                     {
                         _threads[i] = new Thread(() =>
@@ -178,9 +177,7 @@ namespace NsisoLauncherCore.Net
                         _threads[i].Name = string.Format("下载线程{0}号", i);
                         _threads[i].Start();
                     }
-                    #endregion
 
-                    #region 监视线程
                     var checkThread = new Thread(() =>
                     {
                         try
@@ -203,7 +200,6 @@ namespace NsisoLauncherCore.Net
                     });
                     checkThread.Name = "下载监视线程";
                     checkThread.Start();
-                    #endregion
                 }
             }
             catch (Exception ex)

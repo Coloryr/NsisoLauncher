@@ -44,8 +44,12 @@ namespace NsisoLauncherCore.Net.FunctionAPI
         public async Task<List<JWVersion>> GetVersionList()
         {
             string json = await APIRequester.HttpGetStringAsync(VersionListURL);
-            var e = JsonConvert.DeserializeObject<JWVersions>(json);
-            return e.Versions;
+            if (json != null)
+            {
+                var e = JsonConvert.DeserializeObject<JWVersions>(json);
+                return e.Versions;
+            }
+            return null;
         }
 
         /// <summary>

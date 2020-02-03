@@ -187,7 +187,9 @@
                                 <RadioButton Content="{DynamicResource String.Settingwindow.Download.Source.BMCLAPI}"
                                              IsChecked="{Binding Download.DownloadSource,
                                     Converter={StaticResource SettingDownloadRadioButtonConverter},ConverterParameter=1}" Margin="0,0,0,5"/>
-                                <Label Content="{DynamicResource String.Settingwindow.Download.Source.Note}"/>
+                                <RadioButton Content="{DynamicResource String.Settingwindow.Download.Source.MCBBS}"
+                                             IsChecked="{Binding Download.DownloadSource,
+                                    Converter={StaticResource SettingDownloadRadioButtonConverter},ConverterParameter=2}" Margin="0,0,0,5"/>
                             </StackPanel>
                         </Expander>
                         <Expander Header="{DynamicResource String.Settingwindow.Download.Thread}" Margin="0,0,0,5">

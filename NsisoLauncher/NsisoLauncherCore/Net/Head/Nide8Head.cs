@@ -112,7 +112,7 @@ namespace NsisoLauncherCore.Net.Head
                 }
             }
             catch { }
-            return new BitmapImage(new Uri("/NsisoLauncher;component/Resource/Steve.jpg"));
+            return new BitmapImage(new Uri("pack://application:,,,/Resource/Steve.jpg"));
         }
     }
 }

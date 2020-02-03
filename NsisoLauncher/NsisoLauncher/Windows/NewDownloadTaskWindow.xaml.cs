@@ -1,5 +1,6 @@
 ﻿using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
+using NsisoLauncher.ModPack;
 using NsisoLauncherCore.Net;
 using NsisoLauncherCore.Net.FunctionAPI;
 using NsisoLauncherCore.Util.Installer;
@@ -13,6 +14,7 @@ using System.Net;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
+using System.Windows.Forms;
 using static NsisoLauncherCore.Net.FunctionAPI.APIModules;
 using Version = NsisoLauncherCore.Modules.Version;
 
@@ -26,6 +28,8 @@ namespace NsisoLauncher.Windows
         ObservableCollection<JWVersion> verList = new ObservableCollection<JWVersion>();
         ObservableCollection<JWForge> forgeList = new ObservableCollection<JWForge>();
         ObservableCollection<JWLiteloader> liteloaderList = new ObservableCollection<JWLiteloader>();
+
+        public string Local { get; set; }
 
         private FunctionAPIHandler apiHandler;
 
@@ -43,6 +47,7 @@ namespace NsisoLauncher.Windows
             vwF.SortDescriptions.Add(new SortDescription("Version", ListSortDirection.Descending));
             if (res == true)
                 RefreshVerButton_Click(null, null);
+            DataContext = this;
         }
 
         private async void MetroWindow_Loaded(object sender, RoutedEventArgs e)
@@ -70,7 +75,7 @@ namespace NsisoLauncher.Windows
             verList.Clear();
             if (result == null)
             {
-                await this.ShowProgressAsync(App.GetResourceString("String.NewDownloadTaskWindow.GetList.Title"),
+                await this.ShowMessageAsync(App.GetResourceString("String.NewDownloadTaskWindow.GetList.Title"),
                 App.GetResourceString("String.NewDownloadTaskWindow.GetList.Text"));
             }
             else
@@ -365,6 +370,54 @@ namespace NsisoLauncher.Windows
         private void VerToInstallLiteComboBox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
             RefreshLiteloader();
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Title = App.GetResourceString("String.NewDownloadTaskWindow.ModPack.Select");
+            openFileDialog.DefaultExt = "整合包|*.zip";
+            openFileDialog.RestoreDirectory = true;
+
+
+            if (openFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                Local_T.Text = openFileDialog.FileName;
+                Local = openFileDialog.FileName;
+            }
+        }
+
+        private async void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            var res = await this.ShowMessageAsync(App.GetResourceString("String.NewDownloadTaskWindow.ModPack.Title"),
+                App.GetResourceString("String.NewDownloadTaskWindow.ModPack.Text"), MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings()
+                {
+                    AffirmativeButtonText = App.GetResourceString("String.Base.Yes"),
+                    NegativeButtonText = App.GetResourceString("String.Base.Cancel"),
+                    DefaultButtonFocus = MessageDialogResult.Affirmative
+                });
+            if (res == MessageDialogResult.Affirmative)
+            {
+                var loading = await this.ShowProgressAsync(App.GetResourceString("String.NewDownloadTaskWindow.ModPack.Title2"),
+                App.GetResourceString("String.NewDownloadTaskWindow.ModPack.Text2"));
+                loading.SetIndeterminate();
+
+                CheckModPack CheckModPack = new CheckModPack(loading);
+                var res1 = await CheckModPack.Check(Local);
+                if (res1 == null)
+                {
+                    await this.ShowMessageAsync(App.GetResourceString("String.NewDownloadTaskWindow.ModPack.Error.Title"),
+                App.GetResourceString("String.NewDownloadTaskWindow.ModPack.Error.Text"));
+                }
+                else
+                {
+                    App.Downloader.SetDownloadTasks(res1);
+                    App.Downloader.StartDownload();
+                }
+
+                await loading.CloseAsync();
+                this.Close();
+            }
         }
     }
 }

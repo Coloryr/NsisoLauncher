@@ -35,12 +35,14 @@
                 </Grid>
             </TabItem>
             <TabItem Header="{DynamicResource String.NewDownloadTaskWindow.Forge}" >
-                <Grid >
-                    <Label Content="{DynamicResource String.NewDownloadTaskWindow.Chose.Forge}" Margin="10,10,0,0" HorizontalAlignment="Left" Width="130" VerticalAlignment="Top"/>
-                    <ComboBox x:Name="verToInstallForgeComboBox" HorizontalAlignment="Left" Margin="140,10,0,0" VerticalAlignment="Top" Width="300" DisplayMemberPath="ID" SelectionChanged="VerToInstallForgeComboBox_SelectionChanged"/>
-                    <DataGrid x:Name="forgeListDataGrid" Margin="10,42,10,43" 
+                <Grid>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="{DynamicResource String.NewDownloadTaskWindow.Chose.Forge}" Margin="10,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                        <ComboBox x:Name="verToInstallForgeComboBox" HorizontalAlignment="Left" Margin="5,9,0,0" VerticalAlignment="Top" Width="300" DisplayMemberPath="ID" SelectionChanged="VerToInstallForgeComboBox_SelectionChanged"/>
+                    </StackPanel>
+                    <DataGrid x:Name="forgeListDataGrid" Margin="10,5,10,5" 
                               AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False"
-                              SelectionMode="Single">
+                              SelectionMode="Single" Height="292">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="{DynamicResource String.NewDownloadTaskWindow.Version.Forge}" Binding="{Binding Path=Version}"
                                                 IsReadOnly="True"/>
@@ -57,11 +59,14 @@
                             Margin="10,0,0,10" Style="{DynamicResource SquareButtonStyle}" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="70" Click="RefreshForgeButton_Click"/>
                 </Grid>
             </TabItem>
-            <TabItem Header="{DynamicResource String.NewDownloadTaskWindow.Liteloader}" IsEnabled="False">
+            <TabItem Header="{DynamicResource String.NewDownloadTaskWindow.Liteloader}">
                 <Grid>
-                    <Label Content="{DynamicResource String.NewDownloadTaskWindow.Chose.Liteloader}" Margin="10,10,0,0" HorizontalAlignment="Left" Width="150" VerticalAlignment="Top"/>
-                    <ComboBox x:Name="verToInstallLiteComboBox" HorizontalAlignment="Left" Margin="165,10,0,0" VerticalAlignment="Top" Width="300" DisplayMemberPath="ID" SelectionChanged="VerToInstallLiteComboBox_SelectionChanged"/>
-                    <DataGrid x:Name="liteloaderListDataGrid" Margin="10,42,10,43" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" SelectionMode="Single">
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="{DynamicResource String.NewDownloadTaskWindow.Chose.Liteloader}" Margin="10,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                        <ComboBox x:Name="verToInstallLiteComboBox" HorizontalAlignment="Left" Margin="5,9,0,0" VerticalAlignment="Top" Width="300" DisplayMemberPath="ID" SelectionChanged="VerToInstallLiteComboBox_SelectionChanged"/>
+                    </StackPanel>
+                    <DataGrid x:Name="liteloaderListDataGrid" Margin="10,42,10,43" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" SelectionMode="Single"
+                              Height="292">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="{DynamicResource String.NewDownloadTaskWindow.Version.Liteloader}" Binding="{Binding Path=Version}" IsReadOnly="True"/>
                         </DataGrid.Columns>
@@ -73,6 +78,20 @@
                             Margin="0,0,10,10" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="131" Style="{StaticResource AccentedSquareButtonStyle}" Click="DownloadLiteloaderButton_Click"/>
                     <Button Content="{DynamicResource String.NewDownloadTaskWindow.Version.Refresh}"
                             Margin="10,0,0,10" Style="{DynamicResource SquareButtonStyle}" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="70" Click="RefresLiteButton_Click"/>
+                </Grid>
+            </TabItem>
+            <TabItem Header="{DynamicResource String.NewDownloadTaskWindow.ModPack}">
+                <Grid>
+                    <StackPanel Orientation="Horizontal">
+                    
+                    <Label Content="{DynamicResource String.NewDownloadTaskWindow.ModPack.Select}" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
+                    <TextBox HorizontalAlignment="Left" Margin="5,10,0,0" TextWrapping="Wrap" Text="{Binding Local}" VerticalAlignment="Top" Width="600" Name="Local_T"/>
+                        <Button Content="{DynamicResource String.NewDownloadTaskWindow.ModPack.Select.Button}" HorizontalAlignment="Left" 
+                            Style="{DynamicResource SquareButtonStyle}" Margin="5,10,0,0" VerticalAlignment="Top" Width="68" Click="Button_Click"/>
+                    </StackPanel>
+                    <Label Content="{DynamicResource String.NewDownloadTaskWindow.ModPack.Note}" HorizontalAlignment="Left" Margin="10,47,0,0" VerticalAlignment="Top"/>
+                    <Button Content="{DynamicResource String.NewDownloadTaskWindow.ModPack.Select.Read}" HorizontalAlignment="Left" 
+                            Style="{DynamicResource SquareButtonStyle}" Margin="714,47,0,0" VerticalAlignment="Top" Width="68" Click="Button_Click_1"/>
                 </Grid>
             </TabItem>
         </TabControl>

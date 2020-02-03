@@ -733,7 +733,7 @@ namespace NsisoLauncher
                         }
                         else
                         {
-                            if (await pack.pack())
+                            if (await pack?.pack())
                             {
                                 App.Config.MainConfig.Server.Updata_Check.packname = packname;
                                 App.Config.MainConfig.Server.Updata_Check.Vision = vision;
