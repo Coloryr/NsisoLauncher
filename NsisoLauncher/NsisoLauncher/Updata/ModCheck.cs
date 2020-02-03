@@ -1,6 +1,5 @@
 ﻿using ICSharpCode.SharpZipLib.Zip;
 using Newtonsoft.Json.Linq;
-using NsisoLauncher;
 using NsisoLauncherCore.Util.Checker;
 using System;
 using System.Collections.Generic;
@@ -101,7 +100,7 @@ namespace NsisoLauncher.Updata
                 }
                 catch
                 {
-                    
+
                 }
             a:
                 if (string.IsNullOrWhiteSpace(mod.name))

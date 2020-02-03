@@ -171,22 +171,22 @@ namespace NsisoLauncher.Config
                     ClientToken = Guid.NewGuid().ToString("N"),
                     UserDatabase = new Dictionary<string, UserNode>(),
                     AuthenticationDic = new Dictionary<string, AuthenticationNode>()
-                    { 
+                    {
                         {
-                            "offline", 
+                            "offline",
                             new AuthenticationNode()
                             {
-                                AuthType = AuthenticationType.OFFLINE, 
+                                AuthType = AuthenticationType.OFFLINE,
                                 Name="离线验证"
-                            } 
+                            }
                         },
                         {
-                            "online", 
+                            "online",
                             new AuthenticationNode()
                             {
-                                AuthType = AuthenticationType.MOJANG, 
+                                AuthType = AuthenticationType.MOJANG,
                                 Name="正版验证"
-                            } 
+                            }
                         }
                     }
                 },
@@ -201,9 +201,9 @@ namespace NsisoLauncher.Config
                     GCEnabled = true,
                     GCType = NsisoLauncherCore.Modules.GCType.G1GC,
                     AutoJava = true,
-                    WindowSize = new NsisoLauncherCore.Modules.WindowSize() 
-                    { 
-                        FullScreen = false 
+                    WindowSize = new NsisoLauncherCore.Modules.WindowSize()
+                    {
+                        FullScreen = false
                     },
                     ExitAfterLaunch = false
                 },

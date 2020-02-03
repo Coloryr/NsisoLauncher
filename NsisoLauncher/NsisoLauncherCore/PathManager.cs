@@ -29,7 +29,7 @@ namespace NsisoLauncherCore
             {
                 if (string.IsNullOrWhiteSpace(_baseStorageDirectory))
                 {
-                    _baseStorageDirectory = CurrentLauncherDirectory + '\\' + LauncherName;
+                    _baseStorageDirectory = CurrentLauncherDirectory + '\\' + "Download";
                 }
                 return _baseStorageDirectory;
             }
@@ -39,7 +39,7 @@ namespace NsisoLauncherCore
             }
         }
 
-        public static string TempDirectory { get => BaseStorageDirectory + "\\temp"; }
+        public static string TempDirectory { get => BaseStorageDirectory; }
 
         #region 启动器路径处理
         /// <summary>

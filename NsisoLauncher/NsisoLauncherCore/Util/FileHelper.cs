@@ -189,7 +189,7 @@ namespace NsisoLauncherCore.Util
             string assetsPath = core.GetAssetsIndexPath(ver.Assets);
             if (!File.Exists(assetsPath))
             {
-                return (ver.AssetIndex != null);
+                return true;
             }
             else
             {
@@ -203,12 +203,6 @@ namespace NsisoLauncherCore.Util
         #endregion
 
         #region 丢失依赖文件帮助
-        //作者觉得使用这个方法判断是否丢失文件不如直接根据GetLostDependDownloadTask方法返回的列表的Count数来判断
-        //毕竟这种方法大部分用在启动前判断是否丢失文件，但是如果丢失还是要获取一次列表，效率并没怎样优化
-        //public static bool IsLostAnyDependent(LaunchHandler core, Version version)
-        //{
-        //    return IsLostJarCore(core, version) || IsLostAnyLibs(core, version) || IsLostAnyNatives(core, version);
-        //}
 
         /// <summary>
         /// 获取全部丢失的文件下载任务

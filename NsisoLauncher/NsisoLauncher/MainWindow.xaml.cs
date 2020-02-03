@@ -96,7 +96,7 @@ namespace NsisoLauncher
                 volumeButton.Visibility = Visibility.Visible;
                 mediaElement.Visibility = Visibility.Visible;
                 mediaElement.Play();
-                mediaElement.Volume = (double) App.Config.MainConfig.Customize.CustomBackGroundSound / 100;
+                mediaElement.Volume = (double)App.Config.MainConfig.Customize.CustomBackGroundSound / 100;
             }
             catch (Exception) { }
         }
@@ -124,7 +124,7 @@ namespace NsisoLauncher
                     now = 0;
                 mediaElement.Source = new Uri(mp4_file[now]);
             }
-            else if(App.Config.MainConfig.Customize.CustomBackGroundMusic_Cyclic == true)
+            else if (App.Config.MainConfig.Customize.CustomBackGroundMusic_Cyclic == true)
             {
                 now++;
                 if (now >= mp3_file.Length)
@@ -507,7 +507,7 @@ namespace NsisoLauncher
                 //如果验证方式不是离线验证
                 if (args.AuthNode.AuthType != AuthenticationType.OFFLINE)
                 {
-                    if(authenticator == null)
+                    if (authenticator == null)
                     {
                         await this.ShowMessageAsync(App.GetResourceString("String.Mainwindow.Auth.Error.Login_Error"),
                             App.GetResourceString("String.Mainwindow.Auth.Error.Null"));
@@ -646,7 +646,7 @@ namespace NsisoLauncher
 
                 }
 
-                if (App.Config.MainConfig.Environment.DownloadLostAssets && 
+                if (App.Config.MainConfig.Environment.DownloadLostAssets &&
                     (await FileHelper.IsLostAssetsAsync(App.Config.MainConfig.Download.DownloadSource,
                     App.Handler, launchSetting.Version)))
                 {
@@ -734,7 +734,7 @@ namespace NsisoLauncher
                         }
                         else
                         {
-                            if (pack!=null && await pack?.pack())
+                            if (pack != null && await pack?.pack())
                             {
                                 App.Config.MainConfig.Server.Updata_Check.packname = packname;
                                 App.Config.MainConfig.Server.Updata_Check.Vision = vision;
@@ -790,10 +790,10 @@ namespace NsisoLauncher
                 }
                 else if (App.Config.MainConfig.Server.LaunchToServer)
                 {
-                    launchSetting.LaunchToServer = new NsisoLauncherCore.Modules.Server() 
-                    { 
-                        Address = App.Config.MainConfig.Server.Address, 
-                        Port = App.Config.MainConfig.Server.Port 
+                    launchSetting.LaunchToServer = new NsisoLauncherCore.Modules.Server()
+                    {
+                        Address = App.Config.MainConfig.Server.Address,
+                        Port = App.Config.MainConfig.Server.Port
                     };
                 }
 

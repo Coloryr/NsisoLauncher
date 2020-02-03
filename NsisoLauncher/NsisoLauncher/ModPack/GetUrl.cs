@@ -1,6 +1,5 @@
 ﻿using MahApps.Metro.Controls.Dialogs;
 using Newtonsoft.Json.Linq;
-using NsisoLauncherCore.Net;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -59,7 +58,7 @@ namespace NsisoLauncher.ModPack
         private string base_url = @"https://addons-ecs.forgesvc.net/api/v2/addon/{0}/file/{1}";
         public async Task<List<GetUrlRes>> get_urlAsync(List<FilesItem> mods)
         {
-            
+
             List<GetUrlRes> list = new List<GetUrlRes>();
 
             HttpClient client = new HttpClient();

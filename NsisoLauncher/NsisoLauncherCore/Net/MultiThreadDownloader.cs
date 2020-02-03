@@ -377,7 +377,7 @@ namespace NsisoLauncherCore.Net
         {
             byte[] bArr = new byte[1024];
             long nowlength = 0;
-            int size = responseStream.Read(bArr, 0, (int)bArr.Length);
+            int size = responseStream.Read(bArr, 0, bArr.Length);
             nowlength += size;
             while (size > 0)
             {
@@ -390,11 +390,12 @@ namespace NsisoLauncherCore.Net
                     return true;
                 }
                 fs.Write(bArr, 0, size);
-                size = responseStream.Read(bArr, 0, (int)bArr.Length);
+                size = responseStream.Read(bArr, 0, bArr.Length);
                 nowlength += size;
+                _downloadSizePerSec += size;
                 task.IncreaseDownloadSize(size);
             }
-           
+
             fs.Close();
             responseStream.Close();
 

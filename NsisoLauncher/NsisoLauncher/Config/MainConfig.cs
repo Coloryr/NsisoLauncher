@@ -305,7 +305,7 @@ namespace NsisoLauncher.Config
         /// 代理服务器密码
         /// </summary>
         public string ProxyUserPassword { get; set; }
-        
+
         /// <summary>
         /// 下载后是否检查哈希值（前提为可用）
         /// </summary>
@@ -375,7 +375,7 @@ namespace NsisoLauncher.Config
     }
 
     public class Updata_Check
-    { 
+    {
         /// <summary>
         /// 启用资源检查
         /// </summary>

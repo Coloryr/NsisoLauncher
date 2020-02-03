@@ -61,7 +61,7 @@ namespace NsisoLauncher.Updata
                         }
                         else if (local_mods.ContainsKey(th.Key))
                         {
-                            updata_item lo = local_mods[th.Value.name]; 
+                            updata_item lo = local_mods[th.Value.name];
                             if (!string.Equals(lo.check, th.Value.check, StringComparison.OrdinalIgnoreCase))
                             {
                                 File.Delete(lo.local);
@@ -83,8 +83,8 @@ namespace NsisoLauncher.Updata
             {
                 var local_scripts = await new ScriptsCheck().ReadscriptsInfo(App.Handler.GameRootPath);
                 foreach (updata_item th in updata_obj.scripts)
-                { 
-                    if(local_scripts.ContainsKey(th.name))
+                {
+                    if (local_scripts.ContainsKey(th.name))
                     {
                         updata_item lo = local_scripts[th.name];
                         if (string.Equals(lo.check, th.check, StringComparison.OrdinalIgnoreCase))
@@ -103,7 +103,7 @@ namespace NsisoLauncher.Updata
                         task.Add(new DownloadTask("缺失魔改", th.url, App.Handler.GameRootPath + @"\scripts\" + th.filename));
                     }
                 }
-                if(local_scripts.Count!=0)
+                if (local_scripts.Count != 0)
                 {
                     foreach (updata_item lo in local_scripts.Values)
                     {

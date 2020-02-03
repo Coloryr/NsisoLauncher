@@ -1,5 +1,4 @@
-﻿using LiveCharts;
-using MahApps.Metro.Controls;
+﻿using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
 using Microsoft.WindowsAPICodePack.Taskbar;
 using NsisoLauncherCore.Net;
@@ -28,7 +27,7 @@ namespace NsisoLauncher.Windows
             App.Downloader.DownloadSpeedChanged += Downloader_DownloadSpeedChanged;
             App.Downloader.DownloadCompleted += Downloader_DownloadCompleted;
             Refresh();
-            if(auto)
+            if (auto)
                 time = new Timer(new TimerCallback(Time), null, 100, -1);
         }
 

@@ -60,7 +60,7 @@ namespace NsisoLauncherCore.Util
                             default:
                                 return null;
                         }
-                        
+
                         if (!File.Exists(Path))
                         {
                             return null;

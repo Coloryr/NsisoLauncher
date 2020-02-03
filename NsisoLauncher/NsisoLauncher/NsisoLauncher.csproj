@@ -98,6 +98,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="ModPack\CheckModPack.cs" />
+    <Compile Include="ModPack\GetForge.cs" />
     <Compile Include="ModPack\GetUrl.cs" />
     <Compile Include="ModPack\manifestObj.cs" />
     <Compile Include="Utils\BrushColor.cs" />

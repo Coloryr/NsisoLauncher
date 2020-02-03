@@ -117,7 +117,8 @@ namespace NsisoLauncher.Controls
         /// <param name="icon"></param>  
         /// <returns></returns>  
         private static ImageSource ChangeBitmapToImageSource(Bitmap bitmap)
-        {;  
+        {
+            ;
             IntPtr hBitmap = bitmap.GetHbitmap();
 
             ImageSource wpfBitmap = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(

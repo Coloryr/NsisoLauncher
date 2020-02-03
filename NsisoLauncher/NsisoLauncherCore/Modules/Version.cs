@@ -183,7 +183,7 @@ namespace NsisoLauncherCore.Modules
         /// 下载URL
         /// </summary>
         public string Url { get; set; }
-        
+
         /// <summary>
         /// 库文件下载信息
         /// </summary>
@@ -201,7 +201,7 @@ namespace NsisoLauncherCore.Modules
         /// 不解压的文件夹
         /// </summary>
         public List<string> Exclude { get; set; }
-        
+
         /// <summary>
         /// native文件下载信息
         /// </summary>
@@ -266,7 +266,7 @@ namespace NsisoLauncherCore.Modules
         [JsonProperty("url")]
         public string URL { get; set; }
     }
-    
+
     /// <summary>
     /// 基本要素类
     /// </summary>

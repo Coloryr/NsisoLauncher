@@ -54,7 +54,7 @@ namespace NsisoLauncherCore.Util.Installer
         public void BeginInstall()
         {
             string gameRootPath = ((CommonInstallOptions)Options).GameRootPath;
-            string tempPath = PathManager.TempDirectory + "\\CommonInstallerTemp";
+            string tempPath = PathManager.TempDirectory;
             if (Directory.Exists(tempPath))
             {
                 Directory.Delete(tempPath, true);
