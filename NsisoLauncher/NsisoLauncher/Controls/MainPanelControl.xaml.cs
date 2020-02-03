@@ -65,11 +65,6 @@ namespace NsisoLauncher.Controls
             {
                 //更新验证模型列表
                 AuthNodeList.Clear();
-                AuthNodeList.Add(new KeyValuePair<string, AuthenticationNode>("offline", new AuthenticationNode()
-                {
-                    AuthType = AuthenticationType.OFFLINE,
-                    Name = App.GetResourceString("String.Mainwindow.Auth.Offline")
-                }));
                 if (App.Config.MainConfig.User.AuthenticationDic != null)
                     foreach (var item in App.Config.MainConfig.User.AuthenticationDic)
                     {
