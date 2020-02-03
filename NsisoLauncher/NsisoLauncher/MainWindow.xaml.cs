@@ -646,7 +646,8 @@ namespace NsisoLauncher
 
                 }
 
-                if (App.Config.MainConfig.Environment.DownloadLostAssets && (await FileHelper.IsLostAssetsAsync(App.Config.MainConfig.Download.DownloadSource,
+                if (App.Config.MainConfig.Environment.DownloadLostAssets && 
+                    (await FileHelper.IsLostAssetsAsync(App.Config.MainConfig.Download.DownloadSource,
                     App.Handler, launchSetting.Version)))
                 {
                     MessageDialogResult downDependResult = await this.ShowMessageAsync(App.GetResourceString("String.Mainwindow.NeedDownloadAssets"),
@@ -733,7 +734,7 @@ namespace NsisoLauncher
                         }
                         else
                         {
-                            if (await pack?.pack())
+                            if (pack!=null && await pack?.pack())
                             {
                                 App.Config.MainConfig.Server.Updata_Check.packname = packname;
                                 App.Config.MainConfig.Server.Updata_Check.Vision = vision;

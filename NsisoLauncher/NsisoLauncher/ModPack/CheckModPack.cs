@@ -73,25 +73,28 @@ namespace NsisoLauncher.ModPack
                     else
                         try
                         {
-                            string directoryName = "";
-                            string pathToZip = theEntry.Name;
-                            if (!string.IsNullOrWhiteSpace(pathToZip))
-                                directoryName = Path.GetDirectoryName(pathToZip).Replace("overrides", "") + "\\";
-                            string fileName = Path.GetFileName(pathToZip);
-                            Directory.CreateDirectory(strDirectory + directoryName);
-                            if (!string.IsNullOrWhiteSpace(fileName))
+                            await Task.Factory.StartNew(() =>
                             {
-                                FileStream streamWriter = File.Create(strDirectory + directoryName + fileName);
-                                int size = 1024 * 512;
-                                byte[] data = new byte[1024 * 512];
-                                while (size > 0)
+                                string directoryName = "";
+                                string pathToZip = theEntry.Name;
+                                if (!string.IsNullOrWhiteSpace(pathToZip))
+                                    directoryName = Path.GetDirectoryName(pathToZip).Replace("overrides", "") + "\\";
+                                string fileName = Path.GetFileName(pathToZip);
+                                Directory.CreateDirectory(strDirectory + directoryName);
+                                if (!string.IsNullOrWhiteSpace(fileName))
                                 {
-                                    size = zip.Read(data, 0, data.Length);
-                                    if (size > 0)
-                                        streamWriter.Write(data, 0, size);
+                                    FileStream streamWriter = File.Create(strDirectory + directoryName + fileName);
+                                    int size = 1024 * 512;
+                                    byte[] data = new byte[1024 * 512];
+                                    while (size > 0)
+                                    {
+                                        size = zip.Read(data, 0, data.Length);
+                                        if (size > 0)
+                                            streamWriter.Write(data, 0, size);
+                                    }
+                                    streamWriter.Close();
                                 }
-                                streamWriter.Close();
-                            }
+                            });
                         }
                         catch
                         {

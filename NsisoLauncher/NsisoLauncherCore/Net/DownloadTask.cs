@@ -38,8 +38,6 @@ namespace NsisoLauncherCore.Net
         /// </summary>
         public IChecker Checker { get; set; }
 
-        #region 界面绑定属性
-
         private long _totalSize = 1;
         /// <summary>
         /// 文件总大小
@@ -82,9 +80,6 @@ namespace NsisoLauncherCore.Net
             }
         }
 
-        #endregion
-
-        #region 设置属性方法
         public void SetTotalSize(long size)
         {
             TotalSize = size;
@@ -93,6 +88,11 @@ namespace NsisoLauncherCore.Net
         public void IncreaseDownloadSize(long size)
         {
             DownloadSize += size;
+        }
+
+        public void ClearDownloadSize()
+        {
+            DownloadSize = 0;
         }
 
         public void SetDone()
@@ -105,28 +105,11 @@ namespace NsisoLauncherCore.Net
         {
             State = state;
         }
-        #endregion
 
-        #region 属性更改通知事件(base)
         public event PropertyChangedEventHandler PropertyChanged;
         private void OnPropertyChanged(string strPropertyInfo)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(strPropertyInfo));
         }
-        #endregion
     }
-
-    //public class DownloadFrom
-    //{
-    //    public string OriginUrl { get; set; }
-    //    public DownloadFrom(string originUrl)
-    //    {
-    //        this.OriginUrl = originUrl;
-    //    }
-
-    //    public string GetDownloadUrl(DownloadSource source)
-    //    {
-    //        return Tools.GetDownloadUrl.DoURLReplace(source, OriginUrl);
-    //    }
-    //}
 }

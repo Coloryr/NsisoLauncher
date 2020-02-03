@@ -318,51 +318,48 @@ namespace NsisoLauncherCore.Net
                 {
                     ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls;
                 }
-                HttpWebRequest request = WebRequest.Create(task.From) as HttpWebRequest;
-                request.Timeout = 5000;
-                if (Proxy != null)
-                {
-                    request.Proxy = Proxy;
-                }
-                HttpWebResponse response = request.GetResponse() as HttpWebResponse;
-                task.SetTotalSize(response.ContentLength);
-                Stream responseStream = response.GetResponseStream();
-                responseStream.ReadTimeout = 5000;
-                FileStream fs = new FileStream(buffFilename, FileMode.Create);
 
-                try
+                FileStream fs = null;
+                HttpWebRequest request = null;
+                HttpWebResponse response = null;
+                Stream responseStream = null;
+                for (int trytimes = 0; trytimes < 5;)
                 {
-                    byte[] bArr = new byte[1024];
-                    int size = responseStream.Read(bArr, 0, (int)bArr.Length);
-
-                    while (size > 0)
+                    try
                     {
-                        if (cancelToken.IsCancellationRequested)
+                        request = WebRequest.Create(task.From) as HttpWebRequest;
+                        request.Timeout = 5000;
+                        if (Proxy != null)
                         {
-                            ApendDebugLog("放弃下载:" + task.TaskName);
-                            fs.Close();
-                            responseStream.Close();
-                            RemoveItemFromViewTask(task);
-                            return;
+                            request.Proxy = Proxy;
                         }
-                        fs.Write(bArr, 0, size);
-                        size = responseStream.Read(bArr, 0, (int)bArr.Length);
-                        _downloadSizePerSec += size;
-                        task.IncreaseDownloadSize(size);
+                        response = request.GetResponse() as HttpWebResponse;
+                        task.SetTotalSize(response.ContentLength);
+                        responseStream = response.GetResponseStream();
+                        responseStream.ReadTimeout = 5000;
+                        fs = new FileStream(buffFilename, FileMode.Create);
+                        if (Download(responseStream, cancelToken, task, fs, buffFilename, realFilename, response.ContentLength))
+                        {
+                            trytimes = 10;
+                            continue;
+                        }
                     }
-
-                    fs.Close();
-                    responseStream.Close();
-                    File.Move(buffFilename, realFilename);
-                }
-                catch (Exception e)
-                {
-                    fs.Close();
-                    responseStream.Close();
-                    ApendErrorLog(e);
-                    if (!_errorList.ContainsKey(task))
+                    catch (Exception e)
                     {
-                        _errorList.Add(task, e);
+                        trytimes++;
+                        if (trytimes == 5)
+                        {
+                            if (fs != null) fs.Close();
+                            if (responseStream != null) responseStream.Close();
+                            ApendErrorLog(e);
+                            if (!_errorList.ContainsKey(task))
+                            {
+                                _errorList.Add(task, e);
+                            }
+                            trytimes = 10;
+                            continue;
+                        }
+                        task.ClearDownloadSize();
                     }
                 }
             }
@@ -374,6 +371,42 @@ namespace NsisoLauncherCore.Net
                     _errorList.Add(task, e);
                 }
             }
+        }
+
+        private bool Download(Stream responseStream, CancellationToken cancelToken, DownloadTask task, FileStream fs, string buffFilename, string realFilename, long length)
+        {
+            byte[] bArr = new byte[1024];
+            long nowlength = 0;
+            int size = responseStream.Read(bArr, 0, (int)bArr.Length);
+            nowlength += size;
+            while (size > 0)
+            {
+                if (cancelToken.IsCancellationRequested)
+                {
+                    ApendDebugLog("放弃下载:" + task.TaskName);
+                    fs.Close();
+                    responseStream.Close();
+                    RemoveItemFromViewTask(task);
+                    return true;
+                }
+                fs.Write(bArr, 0, size);
+                size = responseStream.Read(bArr, 0, (int)bArr.Length);
+                nowlength += size;
+                task.IncreaseDownloadSize(size);
+            }
+           
+            fs.Close();
+            responseStream.Close();
+
+            if (length != nowlength)
+            {
+                task.ClearDownloadSize();
+                File.Delete(buffFilename);
+                Thread.Sleep(1000);
+                return false;
+            }
+            File.Move(buffFilename, realFilename);
+            return true;
         }
 
         private void CompleteDownload()
