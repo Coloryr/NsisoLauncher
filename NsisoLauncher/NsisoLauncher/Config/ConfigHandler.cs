@@ -209,7 +209,7 @@ namespace NsisoLauncher.Config
                 },
                 Download = new Download()
                 {
-                    DownloadSource = DownloadSource.Mojang,
+                    DownloadSource = DownloadSource.MCBBS,
                     DownloadThreadsSize = 5,
                     CheckDownloadFileHash = true
                 },

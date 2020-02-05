@@ -7,7 +7,7 @@ namespace NsisoLauncherCore.Modules
     /// <summary>
     /// the minecraft version info class
     /// </summary>
-    public class Version
+    public class MCVersion
     {
         /// <summary>
         /// 资源引导

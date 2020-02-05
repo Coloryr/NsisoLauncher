@@ -1,9 +1,11 @@
 ﻿using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
 using NsisoLauncher.ModPack;
+using NsisoLauncherCore.Modules;
 using NsisoLauncherCore.Net;
 using NsisoLauncherCore.Net.FunctionAPI;
-using NsisoLauncherCore.Util.Installer;
+using NsisoLauncherCore.Net.Tools;
+using NsisoLauncherCore.Util;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -16,7 +18,6 @@ using System.Windows;
 using System.Windows.Data;
 using System.Windows.Forms;
 using static NsisoLauncherCore.Net.FunctionAPI.APIModules;
-using Version = NsisoLauncherCore.Modules.Version;
 
 namespace NsisoLauncher.Windows
 {
@@ -52,7 +53,7 @@ namespace NsisoLauncher.Windows
 
         private async void MetroWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            List<Version> vers = await App.Handler.GetVersionsAsync();
+            List<MCVersion> vers = await App.Handler.GetVersionsAsync();
             verToInstallForgeComboBox.ItemsSource = vers;
             verToInstallLiteComboBox.ItemsSource = vers;
         }
@@ -90,10 +91,10 @@ namespace NsisoLauncher.Windows
 
         private async void RefreshForge()
         {
-            Version ver;
+            MCVersion ver;
             if (verToInstallForgeComboBox.SelectedItem != null)
             {
-                ver = (Version)verToInstallForgeComboBox.SelectedItem;
+                ver = (MCVersion)verToInstallForgeComboBox.SelectedItem;
             }
             else
             {
@@ -133,10 +134,10 @@ namespace NsisoLauncher.Windows
 
         private async void RefreshLiteloader()
         {
-            Version ver = null;
+            MCVersion ver;
             if (verToInstallLiteComboBox.SelectedItem != null)
             {
-                ver = (Version)verToInstallLiteComboBox.SelectedItem;
+                ver = (MCVersion)verToInstallLiteComboBox.SelectedItem;
             }
             else
             {
@@ -181,7 +182,8 @@ namespace NsisoLauncher.Windows
             }
             else
             {
-                var loading = await this.ShowProgressAsync(App.GetResourceString("String.NewDownloadTaskWindow.DownLoad.Title"), string.Format(App.GetResourceString("String.NewDownloadTaskWindow.DownLoad.Title"), selectItems.Count));
+                var loading = await this.ShowProgressAsync(App.GetResourceString("String.NewDownloadTaskWindow.DownLoad.Title"), 
+                    string.Format(App.GetResourceString("String.NewDownloadTaskWindow.DownLoad.Title"), selectItems.Count));
                 loading.SetIndeterminate();
                 await AppendVersionsDownloadTask(selectItems);
                 await loading.CloseAsync();
@@ -257,7 +259,7 @@ namespace NsisoLauncher.Windows
                 foreach (JWVersion item in list)
                 {
                     string json = await APIRequester.HttpGetStringAsync(apiHandler.DoURLReplace(item.Url));
-                    NsisoLauncherCore.Modules.Version ver = App.Handler.JsonToVersion(json);
+                    MCVersion ver = App.Handler.JsonToVersion(json);
                     string jsonPath = App.Handler.GetJsonPath(ver.ID);
 
                     string dir = Path.GetDirectoryName(jsonPath);
@@ -270,9 +272,10 @@ namespace NsisoLauncher.Windows
 
                     List<DownloadTask> tasks = new List<DownloadTask>();
 
-                    tasks.Add(new DownloadTask(App.GetResourceString("String.NewDownloadTaskWindow.Source"), apiHandler.DoURLReplace(ver.AssetIndex.URL), App.Handler.GetAssetsIndexPath(ver.Assets)));
+                    tasks.Add(new DownloadTask(App.GetResourceString("String.NewDownloadTaskWindow.Source"), 
+                        apiHandler.DoURLReplace(ver.AssetIndex.URL), App.Handler.GetAssetsIndexPath(ver.Assets)));
 
-                    tasks.AddRange(await NsisoLauncherCore.Util.FileHelper.GetLostDependDownloadTaskAsync(App.Config.MainConfig.Download.DownloadSource, App.Handler, ver));
+                    tasks.AddRange(await FileHelper.GetLostDependDownloadTaskAsync(App.Config.MainConfig.Download.DownloadSource, App.Handler, ver));
 
                     App.Downloader.SetDownloadTasks(tasks);
                     App.Downloader.StartDownload();
@@ -299,52 +302,16 @@ namespace NsisoLauncher.Windows
 
         private void AppendForgeDownloadTask(Version ver, JWForge forge)
         {
-            string forgePath = NsisoLauncherCore.PathManager.TempDirectory + string.Format(@"\Forge_{0}-Installer.jar", forge.Build);
-            DownloadTask dt = new DownloadTask(App.GetResourceString("String.NewDownloadTaskWindow.Core.Forge"),
-                string.Format("https://bmclapi2.bangbang93.com/forge/download/{0}", forge.Build),
-                forgePath);
-            dt.Todo = new Func<Exception>(() =>
-            {
-                try
-                {
-                    CommonInstaller installer = new CommonInstaller(forgePath, new CommonInstallOptions() { GameRootPath = App.Handler.GameRootPath });
-                    installer.BeginInstall();
-                    return null;
-                }
-                catch (Exception ex)
-                { return ex; }
-            });
+            DownloadTask dt = GetDownloadUrl.GetForgeDownloadURL(App.Config.MainConfig.Download.DownloadSource, forge);
             App.Downloader.SetDownloadTasks(dt);
             App.Downloader.StartDownload();
-
         }
 
         private void AppendLiteloaderDownloadTask(Version ver, JWLiteloader liteloader)
         {
-            string liteloaderPath = NsisoLauncherCore.PathManager.TempDirectory + string.Format(@"\Liteloader_{0}-Installer.jar", liteloader.Version);
-            DownloadTask dt = new DownloadTask(App.GetResourceString("String.NewDownloadTaskWindow.Core.Liteloader"),
-                string.Format("https://bmclapi2.bangbang93.com/liteloader/download?version={0}", liteloader.Version),
-                liteloaderPath);
-            dt.Todo = new Func<Exception>(() =>
-            {
-                try
-                {
-                    CommonInstaller installer = new CommonInstaller(liteloaderPath, new CommonInstallOptions() { GameRootPath = App.Handler.GameRootPath });
-                    installer.BeginInstall();
-                    return null;
-                }
-                catch (Exception ex)
-                { return ex; }
-            });
+            DownloadTask dt = GetDownloadUrl.GetLiteloaderDownloadURL(App.Config.MainConfig.Download.DownloadSource, liteloader);
             App.Downloader.SetDownloadTasks(dt);
             App.Downloader.StartDownload();
-
-        }
-
-        private async Task InstallCommonExtend(string path)
-        {
-            CommonInstaller installer = new CommonInstaller(path, new CommonInstallOptions() { GameRootPath = App.Handler.GameRootPath });
-            await installer.BeginInstallAsync();
         }
 
         private void RefreshVerButton_Click(object sender, RoutedEventArgs e)
@@ -390,7 +357,8 @@ namespace NsisoLauncher.Windows
         private async void Button_Click_1(object sender, RoutedEventArgs e)
         {
             var res = await this.ShowMessageAsync(App.GetResourceString("String.NewDownloadTaskWindow.ModPack.Title"),
-                App.GetResourceString("String.NewDownloadTaskWindow.ModPack.Text"), MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings()
+                App.GetResourceString("String.NewDownloadTaskWindow.ModPack.Text"),
+                MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings()
                 {
                     AffirmativeButtonText = App.GetResourceString("String.Base.Yes"),
                     NegativeButtonText = App.GetResourceString("String.Base.Cancel"),

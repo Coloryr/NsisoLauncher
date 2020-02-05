@@ -22,7 +22,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Modules\LaunchResult.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Modules\LaunchSetting.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Modules\Log.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Modules\Version.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Modules\MCVersion.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Net\AuthlibInjectorAPI\APIHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)..\..\..\..\C#%27s src\NsisoLauncher测试\NsisoLauncher\NsisoLauncherCore\Net\Head\OnlineHead.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Net\Dns\Header.cs" />

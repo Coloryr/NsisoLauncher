@@ -13,9 +13,13 @@ namespace NsisoLauncherCore.Net.FunctionAPI
 
         const string BMCLBase = "https://bmclapi2.bangbang93.com";
 
+        const string MCBBSUrl = "https://download.mcbbs.net";
+
+        const string ForgeUrl = "https://files.minecraftforge.net";
+
         public string VersionListURL { get; set; }
-        public string ForgeListURL { get; set; } = BMCLBase + "/forge/minecraft";
-        public string LiteloaderListURL { get; set; } = BMCLBase + "/liteloader/list";
+        public string ForgeListURL { get; set; }
+        public string LiteloaderListURL { get; set; } 
 
         public FunctionAPIHandler(DownloadSource lib)
         {
@@ -24,10 +28,18 @@ namespace NsisoLauncherCore.Net.FunctionAPI
             {
                 case DownloadSource.Mojang:
                     VersionListURL = "https://launchermeta.mojang.com/mc/game/version_manifest.json";
+                    ForgeListURL = BMCLBase + "/forge/minecraft";
+                    LiteloaderListURL = BMCLBase + "/liteloader/list";
                     break;
-
                 case DownloadSource.BMCLAPI:
                     VersionListURL = BMCLBase + "/mc/game/version_manifest.json";
+                    ForgeListURL = BMCLBase + "/forge/minecraft";
+                    LiteloaderListURL = BMCLBase + "/liteloader/list";
+                    break;
+                case DownloadSource.MCBBS:
+                    VersionListURL = MCBBSUrl + "/mc/game/version_manifest.json";
+                    ForgeListURL = MCBBSUrl + "/forge/minecraft";
+                    LiteloaderListURL = MCBBSUrl + "/liteloader/list";
                     break;
             }
         }
@@ -57,7 +69,7 @@ namespace NsisoLauncherCore.Net.FunctionAPI
         /// </summary>
         /// <param name="version">要搜索的版本</param>
         /// <returns>Forge列表</returns>
-        public async Task<List<JWForge>> GetForgeList(Version version)
+        public async Task<List<JWForge>> GetForgeList(MCVersion version)
         {
             string json = await APIRequester.HttpGetStringAsync(string.Format("{0}/{1}", ForgeListURL, version.ID));
             var e = JsonConvert.DeserializeObject<List<JWForge>>(json);
@@ -69,7 +81,7 @@ namespace NsisoLauncherCore.Net.FunctionAPI
         /// </summary>
         /// <param name="version">要搜索的版本</param>
         /// <returns>Liteloader列表</returns>
-        public async Task<JWLiteloader> GetLiteloaderList(Version version)
+        public async Task<JWLiteloader> GetLiteloaderList(MCVersion version)
         {
             string json = await APIRequester.HttpGetStringAsync(string.Format("{0}/?mcversion={1}", LiteloaderListURL, version.ID));
             var e = JsonConvert.DeserializeObject<JWLiteloader>(json);

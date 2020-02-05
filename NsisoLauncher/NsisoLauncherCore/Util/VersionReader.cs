@@ -23,10 +23,10 @@ namespace NsisoLauncherCore.Util
             handler = launchHandler;
         }
 
-        public Modules.Version JsonToVersion(JObject obj)
+        public Modules.MCVersion JsonToVersion(JObject obj)
         {
-            Modules.Version ver = new Modules.Version();
-            ver = obj.ToObject<Modules.Version>();
+            Modules.MCVersion ver = new Modules.MCVersion();
+            ver = obj.ToObject<Modules.MCVersion>();
             JObject innerVer = null;
             if (ver.InheritsVersion != null)
             {
@@ -166,7 +166,7 @@ namespace NsisoLauncherCore.Util
             return ver;
         }
 
-        public Modules.Version JsonToVersion(string jsonStr)
+        public MCVersion JsonToVersion(string jsonStr)
         {
             if (string.IsNullOrWhiteSpace(jsonStr))
             {
@@ -330,7 +330,7 @@ namespace NsisoLauncherCore.Util
 
         #endregion
 
-        public Modules.Version GetVersion(string ID)
+        public Modules.MCVersion GetVersion(string ID)
         {
             lock (locker)
             {
@@ -355,7 +355,7 @@ namespace NsisoLauncherCore.Util
             return File.ReadAllText(jsonPath, Encoding.UTF8);
         }
 
-        public async Task<Modules.Version> GetVersionAsync(string ID)
+        public async Task<Modules.MCVersion> GetVersionAsync(string ID)
         {
             return await Task.Factory.StartNew(() =>
             {
@@ -363,15 +363,15 @@ namespace NsisoLauncherCore.Util
             });
         }
 
-        public List<Modules.Version> GetVersions()
+        public List<Modules.MCVersion> GetVersions()
         {
             dirInfo.Refresh();
             if (!dirInfo.Exists)
             {
-                return new List<Modules.Version>();
+                return new List<Modules.MCVersion>();
             }
             var dirs = dirInfo.EnumerateDirectories();
-            List<Modules.Version> versions = new List<Modules.Version>();
+            List<Modules.MCVersion> versions = new List<Modules.MCVersion>();
             foreach (var item in dirs)
             {
                 var ver = GetVersion(item.Name);
@@ -383,7 +383,7 @@ namespace NsisoLauncherCore.Util
             return versions;
         }
 
-        public async Task<List<Modules.Version>> GetVersionsAsync()
+        public async Task<List<Modules.MCVersion>> GetVersionsAsync()
         {
             return await Task.Factory.StartNew(() =>
             {

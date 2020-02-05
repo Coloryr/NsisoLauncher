@@ -76,7 +76,7 @@ namespace NsisoLauncherCore
             this.GameLog?.Invoke(this, e.Data);
         }
 
-        public JAssets GetAssets(Modules.Version version)
+        public JAssets GetAssets(Modules.MCVersion version)
         {
             return assetsReader.GetAssets(version);
         }
@@ -86,7 +86,7 @@ namespace NsisoLauncherCore
             return assetsReader.GetAssetsByJson(json);
         }
 
-        public async Task<JAssets> GetAssetsAsync(Modules.Version version)
+        public async Task<JAssets> GetAssetsAsync(MCVersion version)
         {
             return await Task.Factory.StartNew(() =>
             {
@@ -195,17 +195,17 @@ namespace NsisoLauncherCore
         #endregion
 
         #region 版本获取
-        public Modules.Version GetVersionByID(string id)
+        public Modules.MCVersion GetVersionByID(string id)
         {
             return versionReader.GetVersion(id);
         }
 
-        public Modules.Version RefreshVersion(Modules.Version ver)
+        public Modules.MCVersion RefreshVersion(Modules.MCVersion ver)
         {
             return versionReader.GetVersion(ver.ID);
         }
 
-        public async Task<List<Modules.Version>> GetVersionsAsync()
+        public async Task<List<Modules.MCVersion>> GetVersionsAsync()
         {
             try
             {
@@ -213,18 +213,18 @@ namespace NsisoLauncherCore
             }
             catch (Exception)
             {
-                return new List<Modules.Version>();
+                return new List<Modules.MCVersion>();
             }
         }
 
-        public Modules.Version JsonToVersion(string json)
+        public Modules.MCVersion JsonToVersion(string json)
         {
             return versionReader.JsonToVersion(json);
         }
         #endregion
 
         #region 路径获取
-        public string GetGameVersionRootDir(Modules.Version ver)
+        public string GetGameVersionRootDir(Modules.MCVersion ver)
         {
             return PathManager.GetGameVersionRootDir(VersionIsolation, GameRootPath, ver);
         }
@@ -244,7 +244,7 @@ namespace NsisoLauncherCore
             return PathManager.GetJsonPath(GameRootPath, ID);
         }
 
-        public string GetJarPath(Modules.Version ver)
+        public string GetJarPath(Modules.MCVersion ver)
         {
             return PathManager.GetJarPath(GameRootPath, ver);
         }
@@ -274,11 +274,11 @@ namespace NsisoLauncherCore
             return PathManager.GetAIJarPath(GameRootPath);
         }
 
-        public string GetVersionOptionsPath(Modules.Version version)
+        public string GetVersionOptionsPath(Modules.MCVersion version)
         {
             return PathManager.GetVersionOptionsPath(VersionIsolation, GameRootPath, version);
         }
-        public string GetVersionOptionsofPath(Modules.Version version)
+        public string GetVersionOptionsofPath(Modules.MCVersion version)
         {
             return PathManager.GetVersionOptionsofPath(VersionIsolation, GameRootPath, version);
         }
@@ -314,7 +314,7 @@ namespace NsisoLauncherCore
         /// <summary>
         /// Exited Version
         /// </summary>
-        public Modules.Version Version { get; set; }
+        public Modules.MCVersion Version { get; set; }
 
         /// <summary>
         /// From launch to exit time spawn

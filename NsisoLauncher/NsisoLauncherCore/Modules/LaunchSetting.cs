@@ -131,7 +131,7 @@ namespace NsisoLauncherCore.Modules
         /// <summary>
         /// 启动版本
         /// </summary>
-        public Version Version { get; set; }
+        public MCVersion Version { get; set; }
 
         /// <summary>
         /// 最大运行内存

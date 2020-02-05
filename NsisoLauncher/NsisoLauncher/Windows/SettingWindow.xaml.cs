@@ -2,6 +2,7 @@
 using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
 using NsisoLauncher.Config;
+using NsisoLauncherCore.Modules;
 using NsisoLauncherCore.Util;
 using System;
 using System.Collections.Generic;
@@ -75,8 +76,8 @@ namespace NsisoLauncher.Windows
             else
             {
                 VersionChose.Visibility = Visibility.Collapsed;
-                versionOptionsGrid.ItemsSource = await GameHelper.GetOptionsAsync(VersionOption.Type.options, App.Handler, new NsisoLauncherCore.Modules.Version() { ID = "null" });
-                versionOptionsofGrid.ItemsSource = await GameHelper.GetOptionsAsync(VersionOption.Type.optionsof, App.Handler, new NsisoLauncherCore.Modules.Version() { ID = "null" });
+                versionOptionsGrid.ItemsSource = await GameHelper.GetOptionsAsync(VersionOption.Type.options, App.Handler, new MCVersion() { ID = "null" });
+                versionOptionsofGrid.ItemsSource = await GameHelper.GetOptionsAsync(VersionOption.Type.optionsof, App.Handler, new MCVersion() { ID = "null" });
             }
             CheckBox_Checked(null, null);
         }
@@ -177,23 +178,23 @@ namespace NsisoLauncher.Windows
                     await GameHelper.SaveOptionsAsync(VersionOption.Type.options,
                     (List<VersionOption>)versionOptionsGrid.ItemsSource,
                     App.Handler,
-                    (NsisoLauncherCore.Modules.Version)VersionsComboBox.SelectedItem);
+                    (NsisoLauncherCore.Modules.MCVersion)VersionsComboBox.SelectedItem);
 
                     await GameHelper.SaveOptionsAsync(VersionOption.Type.optionsof,
                    (List<VersionOption>)versionOptionsofGrid.ItemsSource,
                    App.Handler,
-                   (NsisoLauncherCore.Modules.Version)VersionsComboBox.SelectedItem);
+                   (NsisoLauncherCore.Modules.MCVersion)VersionsComboBox.SelectedItem);
                 }
                 else
                 {
                     await GameHelper.SaveOptionsAsync(VersionOption.Type.options,
                     (List<VersionOption>)versionOptionsGrid.ItemsSource,
                     App.Handler,
-                    new NsisoLauncherCore.Modules.Version() { ID = "null" });
+                    new NsisoLauncherCore.Modules.MCVersion() { ID = "null" });
                     await GameHelper.SaveOptionsAsync(VersionOption.Type.optionsof,
                     (List<VersionOption>)versionOptionsofGrid.ItemsSource,
                     App.Handler,
-                    new NsisoLauncherCore.Modules.Version() { ID = "null" });
+                    new NsisoLauncherCore.Modules.MCVersion() { ID = "null" });
                 }
             }
 
@@ -236,8 +237,8 @@ namespace NsisoLauncher.Windows
 
             if (comboBox.SelectedItem != null)
             {
-                versionOptionsGrid.ItemsSource = await GameHelper.GetOptionsAsync(VersionOption.Type.options, App.Handler, (NsisoLauncherCore.Modules.Version)comboBox.SelectedItem);
-                versionOptionsofGrid.ItemsSource = await GameHelper.GetOptionsAsync(VersionOption.Type.optionsof, App.Handler, (NsisoLauncherCore.Modules.Version)comboBox.SelectedItem);
+                versionOptionsGrid.ItemsSource = await GameHelper.GetOptionsAsync(VersionOption.Type.options, App.Handler, (MCVersion)comboBox.SelectedItem);
+                versionOptionsofGrid.ItemsSource = await GameHelper.GetOptionsAsync(VersionOption.Type.optionsof, App.Handler, (MCVersion)comboBox.SelectedItem);
             }
             else
             {

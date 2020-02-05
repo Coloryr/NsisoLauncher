@@ -1,6 +1,9 @@
-﻿using NsisoLauncherCore.Modules;
+﻿using NsisoLauncher;
+using NsisoLauncherCore.Modules;
+using NsisoLauncherCore.Net.FunctionAPI;
 using NsisoLauncherCore.Util;
 using NsisoLauncherCore.Util.Checker;
+using NsisoLauncherCore.Util.Installer;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -24,6 +27,8 @@ namespace NsisoLauncherCore.Net.Tools
         public const string MojangVersionUrl = MojangMetaUrl + "mc/game/version_manifest.json";
         public const string MojanglibrariesUrl = "https://libraries.minecraft.net/";
         public const string MojangAssetsBaseUrl = "https://resources.download.minecraft.net/";
+
+        public const string ForgeUrl = "https://files.minecraftforge.net/";
 
         static Dictionary<string, string> bmclapiDic = new Dictionary<string, string>()
         {
@@ -114,12 +119,11 @@ namespace NsisoLauncherCore.Net.Tools
             return new DownloadTask("游戏版本核心Json文件", from, to);
         }
 
-        public static string GetCoreJarDownloadURL(DownloadSource source, Modules.Version ver)
+        public static string GetCoreJarDownloadURL(DownloadSource source, Modules.MCVersion ver)
         {
             if (ver.Downloads?.Client != null)
             {
                 return DoURLReplace(source, ver.Downloads.Client.URL);
-
             }
             else
             {
@@ -127,7 +131,14 @@ namespace NsisoLauncherCore.Net.Tools
             }
         }
 
-        public static DownloadTask GetCoreJarDownloadTask(DownloadSource downloadSource, Modules.Version version, LaunchHandler core)
+        /// <summary>
+        /// 获取游戏核心下载
+        /// </summary>
+        /// <param name="downloadSource">下载源</param>
+        /// <param name="version">版本</param>
+        /// <param name="core">核心</param>
+        /// <returns></returns>
+        public static DownloadTask GetCoreJarDownloadTask(DownloadSource downloadSource, Modules.MCVersion version, LaunchHandler core)
         {
             string to = core.GetJarPath(version);
             string from = GetCoreJarDownloadURL(downloadSource, version);
@@ -137,6 +148,134 @@ namespace NsisoLauncherCore.Net.Tools
                 downloadTask.Checker = new SHA1Checker() { CheckSum = version.Downloads.Client.SHA1, FilePath = to };
             }
             return downloadTask;
+        }
+
+        /// <summary>
+        /// 获取Forge下载
+        /// </summary>
+        /// <param name="downloadSource">下载源</param>
+        /// <param name="mcversion">Mc版本</param>
+        /// <param name="forgeversion">Forge版本</param>
+        /// <returns></returns>
+        public static DownloadTask GetForgeDownloadURL(DownloadSource downloadSource, string mcversion, string forgeversion)
+        {
+            string local = PathManager.TempDirectory + "\\forge-" + mcversion + "-" + forgeversion + "-installer.jar";
+            string forgePath = string.Format("maven/net/minecraftforge/forge/{0}-{1}/forge-{0}-{1}-installer.jar", mcversion, forgeversion);
+            string Source = ForgeUrl;
+            switch (downloadSource)
+            {
+                case DownloadSource.Mojang:
+                    Source = ForgeUrl;
+                    break;
+                case DownloadSource.BMCLAPI:
+                    Source = BMCLUrl;
+                    break;
+                case DownloadSource.MCBBS:
+                    Source = MCBBSUrl;
+                    break;
+            }
+
+            Source += forgePath;
+
+            DownloadTask dt = new DownloadTask(App.GetResourceString("String.NewDownloadTaskWindow.Core.Forge"),
+                Source, local);
+            dt.Todo = new Func<Exception>(() =>
+            {
+                try
+                {
+                    CommonInstaller installer = new CommonInstaller(local, new CommonInstallOptions()
+                    { GameRootPath = App.Handler.GameRootPath });
+                    installer.BeginInstall();
+                    return null;
+                }
+                catch (Exception ex)
+                { return ex; }
+            });
+            return dt;
+        }
+
+        /// <summary>
+        /// 获取Forge下载
+        /// </summary>
+        /// <param name="downloadSource">下载源</param>
+        /// <param name="forge">Forge信息</param>
+        /// <returns></returns>
+        public static DownloadTask GetForgeDownloadURL(DownloadSource downloadSource, APIModules.JWForge forge)
+        {
+            string local = PathManager.TempDirectory + "\\forge-" + forge.Build + ".jar";
+            string Source = BMCLUrl;
+            switch (downloadSource)
+            {
+                case DownloadSource.Mojang:
+                    Source = BMCLUrl;
+                    break;
+                case DownloadSource.BMCLAPI:
+                    Source = BMCLUrl;
+                    break;
+                case DownloadSource.MCBBS:
+                    Source = MCBBSUrl;
+                    break;
+            }
+
+            Source += "forge/download/" + forge.Build + ".jar";
+
+            DownloadTask dt = new DownloadTask(App.GetResourceString("String.NewDownloadTaskWindow.Core.Forge"),
+                Source, local);
+            dt.Todo = new Func<Exception>(() =>
+            {
+                try
+                {
+                    CommonInstaller installer = new CommonInstaller(local, new CommonInstallOptions()
+                    { GameRootPath = App.Handler.GameRootPath });
+                    installer.BeginInstall();
+                    return null;
+                }
+                catch (Exception ex)
+                { return ex; }
+            });
+            return dt;
+        }
+
+        /// <summary>
+        /// 获取Liteloader mod
+        /// </summary>
+        /// <param name="downloadSource">下载源</param>
+        /// <param name="liteloader">liteloader信息</param>
+        /// <returns></returns>
+        public static DownloadTask GetLiteloaderDownloadURL(DownloadSource downloadSource, APIModules.JWLiteloader liteloader)
+        {
+            string local = App.Handler.GameRootPath + "\\mods\\" + liteloader.Version + ".jar";
+            string Source = BMCLUrl;
+            switch (downloadSource)
+            {
+                case DownloadSource.Mojang:
+                    Source = BMCLUrl;
+                    break;
+                case DownloadSource.BMCLAPI:
+                    Source = BMCLUrl;
+                    break;
+                case DownloadSource.MCBBS:
+                    Source = MCBBSUrl;
+                    break;
+            }
+
+            Source += string.Format("maven/com/mumfrey/liteloader/{0}/liteloader-{0}", liteloader.Version) + ".jar";
+
+            DownloadTask dt = new DownloadTask(App.GetResourceString("String.NewDownloadTaskWindow.Core.Liteloader"),
+                Source, local);
+            dt.Todo = new Func<Exception>(() =>
+            {
+                try
+                {
+                    CommonInstaller installer = new CommonInstaller(local, new CommonInstallOptions()
+                    { GameRootPath = App.Handler.GameRootPath });
+                    installer.BeginInstall();
+                    return null;
+                }
+                catch (Exception ex)
+                { return ex; }
+            });
+            return dt;
         }
 
         /// <summary>

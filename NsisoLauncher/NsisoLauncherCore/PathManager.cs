@@ -49,7 +49,7 @@ namespace NsisoLauncherCore
         /// <param name="gameRootPath">游戏根目录</param>
         /// <param name="ver">版本</param>
         /// <returns></returns>
-        public static string GetGameVersionRootDir(bool versionIsolation, string gameRootPath, Modules.Version ver)
+        public static string GetGameVersionRootDir(bool versionIsolation, string gameRootPath, Modules.MCVersion ver)
         {
             if (versionIsolation)
             {
@@ -102,7 +102,7 @@ namespace NsisoLauncherCore
         /// <param name="gameRootPath">游戏根目录</param>
         /// <param name="ver">版本</param>
         /// <returns></returns>
-        public static string GetJarPath(string gameRootPath, Modules.Version ver)
+        public static string GetJarPath(string gameRootPath, MCVersion ver)
         {
             if (ver.Jar != null)
             {
@@ -174,7 +174,7 @@ namespace NsisoLauncherCore
         /// <param name="gameRootPath">游戏根目录</param>
         /// <param name="version">版本</param>
         /// <returns>版本配置文件路径</returns>
-        public static string GetVersionOptionsPath(bool versionIsolation, string gameRootPath, Modules.Version version)
+        public static string GetVersionOptionsPath(bool versionIsolation, string gameRootPath, Modules.MCVersion version)
         {
             string verRoot = GetGameVersionRootDir(versionIsolation, gameRootPath, version);
             return verRoot + "\\options.txt";
@@ -187,7 +187,7 @@ namespace NsisoLauncherCore
         /// <param name="gameRootPath">游戏根目录</param>
         /// <param name="version">版本</param>
         /// <returns>版本配置文件路径</returns>
-        public static string GetVersionOptionsofPath(bool versionIsolation, string gameRootPath, Modules.Version version)
+        public static string GetVersionOptionsofPath(bool versionIsolation, string gameRootPath, Modules.MCVersion version)
         {
             string verRoot = GetGameVersionRootDir(versionIsolation, gameRootPath, version);
             return verRoot + "\\optionsof.txt";

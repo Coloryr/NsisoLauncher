@@ -29,7 +29,7 @@ namespace NsisoLauncherCore.Util
         #endregion
 
         #region 检查Jar核心文件
-        public static bool IsLostJarCore(LaunchHandler core, Version version)
+        public static bool IsLostJarCore(LaunchHandler core, MCVersion version)
         {
             if (version.InheritsVersion == null)
             {
@@ -51,7 +51,7 @@ namespace NsisoLauncherCore.Util
         /// <param name="core">启动核心</param>
         /// <param name="version">检查的版本</param>
         /// <returns>是否丢失任何库文件</returns>
-        public static bool IsLostAnyLibs(LaunchHandler core, Version version)
+        public static bool IsLostAnyLibs(LaunchHandler core, MCVersion version)
         {
             foreach (var item in version.Libraries)
             {
@@ -70,7 +70,7 @@ namespace NsisoLauncherCore.Util
         /// <param name="core">所使用的启动核心</param>
         /// <param name="version">要检查的版本</param>
         /// <returns>返回Key为路径，value为库实例的集合</returns>
-        public static Dictionary<string, Modules.Library> GetLostLibs(LaunchHandler core, Version version)
+        public static Dictionary<string, Modules.Library> GetLostLibs(LaunchHandler core, MCVersion version)
         {
             Dictionary<string, Modules.Library> lostLibs = new Dictionary<string, Modules.Library>();
 
@@ -97,7 +97,7 @@ namespace NsisoLauncherCore.Util
         /// <param name="core"></param>
         /// <param name="version"></param>
         /// <returns></returns>
-        public static bool IsLostAnyNatives(LaunchHandler core, Version version)
+        public static bool IsLostAnyNatives(LaunchHandler core, MCVersion version)
         {
             foreach (var item in version.Natives)
             {
@@ -116,7 +116,7 @@ namespace NsisoLauncherCore.Util
         /// <param name="core">所使用的核心</param>
         /// <param name="version">要检查的版本</param>
         /// <returns>返回Key为路径，value为native实例的集合</returns>
-        public static Dictionary<string, Native> GetLostNatives(LaunchHandler core, Version version)
+        public static Dictionary<string, Native> GetLostNatives(LaunchHandler core, MCVersion version)
         {
             Dictionary<string, Native> lostNatives = new Dictionary<string, Native>();
 
@@ -184,7 +184,7 @@ namespace NsisoLauncherCore.Util
             return lostAssets;
         }
 
-        public static async Task<bool> IsLostAssetsAsync(DownloadSource source, LaunchHandler core, Version ver)
+        public static async Task<bool> IsLostAssetsAsync(DownloadSource source, LaunchHandler core, MCVersion ver)
         {
             string assetsPath = core.GetAssetsIndexPath(ver.Assets);
             if (!File.Exists(assetsPath))
@@ -211,7 +211,7 @@ namespace NsisoLauncherCore.Util
         /// <param name="core">使用的核心</param>
         /// <param name="version">检查的版本</param>
         /// <returns></returns>
-        public async static Task<List<DownloadTask>> GetLostDependDownloadTaskAsync(DownloadSource source, LaunchHandler core, Version version)
+        public async static Task<List<DownloadTask>> GetLostDependDownloadTaskAsync(DownloadSource source, LaunchHandler core, MCVersion version)
         {
             var lostLibs = GetLostLibs(core, version);
             var lostNatives = GetLostNatives(core, version);
@@ -242,7 +242,7 @@ namespace NsisoLauncherCore.Util
                 {
                     innerJsonStr = File.ReadAllText(innerJsonPath);
                 }
-                Version innerVer = core.JsonToVersion(innerJsonStr);
+                MCVersion innerVer = core.JsonToVersion(innerJsonStr);
                 if (innerVer != null)
                 {
                     tasks.AddRange(await GetLostDependDownloadTaskAsync(source, core, innerVer));
@@ -269,7 +269,7 @@ namespace NsisoLauncherCore.Util
         /// <param name="core"></param>
         /// <param name="version"></param>
         /// <returns></returns>
-        public async static Task<List<DownloadTask>> GetLostAssetsDownloadTaskAsync(DownloadSource source, LaunchHandler core, Version ver)
+        public async static Task<List<DownloadTask>> GetLostAssetsDownloadTaskAsync(DownloadSource source, LaunchHandler core, MCVersion ver)
         {
             List<DownloadTask> tasks = new List<DownloadTask>();
             JAssets assets = null;

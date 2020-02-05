@@ -188,7 +188,7 @@ namespace NsisoLauncherCore
             return totalSb.ToString();
         }
 
-        private string GetClassPaths(List<Modules.Library> libs, Modules.Version ver)
+        private string GetClassPaths(List<Modules.Library> libs, Modules.MCVersion ver)
         {
             StringBuilder stringBuilder = new StringBuilder();
 

@@ -25,7 +25,7 @@ namespace NsisoLauncher.Controls
 
         private ObservableCollection<KeyValuePair<string, UserNode>> UserList { get; set; } = new ObservableCollection<KeyValuePair<string, UserNode>>();
         private ObservableCollection<KeyValuePair<string, AuthenticationNode>> AuthNodeList { get; set; } = new ObservableCollection<KeyValuePair<string, AuthenticationNode>>();
-        private ObservableCollection<NsisoLauncherCore.Modules.Version> VersionList { get; set; } = new ObservableCollection<NsisoLauncherCore.Modules.Version>();
+        private ObservableCollection<NsisoLauncherCore.Modules.MCVersion> VersionList { get; set; } = new ObservableCollection<NsisoLauncherCore.Modules.MCVersion>();
 
         public MainPanelControl()
         {
@@ -80,7 +80,7 @@ namespace NsisoLauncher.Controls
                     }
 
                 //更新版本列表
-                List<NsisoLauncherCore.Modules.Version> versions = await App.Handler.GetVersionsAsync();
+                List<NsisoLauncherCore.Modules.MCVersion> versions = await App.Handler.GetVersionsAsync();
                 VersionList.Clear();
                 foreach (var item in versions)
                 {
@@ -182,10 +182,10 @@ namespace NsisoLauncher.Controls
         {
             Lock(false);
             //获取启动版本
-            NsisoLauncherCore.Modules.Version launchVersion = null;
+            NsisoLauncherCore.Modules.MCVersion launchVersion = null;
             if (launchVersionCombobox.SelectedItem != null)
             {
-                launchVersion = (NsisoLauncherCore.Modules.Version)launchVersionCombobox.SelectedItem;
+                launchVersion = (NsisoLauncherCore.Modules.MCVersion)launchVersionCombobox.SelectedItem;
             }
 
             //获取验证方式
@@ -371,7 +371,7 @@ namespace NsisoLauncher.Controls
 
     public class LaunchEventArgs : EventArgs
     {
-        public NsisoLauncherCore.Modules.Version LaunchVersion { get; set; }
+        public NsisoLauncherCore.Modules.MCVersion LaunchVersion { get; set; }
         public AuthenticationNode AuthNode { get; set; }
         public UserNode UserNode { get; set; }
         public bool IsNewUser { get; set; }

@@ -40,7 +40,7 @@ namespace NsisoLauncherCore.Util
 
     public static class GameHelper
     {
-        public async static Task<List<VersionOption>> GetOptionsAsync(VersionOption.Type type, LaunchHandler core, Modules.Version version)
+        public async static Task<List<VersionOption>> GetOptionsAsync(VersionOption.Type type, LaunchHandler core, Modules.MCVersion version)
         {
             return await Task.Factory.StartNew(() =>
             {
@@ -118,7 +118,7 @@ namespace NsisoLauncherCore.Util
             });
         }
 
-        public async static Task SaveOptionsAsync(VersionOption.Type type, List<VersionOption> opts, LaunchHandler core, Modules.Version version)
+        public async static Task SaveOptionsAsync(VersionOption.Type type, List<VersionOption> opts, LaunchHandler core, Modules.MCVersion version)
         {
             await Task.Factory.StartNew(() =>
             {
