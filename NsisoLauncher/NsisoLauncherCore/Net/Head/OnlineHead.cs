@@ -18,7 +18,8 @@ namespace NsisoLauncherCore.Net.Head
                 arg += "&overlay";
             }
             string url = APIUrl + uuid + arg;
-            var res = await APIRequester.HttpGetAsync(url);
+            var http = new HttpRequesterAPI(TimeSpan.FromSeconds(10));
+            var res = await http.HttpGetAsync(url);
             if (res.IsSuccessStatusCode)
             {
                 using (Stream stream = await res.Content.ReadAsStreamAsync())

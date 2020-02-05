@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using NsisoLauncherCore.Modules;
 using NsisoLauncherCore.Net.Tools;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using static NsisoLauncherCore.Net.FunctionAPI.APIModules;
@@ -55,7 +56,8 @@ namespace NsisoLauncherCore.Net.FunctionAPI
         /// <returns>版本列表</returns>
         public async Task<List<JWVersion>> GetVersionList()
         {
-            string json = await APIRequester.HttpGetStringAsync(VersionListURL);
+            var http = new HttpRequesterAPI(TimeSpan.FromSeconds(10));
+            string json = await http.HttpGetStringAsync(VersionListURL);
             if (json != null)
             {
                 var e = JsonConvert.DeserializeObject<JWVersions>(json);
@@ -71,7 +73,8 @@ namespace NsisoLauncherCore.Net.FunctionAPI
         /// <returns>Forge列表</returns>
         public async Task<List<JWForge>> GetForgeList(MCVersion version)
         {
-            string json = await APIRequester.HttpGetStringAsync(string.Format("{0}/{1}", ForgeListURL, version.ID));
+            var http = new HttpRequesterAPI(TimeSpan.FromSeconds(10));
+            string json = await http.HttpGetStringAsync(string.Format("{0}/{1}", ForgeListURL, version.ID));
             var e = JsonConvert.DeserializeObject<List<JWForge>>(json);
             return e;
         }
@@ -83,7 +86,8 @@ namespace NsisoLauncherCore.Net.FunctionAPI
         /// <returns>Liteloader列表</returns>
         public async Task<JWLiteloader> GetLiteloaderList(MCVersion version)
         {
-            string json = await APIRequester.HttpGetStringAsync(string.Format("{0}/?mcversion={1}", LiteloaderListURL, version.ID));
+            var http = new HttpRequesterAPI(TimeSpan.FromSeconds(10));
+            string json = await http.HttpGetStringAsync(string.Format("{0}/?mcversion={1}", LiteloaderListURL, version.ID));
             var e = JsonConvert.DeserializeObject<JWLiteloader>(json);
             return e;
         }

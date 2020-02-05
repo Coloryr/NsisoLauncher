@@ -1,10 +1,12 @@
-﻿using NsisoLauncher;
+﻿using MahApps.Metro.Controls.Dialogs;
+using NsisoLauncher;
 using NsisoLauncherCore.Modules;
 using NsisoLauncherCore.Net.FunctionAPI;
 using NsisoLauncherCore.Util;
 using NsisoLauncherCore.Util.Checker;
 using NsisoLauncherCore.Util.Installer;
 using System;
+using System.Diagnostics;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -27,6 +29,8 @@ namespace NsisoLauncherCore.Net.Tools
         public const string MojangVersionUrl = MojangMetaUrl + "mc/game/version_manifest.json";
         public const string MojanglibrariesUrl = "https://libraries.minecraft.net/";
         public const string MojangAssetsBaseUrl = "https://resources.download.minecraft.net/";
+        public readonly static List<string> MCVersionNot = new List<string>() 
+        { "1.13", "1.13.1", "1.13.2", "1.14", "1.14.1", "1.14.2", "1.14.3", "1.14.4", "1.15", "1.15.1", "1.15.2" };
 
         public const string ForgeUrl = "https://files.minecraftforge.net/";
 
@@ -138,7 +142,7 @@ namespace NsisoLauncherCore.Net.Tools
         /// <param name="version">版本</param>
         /// <param name="core">核心</param>
         /// <returns></returns>
-        public static DownloadTask GetCoreJarDownloadTask(DownloadSource downloadSource, Modules.MCVersion version, LaunchHandler core)
+        public static DownloadTask GetCoreJarDownloadTask(DownloadSource downloadSource, MCVersion version, LaunchHandler core)
         {
             string to = core.GetJarPath(version);
             string from = GetCoreJarDownloadURL(downloadSource, version);
@@ -159,7 +163,7 @@ namespace NsisoLauncherCore.Net.Tools
         /// <returns></returns>
         public static DownloadTask GetForgeDownloadURL(DownloadSource downloadSource, string mcversion, string forgeversion)
         {
-            string local = PathManager.TempDirectory + "\\forge-" + mcversion + "-" + forgeversion + "-installer.jar";
+            string local = App.Handler.GameRootPath + "\\forge-" + mcversion + "-" + forgeversion + "-installer.jar";
             string forgePath = string.Format("maven/net/minecraftforge/forge/{0}-{1}/forge-{0}-{1}-installer.jar", mcversion, forgeversion);
             string Source = ForgeUrl;
             switch (downloadSource)
@@ -200,8 +204,9 @@ namespace NsisoLauncherCore.Net.Tools
         /// <param name="downloadSource">下载源</param>
         /// <param name="forge">Forge信息</param>
         /// <returns></returns>
-        public static DownloadTask GetForgeDownloadURL(DownloadSource downloadSource, APIModules.JWForge forge)
+        public static async Task<DownloadTask> GetForgeDownloadURL(DownloadSource downloadSource, APIModules.JWForge forge, string MCVersion)
         {
+
             string local = PathManager.TempDirectory + "\\forge-" + forge.Build + ".jar";
             string Source = BMCLUrl;
             switch (downloadSource)
@@ -221,18 +226,36 @@ namespace NsisoLauncherCore.Net.Tools
 
             DownloadTask dt = new DownloadTask(App.GetResourceString("String.NewDownloadTaskWindow.Core.Forge"),
                 Source, local);
-            dt.Todo = new Func<Exception>(() =>
+            if (MCVersionNot.Contains(MCVersion))
             {
-                try
+                await App.NewDownloadTaskWindow_.ShowMessageAsync(App.GetResourceString("String.NewDownloadTaskWindow.ForgeNot.Title"),
+                        App.GetResourceString("String.NewDownloadTaskWindow.ForgeNot.Text"));
+                dt.Todo = new Func<Exception>(() =>
                 {
-                    CommonInstaller installer = new CommonInstaller(local, new CommonInstallOptions()
-                    { GameRootPath = App.Handler.GameRootPath });
-                    installer.BeginInstall();
-                    return null;
-                }
-                catch (Exception ex)
-                { return ex; }
-            });
+                    try
+                    {
+                        var Process = new Process();
+                        Process.StartInfo = new ProcessStartInfo(local);
+                        Process.Start();
+                        return null;
+                    }
+                    catch (Exception ex)
+                    { return ex; }
+                });
+            }
+            else
+                dt.Todo = new Func<Exception>(() =>
+                {
+                    try
+                    {
+                        CommonInstaller installer = new CommonInstaller(local, new CommonInstallOptions()
+                        { GameRootPath = App.Handler.GameRootPath });
+                        installer.BeginInstall();
+                        return null;
+                    }
+                    catch (Exception ex)
+                    { return ex; }
+                });
             return dt;
         }
 

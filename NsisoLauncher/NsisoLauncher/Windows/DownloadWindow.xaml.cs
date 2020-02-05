@@ -40,7 +40,7 @@ namespace NsisoLauncher.Windows
             time.Dispose();
         }
 
-        private void Refresh()
+        public void Refresh()
         {
             Tasks = App.Downloader.DownloadTasks != null ? new ObservableCollection<DownloadTask>(App.Downloader.DownloadTasks) : new ObservableCollection<DownloadTask>();
             downloadList.ItemsSource = Tasks;
@@ -93,8 +93,8 @@ namespace NsisoLauncher.Windows
                 {
                     await this.ShowMessageAsync(App.GetResourceString("String.Downloadwindow.DownloadCompleteWithError"),
                         string.Format(App.GetResourceString("String.Downloadwindow.DownloadCompleteWithError2"), e.ErrorList.Count, e.ErrorList.First().Value.Message));
+                    Close();
                 }
-
             }));
         }
 
@@ -147,8 +147,15 @@ namespace NsisoLauncher.Windows
 
         private void NewDownload(object sender, RoutedEventArgs e)
         {
-            new NewDownloadTaskWindow(true).ShowDialog();
-            Refresh();
+            if (App.NewDownloadTaskWindow_ == null)
+            {
+                App.NewDownloadTaskWindow_ = new NewDownloadTaskWindow(true);
+                App.NewDownloadTaskWindow_.Show();
+            }
+            else
+            {
+                App.NewDownloadTaskWindow_.Activate();
+            }
         }
 
         private void MetroWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
@@ -167,6 +174,13 @@ namespace NsisoLauncher.Windows
                 this.ShowMessageAsync(App.GetResourceString("String.Downloadwindow.Proxy.Title"),
                     App.GetResourceString("String.Downloadwindow.Proxy.Text"));
             }
+        }
+
+        private void MetroWindow_Closed(object sender, EventArgs e)
+        {
+            App.DownloadWindow_ = null;
+            App.MainWindow_.Refresh();
+            TaskbarManager.Instance.SetProgressState(TaskbarProgressBarState.NoProgress);
         }
     }
 }

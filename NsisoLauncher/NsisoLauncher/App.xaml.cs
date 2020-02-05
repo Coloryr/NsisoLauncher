@@ -1,9 +1,11 @@
 ﻿using MahApps.Metro;
 using NsisoLauncher.Config;
 using NsisoLauncher.Core.Util;
+using NsisoLauncher.Windows;
 using NsisoLauncherCore;
 using NsisoLauncherCore.Modules;
 using NsisoLauncherCore.Net;
+using NsisoLauncherCore.Net.PhalAPI;
 using NsisoLauncherCore.Util;
 using System;
 using System.Collections.Generic;
@@ -27,8 +29,10 @@ namespace NsisoLauncher
         public static event EventHandler<AggregateExceptionArgs> AggregateExceptionCatched;
         public static List<Java> JavaList;
         public static MainWindow MainWindow_;
+        public static DownloadWindow DownloadWindow_;
+        public static NewDownloadTaskWindow NewDownloadTaskWindow_;
 
-        public static NsisoLauncherCore.Net.PhalAPI.APIHandler nsisoAPIHandler;
+        public static APIHandler nsisoAPIHandler;
 
         public static void CatchAggregateException(object sender, AggregateExceptionArgs arg)
         {
@@ -39,28 +43,20 @@ namespace NsisoLauncher
         {
 
             LogHandler = new LogHandler(true);
-            AggregateExceptionCatched += (a, b) => LogHandler.AppendFatal(b.AggregateException);
-            if (e.Args.Contains("-debug"))
-            {
-                Windows.DebugWindow debugWindow = new Windows.DebugWindow();
-                debugWindow.Show();
-                LogHandler.OnLog += (s, log) => debugWindow?.AppendLog(s, log);
-            }
-
             Config = new ConfigHandler();
+            Config.Environment env = Config.MainConfig.Environment;
+            JavaList = Java.GetJavaList();
 
-            if (Config.MainConfig.Launcher.Debug && !e.Args.Contains("-debug"))
+            AggregateExceptionCatched += (a, b) => LogHandler.AppendFatal(b.AggregateException);
+
+            if (Config.MainConfig.Launcher.Debug || e.Args.Contains("-debug"))
             {
-                Windows.DebugWindow debugWindow = new Windows.DebugWindow();
+                DebugWindow debugWindow = new DebugWindow();
                 debugWindow.Show();
                 LogHandler.OnLog += (s, log) => debugWindow?.AppendLog(s, log);
             }
 
-            nsisoAPIHandler = new NsisoLauncherCore.Net.PhalAPI.APIHandler(Config.MainConfig.Launcher.NoTracking);
-
-            Config.Environment env = Config.MainConfig.Environment;
-
-            JavaList = Java.GetJavaList();
+            nsisoAPIHandler = new APIHandler(Config.MainConfig.Launcher.NoTracking);
 
             //设置版本路径
             string gameroot = null;
@@ -84,7 +80,7 @@ namespace NsisoLauncher
             LogHandler.AppendInfo("核心初始化->游戏根目录(默认则为空):" + gameroot);
 
             //设置JAVA
-            Java java = null;
+            Java java;
             if (env.AutoJava)
             {
                 java = Java.GetSuitableJava(JavaList);
@@ -118,18 +114,10 @@ namespace NsisoLauncher
 
             ServicePointManager.DefaultConnectionLimit = 10;
 
-            Download downloadCfg = Config.MainConfig.Download;
             Downloader = new MultiThreadDownloader();
-            if (!string.IsNullOrWhiteSpace(downloadCfg.DownloadProxyAddress))
-            {
-                WebProxy proxy = new WebProxy(downloadCfg.DownloadProxyAddress, downloadCfg.DownloadProxyPort);
-                if (!string.IsNullOrWhiteSpace(downloadCfg.ProxyUserName))
-                {
-                    NetworkCredential credential = new NetworkCredential(downloadCfg.ProxyUserName, downloadCfg.ProxyUserPassword);
-                    proxy.Credentials = credential;
-                }
-                Downloader.Proxy = proxy;
-            }
+
+            Re();
+
             Downloader.ProcessorSize = Config.MainConfig.Download.DownloadThreadsSize;
             Downloader.CheckFileHash = Config.MainConfig.Download.CheckDownloadFileHash;
             Downloader.DownloadLog += (s, log) => LogHandler?.AppendLog(s, log);
@@ -146,6 +134,25 @@ namespace NsisoLauncher
 
         }
 
+        public static void Re()
+        {
+            Download downloadCfg = Config.MainConfig.Download;
+            if (!string.IsNullOrWhiteSpace(downloadCfg.DownloadProxyAddress))
+            {
+                WebProxy proxy = new WebProxy(downloadCfg.DownloadProxyAddress, downloadCfg.DownloadProxyPort);
+                if (!string.IsNullOrWhiteSpace(downloadCfg.ProxyUserName))
+                {
+                    NetworkCredential credential = new NetworkCredential(downloadCfg.ProxyUserName, downloadCfg.ProxyUserPassword);
+                    proxy.Credentials = credential;
+                }
+                Downloader.Proxy = proxy;
+                HttpRequesterAPI.Proxy = proxy;
+            }
+        }
+
+        /// <summary>
+        /// 设置语言
+        /// </summary>
         public static void Lauguage()
         {
             string lang = Config.MainConfig.Lauguage;

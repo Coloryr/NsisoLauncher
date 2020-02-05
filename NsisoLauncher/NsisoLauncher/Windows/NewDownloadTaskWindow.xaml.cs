@@ -182,22 +182,22 @@ namespace NsisoLauncher.Windows
             }
             else
             {
-                var loading = await this.ShowProgressAsync(App.GetResourceString("String.NewDownloadTaskWindow.DownLoad.Title"), 
+                var loading = await this.ShowProgressAsync(App.GetResourceString("String.NewDownloadTaskWindow.DownLoad.Title"),
                     string.Format(App.GetResourceString("String.NewDownloadTaskWindow.DownLoad.Title"), selectItems.Count));
                 loading.SetIndeterminate();
                 await AppendVersionsDownloadTask(selectItems);
                 await loading.CloseAsync();
-                this.Close();
+                Close();
             }
         }
 
         //TODO:修复FORGE刷新不成功崩溃
         private async void DownloadForgeButton_Click(object sender, RoutedEventArgs e)
         {
-            Version ver;
+            MCVersion ver;
             if (verToInstallForgeComboBox.SelectedItem != null)
             {
-                ver = (Version)verToInstallForgeComboBox.SelectedItem;
+                ver = (MCVersion)verToInstallForgeComboBox.SelectedItem;
             }
             else
             {
@@ -218,16 +218,16 @@ namespace NsisoLauncher.Windows
                 return;
             }
 
-            AppendForgeDownloadTask(ver, forge);
-            this.Close();
+            await AppendForgeDownloadTaskAsync(ver, forge);
+            Close();
         }
 
         private async void DownloadLiteloaderButton_Click(object sender, RoutedEventArgs e)
         {
-            Version ver;
+            MCVersion ver;
             if (verToInstallLiteComboBox.SelectedItem != null)
             {
-                ver = (Version)verToInstallLiteComboBox.SelectedItem;
+                ver = (MCVersion)verToInstallLiteComboBox.SelectedItem;
             }
             else
             {
@@ -249,7 +249,7 @@ namespace NsisoLauncher.Windows
             }
 
             AppendLiteloaderDownloadTask(ver, liteloader);
-            this.Close();
+            Close();
         }
 
         private async Task AppendVersionsDownloadTask(IList list)
@@ -258,7 +258,8 @@ namespace NsisoLauncher.Windows
             {
                 foreach (JWVersion item in list)
                 {
-                    string json = await APIRequester.HttpGetStringAsync(apiHandler.DoURLReplace(item.Url));
+                    var http = new HttpRequesterAPI(TimeSpan.FromSeconds(10));
+                    string json = await http.HttpGetStringAsync(apiHandler.DoURLReplace(item.Url));
                     MCVersion ver = App.Handler.JsonToVersion(json);
                     string jsonPath = App.Handler.GetJsonPath(ver.ID);
 
@@ -272,7 +273,7 @@ namespace NsisoLauncher.Windows
 
                     List<DownloadTask> tasks = new List<DownloadTask>();
 
-                    tasks.Add(new DownloadTask(App.GetResourceString("String.NewDownloadTaskWindow.Source"), 
+                    tasks.Add(new DownloadTask(App.GetResourceString("String.NewDownloadTaskWindow.Source"),
                         apiHandler.DoURLReplace(ver.AssetIndex.URL), App.Handler.GetAssetsIndexPath(ver.Assets)));
 
                     tasks.AddRange(await FileHelper.GetLostDependDownloadTaskAsync(App.Config.MainConfig.Download.DownloadSource, App.Handler, ver));
@@ -300,14 +301,14 @@ namespace NsisoLauncher.Windows
 
         }
 
-        private void AppendForgeDownloadTask(Version ver, JWForge forge)
+        private async Task AppendForgeDownloadTaskAsync(MCVersion ver, JWForge forge)
         {
-            DownloadTask dt = GetDownloadUrl.GetForgeDownloadURL(App.Config.MainConfig.Download.DownloadSource, forge);
+            DownloadTask dt = await GetDownloadUrl.GetForgeDownloadURL(App.Config.MainConfig.Download.DownloadSource, forge, ver.ID);
             App.Downloader.SetDownloadTasks(dt);
             App.Downloader.StartDownload();
         }
 
-        private void AppendLiteloaderDownloadTask(Version ver, JWLiteloader liteloader)
+        private void AppendLiteloaderDownloadTask(MCVersion ver, JWLiteloader liteloader)
         {
             DownloadTask dt = GetDownloadUrl.GetLiteloaderDownloadURL(App.Config.MainConfig.Download.DownloadSource, liteloader);
             App.Downloader.SetDownloadTasks(dt);
@@ -384,8 +385,23 @@ namespace NsisoLauncher.Windows
                 }
 
                 await loading.CloseAsync();
-                this.Close();
+
+                Close();
             }
+        }
+
+        private void MetroWindow_Closed(object sender, EventArgs e)
+        {
+            if (App.DownloadWindow_ == null)
+            {
+                App.DownloadWindow_ = new DownloadWindow();
+                App.DownloadWindow_.Show();
+            }
+            else
+            {
+                App.DownloadWindow_.Refresh();
+            }
+            App.NewDownloadTaskWindow_ = null;
         }
     }
 }

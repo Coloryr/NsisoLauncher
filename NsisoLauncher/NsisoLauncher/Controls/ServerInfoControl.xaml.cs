@@ -69,10 +69,12 @@ namespace NsisoLauncher.Controls
                     case ServerInfo.StateType.GOOD:
                         serverStateIcon.Kind = MahApps.Metro.IconPacks.PackIconFontAwesomeKind.CheckCircleSolid;
                         serverStateIcon.Foreground = System.Windows.Media.Brushes.Green;
-                        serverPeopleTextBlock.Text = string.Format("人数:[{0}/{1}]", serverInfo.CurrentPlayerCount, serverInfo.MaxPlayerCount);
+                        serverPeopleTextBlock.Text = App.GetResourceString("String.ServerInfoControl.Member")
+                            + string.Format("[{0}/{1}]", serverInfo.CurrentPlayerCount, serverInfo.MaxPlayerCount);
                         serverVersionTextBlock.Text = serverInfo.GameVersion;
                         serverVersionTextBlock.ToolTip = serverInfo.GameVersion;
-                        serverPingTextBlock.Text = string.Format("延迟:{0}ms", serverInfo.Ping);
+                        serverPingTextBlock.Text = App.GetResourceString("String.ServerInfoControl.Ping") 
+                            + string.Format("{0}ms", serverInfo.Ping);
                         if (serverInfo.MOTD != null)
                         {
                             serverMotdTextBlock.ToolTip = serverInfo.MOTD;
@@ -94,7 +96,7 @@ namespace NsisoLauncher.Controls
                         }
                         break;
                     default:
-                        serverNameTextBlock.Text = "获取失败";
+                        serverNameTextBlock.Text = App.GetResourceString("String.ServerInfoControl.Error");
                         serverPeopleTextBlock.Text = "";
                         serverVersionTextBlock.Text = "";
                         serverPingTextBlock.Text = "";

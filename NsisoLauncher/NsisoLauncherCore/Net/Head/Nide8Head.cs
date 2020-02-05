@@ -83,7 +83,8 @@ namespace NsisoLauncherCore.Net.Head
             string url = "https://auth2.nide8.com:233/" + args.Property["nide8ID"] + "/sessionserver/session/minecraft/profile/" + uuid;
             try
             {
-                var res = await APIRequester.HttpGetAsync(url);
+                var http = new HttpRequesterAPI(TimeSpan.FromSeconds(10));
+                var res = await http.HttpGetAsync(url);
                 string data = await res.Content.ReadAsStringAsync();//把流转换为字符串并显示在文本框中
                 if (res.IsSuccessStatusCode)
                 {
@@ -102,7 +103,7 @@ namespace NsisoLauncherCore.Net.Head
                         data = data.Replace("\",\"metadata\":", "");
                         data = data.Replace("{\"model\":\"slim\"}}}}", "");
                         data = data.Replace("\"}}}", "");
-                        res = await APIRequester.HttpGetAsync(data);
+                        res = await http.HttpGetAsync(data);
                         using (Stream stream = await res.Content.ReadAsStreamAsync())
                         {
                             Image saveImage = Image.FromStream(stream);

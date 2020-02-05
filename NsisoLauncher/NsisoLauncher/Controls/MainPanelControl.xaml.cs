@@ -154,7 +154,8 @@ namespace NsisoLauncher.Controls
             {
                 App.CatchAggregateException(this, new AggregateExceptionArgs()
                 {
-                    AggregateException = new AggregateException("启动器致命错误", e)
+                    AggregateException = new AggregateException(
+                        App.GetResourceString("String.MainPanelControl.Error"), e)
                 });
             }
         }
@@ -245,8 +246,15 @@ namespace NsisoLauncher.Controls
             }
             else
             {
-                new DownloadWindow(true).ShowDialog();
-                Refresh();
+                if (App.DownloadWindow_ == null)
+                {
+                    App.DownloadWindow_ = new DownloadWindow(true);
+                    App.DownloadWindow_.Show();
+                }
+                else
+                {
+                    App.DownloadWindow_.Activate();
+                }
             }
         }
 

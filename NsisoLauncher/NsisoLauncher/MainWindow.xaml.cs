@@ -153,6 +153,12 @@ namespace NsisoLauncher
             }));
         }
 
+        public void Refresh()
+        {
+            mainPanel.is_re = true;
+            mainPanel.Refresh();
+        }
+
         public async void CustomizeRefresh()
         {
             if (!string.IsNullOrWhiteSpace(App.Config.MainConfig.Customize.LauncherTitle))
@@ -706,7 +712,7 @@ namespace NsisoLauncher
                                 DefaultButtonFocus = MessageDialogResult.Affirmative
                             }) == MessageDialogResult.Affirmative)
                         {
-                            losts.AddRange(await lost_mod.setupdata(pack));
+                            losts.AddRange(await lost_mod.CheckUpdata(pack));
                             packname = lost_mod.getpackname();
                             vision = lost_mod.getvision();
                         }

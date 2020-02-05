@@ -2,6 +2,18 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:sys="clr-namespace:System;assembly=mscorlib">
 
+    <sys:String x:Key="String.AuthModuleControl.Nide8">统一通行证ID：</sys:String>
+    <sys:String x:Key="String.AuthModuleControl.Adress">验证地址：</sys:String>
+    <sys:String x:Key="String.AuthModuleControl.Local">代理服务器地址：</sys:String>
+    <sys:String x:Key="String.AuthModuleControl.NoChose.Title">未选择验证模型</sys:String>
+    <sys:String x:Key="String.AuthModuleControl.NoChose.Text">请选择您要使用的验证模型</sys:String>
+    <sys:String x:Key="String.AuthModuleControl.NoName.Title">未填写验证模型名称</sys:String>
+    <sys:String x:Key="String.AuthModuleControl.NoName.Text">请填写您验证模型的名称</sys:String>
+    <sys:String x:Key="String.AuthModuleControl.NoData.Title">未填写模型数据</sys:String>
+    <sys:String x:Key="String.AuthModuleControl.NoData.Text">请填写您验证模型的数据</sys:String>
+    <sys:String x:Key="String.AuthModuleControl.Error.Title">删除失败</sys:String>
+    <sys:String x:Key="String.AuthModuleControl.Error.Text">无法删除该登录模型</sys:String>
+    
     <sys:String x:Key="String.Base.Setting">设置</sys:String>
     <sys:String x:Key="String.Base.Launch">启动游戏</sys:String>
     <sys:String x:Key="String.Base.Download">下载</sys:String>
@@ -75,6 +87,8 @@
     <sys:String x:Key="String.Mainwindow.GameExit.Error">游戏非正常退出</sys:String>
     <sys:String x:Key="String.Mainwindow.GameExit.Error_t">这很有可能是因为游戏崩溃导致的，退出代码:{0}，游戏持续时间:{1}</sys:String>
 
+    <sys:String x:Key="String.MainPanelControl.Error">启动器致命错误</sys:String>
+    
     <sys:String x:Key="String.Downloadwindow.Windows">下载监视器</sys:String>
     <sys:String x:Key="String.Downloadwindow.TaskName">任务名称</sys:String>
     <sys:String x:Key="String.Downloadwindow.TaskState">状态</sys:String>
@@ -121,6 +135,8 @@
     <sys:String x:Key="String.NewDownloadTaskWindow.Fail.Text">请检查您的网络是否正常或更改下载源/n原因：</sys:String>
     <sys:String x:Key="String.NewDownloadTaskWindow.Forge.Title">您未选择要安装Forge的版本</sys:String>
     <sys:String x:Key="String.NewDownloadTaskWindow.Forge.Text">您需要选择一个需要安装Forge的Minecraft本体</sys:String>
+    <sys:String x:Key="String.NewDownloadTaskWindow.ForgeNot.Title">无法自动安装forge</sys:String>
+    <sys:String x:Key="String.NewDownloadTaskWindow.ForgeNot.Text">该版本的forge无法自动安装，你需要手动安装</sys:String>
     <sys:String x:Key="String.NewDownloadTaskWindow.ForgeChose.Title">您未选择要安装Forge的Minecraft</sys:String>
     <sys:String x:Key="String.NewDownloadTaskWindow.ForgeChose.Text">您需要选择一个需要安装Forge的Minecraft本体</sys:String>
     <sys:String x:Key="String.NewDownloadTaskWindow.ForgeList.Title">获取Forge列表中</sys:String>
@@ -140,6 +156,7 @@
     <sys:String x:Key="String.NewDownloadTaskWindow.LiteloaderListNull.Title">没有匹配该版本的Liteloader</sys:String>
     <sys:String x:Key="String.NewDownloadTaskWindow.LiteloaderListNull.Text">貌似没有支持这个版本的Liteloader，请尝试更换另一个版本</sys:String>
     <sys:String x:Key="String.NewDownloadTaskWindow.ModPack">导入整合包</sys:String>
+    <sys:String x:Key="String.NewDownloadTaskWindow.ModPack.Now">当前进度：</sys:String>
     <sys:String x:Key="String.NewDownloadTaskWindow.ModPack.Note">注：只能识别标准的Curseforge整合包</sys:String>
     <sys:String x:Key="String.NewDownloadTaskWindow.ModPack.Error.Title">无法安装整合包</sys:String>
     <sys:String x:Key="String.NewDownloadTaskWindow.ModPack.Error.Text">整合包解析出现问题</sys:String>
@@ -150,6 +167,8 @@
     <sys:String x:Key="String.NewDownloadTaskWindow.ModPack.Select">选择本地整合包</sys:String>
     <sys:String x:Key="String.NewDownloadTaskWindow.ModPack.Select.Button">选择</sys:String>
     <sys:String x:Key="String.NewDownloadTaskWindow.ModPack.Select.Read">导入</sys:String>
+    <sys:String x:Key="String.NewDownloadTaskWindow.ModPack.Mod">整合包MOD</sys:String>
+    <sys:String x:Key="String.NewDownloadTaskWindow.ModPack.UnZip">解压中...</sys:String>
     <sys:String x:Key="String.NewDownloadTaskWindow.Type.release">1-正式版(Release)</sys:String>
     <sys:String x:Key="String.NewDownloadTaskWindow.Type.snapshot">2-版本快照(snapshot)</sys:String>
     <sys:String x:Key="String.NewDownloadTaskWindow.Type.old_alpha">3-旧alpha版本(old_alpha)</sys:String>
@@ -312,6 +331,10 @@
     <sys:String x:Key="String.Settingwindow.JavaError">JAVA无效，请检查</sys:String>
     <sys:String x:Key="String.Settingwindow.SaveError">保存发生错误</sys:String>
 
+    <sys:String x:Key="String.ServerInfoControl.Member">人数：</sys:String>
+    <sys:String x:Key="String.ServerInfoControl.Ping">延迟：</sys:String>
+    <sys:String x:Key="String.ServerInfoControl.Error">获取失败</sys:String>
+
     <sys:String x:Key="String.ErrorWindow.Title">错误窗口</sys:String>
     <sys:String x:Key="String.ErrorWindow.Copy">复制错误信息</sys:String>
     <sys:String x:Key="String.ErrorWindow.Text">程序在运行时遇到该死的的错误 :(</sys:String>
@@ -320,11 +343,11 @@
 
     <sys:String x:Key="String.Register.Title">注册</sys:String>
 
-    <sys:String x:Key="String.UpdateWindow.Title">启动器升级</sys:String>
-    <sys:String x:Key="String.UpdateWindow.New">启动器有新版本可供更新</sys:String>
-    <sys:String x:Key="String.UpdateWindow.Describe">描述</sys:String>
-    <sys:String x:Key="String.UpdateWindow.Vision">版本号：</sys:String>
-    <sys:String x:Key="String.UpdateWindow.Updatatime">更新时间：</sys:String>
-    <sys:String x:Key="String.UpdateWindow.Ignore">忽略</sys:String>
-    <sys:String x:Key="String.UpdateWindow.Download">前往下载</sys:String>
+    <sys:String x:Key="String.Update.UpdateMod">更新Mod</sys:String>
+    <sys:String x:Key="String.Update.LostMod">缺失Mod</sys:String>
+    <sys:String x:Key="String.Update.UpdateScripts">更新魔改</sys:String>
+    <sys:String x:Key="String.Update.LostScripts">缺失魔改</sys:String>
+    <sys:String x:Key="String.Update.UpdateResources">更新材质</sys:String>
+    <sys:String x:Key="String.Update.LostResources">缺失材质</sys:String>
+    <sys:String x:Key="String.Update.UpdataConfig">更新配置</sys:String>
 </ResourceDictionary>

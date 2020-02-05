@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Threading.Tasks;
 
 namespace NsisoLauncherCore.Net.AuthlibInjectorAPI
@@ -20,7 +21,8 @@ namespace NsisoLauncherCore.Net.AuthlibInjectorAPI
                     apiBase = "https://authlib-injector.yushi.moe/artifact/latest.json";
                     break;
             }
-            var jobj = JObject.Parse(await APIRequester.HttpGetStringAsync(apiBase));
+            var http = new HttpRequesterAPI(TimeSpan.FromSeconds(10));
+            var jobj = JObject.Parse(await http.HttpGetStringAsync(apiBase));
             string downloadURL = jobj.Value<string>("download_url");
             string sha256 = jobj["checksums"].Value<string>("sha256");
             return new DownloadTask("AuthlibInjector核心", downloadURL, downloadTo)

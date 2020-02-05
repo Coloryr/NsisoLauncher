@@ -2,6 +2,7 @@
 using NsisoLauncherCore.Net;
 using NsisoLauncherCore.Net.Tools;
 using System.Collections.Generic;
+using System;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
@@ -230,7 +231,8 @@ namespace NsisoLauncherCore.Util
                 string innerJsonStr;
                 if (!File.Exists(innerJsonPath))
                 {
-                    innerJsonStr = await APIRequester.HttpGetStringAsync(GetDownloadUrl.GetCoreJsonDownloadURL(source, version.InheritsVersion));
+                    var http = new HttpRequesterAPI(TimeSpan.FromSeconds(10));
+                    innerJsonStr = await http.HttpGetStringAsync(GetDownloadUrl.GetCoreJsonDownloadURL(source, version.InheritsVersion));
                     string jsonFolder = Path.GetDirectoryName(innerJsonPath);
                     if (!Directory.Exists(jsonFolder))
                     {
@@ -279,8 +281,9 @@ namespace NsisoLauncherCore.Util
             {
                 if (ver.AssetIndex != null)
                 {
+                    var http = new HttpRequesterAPI(TimeSpan.FromSeconds(10));
                     string jsonUrl = GetDownloadUrl.DoURLReplace(source, ver.AssetIndex.URL);
-                    string assetsJson = await APIRequester.HttpGetStringAsync(jsonUrl);
+                    string assetsJson = await http.HttpGetStringAsync(jsonUrl);
                     assets = core.GetAssetsByJson(assetsJson);
                     tasks.Add(new DownloadTask("资源文件引导", jsonUrl, assetsPath));
                 }

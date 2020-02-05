@@ -10,23 +10,23 @@ namespace NsisoLauncher.Updata
 {
     class ModCheck
     {
-        public async Task<Dictionary<string, updata_item>> ReadModInfo(string path)
+        public async Task<Dictionary<string, UpdataItem>> ReadModInfo(string path)
         {
             path += @"\mods\";
-            App.LogHandler.AppendInfo("检查mod:" + path);
+            App.LogHandler.AppendInfo("检查mod:" + path.Replace(App.Handler.GameRootPath + path, ""));
             try
             {
                 if (!Directory.Exists(path))
                 {
-                    return new Dictionary<string, updata_item>();
+                    return new Dictionary<string, UpdataItem>();
                 }
                 string[] files = Directory.GetFiles(path, "*.jar");
-                Dictionary<string, updata_item> list = new Dictionary<string, updata_item>();
+                Dictionary<string, UpdataItem> list = new Dictionary<string, UpdataItem>();
                 foreach (string file in files)
                 {
                     await Task.Factory.StartNew(() =>
                     {
-                        updata_item save = GetModsInfo(path, file);
+                        UpdataItem save = GetModsInfo(path, file);
                         if (list.ContainsKey(save.name))
                         {
                             save.name += "1";
@@ -41,14 +41,14 @@ namespace NsisoLauncher.Updata
             {
                 App.LogHandler.AppendInfo("检查mod错误" + e.Source);
             }
-            return new Dictionary<string, updata_item>();
+            return new Dictionary<string, UpdataItem>();
         }
-        public updata_item GetModsInfo(string path, string fileName)
+        public UpdataItem GetModsInfo(string path, string fileName)
         {
             try
             {
                 JToken modinfo = null;
-                updata_item mod = new updata_item();
+                UpdataItem mod = new UpdataItem();
                 mod.filename = fileName.Replace(path, "");
                 try
                 {

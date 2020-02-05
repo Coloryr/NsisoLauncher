@@ -6,7 +6,7 @@
                       xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
                       mc:Ignorable="d"
         Title="{DynamicResource String.Downloadwindow.Windows}" Height="450" Width="800" WindowStartupLocation="CenterScreen" 
-                      Closing="MetroWindow_Closing" Loaded="MetroWindow_Loaded" ResizeMode="CanMinimize">
+                      Closing="MetroWindow_Closing" Loaded="MetroWindow_Loaded" ResizeMode="CanMinimize" Closed="MetroWindow_Closed">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="395*"/>

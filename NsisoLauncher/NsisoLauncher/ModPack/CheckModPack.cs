@@ -2,6 +2,7 @@
 using MahApps.Metro.Controls.Dialogs;
 using Newtonsoft.Json.Linq;
 using NsisoLauncherCore.Net;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
@@ -26,10 +27,10 @@ namespace NsisoLauncher.ModPack
                 string strDirectory = App.Handler.GameRootPath + @"\";
                 ZipInputStream zip = new ZipInputStream(File.OpenRead(Local));
                 ZipEntry theEntry;
-
+                bool isfind = false;
                 while ((theEntry = zip.GetNextEntry()) != null)
                 {
-                    if (theEntry.Name == "manifest.json")
+                    if (isfind == false && theEntry.Name == "manifest.json")
                     {
                         byte[] data = new byte[theEntry.Size];
                         zip.Read(data, 0, (int)theEntry.Size);
@@ -37,14 +38,17 @@ namespace NsisoLauncher.ModPack
                         manifestObj obj = JObject.Parse(a).ToObject<manifestObj>();
                         GetUrl GetUrl = new GetUrl(window);
 
-                        var res = await GetUrl.get_urlAsync(obj.files);
+                        var res = await GetUrl.GeturlAsync(obj.files);
                         if (res == null)
                             return null;
                         foreach (var item in res)
                         {
-                            task.Add(new DownloadTask("整合包mod", item.url, strDirectory + "mods\\" + item.filename));
+                            task.Add(new DownloadTask(App.GetResourceString("String.NewDownloadTaskWindow.ModPack.Mod"), 
+                                item.url, strDirectory + "mods\\" + item.filename));
                         }
                         task.Add(new GetForge().Get(obj));
+                        window.SetMessage(App.GetResourceString("String.NewDownloadTaskWindow.ModPack.UnZip"));
+                        isfind = true;
                     }
                     else
                         try
@@ -72,9 +76,9 @@ namespace NsisoLauncher.ModPack
                                 }
                             });
                         }
-                        catch
+                        catch(Exception e)
                         {
-
+                            App.LogHandler.AppendFatal(e);
                         }
                 }
             }

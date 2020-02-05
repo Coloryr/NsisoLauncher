@@ -12,7 +12,7 @@ namespace NsisoLauncher.Updata
         /// <summary>
         /// 更新信息
         /// </summary>
-        private updata_obj updata_obj;
+        private updata_obj UpdataObj;
         /// <summary>
         /// 资源检查
         /// </summary>
@@ -21,14 +21,15 @@ namespace NsisoLauncher.Updata
             string Url = App.Config.MainConfig.Server.Updata_Check.Address;
             try
             {
-                var res = await APIRequester.HttpGetAsync(Url);
+                var http = new HttpRequesterAPI(TimeSpan.FromSeconds(10));
+                var res = await http.HttpGetAsync(Url);
                 if (res.IsSuccessStatusCode)
                 {
                     JObject json = JObject.Parse(await res.Content.ReadAsStringAsync());
-                    updata_obj = json.ToObject<updata_obj>();
+                    UpdataObj = json.ToObject<updata_obj>();
                     if (string.IsNullOrWhiteSpace(App.Config.MainConfig.Server.Updata_Check.packname))
                         return this;
-                    else if (App.Config.MainConfig.Server.Updata_Check.Vision != updata_obj.Version)
+                    else if (App.Config.MainConfig.Server.Updata_Check.Vision != UpdataObj.Version)
                         return this;
                     else
                         return null;
@@ -41,36 +42,38 @@ namespace NsisoLauncher.Updata
             return null;
         }
 
-        public async Task<List<DownloadTask>> setupdata(OtherCheck pack)
+        public async Task<List<DownloadTask>> CheckUpdata(OtherCheck pack)
         {
-            List<DownloadTask> task = new List<DownloadTask>();
-            if (updata_obj.mods.Count != 0)
+            List<DownloadTask> DownloadTask = new List<DownloadTask>();
+            if (UpdataObj.mods.Count != 0)
             {
                 try
                 {
-                    var local_mods = await new ModCheck().ReadModInfo(App.Handler.GameRootPath);
-                    foreach (KeyValuePair<string, updata_item> th in updata_obj.mods)
+                    var LocalMod = await new ModCheck().ReadModInfo(App.Handler.GameRootPath);
+                    foreach (KeyValuePair<string, UpdataItem> updataItem in UpdataObj.mods)
                     {
-                        if (th.Value.function == "delete")
+                        if (updataItem.Value.function == "delete")
                         {
-                            FileInfo file = new FileInfo(App.Handler.GameRootPath + @"\mods\" + th.Value.filename);
+                            FileInfo file = new FileInfo(App.Handler.GameRootPath + @"\mods\" + updataItem.Value.filename);
                             if (file.Exists)
                             {
                                 file.Delete();
                             }
                         }
-                        else if (local_mods.ContainsKey(th.Key))
+                        else if (LocalMod.ContainsKey(updataItem.Key))
                         {
-                            updata_item lo = local_mods[th.Value.name];
-                            if (!string.Equals(lo.check, th.Value.check, StringComparison.OrdinalIgnoreCase))
+                            UpdataItem lo = LocalMod[updataItem.Value.name];
+                            if (!string.Equals(lo.check, updataItem.Value.check, StringComparison.OrdinalIgnoreCase))
                             {
                                 File.Delete(lo.local);
-                                task.Add(new DownloadTask("更新Mod", th.Value.url, App.Handler.GameRootPath + @"\mods\" + th.Value.filename));
+                                DownloadTask.Add(new DownloadTask(App.GetResourceString("String.Update.UpdateMod"),
+                                    updataItem.Value.url, App.Handler.GameRootPath + @"\mods\" + updataItem.Value.filename));
                             }
                         }
                         else
                         {
-                            task.Add(new DownloadTask("缺失Mod", th.Value.url, App.Handler.GameRootPath + @"\mods\" + th.Value.filename));
+                            DownloadTask.Add(new DownloadTask(App.GetResourceString("String.Update.LostMod"),
+                                updataItem.Value.url, App.Handler.GameRootPath + @"\mods\" + updataItem.Value.filename));
                         }
                     }
                 }
@@ -79,82 +82,87 @@ namespace NsisoLauncher.Updata
                     App.LogHandler.AppendFatal(e);
                 }
             }
-            if (updata_obj.scripts.Count != 0)
+            if (UpdataObj.scripts.Count != 0)
             {
-                var local_scripts = await new ScriptsCheck().ReadscriptsInfo(App.Handler.GameRootPath);
-                foreach (updata_item th in updata_obj.scripts)
+                var LocalScripts = await new ScriptsCheck().ReadscriptsInfo(App.Handler.GameRootPath);
+                foreach (UpdataItem updataItem in UpdataObj.scripts)
                 {
-                    if (local_scripts.ContainsKey(th.name))
+                    if (LocalScripts.ContainsKey(updataItem.name))
                     {
-                        updata_item lo = local_scripts[th.name];
-                        if (string.Equals(lo.check, th.check, StringComparison.OrdinalIgnoreCase))
+                        UpdataItem LocalScript = LocalScripts[updataItem.name];
+                        if (string.Equals(LocalScript.check, updataItem.check, StringComparison.OrdinalIgnoreCase))
                         {
-                            local_scripts.Remove(th.name);
+                            LocalScripts.Remove(updataItem.name);
                         }
                         else
                         {
-                            File.Delete(lo.local);
-                            task.Add(new DownloadTask("更新魔改", th.url, App.Handler.GameRootPath + @"\scripts\" + th.filename));
-                            local_scripts.Remove(th.name);
+                            File.Delete(LocalScript.local);
+                            DownloadTask.Add(new DownloadTask(App.GetResourceString("String.Update.UpdateScripts"),
+                                updataItem.url, App.Handler.GameRootPath + @"\scripts\" + updataItem.filename));
+                            LocalScripts.Remove(updataItem.name);
                         }
                     }
                     else
                     {
-                        task.Add(new DownloadTask("缺失魔改", th.url, App.Handler.GameRootPath + @"\scripts\" + th.filename));
+                        DownloadTask.Add(new DownloadTask(App.GetResourceString("String.Update.LostScripts"), 
+                            updataItem.url, App.Handler.GameRootPath + @"\scripts\" + updataItem.filename));
                     }
                 }
-                if (local_scripts.Count != 0)
+                if (LocalScripts.Count != 0)
                 {
-                    foreach (updata_item lo in local_scripts.Values)
+                    foreach (UpdataItem updataItem in LocalScripts.Values)
                     {
-                        File.Delete(lo.local);
+                        File.Delete(updataItem.local);
                     }
                 }
             }
-            if (updata_obj.resourcepacks.Count != 0)
+            if (UpdataObj.resourcepacks.Count != 0)
             {
-                var local_resourcepacks = await new ResourcepacksCheck().ReadresourcepacksInfo(App.Handler.GameRootPath);
-                foreach (updata_item th in updata_obj.resourcepacks)
+                var LocalResourcepacks = await new ResourcepacksCheck().ReadresourcepacksInfo(App.Handler.GameRootPath);
+                foreach (UpdataItem updataItem in UpdataObj.resourcepacks)
                 {
-                    if (local_resourcepacks.ContainsKey(th.name))
+                    if (LocalResourcepacks.ContainsKey(updataItem.name))
                     {
-                        updata_item lo = local_resourcepacks[th.name];
-                        if (string.Equals(lo.check, th.check, StringComparison.OrdinalIgnoreCase))
+                        UpdataItem LocalResourcepack = LocalResourcepacks[updataItem.name];
+                        if (string.Equals(LocalResourcepack.check, updataItem.check, StringComparison.OrdinalIgnoreCase))
                         {
-                            local_resourcepacks.Remove(th.name);
+                            LocalResourcepacks.Remove(updataItem.name);
                         }
                         else
                         {
-                            File.Delete(lo.local);
-                            task.Add(new DownloadTask("更新材质", th.url, App.Handler.GameRootPath + @"\resourcepacks\" + th.filename));
-                            updata_obj.scripts.Remove(th);
-                            local_resourcepacks.Remove(th.name);
+                            File.Delete(LocalResourcepack.local);
+                            DownloadTask.Add(new DownloadTask(App.GetResourceString("String.Update.UpdateResources"), 
+                                updataItem.url, App.Handler.GameRootPath + @"\resourcepacks\" + updataItem.filename));
+                            UpdataObj.scripts.Remove(updataItem);
+                            LocalResourcepacks.Remove(updataItem.name);
                         }
                     }
                     else
                     {
-                        task.Add(new DownloadTask("缺失材质", th.url, App.Handler.GameRootPath + @"\resourcepacks\" + th.filename));
+                        DownloadTask.Add(new DownloadTask(App.GetResourceString("String.Update.LostResources"), 
+                            updataItem.url, App.Handler.GameRootPath + @"\resourcepacks\" + updataItem.filename));
                     }
                 }
             }
-            if (updata_obj.config.Count != 0)
+            if (UpdataObj.config.Count != 0)
             {
-                foreach (updata_item th in updata_obj.config)
+                foreach (UpdataItem updataItem in UpdataObj.config)
                 {
-                    pack.pack_list.Add(th.filename);
-                    task.Add(new DownloadTask("更新配置", th.url, App.Handler.GameRootPath + @"\" + th.filename));
+                    pack.pack_list.Add(updataItem.filename);
+                    DownloadTask.Add(new DownloadTask(App.GetResourceString("String.Update.UpdataConfig"), 
+                        updataItem.url, App.Handler.GameRootPath + @"\" + updataItem.filename));
                 }
             }
 
-            return task;
+            return DownloadTask;
         }
         public string getvision()
         {
-            return updata_obj == null ? "0.0.0" : updata_obj.Version;
+            return UpdataObj == null ? "0.0.0" : UpdataObj.Version;
         }
         public string getpackname()
         {
-            return updata_obj == null ? "modpack" : updata_obj.packname;
+            return UpdataObj == null ? "modpack" : UpdataObj.packname;
         }
     }
 }

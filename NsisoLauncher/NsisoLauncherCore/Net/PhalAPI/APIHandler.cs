@@ -33,7 +33,8 @@ namespace NsisoLauncherCore.Net.PhalAPI
                 args.Add("where", "[[\"id\", \">\", \"0\"]]");
                 //仅返回一条（即ID最高的最新版本）
                 args.Add("perpage", "1");
-                string result = await APIRequester.HttpPostReadAsStringForString(APIUrl + "?s=App.Table.FreeQuery", args);
+                var http = new HttpRequesterAPI(TimeSpan.FromSeconds(10));
+                string result = await http.HttpPostReadAsStringForString(APIUrl + "?s=App.Table.FreeQuery", args);
                 PhalApiClientResponse desObj = JsonConvert.DeserializeObject<PhalApiClientResponse>(result);
                 JObject listJobj = desObj.Data;
                 NsisoLauncherVersionListResponse list = listJobj.ToObject<NsisoLauncherVersionListResponse>();
@@ -58,7 +59,8 @@ namespace NsisoLauncherCore.Net.PhalAPI
             args.Add("app_key", App_key);
             args.Add("super_type", level.ToString());
             args.Add("super_message", log);
-            var result = await APIRequester.HttpPostReadAsStringForString(APIUrl + "?s=App.Market_SuperLogger.Record", args);
+            var http = new HttpRequesterAPI(TimeSpan.FromSeconds(10));
+            var result = await http.HttpPostReadAsStringForString(APIUrl + "?s=App.Market_SuperLogger.Record", args);
             Console.WriteLine(result);
         }
 
@@ -77,7 +79,8 @@ namespace NsisoLauncherCore.Net.PhalAPI
                     args.Add("type", "forever");
                     args.Add("name", "NsisoLauncher(Color_yr edit)UsingTimes");
                     args.Add("value", "1");
-                    await APIRequester.HttpPostAsync(APIUrl + "?s=App.Main_Counter.SmartRefresh", args);
+                    var http = new HttpRequesterAPI(TimeSpan.FromSeconds(10));
+                    await http.HttpPostAsync(APIUrl + "?s=App.Main_Counter.SmartRefresh", args);
                 }
                 catch
                 { }

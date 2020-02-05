@@ -31,8 +31,6 @@ namespace NsisoLauncherCore.Net
 
     public class MultiThreadDownloader
     {
-        private readonly object removeLock = new object();
-
         /// <summary>
         /// 初始化一个多线程下载器
         /// </summary>

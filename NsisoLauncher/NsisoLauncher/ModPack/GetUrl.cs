@@ -1,5 +1,6 @@
 ﻿using MahApps.Metro.Controls.Dialogs;
 using Newtonsoft.Json.Linq;
+using NsisoLauncherCore.Net;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -56,40 +57,25 @@ namespace NsisoLauncher.ModPack
         }
 
         private string base_url = @"https://addons-ecs.forgesvc.net/api/v2/addon/{0}/file/{1}";
-        public async Task<List<GetUrlRes>> get_urlAsync(List<FilesItem> mods)
+        public async Task<List<GetUrlRes>> GeturlAsync(List<FilesItem> mods)
         {
 
             List<GetUrlRes> list = new List<GetUrlRes>();
 
-            HttpClient client = new HttpClient();
-            client.Timeout = TimeSpan.FromSeconds(20);
+            HttpRequesterAPI client = new HttpRequesterAPI(TimeSpan.FromSeconds(20));
             foreach (var item in mods)
             {
-                for (int a = 0; a < 5; a++)
+                window.SetMessage(App.GetResourceString("String.NewDownloadTaskWindow.ModPack.Now") 
+                    + list.Count + "/" + mods.Count);
+                string res = await client.HttpGetStringAsync(string.Format(base_url, item.projectID, item.fileID));
+                if (res == null)
+                    return null;
+                var obj1 = JObject.Parse(res).ToObject<UrlResObj>();
+                list.Add(new GetUrlRes
                 {
-                    try
-                    {
-                        double pro = (double)list.Count / (double)mods.Count;
-                        window.SetMessage("当前进度：" + list.Count + "/" + mods.Count);
-                        window.SetProgress(pro);
-                        string res = await client.GetStringAsync(string.Format(base_url, item.projectID, item.fileID));
-                        var obj1 = JObject.Parse(res).ToObject<UrlResObj>();
-                        list.Add(new GetUrlRes
-                        {
-                            url = obj1.downloadUrl,
-                            filename = obj1.fileName
-                        });
-                        a = 5;
-                        continue;
-                    }
-                    catch
-                    {
-                        client.CancelPendingRequests();
-                        a++;
-                        if (a == 5)
-                            return null;
-                    }
-                }
+                    url = obj1.downloadUrl,
+                    filename = obj1.fileName
+                });
             }
             return list;
         }

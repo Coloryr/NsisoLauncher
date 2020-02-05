@@ -2,7 +2,6 @@
 using Newtonsoft.Json.Linq;
 using System;
 using System.IO;
-using System.Threading.Tasks;
 
 namespace NsisoLauncherCore.Util.Installer
 {
@@ -55,10 +54,7 @@ namespace NsisoLauncherCore.Util.Installer
         {
             string gameRootPath = ((CommonInstallOptions)Options).GameRootPath;
             string tempPath = PathManager.TempDirectory;
-            if (Directory.Exists(tempPath))
-            {
-                Directory.Delete(tempPath, true);
-            }
+            
             Directory.CreateDirectory(tempPath);
             Unzip.UnZipFile(InstallerPath, tempPath);
             string mainJson = File.ReadAllText(tempPath + "\\install_profile.json");
@@ -78,7 +74,6 @@ namespace NsisoLauncherCore.Util.Installer
             }
             File.Copy(tempPath + '\\' + jsonObj.Install.FilePath, libPath, true);
 
-
             string newPath = PathManager.GetJsonPath(gameRootPath, jsonObj.Install.Target);
             string newDir = Path.GetDirectoryName(newPath);
             string jarPath = PathManager.GetJarPath(gameRootPath, jsonObj.Install.Target);
@@ -90,16 +85,19 @@ namespace NsisoLauncherCore.Util.Installer
             File.WriteAllText(newPath, jsonObj.VersionInfo.ToString());
             File.Copy(tempPath + '\\' + jsonObj.Install.FilePath, jarPath, true);
 
-            Directory.Delete(tempPath, true);
+            if (Directory.Exists(tempPath))
+            {
+                Directory.Delete(tempPath, true);
+            }
             File.Delete(InstallerPath);
         }
 
-        public async Task BeginInstallAsync()
-        {
-            await Task.Factory.StartNew(() =>
-            {
-                BeginInstall();
-            });
-        }
+        //public async Task BeginInstallAsync()
+        //{
+        //    await Task.Factory.StartNew(() =>
+        //    {
+        //        BeginInstall();
+        //    });
+        //}
     }
 }

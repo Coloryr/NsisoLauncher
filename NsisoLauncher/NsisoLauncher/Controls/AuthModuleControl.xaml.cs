@@ -63,21 +63,21 @@ namespace NsisoLauncher.Controls
 
         private void Nide8_Checked(object sender, RoutedEventArgs e)
         {
-            authmoduleLable.Content = "统一通行证ID：";
+            authmoduleLable.Content = App.GetResourceString("String.AuthModuleControl.Nide8");
             authenticationType = AuthenticationType.NIDE8;
             Bro_IN.Visibility = REGISTER.Visibility = Visibility.Hidden;
         }
 
         private void AI_Checked(object sender, RoutedEventArgs e)
         {
-            authmoduleLable.Content = "验证地址：";
+            authmoduleLable.Content = App.GetResourceString("String.AuthModuleControl.Adress");
             authenticationType = AuthenticationType.AUTHLIB_INJECTOR;
             Bro_IN.Visibility = REGISTER.Visibility = Visibility.Visible;
         }
 
         private void Custom_Checked(object sender, RoutedEventArgs e)
         {
-            authmoduleLable.Content = "代理服务器地址：";
+            authmoduleLable.Content = App.GetResourceString("String.AuthModuleControl.Local");
             authenticationType = AuthenticationType.CUSTOM_SERVER;
             Bro_IN.Visibility = REGISTER.Visibility = Visibility.Visible;
         }
@@ -136,17 +136,20 @@ namespace NsisoLauncher.Controls
         {
             if (authenticationType == AuthenticationType.OFFLINE)
             {
-                ((MetroWindow)Window.GetWindow(this)).ShowMessageAsync("未选择验证模型", "请选择您要使用的验证模型");
+                ((MetroWindow)Window.GetWindow(this)).ShowMessageAsync(App.GetResourceString("String.AuthModuleControl.NoChose.Title"),
+                    App.GetResourceString("String.AuthModuleControl.NoChose.Text"));
                 return true;
             }
             if (string.IsNullOrWhiteSpace(authmoduleNameTextbox.Text))
             {
-                ((MetroWindow)Window.GetWindow(this)).ShowMessageAsync("未填写验证模型名称", "请填写您验证模型的名称");
+                ((MetroWindow)Window.GetWindow(this)).ShowMessageAsync(App.GetResourceString("String.AuthModuleControl.NoName.Title"),
+                    App.GetResourceString("String.AuthModuleControl.NoName.Text"));
                 return true;
             }
             if (string.IsNullOrWhiteSpace(authDataTextbox.Text))
             {
-                ((MetroWindow)Window.GetWindow(this)).ShowMessageAsync("未填写模型数据", "请填写您验证模型的数据");
+                ((MetroWindow)Window.GetWindow(this)).ShowMessageAsync(App.GetResourceString("String.AuthModuleControl.NoData.Title"),
+                    App.GetResourceString("String.AuthModuleControl.NoData.Text"));
                 return true;
             }
             return false;
@@ -184,7 +187,8 @@ namespace NsisoLauncher.Controls
         {
             if (authModule.Value.Name == "mojang" || authModule.Value.Name == "offline")
             {
-                ((MetroWindow)Window.GetWindow(this)).ShowMessageAsync("删除失败", "无法删除该登录模型");
+                ((MetroWindow)Window.GetWindow(this)).ShowMessageAsync(App.GetResourceString("String.AuthModuleControl.Error.Title"),
+                    App.GetResourceString("String.AuthModuleControl.Error.Text"));
                 return;
             }
             ((SettingWindow)Window.GetWindow(this)).DeleteAuthModule(authModule);

@@ -6,7 +6,7 @@
                       xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
                       mc:Ignorable="d"
         Title="{DynamicResource String.NewDownloadTaskWindow}" Height="450" Width="800"
-                      WindowStartupLocation="CenterScreen" Loaded="MetroWindow_Loaded" ResizeMode="CanMinimize">
+                      WindowStartupLocation="CenterScreen" Loaded="MetroWindow_Loaded" ResizeMode="CanMinimize" Closed="MetroWindow_Closed">
     <controls:MetroWindow.Resources>
         <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.AnimatedTabControl.xaml" />
     </controls:MetroWindow.Resources>

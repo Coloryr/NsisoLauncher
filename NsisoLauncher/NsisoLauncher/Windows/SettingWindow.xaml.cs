@@ -178,27 +178,28 @@ namespace NsisoLauncher.Windows
                     await GameHelper.SaveOptionsAsync(VersionOption.Type.options,
                     (List<VersionOption>)versionOptionsGrid.ItemsSource,
                     App.Handler,
-                    (NsisoLauncherCore.Modules.MCVersion)VersionsComboBox.SelectedItem);
+                    (MCVersion)VersionsComboBox.SelectedItem);
 
                     await GameHelper.SaveOptionsAsync(VersionOption.Type.optionsof,
                    (List<VersionOption>)versionOptionsofGrid.ItemsSource,
                    App.Handler,
-                   (NsisoLauncherCore.Modules.MCVersion)VersionsComboBox.SelectedItem);
+                   (MCVersion)VersionsComboBox.SelectedItem);
                 }
                 else
                 {
                     await GameHelper.SaveOptionsAsync(VersionOption.Type.options,
                     (List<VersionOption>)versionOptionsGrid.ItemsSource,
                     App.Handler,
-                    new NsisoLauncherCore.Modules.MCVersion() { ID = "null" });
+                    new MCVersion() { ID = "null" });
                     await GameHelper.SaveOptionsAsync(VersionOption.Type.optionsof,
                     (List<VersionOption>)versionOptionsofGrid.ItemsSource,
                     App.Handler,
-                    new NsisoLauncherCore.Modules.MCVersion() { ID = "null" });
+                    new MCVersion() { ID = "null" });
                 }
             }
 
             App.Config.Save();
+            App.Re();
             saveButton.Content = App.GetResourceString("String.Settingwindow.Saving");
             Config.Environment env = App.Config.MainConfig.Environment;
             Java java = null;
@@ -221,7 +222,8 @@ namespace NsisoLauncher.Windows
             }
             else
             {
-                await this.ShowMessageAsync(App.GetResourceString("String.Settingwindow.SaveError"), App.GetResourceString("String.Settingwindow.JavaError"));
+                await this.ShowMessageAsync(App.GetResourceString("String.Settingwindow.SaveError"), 
+                    App.GetResourceString("String.Settingwindow.JavaError"));
             }
         }
 

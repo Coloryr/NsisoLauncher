@@ -22,22 +22,22 @@ namespace NsisoLauncher.Updata
         /// <summary>
         /// mod列表
         /// </summary>
-        public Dictionary<string, updata_item> mods { get; set; }
+        public Dictionary<string, UpdataItem> mods { get; set; }
         /// <summary>
         /// 魔改列表
         /// </summary>
-        public List<updata_item> scripts { get; set; }
+        public List<UpdataItem> scripts { get; set; }
         /// <summary>
         /// 配置文件压缩包
         /// </summary>
-        public List<updata_item> config { get; set; }
+        public List<UpdataItem> config { get; set; }
         /// <summary>
         /// 配置文件压缩包
         /// </summary>
-        public List<updata_item> resourcepacks { get; set; }
+        public List<UpdataItem> resourcepacks { get; set; }
     }
 
-    public class updata_item
+    public class UpdataItem
     {
         /// <summary>
         /// 资源类型
