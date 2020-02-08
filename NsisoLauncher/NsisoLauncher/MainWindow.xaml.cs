@@ -92,7 +92,7 @@ namespace NsisoLauncher
             {
                 mediaElement.Stop();
                 now = 0;
-                mediaElement.Source = new Uri(mp4_file[now]);
+                mediaElement.Source = new Uri(mp4_file[App.Config.MainConfig.Customize.CustomBackGroundVedio_Random ? new Random().Next(mp4_file.Length - 1) : now]);
                 volumeButton.Visibility = Visibility.Visible;
                 mediaElement.Visibility = Visibility.Visible;
                 mediaElement.Play();
@@ -106,7 +106,7 @@ namespace NsisoLauncher
             {
                 mediaElement.Stop();
                 now = 0;
-                mediaElement.Source = new Uri(mp3_file[now]);
+                mediaElement.Source = new Uri(mp3_file[App.Config.MainConfig.Customize.CustomBackGroundMusic_Random ? new Random().Next(mp3_file.Length - 1) : now]);
                 volumeButton.Visibility = Visibility.Visible;
                 mediaElement.Visibility = Visibility.Visible;
                 mediaElement.Play();
@@ -117,16 +117,16 @@ namespace NsisoLauncher
         private void mediaElement_MediaEnded(object sender, RoutedEventArgs e)
         {
             mediaElement.Stop();
-            if (have_mp4 == true && App.Config.MainConfig.Customize.CustomBackGroundViode_Cyclic == true)
+            if (have_mp4 == true && App.Config.MainConfig.Customize.CustomBackGroundVedio_Cyclic == true)
             {
-                now++;
+                now = App.Config.MainConfig.Customize.CustomBackGroundVedio_Random ? new Random().Next(mp4_file.Length - 1) : + 1;
                 if (now >= mp4_file.Length)
                     now = 0;
                 mediaElement.Source = new Uri(mp4_file[now]);
             }
             else if (App.Config.MainConfig.Customize.CustomBackGroundMusic_Cyclic == true)
             {
-                now++;
+                now = App.Config.MainConfig.Customize.CustomBackGroundMusic_Random ? new Random().Next(mp3_file.Length - 1) : +1;
                 if (now >= mp3_file.Length)
                     now = 0;
                 mediaElement.Source = new Uri(mp3_file[now]);
@@ -165,7 +165,7 @@ namespace NsisoLauncher
             {
                 this.Title = App.Config.MainConfig.Customize.LauncherTitle;
             }
-            if (App.Config.MainConfig.Customize.CustomBackGroundViode)
+            if (App.Config.MainConfig.Customize.CustomBackGroundVedio)
             {
                 mp4_file = Directory.GetFiles(Path.GetDirectoryName(App.Config.MainConfigPath), "*.mp4");
                 if (mp4_file.Length != 0)
@@ -700,8 +700,8 @@ namespace NsisoLauncher
                     mainPanel.launchButton.Content = App.GetResourceString("String.Mainwindow.Check.mods");
                     pack = new OtherCheck();
 
-                    var lost_mod = await new UpdataCheck().Check();
-                    if (lost_mod != null)
+                    var lostmod = await new UpdataCheck().Check();
+                    if (lostmod != null)
                     {
                         if (await this.ShowMessageAsync(App.GetResourceString("String.Mainwindow.Check.new"),
                             App.GetResourceString("String.Mainwindow.Check.new.ask"),
@@ -712,9 +712,9 @@ namespace NsisoLauncher
                                 DefaultButtonFocus = MessageDialogResult.Affirmative
                             }) == MessageDialogResult.Affirmative)
                         {
-                            losts.AddRange(await lost_mod.CheckUpdata(pack));
-                            packname = lost_mod.getpackname();
-                            vision = lost_mod.getvision();
+                            losts.AddRange(await lostmod.CheckUpdata(pack));
+                            packname = lostmod.getpackname();
+                            vision = lostmod.getvision();
                         }
                     }
                 }
@@ -734,8 +734,8 @@ namespace NsisoLauncher
                                 if (File.Exists(filename))
                                     File.Delete(filename);
                             }
-                            await this.ShowMessageAsync(string.Format("有{0}个文件下载补全失败", downloadResult.ErrorList.Count),
-                                "这可能是因为本地网络问题或下载源问题，您可以尝试检查网络环境或在设置中切换首选下载源。");
+                            await this.ShowMessageAsync(string.Format(App.GetResourceString("String.Mainwindow.Download.Errot.Title"), downloadResult.ErrorList.Count),
+                                App.GetResourceString("String.Mainwindow.Download.Errot.Text"));
                             return;
                         }
                         else
@@ -749,7 +749,8 @@ namespace NsisoLauncher
                     }
                     else
                     {
-                        await this.ShowMessageAsync("无法下载补全：当前有正在下载中的任务", "请等待其下载完毕或取消下载。");
+                        await this.ShowMessageAsync(App.GetResourceString("String.Mainwindow.Download.Busy.Title"),
+                            App.GetResourceString("String.Mainwindow.Download.Busy.Title"));
                         return;
                     }
                 }

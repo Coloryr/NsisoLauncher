@@ -232,8 +232,8 @@ namespace NsisoLauncher.Config
                 },
                 Customize = new Customize()
                 {
-                    CustomBackGroundViode = false,
-                    CustomBackGroundViode_Cyclic = false,
+                    CustomBackGroundVedio = false,
+                    CustomBackGroundVedio_Cyclic = false,
                     CustomBackGroundMusic = false,
                     CustomBackGroundMusic_Cyclic = false,
                     CustomBackGroundPicture = false,

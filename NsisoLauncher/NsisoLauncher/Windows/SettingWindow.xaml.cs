@@ -445,21 +445,25 @@ namespace NsisoLauncher.Windows
                 checkBox2.IsEnabled = false;
                 checkBox3.IsEnabled = false;
                 checkBox1_s.IsEnabled = true;
+                checkBox1_r.IsEnabled = true;
                 set1.IsEnabled = true;
                 Text1.IsEnabled = true;
             }
             else if (checkBox1.IsChecked == false)
             {
                 checkBox1_s.IsEnabled = false;
+                checkBox1_r.IsEnabled = false;
                 if (checkBox2.IsChecked == true)
                 {
                     checkBox2_s.IsEnabled = true;
+                    checkBox2_r.IsEnabled = true;
                     set1.IsEnabled = true;
                     Text1.IsEnabled = true;
                 }
                 if (checkBox2.IsChecked == false)
                 {
                     checkBox2_s.IsEnabled = false;
+                    checkBox2_r.IsEnabled = false;
                     set1.IsEnabled = false;
                     Text1.IsEnabled = false;
                 }

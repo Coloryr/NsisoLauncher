@@ -56,7 +56,7 @@
     <sys:String x:Key="String.Mainwindow.Auth.Error.Password">您输入的账号或密码为空</sys:String>
     <sys:String x:Key="String.Mainwindow.Auth.Error.Check_Login">请检查您是否正确填写登陆信息</sys:String>
     <sys:String x:Key="String.Mainwindow.Auth.Error.Login_Error">登录失败</sys:String>
-    <sys:String x:Key="String.Mainwindow.Auth.Error.Null">发生空指针异常</sys:String>
+    <sys:String x:Key="String.Mainwindow.Auth.Error.Null">未知错误，请重试重新登陆</sys:String>
     <sys:String x:Key="String.Mainwindow.Auth.Error.Login_Save_out">您的登陆信息已过期，请您重新进行登陆</sys:String>
     <sys:String x:Key="String.Mainwindow.Auth.Error.Password_Error">请您确认您输入的账号密码正确</sys:String>
     <sys:String x:Key="String.Mainwindow.Auth.Error.Auth_Error_notfound">请确认您的Authlib-Injector验证服务器（Authlib-Injector验证）或自定义验证服务器（自定义验证）地址正确或确认账号和游戏角色存在。</sys:String>
@@ -67,6 +67,10 @@
     <sys:String x:Key="String.Mainwindow.Check.mods">检查资源更新</sys:String>
     <sys:String x:Key="String.Mainwindow.Check.new">有新版本的资源文件</sys:String>
     <sys:String x:Key="String.Mainwindow.Check.new.ask">是否更新客户端的资源文件</sys:String>
+    <sys:String x:Key="String.Mainwindow.Download.Errot.Title">有{0}个文件下载补全失败</sys:String>
+    <sys:String x:Key="String.Mainwindow.Download.Errot.Text">这可能是因为本地网络问题或下载源问题，您可以尝试检查网络环境或在设置中切换首选下载源。</sys:String>
+    <sys:String x:Key="String.Mainwindow.Download.Busy.Title">无法下载补全</sys:String>
+    <sys:String x:Key="String.Mainwindow.Download.Busy.Text">当前有正在下载中的任务，请等待其下载完毕或取消下载。</sys:String>
     <sys:String x:Key="String.Mainwindow.Launch.LaunchError">启动后等待游戏窗口响应异常", "这可能是由于游戏进程发生意外（闪退）导致的。\n</sys:String>
     <sys:String x:Key="String.Mainwindow.LaunchError">启动错误</sys:String>
     <sys:String x:Key="String.Mainwindow.GameExitWithNoWindow">游戏进程在未显示出窗口前退出</sys:String>
@@ -304,8 +308,10 @@
     <sys:String x:Key="String.Settingwindow.Custom.Backgroud">启动器背景设置</sys:String>
     <sys:String x:Key="String.Settingwindow.Custom.Backgroud.Vedio">开启自定义背景视频</sys:String>
     <sys:String x:Key="String.Settingwindow.Custom.Backgroud.Vedio.Cyc">开启自定义背景视频循环播放</sys:String>
+    <sys:String x:Key="String.Settingwindow.Custom.Backgroud.Vedio.Random">开启自定义背景视频随机播放</sys:String>
     <sys:String x:Key="String.Settingwindow.Custom.Backgroud.Music">开启自定义背景音乐</sys:String>
     <sys:String x:Key="String.Settingwindow.Custom.Backgroud.Music.Cyc">开启自定义背景音乐循环播放</sys:String>
+    <sys:String x:Key="String.Settingwindow.Custom.Backgroud.Music.Random">开启自定义背景音乐循环播放</sys:String>
     <sys:String x:Key="String.Settingwindow.Custom.Backgroud.Pic">开启自定义背景图片</sys:String>
     <sys:String x:Key="String.Settingwindow.Custom.Backgroud.Pic.Cyc">开启自定义背景图片循环播放</sys:String>
     <sys:String x:Key="String.Settingwindow.Custom.Backgroud.Pic.Cyc.Time">循环背景图片时间设置，单位毫秒：</sys:String>

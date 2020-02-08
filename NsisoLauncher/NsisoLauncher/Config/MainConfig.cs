@@ -402,12 +402,17 @@ namespace NsisoLauncher.Config
         /// <summary>
         /// 是否使用自定义背景视频
         /// </summary>
-        public bool CustomBackGroundViode { get; set; }
+        public bool CustomBackGroundVedio { get; set; }
 
         /// <summary>
         /// 是否使用自定义背景视频循环播放
         /// </summary>
-        public bool CustomBackGroundViode_Cyclic { get; set; }
+        public bool CustomBackGroundVedio_Cyclic { get; set; }
+
+        /// <summary>
+        /// 使用使用随机播放
+        /// </summary>
+        public bool CustomBackGroundVedio_Random { get; set; }
 
         /// <summary>
         /// 是否使用自定义背景音乐
@@ -418,6 +423,11 @@ namespace NsisoLauncher.Config
         /// 是否使用自定义音乐循环播放
         /// </summary>
         public bool CustomBackGroundMusic_Cyclic { get; set; }
+
+        /// <summary>
+        /// 是否随机播放音乐
+        /// </summary>
+        public bool CustomBackGroundMusic_Random { get; set; }
 
         /// <summary>
         /// 是否使用自定义壁纸
