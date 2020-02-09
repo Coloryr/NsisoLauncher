@@ -4,8 +4,8 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Timers;
 
 namespace NsisoLauncherCore.Net
@@ -46,8 +46,10 @@ namespace NsisoLauncherCore.Net
         /// <param name="e"></param>
         private void _timer_Elapsed(object sender, ElapsedEventArgs e)
         {
-            DownloadSpeedChangedArg arg = new DownloadSpeedChangedArg();
-            arg.SizePerSec = _downloadSizePerSec;
+            DownloadSpeedChangedArg arg = new DownloadSpeedChangedArg
+            {
+                SizePerSec = _downloadSizePerSec
+            };
             if (_downloadSizePerSec > 1048576)
             {
                 arg.SpeedUnit = "MB/s";
@@ -72,8 +74,11 @@ namespace NsisoLauncherCore.Net
 
         public int ProcessorSize { get; set; } = 5;
         public bool IsBusy { get; private set; } = false;
-        public WebProxy Proxy { get; set; }
         public bool CheckFileHash { get; set; }
+        /// <summary>
+        /// 重新下载尝试次数
+        /// </summary>
+        public int RetryTimes { get; set; } = 3;
 
         public event EventHandler<DownloadProgressChangedArg> DownloadProgressChanged;
         public event EventHandler<DownloadSpeedChangedArg> DownloadSpeedChanged;
@@ -87,7 +92,7 @@ namespace NsisoLauncherCore.Net
         private List<DownloadTask> _viewDownloadTasks;
         private readonly object _viewDownloadLocker = new object();
         private int _taskCount;
-        private Thread[] _threads;
+        private Task[] _workers;
         private int _downloadSizePerSec;
         private Dictionary<DownloadTask, Exception> _errorList = new Dictionary<DownloadTask, Exception>();
         private CancellationTokenSource cancellationTokenSource;
@@ -163,41 +168,29 @@ namespace NsisoLauncherCore.Net
                         IsBusy = false;
                         return;
                     }
-                    _threads = new Thread[ProcessorSize];
+
+                    _workers = new Task[ProcessorSize];
                     _timer.Start();
 
                     for (int i = 0; i < ProcessorSize; i++)
                     {
-                        _threads[i] = new Thread(() =>
-                        {
-                            ThreadDownloadWork(cancellationTokenSource.Token);
-                        });
-                        _threads[i].Name = string.Format("下载线程{0}号", i);
-                        _threads[i].Start();
+                        _workers[i] = Task.Run(() => ThreadDownloadWorkAsync(cancellationTokenSource.Token));
                     }
 
-                    var checkThread = new Thread(() =>
+                    Task.Run(() =>
                     {
                         try
                         {
-                            while (true)
-                            {
-                                Thread.Sleep(500);
-                                if (GetAvailableThreadsCount() == 0)
-                                {
-                                    CompleteDownload();
-                                    DownloadCompleted?.Invoke(this, new DownloadCompletedArg() { ErrorList = _errorList });
-                                    break;
-                                }
-                            }
+                            Task.WaitAll(_workers);
+                            CompleteDownload();
+                            DownloadCompleted?.Invoke(this, new DownloadCompletedArg() { ErrorList = _errorList });
+                            return;
                         }
                         catch (Exception ex)
                         {
                             SendFatalLog(ex, "下载监视线程发生异常");
                         }
                     });
-                    checkThread.Name = "下载监视线程";
-                    checkThread.Start();
                 }
             }
             catch (Exception ex)
@@ -206,25 +199,19 @@ namespace NsisoLauncherCore.Net
             }
         }
 
-        private void ThreadDownloadWork(CancellationToken cancelToken)
+        private async Task ThreadDownloadWorkAsync(CancellationToken cancelToken)
         {
+            var http = new HttpRequesterAPI(TimeSpan.FromSeconds(10));
             try
             {
-                DownloadTask item = null;
-                while (!_downloadTasks.IsEmpty)
+                while ((!cancelToken.IsCancellationRequested) && (!_downloadTasks.IsEmpty))
                 {
-                    if (_downloadTasks.TryDequeue(out item))
+                    if (_downloadTasks.TryDequeue(out DownloadTask item))
                     {
-                        if (cancelToken.IsCancellationRequested)
-                        {
-                            ApendDebugLog("放弃下载:" + item.TaskName);
-                            RemoveItemFromViewTask(item);
-                            continue;
-                        }
-                        ApendDebugLog("开始下载:" + item.From);
+
                         item.SetState("下载中");
 
-                        HTTPDownload(item, cancelToken);
+                        await HTTPDownload(item, cancelToken, http);
 
                         ApendDebugLog("下载完成:" + item.From);
 
@@ -253,16 +240,41 @@ namespace NsisoLauncherCore.Net
                         #region 执行下载后函数
                         if (item.Todo != null)
                         {
-                            ApendDebugLog(string.Format("开始执行{0}下载后的安装过程", item.TaskName));
-                            item.SetState("安装中");
-                            var exc = item.Todo();
-                            if (exc != null)
+                            if (!cancelToken.IsCancellationRequested)
                             {
-                                ApendErrorLog(exc);
-                                if (!_errorList.ContainsKey(item))
+                                ApendDebugLog(string.Format("开始执行{0}下载后的安装过程", item.TaskName));
+                                item.SetState("安装中");
+
+                                ProgressCallback callback = new ProgressCallback();
+                                callback.ProgressChanged += item.AcceptProgressChangedArg;
+                                try
                                 {
-                                    _errorList.Add(item, exc);
+                                    Exception exc = await Task.Run(() => item.Todo(callback, cancelToken));
+                                    if (exc != null)
+                                    {
+                                        SendDownloadErrLog(item, exc);
+                                        if (!_errorList.ContainsKey(item))
+                                        {
+                                            _errorList.Add(item, exc);
+                                        }
+                                    }
                                 }
+                                catch (Exception ex)
+                                {
+                                    SendDownloadErrLog(item, ex);
+                                    if (!_errorList.ContainsKey(item))
+                                    {
+                                        _errorList.Add(item, ex);
+                                    }
+                                }
+                                finally
+                                {
+                                    callback.ProgressChanged -= item.AcceptProgressChangedArg;
+                                }
+                            }
+                            else
+                            {
+                                ApendDebugLog("放弃安装:" + item.TaskName);
                             }
                         }
                         #endregion
@@ -280,132 +292,90 @@ namespace NsisoLauncherCore.Net
 
         }
 
-        private void HTTPDownload(DownloadTask task, CancellationToken cancelToken)
+        private async Task HTTPDownload(DownloadTask task, CancellationToken cancelToken, HttpRequesterAPI http)
         {
+
+            if (string.IsNullOrWhiteSpace(task.From) || string.IsNullOrWhiteSpace(task.To))
+            {
+                return;
+            }
+
             string realFilename = task.To;
             string buffFilename = realFilename + ".downloadtask";
-            try
+            Exception exception = null;
+
+            for (int i = 1; i <= RetryTimes; i++)
             {
-                if (Path.IsPathRooted(realFilename))
+                try
                 {
-                    string dirName = Path.GetDirectoryName(realFilename);
-                    if (!Directory.Exists(dirName))
+                    //下载前文件准备
+                    if (Path.IsPathRooted(realFilename))
                     {
-                        Directory.CreateDirectory(dirName);
-                    }
-                }
-                if (File.Exists(realFilename))
-                {
-                    return;
-                }
-                if (File.Exists(buffFilename))
-                {
-                    File.Delete(buffFilename);
-                }
-
-                if (Maplist.ContainsKey(task.From))
-                {
-                    task.From = Maplist[task.From];
-                }
-
-                if (task.From.Contains(@"https://"))
-                {
-                    ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-                }
-                else
-                {
-                    ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls;
-                }
-
-                FileStream fs = null;
-                HttpWebRequest request = null;
-                HttpWebResponse response = null;
-                Stream responseStream = null;
-                for (int trytimes = 0; trytimes < 5;)
-                {
-                    try
-                    {
-                        request = WebRequest.Create(task.From) as HttpWebRequest;
-                        request.Timeout = 5000;
-                        if (Proxy != null)
+                        string dirName = Path.GetDirectoryName(realFilename);
+                        if (!Directory.Exists(dirName))
                         {
-                            request.Proxy = Proxy;
-                        }
-                        response = request.GetResponse() as HttpWebResponse;
-                        task.SetTotalSize(response.ContentLength);
-                        responseStream = response.GetResponseStream();
-                        responseStream.ReadTimeout = 5000;
-                        fs = new FileStream(buffFilename, FileMode.Create);
-                        if (Download(responseStream, cancelToken, task, fs, buffFilename, realFilename, response.ContentLength))
-                        {
-                            trytimes = 10;
-                            continue;
+                            Directory.CreateDirectory(dirName);
                         }
                     }
-                    catch (Exception e)
+                    if (File.Exists(realFilename))
                     {
-                        trytimes++;
-                        if (trytimes == 5)
+                        return;
+                    }
+                    if (File.Exists(buffFilename))
+                    {
+                        File.Delete(buffFilename);
+                    }
+
+                    //下载流程
+                    using (var getResult = await http.HttpGetAsync(task.From, cancelToken))
+                    {
+                        getResult.EnsureSuccessStatusCode();
+                        task.SetTotalSize(getResult.Content.Headers.ContentLength.GetValueOrDefault());
+                        using (Stream responseStream = await getResult.Content.ReadAsStreamAsync())
                         {
-                            if (fs != null) fs.Close();
-                            if (responseStream != null) responseStream.Close();
-                            ApendErrorLog(e);
-                            if (!_errorList.ContainsKey(task))
+                            using (FileStream fs = new FileStream(buffFilename, FileMode.Create))
                             {
-                                _errorList.Add(task, e);
+                                byte[] bArr = new byte[1024];
+                                int size = await responseStream.ReadAsync(bArr, 0, (int)bArr.Length);
+
+                                while (size > 0)
+                                {
+                                    //_pauseResetEvent.Wait(cancelToken);
+                                    await fs.WriteAsync(bArr, 0, size);
+                                    size = await responseStream.ReadAsync(bArr, 0, (int)bArr.Length);
+                                    _downloadSizePerSec += size;
+                                    task.IncreaseDownloadSize(size);
+                                }
                             }
-                            trytimes = 10;
-                            continue;
                         }
-                        task.ClearDownloadSize();
                     }
+
+                    //下载完成后转正
+                    File.Move(buffFilename, realFilename);
+
+                    //无错误跳出重试循环
+                    exception = null;
+                    break;
+                }
+                catch (Exception e)
+                {
+                    exception = e;
+                    task.SetState(string.Format("重试第{0}次", i));
+                    SendDownloadErrLog(task, e);
+
+                    //继续重试
+                    continue;
                 }
             }
-            catch (Exception e)
+            //处理异常
+            if (exception != null)
             {
-                ApendErrorLog(e);
+                SendDownloadErrLog(task, exception);
                 if (!_errorList.ContainsKey(task))
                 {
-                    _errorList.Add(task, e);
+                    _errorList.Add(task, exception);
                 }
             }
-        }
-
-        private bool Download(Stream responseStream, CancellationToken cancelToken, DownloadTask task, FileStream fs, string buffFilename, string realFilename, long length)
-        {
-            byte[] bArr = new byte[1024];
-            long nowlength = 0;
-            int size = responseStream.Read(bArr, 0, bArr.Length);
-            nowlength += size;
-            while (size > 0)
-            {
-                if (cancelToken.IsCancellationRequested)
-                {
-                    ApendDebugLog("放弃下载:" + task.TaskName);
-                    fs.Close();
-                    responseStream.Close();
-                    RemoveItemFromViewTask(task);
-                    return true;
-                }
-                fs.Write(bArr, 0, size);
-                size = responseStream.Read(bArr, 0, bArr.Length);
-                nowlength += size;
-                _downloadSizePerSec += size;
-                task.IncreaseDownloadSize(size);
-            }
-
-            fs.Close();
-            responseStream.Close();
-
-            if (length != nowlength)
-            {
-                task.ClearDownloadSize();
-                File.Delete(buffFilename);
-                Thread.Sleep(1000);
-                return false;
-            }
-            File.Move(buffFilename, realFilename);
-            return true;
         }
 
         private void CompleteDownload()
@@ -420,24 +390,6 @@ namespace NsisoLauncherCore.Net
         private void ApendDebugLog(string msg)
         {
             this.DownloadLog?.Invoke(this, new Log() { LogLevel = LogLevel.DEBUG, Message = msg });
-        }
-
-        private void ApendErrorLog(Exception e)
-        {
-            this.DownloadLog?.Invoke(this, new Log() { LogLevel = LogLevel.ERROR, Message = "下载文件失败:" + e.ToString() });
-        }
-
-        private int GetAvailableThreadsCount()
-        {
-            int num = 0; ;
-            foreach (var item in _threads)
-            {
-                if (item != null && item.IsAlive)
-                {
-                    num += 1;
-                }
-            }
-            return num;
         }
 
         private void SendLog(Log e)

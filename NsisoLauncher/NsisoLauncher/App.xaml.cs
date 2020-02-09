@@ -145,7 +145,6 @@ namespace NsisoLauncher
                     NetworkCredential credential = new NetworkCredential(downloadCfg.ProxyUserName, downloadCfg.ProxyUserPassword);
                     proxy.Credentials = credential;
                 }
-                Downloader.Proxy = proxy;
                 HttpRequesterAPI.Proxy = proxy;
             }
         }

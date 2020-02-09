@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace NsisoLauncherCore.Net
@@ -53,6 +54,37 @@ namespace NsisoLauncherCore.Net
                 try
                 {
                     var b = await client.GetAsync(uri);
+                    return b;
+                }
+                catch
+                {
+                    client.CancelPendingRequests();
+                    a++;
+                }
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// 异步Get
+        /// </summary>
+        /// <param name="uri">网址</param>
+        /// <returns></returns>
+        public async Task<HttpResponseMessage> HttpGetAsync(string uri, CancellationToken cancelToken)
+        {
+            int a = 0;
+
+            if (uri.Contains("https://"))
+            {
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+            }
+            else
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls;
+            while (a < 5)
+            {
+                try
+                {
+                    var b = await client.GetAsync(uri, cancelToken);
                     return b;
                 }
                 catch

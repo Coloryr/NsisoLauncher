@@ -169,7 +169,7 @@ namespace NsisoLauncher.Windows
 
         private void MetroWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            if (App.Downloader.Proxy != null)
+            if (HttpRequesterAPI.Proxy != null)
             {
                 this.ShowMessageAsync(App.GetResourceString("String.Downloadwindow.Proxy.Title"),
                     App.GetResourceString("String.Downloadwindow.Proxy.Text"));

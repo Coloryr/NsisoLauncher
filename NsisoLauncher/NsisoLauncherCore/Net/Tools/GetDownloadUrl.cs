@@ -9,6 +9,9 @@ using System;
 using System.Diagnostics;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Threading;
+using NsisoLauncherCore.Util.Installer.Forge;
+using System.IO;
 
 namespace NsisoLauncherCore.Net.Tools
 {
@@ -41,7 +44,8 @@ namespace NsisoLauncherCore.Net.Tools
             {MojangMetaUrl, BMCLUrl },
             {MojanglibrariesUrl, BMCLLibrariesURL },
             {MojangAssetsBaseUrl, BMCLAssetsURL },
-            {@"http://files.minecraftforge.net/maven/", BMCLLibrariesURL }
+            {@"http://files.minecraftforge.net/maven/", BMCLLibrariesURL },
+            {@"https://files.minecraftforge.net/maven/", BMCLLibrariesURL }
         };
 
         static Dictionary<string, string> mcbbsDic = new Dictionary<string, string>()
@@ -51,7 +55,8 @@ namespace NsisoLauncherCore.Net.Tools
             {MojangMetaUrl, MCBBSUrl },
             {MojanglibrariesUrl, MCBBSLibrariesURL },
             {MojangAssetsBaseUrl, MCBBSAssetsURL },
-            {@"http://files.minecraftforge.net/maven/", MCBBSLibrariesURL }
+            {@"http://files.minecraftforge.net/maven/", MCBBSLibrariesURL },
+            {@"https://files.minecraftforge.net/maven/", MCBBSLibrariesURL }
         };
 
         public static string DoURLReplace(DownloadSource source, string url)
@@ -90,7 +95,7 @@ namespace NsisoLauncherCore.Net.Tools
             }
             else
             {
-                return string.Format(@"{0}\{1}\{2}\{1}-{2}.jar", lib.Package.Replace(".", "\\"), lib.Name, lib.Version);
+                return string.Format(@"{0}\{1}\{2}\{1}-{2}.jar", lib.Artifact.Package.Replace(".", "\\"), lib.Artifact.Name, lib.Artifact.Version);
             }
         }
 
@@ -102,7 +107,7 @@ namespace NsisoLauncherCore.Net.Tools
             }
             else
             {
-                return string.Format(@"{0}\{1}\{2}\{1}-{2}-{3}.jar", native.Package.Replace(".", "\\"), native.Name, native.Version, native.NativeSuffix);
+                return string.Format(@"{0}\{1}\{2}\{1}-{2}-{3}.jar", native.Artifact.Package.Replace(".", "\\"), native.Artifact.Name, native.Artifact.Version, native.NativeSuffix);
             }
         }
 
@@ -183,13 +188,18 @@ namespace NsisoLauncherCore.Net.Tools
 
             DownloadTask dt = new DownloadTask(App.GetResourceString("String.NewDownloadTaskWindow.Core.Forge"),
                 Source, local);
-            dt.Todo = new Func<Exception>(() =>
+            dt.Todo = new Func<ProgressCallback, CancellationToken, Exception>((callback, cancelToken) =>
             {
                 try
                 {
-                    CommonInstaller installer = new CommonInstaller(local, new CommonInstallOptions()
-                    { GameRootPath = App.Handler.GameRootPath });
-                    installer.BeginInstall();
+                    IInstaller installer = new ForgeInstaller(local, new CommonInstallOptions()
+                    {
+                        GameRootPath = App.Handler.GameRootPath,
+                        IsClient = true,
+                        DownloadSource = App.Config.MainConfig.Download.DownloadSource,
+                        Java = App.Handler.Java
+                    });
+                    installer.BeginInstall(callback, cancelToken);
                     return null;
                 }
                 catch (Exception ex)
@@ -204,9 +214,8 @@ namespace NsisoLauncherCore.Net.Tools
         /// <param name="downloadSource">下载源</param>
         /// <param name="forge">Forge信息</param>
         /// <returns></returns>
-        public static async Task<DownloadTask> GetForgeDownloadURL(DownloadSource downloadSource, APIModules.JWForge forge, string MCVersion)
+        public static DownloadTask GetForgeDownloadURL(DownloadSource downloadSource, APIModules.JWForge forge)
         {
-
             string local = PathManager.TempDirectory + "\\forge-" + forge.Build + ".jar";
             string Source = BMCLUrl;
             switch (downloadSource)
@@ -226,36 +235,23 @@ namespace NsisoLauncherCore.Net.Tools
 
             DownloadTask dt = new DownloadTask(App.GetResourceString("String.NewDownloadTaskWindow.Core.Forge"),
                 Source, local);
-            if (MCVersionNot.Contains(MCVersion))
+            dt.Todo = new Func<ProgressCallback, CancellationToken, Exception>((callback, cancelToken) =>
             {
-                await App.NewDownloadTaskWindow_.ShowMessageAsync(App.GetResourceString("String.NewDownloadTaskWindow.ForgeNot.Title"),
-                        App.GetResourceString("String.NewDownloadTaskWindow.ForgeNot.Text"));
-                dt.Todo = new Func<Exception>(() =>
+                try
                 {
-                    try
+                    IInstaller installer = new ForgeInstaller(local, new CommonInstallOptions()
                     {
-                        var Process = new Process();
-                        Process.StartInfo = new ProcessStartInfo(local);
-                        Process.Start();
-                        return null;
-                    }
-                    catch (Exception ex)
-                    { return ex; }
-                });
-            }
-            else
-                dt.Todo = new Func<Exception>(() =>
-                {
-                    try
-                    {
-                        CommonInstaller installer = new CommonInstaller(local, new CommonInstallOptions()
-                        { GameRootPath = App.Handler.GameRootPath });
-                        installer.BeginInstall();
-                        return null;
-                    }
-                    catch (Exception ex)
-                    { return ex; }
-                });
+                        GameRootPath = App.Handler.GameRootPath,
+                        IsClient = true,
+                        DownloadSource = App.Config.MainConfig.Download.DownloadSource,
+                        Java = App.Handler.Java
+                    });
+                    installer.BeginInstall(callback, cancelToken);
+                    return null;
+                }
+                catch (Exception ex)
+                { return ex; }
+            });
             return dt;
         }
 
@@ -286,18 +282,6 @@ namespace NsisoLauncherCore.Net.Tools
 
             DownloadTask dt = new DownloadTask(App.GetResourceString("String.NewDownloadTaskWindow.Core.Liteloader"),
                 Source, local);
-            dt.Todo = new Func<Exception>(() =>
-            {
-                try
-                {
-                    CommonInstaller installer = new CommonInstaller(local, new CommonInstallOptions()
-                    { GameRootPath = App.Handler.GameRootPath });
-                    installer.BeginInstall();
-                    return null;
-                }
-                catch (Exception ex)
-                { return ex; }
-            });
             return dt;
         }
 
@@ -352,7 +336,7 @@ namespace NsisoLauncherCore.Net.Tools
         {
             string from = GetLibDownloadURL(source, lib.Value);
             string to = lib.Key;
-            DownloadTask task = new DownloadTask("版本依赖库文件" + lib.Value.Name, from, to);
+            DownloadTask task = new DownloadTask("版本依赖库文件" + lib.Value.Artifact.Name, from, to);
             if (lib.Value.LibDownloadInfo != null)
             {
                 task.Checker = new SHA1Checker() { CheckSum = lib.Value.LibDownloadInfo.SHA1, FilePath = to };
@@ -402,7 +386,7 @@ namespace NsisoLauncherCore.Net.Tools
         {
             string from = GetNativeDownloadURL(source, native.Value);
             string to = native.Key;
-            DownloadTask task = new DownloadTask("版本系统依赖库文件" + native.Value.Name, from, to);
+            DownloadTask task = new DownloadTask("版本系统依赖库文件" + native.Value.Artifact.Name, from, to);
             if (native.Value.NativeDownloadInfo != null)
             {
                 task.Checker = new SHA1Checker() { CheckSum = native.Value.NativeDownloadInfo.SHA1, FilePath = to };

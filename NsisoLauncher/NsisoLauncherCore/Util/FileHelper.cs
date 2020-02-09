@@ -27,6 +27,40 @@ namespace NsisoLauncherCore.Util
             }
             return sc.ToString();
         }
+
+        public static bool CopyDirectory(string SourcePath, string DestinationPath, bool overwriteexisting)
+        {
+            bool ret;
+            try
+            {
+                SourcePath = SourcePath.EndsWith(@"\") ? SourcePath : SourcePath + @"\";
+                DestinationPath = DestinationPath.EndsWith(@"\") ? DestinationPath : DestinationPath + @"\";
+
+                if (Directory.Exists(SourcePath))
+                {
+                    if (Directory.Exists(DestinationPath) == false)
+                        Directory.CreateDirectory(DestinationPath);
+
+                    foreach (string fls in Directory.GetFiles(SourcePath))
+                    {
+                        FileInfo flinfo = new FileInfo(fls);
+                        flinfo.CopyTo(DestinationPath + flinfo.Name, overwriteexisting);
+                    }
+                    foreach (string drs in Directory.GetDirectories(SourcePath))
+                    {
+                        DirectoryInfo drinfo = new DirectoryInfo(drs);
+                        if (CopyDirectory(drs, DestinationPath + drinfo.Name, overwriteexisting) == false)
+                            ret = false;
+                    }
+                }
+                ret = true;
+            }
+            catch (Exception)
+            {
+                ret = false;
+            }
+            return ret;
+        }
         #endregion
 
         #region 检查Jar核心文件
@@ -166,21 +200,13 @@ namespace NsisoLauncherCore.Util
         {
             Dictionary<string, JAssetsInfo> lostAssets = new Dictionary<string, JAssetsInfo>();
             if (assets == null)
-            {
                 return lostAssets;
-            }
             foreach (var item in assets.Objects)
             {
 
                 string path = core.GetAssetsPath(item.Value);
-                if (lostAssets.ContainsKey(path))
-                {
-                    continue;
-                }
-                else if (!File.Exists(path))
-                {
-                    lostAssets.Add(item.Key, item.Value);
-                }
+                if ((!lostAssets.ContainsKey(path)) && (!File.Exists(path)))
+                    lostAssets.Add(path, item.Value);
             }
             return lostAssets;
         }
@@ -300,10 +326,7 @@ namespace NsisoLauncherCore.Util
             foreach (var item in lostAssets)
             {
                 DownloadTask task = GetDownloadUrl.GetAssetsDownloadTask(source, item.Value, core);
-                if (!tasks.Contains(task))
-                {
-                    tasks.Add(task);
-                }
+                tasks.Add(task);
             }
             return tasks;
         }

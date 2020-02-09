@@ -139,8 +139,6 @@
     <sys:String x:Key="String.NewDownloadTaskWindow.Fail.Text">请检查您的网络是否正常或更改下载源/n原因：</sys:String>
     <sys:String x:Key="String.NewDownloadTaskWindow.Forge.Title">您未选择要安装Forge的版本</sys:String>
     <sys:String x:Key="String.NewDownloadTaskWindow.Forge.Text">您需要选择一个需要安装Forge的Minecraft本体</sys:String>
-    <sys:String x:Key="String.NewDownloadTaskWindow.ForgeNot.Title">无法自动安装forge</sys:String>
-    <sys:String x:Key="String.NewDownloadTaskWindow.ForgeNot.Text">该版本的forge无法自动安装，你需要手动安装</sys:String>
     <sys:String x:Key="String.NewDownloadTaskWindow.ForgeChose.Title">您未选择要安装Forge的Minecraft</sys:String>
     <sys:String x:Key="String.NewDownloadTaskWindow.ForgeChose.Text">您需要选择一个需要安装Forge的Minecraft本体</sys:String>
     <sys:String x:Key="String.NewDownloadTaskWindow.ForgeList.Title">获取Forge列表中</sys:String>

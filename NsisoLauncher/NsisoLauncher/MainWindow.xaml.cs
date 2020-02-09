@@ -531,6 +531,19 @@ namespace NsisoLauncher
                     switch (authResult.State)
                     {
                         case AuthState.SUCCESS:
+                            if (authResult.SelectedProfileUUID == null)
+                            {
+                                //没有游戏角色
+                                if (authResult.Profiles == null || authResult.Profiles.Count == 0)
+                                {
+                                    await this.ShowMessageAsync("验证失败：您没有可用的游戏角色（Profile）",
+                                    "如果您是正版验证，则您可能还未购买游戏本体。如果您是外置登录，则您可能未设置可用角色");
+                                    return;
+                                }
+                                await this.ShowMessageAsync("验证失败：您没有选中任何游戏角色（Profile）",
+                                "请选中您要进行游戏的角色");
+                                return;
+                            }
                             args.UserNode.SelectProfileUUID = authResult.SelectedProfileUUID.Value;
                             args.UserNode.UserData = authResult.UserData;
                             if (authResult.Profiles != null)

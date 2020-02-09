@@ -191,7 +191,6 @@ namespace NsisoLauncher.Windows
             }
         }
 
-        //TODO:修复FORGE刷新不成功崩溃
         private async void DownloadForgeButton_Click(object sender, RoutedEventArgs e)
         {
             MCVersion ver;
@@ -218,7 +217,7 @@ namespace NsisoLauncher.Windows
                 return;
             }
 
-            await AppendForgeDownloadTaskAsync(ver, forge);
+            AppendForgeDownloadTask(ver, forge);
             Close();
         }
 
@@ -301,9 +300,9 @@ namespace NsisoLauncher.Windows
 
         }
 
-        private async Task AppendForgeDownloadTaskAsync(MCVersion ver, JWForge forge)
+        private void AppendForgeDownloadTask(MCVersion ver, JWForge forge)
         {
-            DownloadTask dt = await GetDownloadUrl.GetForgeDownloadURL(App.Config.MainConfig.Download.DownloadSource, forge, ver.ID);
+            DownloadTask dt = GetDownloadUrl.GetForgeDownloadURL(App.Config.MainConfig.Download.DownloadSource, forge);
             App.Downloader.SetDownloadTasks(dt);
             App.Downloader.StartDownload();
         }
