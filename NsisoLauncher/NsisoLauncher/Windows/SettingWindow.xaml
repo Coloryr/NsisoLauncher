@@ -324,7 +324,7 @@
                         <Expander Header="{DynamicResource String.Settingwindow.Custom.Backgroud}" Margin="0,0,0,5">
                             <StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
-                                    <CheckBox x:Name="checkBox1" Content="{DynamicResource String.Settingwindow.Custom.Backgroud.Vedio}" IsChecked="{Binding Customize.CustomBackGroundViode}" Click="CheckBox_Checked"/>
+                                    <CheckBox x:Name="checkBox1" Content="{DynamicResource String.Settingwindow.Custom.Backgroud.Vedio}" IsChecked="{Binding Customize.CustomBackGroundVedio}" Click="CheckBox_Checked"/>
                                     <CheckBox x:Name="checkBox1_s" Content="{DynamicResource String.Settingwindow.Custom.Backgroud.Vedio.Cyc}" Margin="5,0,0,0" IsChecked="{Binding Customize.CustomBackGroundVedio_Cyclic}" IsEnabled="False"/>
                                     <CheckBox x:Name="checkBox1_r" Content="{DynamicResource String.Settingwindow.Custom.Backgroud.Vedio.Random}" Margin="5,0,0,0" IsChecked="{Binding Customize.CustomBackGroundVedio_Random}" IsEnabled="False"/>
                                 </StackPanel>

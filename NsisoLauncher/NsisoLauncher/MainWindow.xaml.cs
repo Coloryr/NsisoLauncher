@@ -92,7 +92,7 @@ namespace NsisoLauncher
             {
                 mediaElement.Stop();
                 now = 0;
-                mediaElement.Source = new Uri(mp4_file[App.Config.MainConfig.Customize.CustomBackGroundVedio_Random ? new Random().Next(mp4_file.Length - 1) : now]);
+                mediaElement.Source = new Uri(mp4_file[App.Config.MainConfig.Customize.CustomBackGroundVedio_Random ? new Random().Next(mp4_file.Length) : now]);
                 volumeButton.Visibility = Visibility.Visible;
                 mediaElement.Visibility = Visibility.Visible;
                 mediaElement.Play();
@@ -106,7 +106,7 @@ namespace NsisoLauncher
             {
                 mediaElement.Stop();
                 now = 0;
-                mediaElement.Source = new Uri(mp3_file[App.Config.MainConfig.Customize.CustomBackGroundMusic_Random ? new Random().Next(mp3_file.Length - 1) : now]);
+                mediaElement.Source = new Uri(mp3_file[App.Config.MainConfig.Customize.CustomBackGroundMusic_Random ? new Random().Next(mp3_file.Length) : now]);
                 volumeButton.Visibility = Visibility.Visible;
                 mediaElement.Visibility = Visibility.Visible;
                 mediaElement.Play();
@@ -119,14 +119,14 @@ namespace NsisoLauncher
             mediaElement.Stop();
             if (have_mp4 == true && App.Config.MainConfig.Customize.CustomBackGroundVedio_Cyclic == true)
             {
-                now = App.Config.MainConfig.Customize.CustomBackGroundVedio_Random ? new Random().Next(mp4_file.Length - 1) : + 1;
+                now = App.Config.MainConfig.Customize.CustomBackGroundVedio_Random ? new Random().Next(mp4_file.Length) : + 1;
                 if (now >= mp4_file.Length)
                     now = 0;
                 mediaElement.Source = new Uri(mp4_file[now]);
             }
             else if (App.Config.MainConfig.Customize.CustomBackGroundMusic_Cyclic == true)
             {
-                now = App.Config.MainConfig.Customize.CustomBackGroundMusic_Random ? new Random().Next(mp3_file.Length - 1) : +1;
+                now = App.Config.MainConfig.Customize.CustomBackGroundMusic_Random ? new Random().Next(mp3_file.Length) : +1;
                 if (now >= mp3_file.Length)
                     now = 0;
                 mediaElement.Source = new Uri(mp3_file[now]);
