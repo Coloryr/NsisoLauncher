@@ -27,6 +27,7 @@ namespace NsisoLauncher.ModPack
                 string strDirectory = App.Handler.GameRootPath + @"\";
                 ZipInputStream zip = new ZipInputStream(File.OpenRead(Local));
                 ZipEntry theEntry;
+                manifestObj obj = null;
                 bool isfind = false;
                 while ((theEntry = zip.GetNextEntry()) != null)
                 {
@@ -35,22 +36,23 @@ namespace NsisoLauncher.ModPack
                         byte[] data = new byte[theEntry.Size];
                         zip.Read(data, 0, (int)theEntry.Size);
                         string a = Encoding.Default.GetString(data);
-                        manifestObj obj = JObject.Parse(a).ToObject<manifestObj>();
+                        obj = JObject.Parse(a).ToObject<manifestObj>();
                         GetUrl GetUrl = new GetUrl(window);
 
                         var res = await GetUrl.GeturlAsync(obj.files);
                         if (res == null)
                             return null;
+
                         foreach (var item in res)
                         {
-                            task.Add(new DownloadTask(App.GetResourceString("String.NewDownloadTaskWindow.ModPack.Mod"), 
+                            task.Add(new DownloadTask(App.GetResourceString("String.NewDownloadTaskWindow.ModPack.Mod"),
                                 item.url, strDirectory + "mods\\" + item.filename));
                         }
                         task.Add(new GetForge().Get(obj));
                         window.SetMessage(App.GetResourceString("String.NewDownloadTaskWindow.ModPack.UnZip"));
                         isfind = true;
                     }
-                    else
+                    else if (obj != null)
                         try
                         {
                             await Task.Factory.StartNew(() =>
@@ -58,7 +60,7 @@ namespace NsisoLauncher.ModPack
                                 string directoryName = "";
                                 string pathToZip = theEntry.Name;
                                 if (!string.IsNullOrWhiteSpace(pathToZip))
-                                    directoryName = Path.GetDirectoryName(pathToZip).Replace("overrides", "") + "\\";
+                                    directoryName = Path.GetDirectoryName(pathToZip).Replace(obj.overrides, "") + "\\";
                                 string fileName = Path.GetFileName(pathToZip);
                                 Directory.CreateDirectory(strDirectory + directoryName);
                                 if (!string.IsNullOrWhiteSpace(fileName))
@@ -76,7 +78,7 @@ namespace NsisoLauncher.ModPack
                                 }
                             });
                         }
-                        catch(Exception e)
+                        catch (Exception e)
                         {
                             App.LogHandler.AppendFatal(e);
                         }
