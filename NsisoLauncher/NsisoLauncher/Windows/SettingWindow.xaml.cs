@@ -500,8 +500,8 @@ namespace NsisoLauncher.Windows
         private void lockauthCombobox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             dynamic Node = lockauthCombobox.SelectedItem;
-            NIDE8_C.Visibility = Node.Value.AuthType == AuthenticationType.NIDE8 ? Visibility.Visible : Visibility.Collapsed;
-
+            NIDE8_C.Visibility = Node?.Value.AuthType == AuthenticationType.NIDE8 ? Visibility.Visible : Visibility.Collapsed;
+            NIDE8_C.IsChecked = Node?.Value.AuthType == AuthenticationType.NIDE8 ? NIDE8_C.IsChecked : false;
         }
     }
 }
