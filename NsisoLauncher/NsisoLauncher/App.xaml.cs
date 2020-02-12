@@ -8,15 +8,17 @@ using NsisoLauncherCore.Net;
 using NsisoLauncherCore.Net.PhalAPI;
 using NsisoLauncherCore.Util;
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Runtime.InteropServices;
 using System.Windows;
 
 namespace NsisoLauncher
 {
-
     /// <summary>
     /// App.xaml 的交互逻辑
     /// </summary>
@@ -34,6 +36,9 @@ namespace NsisoLauncher
 
         public static APIHandler nsisoAPIHandler;
 
+        [DllImport("user32.dll", CharSet = CharSet.Auto)]
+        public static extern bool SwitchToThisWindow(IntPtr hWnd, bool fAltTab);
+
         public static void CatchAggregateException(object sender, AggregateExceptionArgs arg)
         {
             AggregateExceptionCatched?.Invoke(sender, arg);
@@ -41,6 +46,22 @@ namespace NsisoLauncher
 
         private void Application_Startup(object sender, StartupEventArgs e)
         {
+            Process[] myProcesses = Process.GetProcessesByName("NsisoLauncher");//获取指定的进程名
+            bool self = false;
+            foreach (var item in myProcesses)
+            {
+                if (item.MainModule.FileName == AppDomain.CurrentDomain.BaseDirectory + AppDomain.CurrentDomain.FriendlyName)
+                {
+                    if (self == false)
+                        self = true;
+                    else
+                    {
+                        MessageBox.Show("你已经运行启动器了");
+                        SwitchToThisWindow(item.MainWindowHandle, false);
+                        this.Shutdown();
+                    }
+                }
+            }
 
             LogHandler = new LogHandler(true);
             Config = new ConfigHandler();

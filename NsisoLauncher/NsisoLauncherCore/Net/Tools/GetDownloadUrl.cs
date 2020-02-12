@@ -1,17 +1,14 @@
-﻿using MahApps.Metro.Controls.Dialogs;
-using NsisoLauncher;
+﻿using NsisoLauncher;
 using NsisoLauncherCore.Modules;
 using NsisoLauncherCore.Net.FunctionAPI;
 using NsisoLauncherCore.Util;
 using NsisoLauncherCore.Util.Checker;
 using NsisoLauncherCore.Util.Installer;
-using System;
-using System.Diagnostics;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using System.Threading;
 using NsisoLauncherCore.Util.Installer.Forge;
-using System.IO;
+using System;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace NsisoLauncherCore.Net.Tools
 {
@@ -32,8 +29,6 @@ namespace NsisoLauncherCore.Net.Tools
         public const string MojangVersionUrl = MojangMetaUrl + "mc/game/version_manifest.json";
         public const string MojanglibrariesUrl = "https://libraries.minecraft.net/";
         public const string MojangAssetsBaseUrl = "https://resources.download.minecraft.net/";
-        public readonly static List<string> MCVersionNot = new List<string>() 
-        { "1.13", "1.13.1", "1.13.2", "1.14", "1.14.1", "1.14.2", "1.14.3", "1.14.4", "1.15", "1.15.1", "1.15.2" };
 
         public const string ForgeUrl = "https://files.minecraftforge.net/";
 
