@@ -37,7 +37,7 @@ namespace NsisoLauncher
         public static APIHandler nsisoAPIHandler;
 
         [DllImport("user32.dll", CharSet = CharSet.Auto)]
-        public static extern bool SwitchToThisWindow(IntPtr hWnd, bool fAltTab);
+        public static extern bool SetForegroundWindow(IntPtr hWnd);
 
         public static void CatchAggregateException(object sender, AggregateExceptionArgs arg)
         {
@@ -56,9 +56,8 @@ namespace NsisoLauncher
                         self = true;
                     else
                     {
-                        MessageBox.Show("你已经运行启动器了");
-                        SwitchToThisWindow(item.MainWindowHandle, false);
-                        this.Shutdown();
+                        SetForegroundWindow(item.MainWindowHandle);
+                        Shutdown();
                     }
                 }
             }
