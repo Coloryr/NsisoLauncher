@@ -6,9 +6,11 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Brush = System.Windows.Media.Brush;
 
@@ -47,6 +49,17 @@ namespace NsisoLauncher.Controls
         {
             return Regex.IsMatch(data, @"[a-zA-Z0-9_]*");
         }
+        private Bitmap BitmapImage2Bitmap(BitmapImage bitmapImage)
+        {
+            using (MemoryStream outStream = new MemoryStream())
+            {
+                BitmapEncoder enc = new BmpBitmapEncoder();
+                enc.Frames.Add(BitmapFrame.Create(bitmapImage));
+                enc.Save(outStream);
+                Bitmap bitmap = new System.Drawing.Bitmap(outStream);
+                return new Bitmap(bitmap);
+            }
+        }
         public async void SetServerInfo(Server server)
         {
             APP_Color();
@@ -54,7 +67,7 @@ namespace NsisoLauncher.Controls
             {
                 serverNameTextBlock.Text = string.IsNullOrWhiteSpace(server.ServerName) ?
                     App.GetResourceString("String.ServerInfoControl.McServer") : server.ServerName;
-                IMG.ImageSource = new BitmapImage(new Uri("pack://application:,,,/Resource/unknown_server.png"));
+                serverIcon.Fill = new ImageBrush(ChangeBitmapToImageSource(BitmapImage2Bitmap(new BitmapImage(new Uri("pack://application:,,,/Resource/unknown_server.png")))));
                 serverStateIcon.Foreground = System.Windows.Media.Brushes.White;
                 serverStateIcon.Kind = MahApps.Metro.IconPacks.PackIconFontAwesomeKind.SyncAltSolid;
                 serverPeopleTextBlock.Text = App.GetResourceString("String.Mainwindow.ServerGettingNum");
@@ -122,7 +135,7 @@ namespace NsisoLauncher.Controls
                                 {
                                     if (count < 6)
                                         mods += item.ModID + ",";
-                                    else if(count == 6)
+                                    else if (count == 6)
                                     {
                                         mods += item.ModID + ",";
                                         mods = mods.Substring(0, mods.Length - 1);
@@ -146,7 +159,7 @@ namespace NsisoLauncher.Controls
                         if (serverInfo.IconData != null)
                         {
                             MemoryStream ms = new MemoryStream(serverInfo.IconData);
-                            IMG.ImageSource = new ImageDO().BitmapToBitmapImage(new Bitmap(ms));
+                            serverIcon.Fill = new ImageBrush(ChangeBitmapToImageSource(new Bitmap(ms)));
                         }
                         break;
                     default:
@@ -161,6 +174,31 @@ namespace NsisoLauncher.Controls
             }
             else
                 Visibility = Visibility.Hidden;
+        }
+
+        [DllImport("gdi32.dll", SetLastError = true)]
+        private static extern bool DeleteObject(IntPtr hObject);
+
+        /// <summary>  
+        /// 从bitmap转换成ImageSource  
+        /// </summary>  
+        /// <param name="icon"></param>  
+        /// <returns></returns>  
+        private static ImageSource ChangeBitmapToImageSource(Bitmap bitmap)
+        {
+            IntPtr hBitmap = bitmap.GetHbitmap();
+
+            ImageSource wpfBitmap = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
+                hBitmap,
+                IntPtr.Zero,
+                Int32Rect.Empty,
+                BitmapSizeOptions.FromEmptyOptions());
+            if (!DeleteObject(hBitmap))
+            {
+                throw new System.ComponentModel.Win32Exception();
+            }
+            return wpfBitmap;
+
         }
     }
 }
