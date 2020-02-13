@@ -31,14 +31,14 @@ namespace NsisoLauncher
     /// </summary>
     public partial class MainWindow : MetroWindow
     {
-        public string[] pic_file;
-        public int filesnow = 0;
-        public bool have_mp4 = false;
-        public bool pic_go = false;
-        public string[] mp3_file;
-        public string[] mp4_file;
-        public BitmapImage now_img;
-        int now = 0;
+        public string[] PicFiles;
+        public string[] Mp3Files;
+        public string[] Mp4Files;
+
+        private Timer timer;
+
+        int PicNow = 0;
+        int MediaNow = 0;
 
         //TODO:增加取消启动按钮
         public MainWindow()
@@ -47,92 +47,65 @@ namespace NsisoLauncher
             App.LogHandler.AppendDebug("启动器主窗体已载入");
             mainPanel.Launch += MainPanel_Launch;
             App.Handler.GameExit += Handler_GameExit;
-            BG.Width = 720;
-            BG.Height = 405;
             App.MainWindow_ = this;
             CustomizeRefresh();
         }
 
+        private void ChangeBackPic(Uri uri)
+        {
+            Dispatcher.Invoke(() =>
+            {
+                BG.Source = new BitmapImage(uri);
+            });
+            GC.Collect();
+        }
+        private void PicShow(object sender)
+        {
+            PicNow = PicNow >= PicFiles.Length ? 0 : +1;
+            ChangeBackPic(new Uri(PicFiles[PicNow]));
+        }
         public void Pic_cyclic()
         {
-            if (App.Config.MainConfig.Customize.CustomBackGroundPicture_Cyclic && pic_go == false
-                && pic_file.Length > 1)
+            if (App.Config.MainConfig.Customize.CustomBackGroundPicture_Cyclic && PicFiles.Length > 1)
             {
-                Task.Factory.StartNew(() =>
-                {
-                    pic_go = true;
-                    while (true)
-                    {
-                        Dispatcher.Invoke(new Action(() =>
-                        {
-                            BG.Source = null;
-                            now_img = new BitmapImage(new Uri(pic_file[filesnow]));
-                            BG.Source = now_img;
-                            now_img = null;
-                        }));
-                        GC.Collect();
-                        filesnow++;
-                        if (filesnow >= pic_file.Length)
-                            filesnow = 0;
-                        Thread.Sleep(App.Config.MainConfig.Customize.CustomBackGroundPicture_Cyclic_time);
-                    }
-                });
+                if (timer != null)
+                    timer.Dispose();
+                timer = new Timer(new TimerCallback(PicShow), null, TimeSpan.Zero, 
+                    TimeSpan.FromMilliseconds(App.Config.MainConfig.Customize.CustomBackGroundPicture_Cyclic_time));
             }
             else
-                Dispatcher.Invoke(new Action(() =>
-                {
-                    now_img = new BitmapImage(new Uri(pic_file[filesnow]));
-                    BG.Source = now_img;
-                    now_img = null;
-                }));
+                ChangeBackPic(new Uri(PicFiles[0]));
         }
-        public void Mp4_cyclic()
+        public void Mp4Play()
         {
             try
             {
+                MediaNow = MediaNow >= Mp4Files.Length ? 0 : +1;
                 mediaElement.Stop();
-                now = 0;
-                mediaElement.Source = new Uri(mp4_file[App.Config.MainConfig.Customize.CustomBackGroundVedio_Random ? new Random().Next(mp4_file.Length) : now]);
-                volumeButton.Visibility = Visibility.Visible;
-                mediaElement.Visibility = Visibility.Visible;
-                mediaElement.Play();
+                mediaElement.Source = new Uri(Mp4Files[App.Config.MainConfig.Customize.CustomBackGroundVedio_Random ? new Random().Next(Mp4Files.Length) : MediaNow]);
                 mediaElement.Volume = (double)App.Config.MainConfig.Customize.CustomBackGroundSound / 100;
+                mediaElement.Play();
             }
             catch (Exception) { }
         }
-        public void Mp3_cyclic()
+        public void Mp3Play()
         {
             try
             {
+                MediaNow = MediaNow >= Mp3Files.Length ? 0 : +1;
                 mediaElement.Stop();
-                now = 0;
-                mediaElement.Source = new Uri(mp3_file[App.Config.MainConfig.Customize.CustomBackGroundMusic_Random ? new Random().Next(mp3_file.Length) : now]);
-                volumeButton.Visibility = Visibility.Visible;
-                mediaElement.Visibility = Visibility.Visible;
-                mediaElement.Play();
+                mediaElement.Source = new Uri(Mp3Files[App.Config.MainConfig.Customize.CustomBackGroundMusic_Random ? new Random().Next(Mp3Files.Length) : MediaNow]);
                 mediaElement.Volume = (double)App.Config.MainConfig.Customize.CustomBackGroundSound / 100;
+                mediaElement.Play();
             }
             catch (Exception) { }
         }
         private void mediaElement_MediaEnded(object sender, RoutedEventArgs e)
         {
-            mediaElement.Stop();
-            if (have_mp4 == true && App.Config.MainConfig.Customize.CustomBackGroundVedio_Cyclic == true)
-            {
-                now = App.Config.MainConfig.Customize.CustomBackGroundVedio_Random ? new Random().Next(mp4_file.Length) : + 1;
-                if (now >= mp4_file.Length)
-                    now = 0;
-                mediaElement.Source = new Uri(mp4_file[now]);
-            }
+            if (Mp4Files.Length != 0 && App.Config.MainConfig.Customize.CustomBackGroundVedio_Cyclic == true)
+                Mp4Play();
             else if (App.Config.MainConfig.Customize.CustomBackGroundMusic_Cyclic == true)
-            {
-                now = App.Config.MainConfig.Customize.CustomBackGroundMusic_Random ? new Random().Next(mp3_file.Length) : +1;
-                if (now >= mp3_file.Length)
-                    now = 0;
-                mediaElement.Source = new Uri(mp3_file[now]);
-            }
-            mediaElement.Volume = (double)App.Config.MainConfig.Customize.CustomBackGroundSound / 100;
-            mediaElement.Play();
+                Mp3Play();
         }
         private async void MainPanel_Launch(object sender, Controls.LaunchEventArgs obj)
         {
@@ -155,7 +128,7 @@ namespace NsisoLauncher
 
         public void Refresh()
         {
-            mainPanel.is_re = true;
+            mainPanel.isRes = true;
             mainPanel.Refresh();
         }
 
@@ -167,57 +140,64 @@ namespace NsisoLauncher
             }
             if (App.Config.MainConfig.Customize.CustomBackGroundVedio)
             {
-                mp4_file = Directory.GetFiles(Path.GetDirectoryName(App.Config.MainConfigPath), "*.mp4");
-                if (mp4_file.Length != 0)
+                Mp4Files = Directory.GetFiles(Path.GetDirectoryName(App.Config.MainConfigPath), "*.mp4");
+                if (Mp4Files.Length != 0)
                 {
-                    have_mp4 = true;
-                    Mp4_cyclic();
+                    volumeButton.Visibility = Visibility.Visible;
+                    mediaElement.Visibility = Visibility.Visible;
+                    Mp4Play();
                 }
                 else
                 {
-                    have_mp4 = false;
                     volumeButton.Visibility = Visibility.Hidden;
                     mediaElement.Visibility = Visibility.Hidden;
                     mediaElement.Stop();
                 }
             }
-            if (App.Config.MainConfig.Customize.CustomBackGroundPicture && have_mp4 == false)
+            else
             {
-                string[] files = Directory.GetFiles(Path.GetDirectoryName(App.Config.MainConfigPath), "*.png");
-                string[] files1 = Directory.GetFiles(Path.GetDirectoryName(App.Config.MainConfigPath), "*.jpg");
-                string[] icon = Directory.GetFiles(Path.GetDirectoryName(App.Config.MainConfigPath), "icon.ico");
-                if (icon.Length != 0)
+                if (App.Config.MainConfig.Customize.CustomBackGroundMusic)
                 {
-                    this.Icon = new BitmapImage(new Uri(icon[0]));
-                    ShowIconOnTitleBar = false;
-                }
-                if (files.Count() + files1.Count() != 0)
-                {
-                    pic_file = new string[files.Length + files1.Length];
-                    int i = 0;
-                    foreach (string a in files)
+                    Mp3Files = Directory.GetFiles(Path.GetDirectoryName(App.Config.MainConfigPath), "*.mp3");
+                    if (Mp3Files.Length != 0)
                     {
-                        pic_file[i] = a;
-                        i++;
+                        volumeButton.Visibility = Visibility.Visible;
+                        mediaElement.Visibility = Visibility.Visible;
+                        Mp3Play();
                     }
-                    foreach (string a in files1)
+                    else
                     {
-                        pic_file[i] = a;
-                        i++;
+                        volumeButton.Visibility = Visibility.Hidden;
+                        mediaElement.Visibility = Visibility.Hidden;
+                        mediaElement.Stop();
                     }
-                    Pic_cyclic();
                 }
-            }
-            if (App.Config.MainConfig.Customize.CustomBackGroundMusic && have_mp4 == false)
-            {
-                mp3_file = Directory.GetFiles(Path.GetDirectoryName(App.Config.MainConfigPath), "*.mp3");
-                if (mp3_file.Length != 0)
-                    Mp3_cyclic();
-                else
+                if (App.Config.MainConfig.Customize.CustomBackGroundPicture)
                 {
-                    volumeButton.Visibility = Visibility.Hidden;
-                    mediaElement.Visibility = Visibility.Hidden;
-                    mediaElement.Stop();
+                    string[] files = Directory.GetFiles(Path.GetDirectoryName(App.Config.MainConfigPath), "*.png");
+                    string[] files1 = Directory.GetFiles(Path.GetDirectoryName(App.Config.MainConfigPath), "*.jpg");
+                    string[] icon = Directory.GetFiles(Path.GetDirectoryName(App.Config.MainConfigPath), "icon.ico");
+                    if (icon.Length != 0)
+                    {
+                        this.Icon = new BitmapImage(new Uri(icon[0]));
+                        ShowIconOnTitleBar = false;
+                    }
+                    if (files.Count() + files1.Count() != 0)
+                    {
+                        PicFiles = new string[files.Length + files1.Length];
+                        int i = 0;
+                        foreach (string a in files)
+                        {
+                            PicFiles[i] = a;
+                            i++;
+                        }
+                        foreach (string a in files1)
+                        {
+                            PicFiles[i] = a;
+                            i++;
+                        }
+                        Pic_cyclic();
+                    }
                 }
             }
             if (App.Config.MainConfig.User.Nide8ServerDependence)
@@ -875,7 +855,7 @@ namespace NsisoLauncher
                     }
                     this.WindowState = WindowState.Minimized;
 
-                    mainPanel.is_re = true;
+                    mainPanel.isRes = true;
                     mainPanel.Refresh();
 
                     //自定义处理
@@ -898,7 +878,7 @@ namespace NsisoLauncher
                 loadingRing.Visibility = Visibility.Hidden;
                 launchInfoBlock.Visibility = Visibility.Hidden;
                 cancelLaunchButton.Visibility = Visibility.Hidden;
-                this.loadingRing.IsActive = false;
+                loadingRing.IsActive = false;
             }
         }
 
@@ -935,6 +915,8 @@ namespace NsisoLauncher
                         default:
                             break;
                     }
+                    await this.ShowMessageAsync(App.GetResourceString("String.Message.Java.Finish.Title"),
+                    App.GetResourceString("String.Message.Java.Finish.Text"));
                 }
             }
         }
@@ -953,28 +935,13 @@ namespace NsisoLauncher
                 if (choose == MessageDialogResult.Affirmative)
                 {
                     App.Downloader.RequestStop();
+                    timer.Dispose();
                 }
                 else
                 {
                     e.Cancel = true;
                 }
             }
-        }
-        private bool IsValidateLoginData(LoginDialogData data)
-        {
-            if (data == null)
-            {
-                return false;
-            }
-            if (string.IsNullOrWhiteSpace(data.Username))
-            {
-                return false;
-            }
-            if (string.IsNullOrWhiteSpace(data.Password))
-            {
-                return false;
-            }
-            return true;
         }
 
         private void CancelLaunching(LaunchResult result)

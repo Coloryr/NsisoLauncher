@@ -26,9 +26,9 @@ namespace NsisoLauncher.Windows
     /// </summary>
     public partial class SettingWindow : MetroWindow
     {
-        private MainConfig config;
 
         private bool _isGameSettingChanged = false;
+        bool isload = true;
 
         public SettingWindow()
         {
@@ -47,17 +47,15 @@ namespace NsisoLauncher.Windows
 
         private async void Refresh()
         {
-            //深度克隆设置
-            config = DeepCloneObject(App.Config.MainConfig);
 
             //绑定content设置
-            this.DataContext = config;
+            this.DataContext = App.Config.MainConfig;
 
             javaPathComboBox.ItemsSource = App.JavaList;
             memorySlider.Maximum = SystemTools.GetTotalMemory();
 
             authModules.Clear();
-            foreach (var item in config.User.AuthenticationDic)
+            foreach (var item in App.Config.MainConfig.User.AuthenticationDic)
             {
                 if (item.Key == "offline" || item.Key == "online")
                     continue;
@@ -67,12 +65,10 @@ namespace NsisoLauncher.Windows
             VersionsComboBox.ItemsSource = await App.Handler.GetVersionsAsync();
 
             Lauguage.ItemsSource = new List<string>() { "中文", "日本語", "English" };
-            Lauguage.SelectedItem = config.Lauguage;
+            Lauguage.SelectedItem = App.Config.MainConfig.Lauguage;
 
             if (App.Config.MainConfig.Environment.VersionIsolation)
-            {
                 VersionChose.Visibility = Visibility.Visible;
-            }
             else
             {
                 VersionChose.Visibility = Visibility.Collapsed;
@@ -80,6 +76,7 @@ namespace NsisoLauncher.Windows
                 versionOptionsofGrid.ItemsSource = await GameHelper.GetOptionsAsync(VersionOption.Type.optionsof, App.Handler, new MCVersion() { ID = "null" });
             }
             CheckBox_Checked(null, null);
+            isload = false;
         }
 
         public void ShowAddAuthModule()
@@ -93,8 +90,8 @@ namespace NsisoLauncher.Windows
         {
             Microsoft.Win32.OpenFileDialog dialog = new Microsoft.Win32.OpenFileDialog()
             {
-                Title = "选择Java",
-                Filter = "Java应用程序(无窗口)|javaw.exe|Java应用程序(含窗口)|java.exe",
+                Title = App.GetResourceString("String.Settingwindow.Message.Java.Title"),
+                Filter = App.GetResourceString("String.Settingwindow.Message.Java.Filter"),
             };
             if (dialog.ShowDialog() == true)
             {
@@ -102,12 +99,15 @@ namespace NsisoLauncher.Windows
                 if (java != null)
                 {
                     this.javaPathComboBox.Text = java.Path;
-                    this.javaInfoLabel.Content = string.Format("Java版本：{0}，位数：{1}", java.Version, java.Arch);
+                    this.javaInfoLabel.Content = string.Format(
+                        App.GetResourceString("String.Settingwindow.Message.Java.Content"), 
+                        java.Version, java.Arch);
                 }
                 else
                 {
                     this.javaPathComboBox.Text = dialog.FileName;
-                    await this.ShowMessageAsync("选择的Java无法正确获取信息", "请确认您选择的是正确的Java应用");
+                    await this.ShowMessageAsync(App.GetResourceString("String.Settingwindow.Message.NoJava.Title"), 
+                        App.GetResourceString("String.Settingwindow.Message.NoJava.Text"));
                 }
             }
         }
@@ -116,7 +116,7 @@ namespace NsisoLauncher.Windows
         {
             FolderBrowserDialog dialog = new FolderBrowserDialog()
             {
-                Description = "选择游戏运行根目录",
+                Description = App.GetResourceString("String.Settingwindow.Message.Game.Description"),
                 ShowNewFolderButton = true
             };
             var result = dialog.ShowDialog();
@@ -127,17 +127,17 @@ namespace NsisoLauncher.Windows
             else
             {
                 gamedirPathTextBox.Text = dialog.SelectedPath.Trim();
-                config.Environment.GamePath = dialog.SelectedPath.Trim();
+                App.Config.MainConfig.Environment.GamePath = dialog.SelectedPath.Trim();
             }
         }
         private void memorySlider_UpperValueChanged(object sender, RangeParameterChangedEventArgs e)
         {
-            config.Environment.MaxMemory = Convert.ToInt32(((RangeSlider)sender).UpperValue);
+            App.Config.MainConfig.Environment.MaxMemory = Convert.ToInt32(((RangeSlider)sender).UpperValue);
         }
 
         private void memorySlider_LowerValueChanged(object sender, RangeParameterChangedEventArgs e)
         {
-            config.Environment.MinMemory = Convert.ToInt32(((RangeSlider)sender).LowerValue);
+            App.Config.MainConfig.Environment.MinMemory = Convert.ToInt32(((RangeSlider)sender).LowerValue);
         }
 
         private void textBox1_PreviewTextInput(object sender, TextCompositionEventArgs e)
@@ -149,7 +149,7 @@ namespace NsisoLauncher.Windows
         //保存按钮点击后
         private async void saveButton_Click(object sender, RoutedEventArgs e)
         {
-            switch (config.Environment.GamePathType)
+            switch (App.Config.MainConfig.Environment.GamePathType)
             {
                 case GameDirEnum.ROOT:
                     App.Handler.GameRootPath = Path.GetFullPath(".minecraft");
@@ -161,15 +161,13 @@ namespace NsisoLauncher.Windows
                     App.Handler.GameRootPath = System.Environment.GetFolderPath(System.Environment.SpecialFolder.ProgramFiles) + "\\.minecraft";
                     break;
                 case GameDirEnum.CUSTOM:
-                    App.Handler.GameRootPath = config.Environment.GamePath + "\\.minecraft";
+                    App.Handler.GameRootPath = App.Config.MainConfig.Environment.GamePath + "\\.minecraft";
                     break;
                 default:
-                    throw new ArgumentException("判断游戏目录类型时出现异常，请检查配置文件中GamePathType节点");
+                    throw new ArgumentException(App.GetResourceString("String.Settingwindow.Message.GamePathType.Error"));
             }
-            App.Handler.VersionIsolation = config.Environment.VersionIsolation;
-            App.Downloader.CheckFileHash = config.Download.CheckDownloadFileHash;
-
-            App.Config.MainConfig = config;
+            App.Handler.VersionIsolation = App.Config.MainConfig.Environment.VersionIsolation;
+            App.Downloader.CheckFileHash = App.Config.MainConfig.Download.CheckDownloadFileHash;
 
             if (_isGameSettingChanged)
             {
@@ -200,6 +198,7 @@ namespace NsisoLauncher.Windows
 
             App.Config.Save();
             App.Re();
+
             saveButton.Content = App.GetResourceString("String.Settingwindow.Saving");
             Config.Environment env = App.Config.MainConfig.Environment;
             Java java = null;
@@ -301,7 +300,9 @@ namespace NsisoLauncher.Windows
             Java java = (Java)(((System.Windows.Controls.ComboBox)sender).SelectedItem);
             if (java != null)
             {
-                this.javaInfoLabel.Content = string.Format("Java版本：{0}，位数：{1}", java.Version, java.Arch);
+                this.javaInfoLabel.Content = string.Format(
+                    App.GetResourceString("String.Settingwindow.Message.Java.Content"), 
+                    java.Version, java.Arch);
             }
             else
             {
@@ -313,21 +314,23 @@ namespace NsisoLauncher.Windows
         {
             if (userComboBox.SelectedItem == null)
             {
-                this.ShowMessageAsync("您未选择要进行操作的用户", "请先选择您要进行操作的用户");
+                this.ShowMessageAsync(App.GetResourceString("String.Settingwindow.Message.User.Title"),
+                        App.GetResourceString("String.Settingwindow.Message.User.Text"));
                 return;
             }
             KeyValuePair<string, UserNode> selectedItem = (KeyValuePair<string, UserNode>)userComboBox.SelectedItem;
             UserNode node = selectedItem.Value;
-            //todo （后）恢复注销用户功能
             node.AccessToken = null;
-            this.ShowMessageAsync("注销成功", "请保存以生效");
+            this.ShowMessageAsync(App.GetResourceString("String.Settingwindow.Message.User1.Title"), 
+                App.GetResourceString("String.Settingwindow.Message.User1.Text"));
         }
 
         private void clearUserButton_Click(object sender, RoutedEventArgs e)
         {
             if (userComboBox.SelectedItem == null)
             {
-                this.ShowMessageAsync("您未选择要进行操作的用户", "请先选择您要进行操作的用户");
+                this.ShowMessageAsync(App.GetResourceString("String.Settingwindow.Message.User2.Title"),
+                        App.GetResourceString("String.Settingwindow.Message.User2.Text"));
                 return;
             }
 
@@ -337,37 +340,42 @@ namespace NsisoLauncher.Windows
             node.Profiles = null;
             node.UserData = null;
             node.SelectProfileUUID = null;
-            this.ShowMessageAsync("重置用户成功", "请保存以生效");
+            this.ShowMessageAsync(App.GetResourceString("String.Settingwindow.Message.User3.Title"),
+                 App.GetResourceString("String.Settingwindow.Message.User3.Text"));
         }
 
         private void delUserButton_Click(object sender, RoutedEventArgs e)
         {
             if (userComboBox.SelectedItem == null)
             {
-                this.ShowMessageAsync("您未选择要进行操作的用户", "请先选择您要进行操作的用户");
+                this.ShowMessageAsync(App.GetResourceString("String.Settingwindow.Message.User4.Title"),
+                 App.GetResourceString("String.Settingwindow.Message.User4.Text"));
                 return;
             }
 
             string key = (string)userComboBox.SelectedValue;
-            config.User.UserDatabase.Remove(key);
-            this.ShowMessageAsync("删除用户成功", "请保存以生效");
+            App.Config.MainConfig.User.UserDatabase.Remove(key);
+            this.ShowMessageAsync(App.GetResourceString("String.Settingwindow.Message.User5.Title"),
+                 App.GetResourceString("String.Settingwindow.Message.User5.Text"));
         }
 
         private void delAllAuthnodeButton_Click(object sender, RoutedEventArgs e)
         {
-            config.User.AuthenticationDic.Clear();
-            config.User.AuthenticationDic.Add("mojang", new AuthenticationNode()
+            App.Config.MainConfig.User.AuthenticationDic.Clear();
+            App.Config.MainConfig.User.AuthenticationDic.Add("mojang", new AuthenticationNode()
             {
                 AuthType = AuthenticationType.MOJANG,
                 Name = App.GetResourceString("String.Mainwindow.Auth.Mojang")
             });
-            this.ShowMessageAsync("清除成功", "请保存以生效");
+            this.ShowMessageAsync(App.GetResourceString("String.Settingwindow.Message.User6.Title"),
+                 App.GetResourceString("String.Settingwindow.Message.User6.Text"));
         }
 
         private void delAllUserButton_Click(object sender, RoutedEventArgs e)
         {
-            config.User.UserDatabase.Clear();
-            this.ShowMessageAsync("清除成功", "请保存以生效");
+            App.Config.MainConfig.User.UserDatabase.Clear();
+            this.ShowMessageAsync(App.GetResourceString("String.Settingwindow.Message.User6.Title"),
+                 App.GetResourceString("String.Settingwindow.Message.User6.Text"));
         }
 
         private void Hyperlink_Click(object sender, RoutedEventArgs e)
@@ -396,25 +404,28 @@ namespace NsisoLauncher.Windows
         {
             if (authModules.Any(x => x.Key == name))
             {
-                await this.ShowMessageAsync("添加的验证模型名称已存在", "您可以尝试更换可用的验证模型名称");
+                await this.ShowMessageAsync(App.GetResourceString("String.Settingwindow.Message.User7.Title"),
+                 App.GetResourceString("String.Settingwindow.Message.User7.Text"));
                 return;
             }
             var item = new KeyValuePair<string, AuthenticationNode>(name, authmodule);
             authModules.Add(item);
-            config.User.AuthenticationDic.Add(name, authmodule);
+            App.Config.MainConfig.User.AuthenticationDic.Add(name, authmodule);
             authModuleCombobox.SelectedItem = item;
         }
 
         public async void SaveAuthModule(KeyValuePair<string, AuthenticationNode> node)
         {
-            await this.ShowMessageAsync("保存更改", "已修改你的设置，点击应用保存");
+            await this.ShowMessageAsync(App.GetResourceString("String.Settingwindow.Message.User8.Title"),
+                 App.GetResourceString("String.Settingwindow.Message.User8.Text"));
         }
 
         public async void DeleteAuthModule(KeyValuePair<string, AuthenticationNode> node)
         {
             authModules.Remove(node);
-            config.User.AuthenticationDic.Remove(node.Key);
-            await this.ShowMessageAsync("删除成功", "记得点击应用按钮保存噢");
+            App.Config.MainConfig.User.AuthenticationDic.Remove(node.Key);
+            await this.ShowMessageAsync(App.GetResourceString("String.Settingwindow.Message.User9.Title"),
+                App.GetResourceString("String.Settingwindow.Message.User9.Text"));
         }
 
         private void ClearAuthselectButton_Click(object sender, RoutedEventArgs e)
@@ -502,6 +513,43 @@ namespace NsisoLauncher.Windows
             dynamic Node = lockauthCombobox.SelectedItem;
             NIDE8_C.Visibility = Node?.Value.AuthType == AuthenticationType.NIDE8 ? Visibility.Visible : Visibility.Collapsed;
             NIDE8_C.IsChecked = Node?.Value.AuthType == AuthenticationType.NIDE8 ? NIDE8_C.IsChecked : false;
+        }
+
+        private string Get_string(string a, string b, string c = null)
+        {
+            int x = a.IndexOf(b) + b.Length;
+            int y;
+            if (c != null)
+            {
+                y = a.IndexOf(c, x);
+                if (y - x <= 0)
+                    return a;
+                else
+                    return a.Substring(x, y - x);
+            }
+            else
+                return a.Substring(x);
+        }
+        bool ischange = false;
+        private void TextBox_TextChanged_1(object sender, TextChangedEventArgs e)
+        {
+            if (ischange || isload)
+                return;
+            ischange = true;
+            if (ServerAddres.Text.Contains(":"))
+            {
+                var temp = ServerAddres.Text.Split(':');
+                App.Config.MainConfig.Server.Address = ServerAddres.Text = temp[0];
+                ServerPort.Text = temp[1];
+                ushort.TryParse(temp[1], out ushort port);
+                App.Config.MainConfig.Server.Port = port;
+            }
+            else
+            {
+                ServerPort.Text = "0";
+                App.Config.MainConfig.Server.Port = 0;
+            }
+            ischange = false;
         }
     }
 }

@@ -18,8 +18,8 @@ namespace NsisoLauncher.Controls
     /// </summary>
     public partial class MainPanelControl : UserControl
     {
-        public bool is_re = false;
-        private bool is_use = false;
+        public bool isRes = false;
+        private bool isUse = false;
 
         public event Action<object, LaunchEventArgs> Launch;
 
@@ -100,23 +100,23 @@ namespace NsisoLauncher.Controls
                 {
                     if (App.Config.MainConfig.User.AuthenticationDic.ContainsKey(App.Config.MainConfig.User.LockAuthName))
                     {
-                        is_re = true;
+                        isRes = true;
                         authTypeCombobox.SelectedValue = App.Config.MainConfig.User.LockAuthName;
                         authTypeCombobox.IsEnabled = false;
-                        is_re = false;
+                        isRes = false;
                         AuthenticationNode node = GetSelectedAuthenticationNode();
                         if (node.AuthType != AuthenticationType.OFFLINE)
                             PasswordBox.Visibility = Visibility.Visible;
                         UserNode node1 = GetSelectedAuthNode();
                         if (node1 != null && node1.AuthModule == "offline")
                             userComboBox.SelectedItem = null;
-                        is_use = true;
+                        isUse = true;
                     }
                 }
                 else
                 {
                     authTypeCombobox.IsEnabled = true;
-                    is_use = false;
+                    isUse = false;
                 }
 
                 if (userComboBox.SelectedValue != null && string.IsNullOrWhiteSpace(App.Config.MainConfig.User.LockAuthName))
@@ -124,16 +124,12 @@ namespace NsisoLauncher.Controls
                     UserNode node = GetSelectedAuthNode();
                     authTypeCombobox.SelectedValue = node.AuthModule;
                 }
-                if (is_re == true)
+                if (isRes == true)
                 {
-                    if (authTypeCombobox.SelectedItem != null)
-                    {
-
-                    }
                     UserNode node = GetSelectedAuthNode();
                     if (node != null)
                         authTypeCombobox.SelectedValue = node.AuthModule;
-                    is_re = false;
+                    isRes = false;
                 }
                 if (string.IsNullOrWhiteSpace(App.Config.MainConfig.User.LockAuthName) == false)
                 {
@@ -279,7 +275,7 @@ namespace NsisoLauncher.Controls
         {
             UserNode node = GetSelectedAuthNode();
             AuthenticationNode node1 = GetSelectedAuthenticationNode();
-            if (is_re == true)
+            if (isRes == true)
             {
                 return;
             }
@@ -324,7 +320,7 @@ namespace NsisoLauncher.Controls
         }
         private void AuthTypeCombobox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (is_re == true)
+            if (isRes == true)
                 return;
             AuthenticationNode node = GetSelectedAuthenticationNode();
             UserNode node1 = GetSelectedAuthNode();
@@ -369,7 +365,7 @@ namespace NsisoLauncher.Controls
             launchVersionCombobox.IsEnabled = userComboBox.IsEnabled =
                 configButton.IsEnabled = downloadButton.IsEnabled =
                 launchButton.IsEnabled = PasswordBox.IsEnabled = use;
-            if (is_use == false)
+            if (isUse == false)
             {
                 authTypeCombobox.IsEnabled = use;
                 addauth.IsEnabled = use;
@@ -383,12 +379,5 @@ namespace NsisoLauncher.Controls
         public AuthenticationNode AuthNode { get; set; }
         public UserNode UserNode { get; set; }
         public bool IsNewUser { get; set; }
-    }
-
-    public enum LaunchType
-    {
-        NORMAL,
-        SAFE,
-        CREATE_SHORT
     }
 }

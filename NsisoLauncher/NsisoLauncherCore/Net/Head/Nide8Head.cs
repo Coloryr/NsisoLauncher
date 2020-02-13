@@ -1,4 +1,5 @@
 ﻿using NsisoLauncher.Config;
+using NsisoLauncherCore.Util;
 using System;
 using System.Drawing;
 using System.IO;
@@ -11,27 +12,6 @@ namespace NsisoLauncherCore.Net.Head
 {
     class Nide8Head
     {
-        private BitmapImage BitmapToBitmapImage(Bitmap bitmap)
-        {
-            Bitmap bitmapSource = new Bitmap(bitmap.Width, bitmap.Height);
-            int i, j;
-            for (i = 0; i < bitmap.Width; i++)
-                for (j = 0; j < bitmap.Height; j++)
-                {
-                    System.Drawing.Color pixelColor = bitmap.GetPixel(i, j);
-                    System.Drawing.Color newColor = System.Drawing.Color.FromArgb(pixelColor.R, pixelColor.G, pixelColor.B);
-                    bitmapSource.SetPixel(i, j, newColor);
-                }
-            MemoryStream ms = new MemoryStream();
-            bitmapSource.Save(ms, System.Drawing.Imaging.ImageFormat.Bmp);
-            BitmapImage bitmapImage = new BitmapImage();
-            bitmapImage.BeginInit();
-            bitmapImage.StreamSource = new MemoryStream(ms.ToArray());
-            bitmapImage.EndInit();
-
-            return bitmapImage;
-        }
-
         //缩放
         private Bitmap Zoom(Bitmap orgimg, int times)
         {
@@ -76,7 +56,7 @@ namespace NsisoLauncherCore.Net.Head
             graphic_top.Dispose();
             bitmap.Dispose();
             bitmap_top.Dispose();
-            return BitmapToBitmapImage(Zoom(save, 8));
+            return new ImageDO().BitmapToBitmapImage(Zoom(save, 8));
         }
         public async Task<ImageSource> GetHeadSculSource(string uuid, AuthenticationNode args)
         {

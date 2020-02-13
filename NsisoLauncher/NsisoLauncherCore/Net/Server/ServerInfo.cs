@@ -289,26 +289,6 @@ namespace NsisoLauncherCore.Net.Server
                                 this.MOTD = descriptionDataObj["text"].ToString();
                             }
                         }
-                        //if (descriptionData.ContainsKey("extra"))
-                        //{
-                        //    //Json.JSONData extraData = jsonData.DataArray;
-                        //    foreach (JToken item in descriptionData["extra"])
-                        //    {
-                        //        string text = item["text"].ToString();
-                        //        if (!string.IsNullOrWhiteSpace(text))
-                        //        {
-                        //            this.MOTD += text;
-                        //        }
-                        //    }
-                        //}
-                        //else if (descriptionData.ContainsKey("text"))
-                        //{
-                        //    this.MOTD = descriptionData["text"].ToString();
-                        //}
-                        //else
-                        //{
-
-                        //}
                     }
 
                     // Check for forge on the server.
@@ -332,10 +312,6 @@ namespace NsisoLauncherCore.Net.Server
                             string datastring = jsonData["favicon"].ToString();
                             byte[] arr = Convert.FromBase64String(datastring.Replace("data:image/png;base64,", ""));
                             this.IconData = arr;
-                            //using (MemoryStream ms = new MemoryStream(arr))
-                            //{
-                            //    this.Icon = new Bitmap(ms);
-                            //}
                         }
                         catch
                         {
@@ -354,39 +330,11 @@ namespace NsisoLauncherCore.Net.Server
 
         private string ClearColor(string str)
         {
-            //Color_yr Remove
-            //str = str.Replace(@"\n", "");
             while (str.Contains('§'))
             {
                 str = str.Remove(str.IndexOf('§'), 2);
             }
             return str;
         }
-
-        //[DllImport("gdi32.dll", SetLastError = true)]
-        //private static extern bool DeleteObject(IntPtr hObject);
-
-        ///// <summary>  
-        ///// 从bitmap转换成ImageSource  
-        ///// </summary>  
-        ///// <param name="icon"></param>  
-        ///// <returns></returns>  
-        //public static ImageSource ChangeBitmapToImageSource(Bitmap bitmap)
-        //{
-        //    //Bitmap bitmap = icon.ToBitmap();  
-        //    IntPtr hBitmap = bitmap.GetHbitmap();
-
-        //    ImageSource wpfBitmap = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
-        //        hBitmap,
-        //        IntPtr.Zero,
-        //        Int32Rect.Empty,
-        //        BitmapSizeOptions.FromEmptyOptions());
-        //    if (!DeleteObject(hBitmap))
-        //    {
-        //        throw new System.ComponentModel.Win32Exception();
-        //    }
-        //    return wpfBitmap;
-
-        //}
     }
 }

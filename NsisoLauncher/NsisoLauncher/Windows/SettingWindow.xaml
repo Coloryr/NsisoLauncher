@@ -365,13 +365,14 @@
                                 <Label Content="{DynamicResource String.Settingwindow.Custom.Server.Name}"/>
                                 <TextBox TextWrapping="NoWrap" Text="{Binding Server.ServerName}" HorizontalAlignment="Left" Width="300"/>
                                 <Label Content="{DynamicResource String.Settingwindow.Custom.Server.Addres}"/>
-                                <TextBox TextWrapping="NoWrap" Text="{Binding Server.Address}" HorizontalAlignment="Left" Width="300"/>
+                                <TextBox TextWrapping="NoWrap" Text="{Binding Server.Address}" HorizontalAlignment="Left" Width="300" TextChanged="TextBox_TextChanged_1"
+                                         Name="ServerAddres"/>
                                 <Label Content="{DynamicResource String.Settingwindow.Custom.Server.Pore}"/>
                                 <TextBox Text="{Binding Server.Port}"
-                                     PreviewTextInput="textBox1_PreviewTextInput"
-                                     InputMethod.IsInputMethodEnabled="False"
-                                     MaxLength="6" HorizontalAlignment="Left" Width="80"
-                                     />
+                                         PreviewTextInput="textBox1_PreviewTextInput"
+                                         InputMethod.IsInputMethodEnabled="False"
+                                         MaxLength="6" HorizontalAlignment="Left" Width="80"
+                                         Name="ServerPort"/>
                             </StackPanel>
                         </Expander>
                         <Expander Header="{DynamicResource String.Settingwindow.Custom.Mods}" Margin="0,0,0,5">

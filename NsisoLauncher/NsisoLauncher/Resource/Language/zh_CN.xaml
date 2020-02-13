@@ -38,6 +38,8 @@
     <sys:String x:Key="String.Message.NoJava2">Minecraft依赖于Java启动，请您移步安装Java，否则将无法启动。是否自动帮您下载并启动JAVA安装包？</sys:String>
     <sys:String x:Key="String.Message.NoFrameworkUpdate">当前电脑环境缺少KB2468871v2补丁</sys:String>
     <sys:String x:Key="String.Message.NoFrameworkUpdate2">该启动器依赖于Framework KB2468871v2补丁，您的系统由于缺少该补丁导致Nsiso启动器无法启动。您需要安装Framework KB2468871v2补丁。是否帮您打开帮助页面？否将尝试启动。</sys:String>
+    <sys:String x:Key="String.Message.Java.Finish.Title">安装JAVA</sys:String>
+    <sys:String x:Key="String.Message.Java.Finish.Text">安装完JAVA后你需要重启启动器</sys:String>
 
     <sys:String x:Key="String.Mainwindow.Loging">登录中...</sys:String>
     <sys:String x:Key="String.Mainwindow.Staring">少女祈祷中...</sys:String>
@@ -334,8 +336,37 @@
     <sys:String x:Key="String.Settingwindow.Saving">保存中</sys:String>
     <sys:String x:Key="String.Settingwindow.JavaError">JAVA无效，请检查</sys:String>
     <sys:String x:Key="String.Settingwindow.SaveError">保存发生错误</sys:String>
+    <sys:String x:Key="String.Settingwindow.Message.Java.Title">选择Java</sys:String>
+    <sys:String x:Key="String.Settingwindow.Message.Java.Filter">Java应用程序|javaw.exe</sys:String>
+    <sys:String x:Key="String.Settingwindow.Message.Java.Content">Java版本：{0}，位数：{1}</sys:String>
+    <sys:String x:Key="String.Settingwindow.Message.Game.Description">选择游戏运行根目录</sys:String>
+    <sys:String x:Key="String.Settingwindow.Message.NoJava.Title">无法获取Java信息</sys:String>
+    <sys:String x:Key="String.Settingwindow.Message.NoJava.Text">请确认您选择的是正确的Java应用</sys:String>
+    <sys:String x:Key="String.Settingwindow.Message.User.Title">您未选择要进行操作的用户</sys:String>
+    <sys:String x:Key="String.Settingwindow.Message.User.Text">请先选择您要进行操作的用户</sys:String>
+    <sys:String x:Key="String.Settingwindow.Message.User1.Title">注销成功</sys:String>
+    <sys:String x:Key="String.Settingwindow.Message.User1.Text">请保存以生效</sys:String>
+    <sys:String x:Key="String.Settingwindow.Message.User2.Title">您未选择要进行操作的用户</sys:String>
+    <sys:String x:Key="String.Settingwindow.Message.User2.Text">请先选择您要进行操作的用户</sys:String>
+    <sys:String x:Key="String.Settingwindow.Message.User3.Title">重置用户成功</sys:String>
+    <sys:String x:Key="String.Settingwindow.Message.User3.Text">请保存以生效</sys:String>
+    <sys:String x:Key="String.Settingwindow.Message.User4.Title">您未选择要进行操作的用户</sys:String>
+    <sys:String x:Key="String.Settingwindow.Message.User4.Text">请先选择您要进行操作的用户</sys:String>
+    <sys:String x:Key="String.Settingwindow.Message.User5.Title">删除用户成功</sys:String>
+    <sys:String x:Key="String.Settingwindow.Message.User5.Text">请保存以生效</sys:String>
+    <sys:String x:Key="String.Settingwindow.Message.User6.Title">清除成功</sys:String>
+    <sys:String x:Key="String.Settingwindow.Message.User6.Text">请保存以生效</sys:String>
+    <sys:String x:Key="String.Settingwindow.Message.User7.Title">添加的验证模型名称已存在</sys:String>
+    <sys:String x:Key="String.Settingwindow.Message.User7.Text">您可以尝试更换可用的验证模型名称</sys:String>
+    <sys:String x:Key="String.Settingwindow.Message.User8.Title">保存更改</sys:String>
+    <sys:String x:Key="String.Settingwindow.Message.User8.Text">已修改你的设置，点击应用保存</sys:String>
+    <sys:String x:Key="String.Settingwindow.Message.User9.Title">删除成功</sys:String>
+    <sys:String x:Key="String.Settingwindow.Message.User9.Text">记得点击应用按钮保存噢</sys:String>
+    <sys:String x:Key="String.Settingwindow.Message.GamePathType.Error">判断游戏目录类型时出现异常，请检查配置文件中GamePathType节点</sys:String>
 
+    <sys:String x:Key="String.ServerInfoControl.McServer">Minecraft服务器</sys:String>
     <sys:String x:Key="String.ServerInfoControl.Member">人数：</sys:String>
+    <sys:String x:Key="String.ServerInfoControl.Mods">等{0}个MOD</sys:String>
     <sys:String x:Key="String.ServerInfoControl.Ping">延迟：</sys:String>
     <sys:String x:Key="String.ServerInfoControl.Error">获取失败</sys:String>
 

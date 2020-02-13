@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json.Linq;
-using System;
 using System.Collections.Generic;
 
 namespace NsisoLauncherCore.Net.Server
@@ -14,14 +13,14 @@ namespace NsisoLauncherCore.Net.Server
         /// </summary>
         public class ForgeMod
         {
-            public ForgeMod(String ModID, String Version)
+            public ForgeMod(string ModID, string Version)
             {
                 this.ModID = ModID;
                 this.Version = Version;
             }
 
-            public readonly String ModID;
-            public readonly String Version;
+            public readonly string ModID;
+            public readonly string Version;
 
             public override string ToString()
             {
@@ -37,30 +36,12 @@ namespace NsisoLauncherCore.Net.Server
         /// <param name="data">The modinfo JSON tag.</param>
         internal ForgeInfo(JToken data)
         {
-            // Example ModInfo (with spacing):
-
-            // "modinfo": {
-            //     "type": "FML",
-            //     "modList": [{
-            //         "modid": "mcp",
-            //         "version": "9.05"
-            //     }, {
-            //         "modid": "FML",
-            //         "version": "8.0.99.99"
-            //     }, {
-            //         "modid": "Forge",
-            //         "version": "11.14.3.1512"
-            //     }, {
-            //         "modid": "rpcraft",
-            //         "version": "Beta 1.3 - 1.8.0"
-            //     }]
-            // }
 
             this.Mods = new List<ForgeMod>();
             foreach (JToken mod in data["modList"])
             {
-                String modid = mod["modid"].ToString();
-                String version = mod["version"].ToString();
+                string modid = mod["modid"].ToString();
+                string version = mod["version"].ToString();
 
                 this.Mods.Add(new ForgeMod(modid, version));
             }

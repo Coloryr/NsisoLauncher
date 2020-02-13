@@ -382,23 +382,19 @@ namespace NsisoLauncher.Windows
                     App.Downloader.SetDownloadTasks(res1);
                     App.Downloader.StartDownload();
                 }
-
                 await loading.CloseAsync();
-
                 Close();
             }
         }
 
         private void MetroWindow_Closed(object sender, EventArgs e)
         {
-            if (App.DownloadWindow_ == null)
+            if (App.Downloader.haveTask())
             {
-                App.DownloadWindow_ = new DownloadWindow();
-                App.DownloadWindow_.Show();
-            }
-            else
-            {
-                App.DownloadWindow_.Refresh();
+                if (App.DownloadWindow_ == null)
+                    App.DownloadWindow_ = new DownloadWindow();
+                else
+                    App.DownloadWindow_.Refresh();
             }
             App.NewDownloadTaskWindow_ = null;
         }

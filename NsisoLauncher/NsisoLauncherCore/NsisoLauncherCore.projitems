@@ -145,6 +145,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Util\CrashHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Util\FileHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Util\GameHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Util\ImageDO.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Util\Installer\CommonInstaller.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Util\Installer\Forge\Actions\PostProcessors.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Util\Installer\Forge\ForgeInstaller.cs" />

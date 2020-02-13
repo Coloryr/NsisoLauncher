@@ -181,17 +181,31 @@ namespace NsisoLauncherCore.Util
         {
             Dictionary<string, string> jres = new Dictionary<string, string>();
 
-            var oldKey = key?.OpenSubKey("JavaSoft")?.OpenSubKey("Java Runtime Environment");
-            var newKey = key?.OpenSubKey("JavaSoft")?.OpenSubKey("JRE");
-
-            //oldJre
-            if (oldKey != null)
+            var JavaKey = key?.OpenSubKey("JavaSoft")?.OpenSubKey("Java Runtime Environment");
+            if (JavaKey != null)
             {
-                foreach (var verStr in oldKey.GetSubKeyNames())
+                foreach (var verStr in JavaKey.GetSubKeyNames())
                 {
                     if (verStr.Length > 3)
                     {
-                        string path = oldKey.OpenSubKey(verStr).GetValue("JavaHome")?.ToString() + @"\bin\javaw.exe";
+                        string path = JavaKey.OpenSubKey(verStr).GetValue("JavaHome")?.ToString() + @"\bin\javaw.exe";
+                        if (File.Exists(path))
+                        {
+                            if (!jres.ContainsValue(path))
+                                jres.Add(verStr, path);
+                        }
+                    }
+                }
+            }
+
+            JavaKey = key?.OpenSubKey("JavaSoft")?.OpenSubKey("Java Development Kit");
+            if (JavaKey != null)
+            {
+                foreach (var verStr in JavaKey.GetSubKeyNames())
+                {
+                    if (verStr.Length > 3)
+                    {
+                        string path = JavaKey.OpenSubKey(verStr).GetValue("JavaHome")?.ToString() + @"\bin\javaw.exe";
                         if (File.Exists(path))
                         {
                             jres.Add(verStr, path);
@@ -200,14 +214,15 @@ namespace NsisoLauncherCore.Util
                 }
             }
 
-            //newJre
-            if (newKey != null)
+            JavaKey = key?.OpenSubKey("AdoptOpenJDK")?.OpenSubKey("JDK");
+            if (JavaKey != null)
             {
-                foreach (var verStr in newKey.GetSubKeyNames())
+                foreach (var verStr in JavaKey.GetSubKeyNames())
                 {
-                    if (verStr.Length > 3)
+                    var temp = key?.OpenSubKey("AdoptOpenJDK")?.OpenSubKey("JDK").OpenSubKey(verStr);
+                    foreach (var item in temp.GetSubKeyNames())
                     {
-                        string path = newKey.OpenSubKey(verStr).GetValue("JavaHome")?.ToString() + @"\bin\javaw.exe";
+                        string path = temp.OpenSubKey(item).OpenSubKey("MSI").GetValue("Path").ToString() + @"bin\javaw.exe";
                         if (File.Exists(path))
                         {
                             jres.Add(verStr, path);
@@ -243,55 +258,5 @@ namespace NsisoLauncherCore.Util
             }
             return javas;
         }
-
-        ///// <summary>
-        ///// 从注册表中查找可能的javaw.exe位置
-        ///// This code is from kmccc, thx
-        ///// </summary>
-        ///// <returns>JAVA地址列表</returns>
-        //public static IEnumerable<string> GetJavaPathList()
-        //{
-        //    try
-        //    {
-        //        var rootReg = Registry.LocalMachine.OpenSubKey("SOFTWARE");
-        //        return rootReg == null
-        //            ? new string[0]
-        //            : FindJavaPathInternal(rootReg).Union(FindJavaPathInternal(rootReg.OpenSubKey("Wow6432Node"))).Where(x => File.Exists(x));
-        //    }
-        //    catch
-        //    {
-        //        return new string[0];
-        //    }
-        //}
-
-        ///// <summary>
-        ///// 内部注册表搜索方法
-        ///// This code is from kmccc, thx
-        ///// </summary>
-        ///// <param name="registry">注册表</param>
-        ///// <returns>JAVA可能路径</returns>
-        //private static IEnumerable<string> FindJavaPathInternal(RegistryKey registry)
-        //{
-        //    try
-        //    {
-        //        var registryKey = registry.OpenSubKey("JavaSoft");
-        //        if ((registryKey == null) || ((registry = registryKey.OpenSubKey("Java Runtime Environment")) == null)) return new string[0];
-        //        return (from ver in registry.GetSubKeyNames()
-        //                select registry.OpenSubKey(ver)
-        //            into command
-        //                where command != null
-        //                select command.GetValue("JavaHome")
-        //            into javaHomes
-        //                where javaHomes != null
-        //                select javaHomes.ToString()
-        //            into str
-        //                where !String.IsNullOrWhiteSpace(str)
-        //                select str + @"\bin\javaw.exe");
-        //    }
-        //    catch
-        //    {
-        //        return new string[0];
-        //    }
-        //}
     }
 }

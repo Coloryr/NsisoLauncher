@@ -111,6 +111,11 @@ namespace NsisoLauncherCore.Net
             }
         }
 
+        public bool haveTask()
+        {
+            return _taskCount != 0;
+        }
+
         /// <summary>
         /// 设置一个下载内容
         /// </summary>
