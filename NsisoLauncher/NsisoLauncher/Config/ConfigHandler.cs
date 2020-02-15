@@ -214,9 +214,12 @@ namespace NsisoLauncher.Config
                     AutoJava = true,
                     WindowSize = new NsisoLauncherCore.Modules.WindowSize()
                     {
-                        FullScreen = false
+                        FullScreen = false,
+                        Height = 720,
+                        Width = 1280
                     },
-                    ExitAfterLaunch = false
+                    ExitAfterLaunch = false,
+                    AdvencedJvmArguments = "-XX:-UseAdaptiveSizePolicy -XX:-OmitStackTraceInFastThrow"
                 },
                 Download = new Download()
                 {

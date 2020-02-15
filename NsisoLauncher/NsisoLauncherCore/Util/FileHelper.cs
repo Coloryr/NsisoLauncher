@@ -7,6 +7,8 @@ using System.IO;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using MahApps.Metro.Controls;
+using MahApps.Metro.Controls.Dialogs;
 
 namespace NsisoLauncherCore.Util
 {
@@ -238,7 +240,7 @@ namespace NsisoLauncherCore.Util
         /// <param name="core">使用的核心</param>
         /// <param name="version">检查的版本</param>
         /// <returns></returns>
-        public async static Task<List<DownloadTask>> GetLostDependDownloadTaskAsync(DownloadSource source, LaunchHandler core, MCVersion version)
+        public async static Task<List<DownloadTask>> GetLostDependDownloadTaskAsync(DownloadSource source, LaunchHandler core, MCVersion version, MetroWindow window)
         {
             var lostLibs = GetLostLibs(core, version);
             var lostNatives = GetLostNatives(core, version);
@@ -259,6 +261,11 @@ namespace NsisoLauncherCore.Util
                 {
                     var http = new HttpRequesterAPI(TimeSpan.FromSeconds(10));
                     innerJsonStr = await http.HttpGetStringAsync(GetDownloadUrl.GetCoreJsonDownloadURL(source, version.InheritsVersion));
+                    if(innerJsonStr == null)
+                    {
+                        await window.ShowMessageAsync("检查错误", "检查源错误，请切换下载源后重试");
+                        return new List<DownloadTask>();
+                    }
                     string jsonFolder = Path.GetDirectoryName(innerJsonPath);
                     if (!Directory.Exists(jsonFolder))
                     {
@@ -273,7 +280,7 @@ namespace NsisoLauncherCore.Util
                 MCVersion innerVer = core.JsonToVersion(innerJsonStr);
                 if (innerVer != null)
                 {
-                    tasks.AddRange(await GetLostDependDownloadTaskAsync(source, core, innerVer));
+                    tasks.AddRange(await GetLostDependDownloadTaskAsync(source, core, innerVer, window));
                 }
 
             }

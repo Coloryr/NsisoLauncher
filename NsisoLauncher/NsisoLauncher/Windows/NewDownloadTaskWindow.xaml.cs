@@ -275,7 +275,7 @@ namespace NsisoLauncher.Windows
                     tasks.Add(new DownloadTask(App.GetResourceString("String.NewDownloadTaskWindow.Source"),
                         apiHandler.DoURLReplace(ver.AssetIndex.URL), App.Handler.GetAssetsIndexPath(ver.Assets)));
 
-                    tasks.AddRange(await FileHelper.GetLostDependDownloadTaskAsync(App.Config.MainConfig.Download.DownloadSource, App.Handler, ver));
+                    tasks.AddRange(await FileHelper.GetLostDependDownloadTaskAsync(App.Config.MainConfig.Download.DownloadSource, App.Handler, ver, this));
 
                     App.Downloader.SetDownloadTasks(tasks);
                     App.Downloader.StartDownload();

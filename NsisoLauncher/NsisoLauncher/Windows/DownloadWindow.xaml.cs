@@ -136,6 +136,7 @@ namespace NsisoLauncher.Windows
                 {
                     App.Downloader.RequestStop();
                     progressBar.Value = 0;
+                    this.Close();
                 }
             }
             else

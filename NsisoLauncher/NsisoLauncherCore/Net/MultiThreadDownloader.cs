@@ -147,7 +147,14 @@ namespace NsisoLauncherCore.Net
         public void RequestStop()
         {
             cancellationTokenSource.Cancel();
-            CompleteDownload();
+            Task.WaitAll(_workers);
+            _timer.Stop();
+            _taskCount = 0;
+            _downloadSizePerSec = 0;
+            IsBusy = false;
+            _errorList.Clear();
+            _viewDownloadTasks.Clear();
+            _downloadTasks = new ConcurrentQueue<DownloadTask>();
             ApendDebugLog("已申请取消下载");
         }
 
@@ -218,6 +225,11 @@ namespace NsisoLauncherCore.Net
 
                         await HTTPDownload(item, cancelToken, http);
 
+                        if (cancelToken.IsCancellationRequested)
+
+                        {
+                            return;
+                        }
                         ApendDebugLog("下载完成:" + item.From);
 
                         #region 校验
@@ -283,10 +295,13 @@ namespace NsisoLauncherCore.Net
                             }
                         }
                         #endregion
-
-                        item.SetDone();
-                        RemoveItemFromViewTask(item);
-                        DownloadProgressChanged?.Invoke(this, new DownloadProgressChangedArg() { TaskCount = _taskCount, LastTaskCount = _viewDownloadTasks.Count, DoneTask = item });
+                        if (!cancelToken
+                            .IsCancellationRequested)
+                        {
+                            item.SetDone();
+                            RemoveItemFromViewTask(item);
+                            DownloadProgressChanged?.Invoke(this, new DownloadProgressChangedArg() { TaskCount = _taskCount, LastTaskCount = _viewDownloadTasks.Count, DoneTask = item });
+                        }
                     }
                 }
             }
@@ -345,11 +360,18 @@ namespace NsisoLauncherCore.Net
 
                                 while (size > 0)
                                 {
-                                    //_pauseResetEvent.Wait(cancelToken);
                                     await fs.WriteAsync(bArr, 0, size);
                                     size = await responseStream.ReadAsync(bArr, 0, (int)bArr.Length);
                                     _downloadSizePerSec += size;
                                     task.IncreaseDownloadSize(size);
+                                    if (cancelToken.IsCancellationRequested)
+                                    {
+                                        fs.Close();
+                                        responseStream.Close();
+                                        Thread.Sleep(1000);
+                                        File.Delete(buffFilename);
+                                        return;
+                                    }
                                 }
                             }
                         }

@@ -113,7 +113,17 @@ namespace NsisoLauncherCore.Net.Tools
 
         public static string GetCoreJsonDownloadURL(DownloadSource source, string verID)
         {
-            return string.Format("{0}version/{1}/json", BMCLUrl, verID);
+            switch (source)
+            {
+                case DownloadSource.Mojang:
+                    return string.Format("{0}version/{1}/json", MojangMainUrl, verID);
+                case DownloadSource.BMCLAPI:
+                    return string.Format("{0}version/{1}/json", BMCLUrl, verID);
+                case DownloadSource.MCBBS:
+                    return string.Format("{0}version/{1}/json", MCBBSUrl, verID);
+                default:
+                    return string.Format("{0}version/{1}/json", MojangMainUrl, verID);
+            }
         }
 
         public static DownloadTask GetCoreJsonDownloadTask(DownloadSource downloadSource, string verID, LaunchHandler core)

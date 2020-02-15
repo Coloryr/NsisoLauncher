@@ -601,8 +601,8 @@ namespace NsisoLauncher
                 var lostDepend = await FileHelper.GetLostDependDownloadTaskAsync(
                     App.Config.MainConfig.Download.DownloadSource,
                     App.Handler,
-                    launchSetting.Version);
-
+                    launchSetting.Version,
+                    this);
                 if (args.AuthNode.AuthType == AuthenticationType.NIDE8)
                 {
                     string nideJarPath = App.Handler.GetNide8JarPath();
@@ -843,8 +843,6 @@ namespace NsisoLauncher
                         return;
                     }
 
-                    cancelLaunchButton.Click -= (x, y) => { CancelLaunching(result); };
-
                     //API使用次数计数器+1
                     await App.nsisoAPIHandler.RefreshUsingTimesCounter();
 
@@ -950,6 +948,7 @@ namespace NsisoLauncher
             {
                 result.Process.Kill();
             }
+            this.Activate();
         }
 
         private void Side_Click(object sender, RoutedEventArgs e)
