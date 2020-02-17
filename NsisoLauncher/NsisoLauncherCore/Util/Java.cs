@@ -188,7 +188,7 @@ namespace NsisoLauncherCore.Util
                 {
                     if (verStr.Length > 3)
                     {
-                        string path = JavaKey.OpenSubKey(verStr).GetValue("JavaHome")?.ToString() + @"\bin\javaw.exe";
+                        string path = JavaKey.OpenSubKey(verStr)?.GetValue("JavaHome")?.ToString() + @"\bin\javaw.exe";
                         if (File.Exists(path))
                         {
                             if (!jres.ContainsValue(path))
@@ -205,7 +205,7 @@ namespace NsisoLauncherCore.Util
                 {
                     if (verStr.Length > 3)
                     {
-                        string path = JavaKey.OpenSubKey(verStr).GetValue("JavaHome")?.ToString() + @"\bin\javaw.exe";
+                        string path = JavaKey?.OpenSubKey(verStr)?.GetValue("JavaHome")?.ToString() + @"\bin\javaw.exe";
                         if (File.Exists(path))
                         {
                             jres.Add(verStr, path);
@@ -219,15 +219,16 @@ namespace NsisoLauncherCore.Util
             {
                 foreach (var verStr in JavaKey.GetSubKeyNames())
                 {
-                    var temp = key?.OpenSubKey("AdoptOpenJDK")?.OpenSubKey("JDK").OpenSubKey(verStr);
-                    foreach (var item in temp.GetSubKeyNames())
-                    {
-                        string path = temp.OpenSubKey(item).OpenSubKey("MSI").GetValue("Path").ToString() + @"bin\javaw.exe";
-                        if (File.Exists(path))
+                    var temp = key?.OpenSubKey("AdoptOpenJDK")?.OpenSubKey("JDK")?.OpenSubKey(verStr);
+                    if (temp != null)
+                        foreach (var item in temp.GetSubKeyNames())
                         {
-                            jres.Add(verStr, path);
+                            string path = temp.OpenSubKey(item)?.OpenSubKey("MSI")?.GetValue("Path").ToString() + @"bin\javaw.exe";
+                            if (File.Exists(path))
+                            {
+                                jres.Add(verStr, path);
+                            }
                         }
-                    }
                 }
             }
 
@@ -242,19 +243,26 @@ namespace NsisoLauncherCore.Util
         {
             List<Java> javas = new List<Java>();
             RegistryKey localMachine = Registry.LocalMachine.OpenSubKey("SOFTWARE");
-            switch (SystemTools.GetSystemArch())
+            try
             {
-                case ArchEnum.x32:
-                    var jres = GetJavaRegisterPath(localMachine);
-                    javas.AddRange(jres.Select(x => new Java(x.Value, x.Key, ArchEnum.x32)));
-                    break;
+                switch (SystemTools.GetSystemArch())
+                {
+                    case ArchEnum.x32:
+                        var jres = GetJavaRegisterPath(localMachine);
+                        javas.AddRange(jres.Select(x => new Java(x.Value, x.Key, ArchEnum.x32)));
+                        break;
 
-                case ArchEnum.x64:
-                    var jres64 = GetJavaRegisterPath(localMachine);
-                    javas.AddRange(jres64.Select(x => new Java(x.Value, x.Key, ArchEnum.x64)));
-                    var jres32 = GetJavaRegisterPath(localMachine.OpenSubKey("Wow6432Node"));
-                    javas.AddRange(jres32.Select(x => new Java(x.Value, x.Key, ArchEnum.x32)));
-                    break;
+                    case ArchEnum.x64:
+                        var jres64 = GetJavaRegisterPath(localMachine);
+                        javas.AddRange(jres64.Select(x => new Java(x.Value, x.Key, ArchEnum.x64)));
+                        var jres32 = GetJavaRegisterPath(localMachine.OpenSubKey("Wow6432Node"));
+                        javas.AddRange(jres32.Select(x => new Java(x.Value, x.Key, ArchEnum.x32)));
+                        break;
+                }
+            }
+            catch (Exception e)
+            {
+                
             }
             return javas;
         }
