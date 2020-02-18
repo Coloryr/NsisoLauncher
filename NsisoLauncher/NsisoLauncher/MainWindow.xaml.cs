@@ -84,7 +84,7 @@ namespace NsisoLauncher
                 mediaElement.Source = new Uri(Mp4Files[App.Config.MainConfig.Customize.CustomBackGroundVedio_Random ? new Random().Next(Mp4Files.Length) : MediaNow]);
                 mediaElement.Volume = (double)App.Config.MainConfig.Customize.CustomBackGroundSound / 100;
                 mediaElement.Play();
-                MediaNow = MediaNow >= Mp3Files.Length ? 0 : +1;
+                MediaNow = MediaNow >= Mp4Files.Length ? 0 : +1;
             }
             catch (Exception) { }
         }
