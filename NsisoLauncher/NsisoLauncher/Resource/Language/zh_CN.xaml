@@ -40,6 +40,10 @@
     <sys:String x:Key="String.Message.NoFrameworkUpdate2">该启动器依赖于Framework KB2468871v2补丁，您的系统由于缺少该补丁导致Nsiso启动器无法启动。您需要安装Framework KB2468871v2补丁。是否帮您打开帮助页面？否将尝试启动。</sys:String>
     <sys:String x:Key="String.Message.Java.Finish.Title">安装JAVA</sys:String>
     <sys:String x:Key="String.Message.Java.Finish.Text">安装完JAVA后你需要重启启动器</sys:String>
+    <sys:String x:Key="String.Message.Auth.ErrorNO.Title">验证失败：您没有可用的游戏角色（Profile）</sys:String>
+    <sys:String x:Key="String.Message.Auth.ErrorNO.Text">如果您是正版验证，则您可能还未购买游戏本体。如果您是外置登录，则您可能未设置可用角色</sys:String>
+    <sys:String x:Key="String.Message.Auth.ErrorNO1.Title">验证失败：您没有选中任何游戏角色（Profile）</sys:String>
+    <sys:String x:Key="String.Message.Auth.ErrorNO1.Text">请选中您要进行游戏的角色</sys:String>
 
     <sys:String x:Key="String.Mainwindow.Loging">登录中...</sys:String>
     <sys:String x:Key="String.Mainwindow.Staring">少女祈祷中...</sys:String>

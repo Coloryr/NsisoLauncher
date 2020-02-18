@@ -339,7 +339,7 @@ namespace NsisoLauncherCore
             return File.ReadAllText(jsonPath, Encoding.UTF8);
         }
 
-        public async Task<Modules.MCVersion> GetVersionAsync(string ID)
+        public async Task<MCVersion> GetVersionAsync(string ID)
         {
             return await Task.Factory.StartNew(() =>
             {
@@ -347,15 +347,15 @@ namespace NsisoLauncherCore
             });
         }
 
-        public List<Modules.MCVersion> GetVersions()
+        public List<MCVersion> GetVersions()
         {
             dirInfo.Refresh();
             if (!dirInfo.Exists)
             {
-                return new List<Modules.MCVersion>();
+                return new List<MCVersion>();
             }
             var dirs = dirInfo.EnumerateDirectories();
-            List<Modules.MCVersion> versions = new List<Modules.MCVersion>();
+            List<MCVersion> versions = new List<Modules.MCVersion>();
             foreach (var item in dirs)
             {
                 var ver = GetVersion(item.Name);
@@ -367,7 +367,7 @@ namespace NsisoLauncherCore
             return versions;
         }
 
-        public async Task<List<Modules.MCVersion>> GetVersionsAsync()
+        public async Task<List<MCVersion>> GetVersionsAsync()
         {
             return await Task.Factory.StartNew(() =>
             {

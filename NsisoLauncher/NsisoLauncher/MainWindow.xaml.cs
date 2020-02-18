@@ -102,9 +102,9 @@ namespace NsisoLauncher
         }
         private void mediaElement_MediaEnded(object sender, RoutedEventArgs e)
         {
-            if (Mp4Files.Length != 0 && App.Config.MainConfig.Customize.CustomBackGroundVedio_Cyclic == true)
+            if (Mp4Files?.Length != 0 && App.Config.MainConfig.Customize.CustomBackGroundVedio_Cyclic)
                 Mp4Play();
-            else if (App.Config.MainConfig.Customize.CustomBackGroundMusic_Cyclic == true)
+            else if (App.Config.MainConfig.Customize.CustomBackGroundMusic_Cyclic)
                 Mp3Play();
         }
         private async void MainPanel_Launch(object sender, Controls.LaunchEventArgs obj)
@@ -516,12 +516,12 @@ namespace NsisoLauncher
                                 //没有游戏角色
                                 if (authResult.Profiles == null || authResult.Profiles.Count == 0)
                                 {
-                                    await this.ShowMessageAsync("验证失败：您没有可用的游戏角色（Profile）",
-                                    "如果您是正版验证，则您可能还未购买游戏本体。如果您是外置登录，则您可能未设置可用角色");
+                                    await this.ShowMessageAsync(App.GetResourceString("String.Message.Auth.ErrorNO.Title"),
+                                    App.GetResourceString("String.Message.Auth.ErrorNO.Text"));
                                     return;
                                 }
-                                await this.ShowMessageAsync("验证失败：您没有选中任何游戏角色（Profile）",
-                                "请选中您要进行游戏的角色");
+                                await this.ShowMessageAsync(App.GetResourceString("String.Message.Auth.ErrorNO1.Title"),
+                                    App.GetResourceString("String.Message.Auth.ErrorNO1.Text"));
                                 return;
                             }
                             args.UserNode.SelectProfileUUID = authResult.SelectedProfileUUID.Value;

@@ -138,7 +138,7 @@ namespace NsisoLauncherCore.Util.Installer.Forge
             if (jObject.ContainsKey("install") && jObject.ContainsKey("versionInfo"))
             {
                 CommonInstaller commonInstaller = new CommonInstaller(InstallerPath, Options);
-                await commonInstaller.BeginInstallFromJObject(monitor, cancellationToken, jObject, tempPath);
+                commonInstaller.BeginInstallFromJObject(monitor, cancellationToken, jObject, tempPath);
             }
             else if (jObject.ContainsKey("data") && jObject.ContainsKey("processors") && jObject.ContainsKey("libraries"))
             {

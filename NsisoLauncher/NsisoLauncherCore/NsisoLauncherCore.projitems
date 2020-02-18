@@ -142,7 +142,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Util\Checker\MD5Checker.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Util\Checker\SHA1Checker.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Util\Checker\SHA256Checker.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Util\CrashHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Util\FileHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Util\GameHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Util\ImageDO.cs" />

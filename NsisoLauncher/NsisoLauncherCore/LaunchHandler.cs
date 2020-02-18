@@ -11,8 +11,6 @@ namespace NsisoLauncherCore
 {
     public class LaunchHandler
     {
-        private object launchLocker = new object();
-        private object getVersionsLocker = new object();
 
         /// <summary>
         /// 启动器所处理的游戏根目录
@@ -76,7 +74,7 @@ namespace NsisoLauncherCore
             this.GameLog?.Invoke(this, e.Data);
         }
 
-        public JAssets GetAssets(Modules.MCVersion version)
+        public JAssets GetAssets(MCVersion version)
         {
             return assetsReader.GetAssets(version);
         }
@@ -195,17 +193,17 @@ namespace NsisoLauncherCore
         #endregion
 
         #region 版本获取
-        public Modules.MCVersion GetVersionByID(string id)
+        public MCVersion GetVersionByID(string id)
         {
             return versionReader.GetVersion(id);
         }
 
-        public Modules.MCVersion RefreshVersion(Modules.MCVersion ver)
+        public MCVersion RefreshVersion(MCVersion ver)
         {
             return versionReader.GetVersion(ver.ID);
         }
 
-        public async Task<List<Modules.MCVersion>> GetVersionsAsync()
+        public async Task<List<MCVersion>> GetVersionsAsync()
         {
             try
             {
@@ -213,23 +211,23 @@ namespace NsisoLauncherCore
             }
             catch (Exception)
             {
-                return new List<Modules.MCVersion>();
+                return new List<MCVersion>();
             }
         }
 
-        public Modules.MCVersion JsonToVersion(string json)
+        public MCVersion JsonToVersion(string json)
         {
             return versionReader.JsonToVersion(json);
         }
         #endregion
 
         #region 路径获取
-        public string GetGameVersionRootDir(Modules.MCVersion ver)
+        public string GetGameVersionRootDir(MCVersion ver)
         {
             return PathManager.GetGameVersionRootDir(VersionIsolation, GameRootPath, ver);
         }
 
-        public string GetLibraryPath(Modules.Library lib)
+        public string GetLibraryPath(Library lib)
         {
             return PathManager.GetLibraryPath(GameRootPath, lib);
         }
@@ -314,7 +312,7 @@ namespace NsisoLauncherCore
         /// <summary>
         /// Exited Version
         /// </summary>
-        public Modules.MCVersion Version { get; set; }
+        public MCVersion Version { get; set; }
 
         /// <summary>
         /// From launch to exit time spawn

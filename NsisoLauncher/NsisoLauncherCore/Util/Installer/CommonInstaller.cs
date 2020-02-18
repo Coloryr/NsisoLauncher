@@ -68,13 +68,13 @@ namespace NsisoLauncherCore.Util.Installer
             string mainJson = File.ReadAllText(tempPath + "\\install_profile.json");
             JObject jObject = JObject.Parse(mainJson);
 
-            await BeginInstallFromJObject(callback, cancellationToken, jObject, tempPath);
+            await Task.Factory.StartNew(() => BeginInstallFromJObject(callback, cancellationToken, jObject, tempPath));
 
             Directory.Delete(tempPath, true);
             File.Delete(InstallerPath);
         }
 
-        public async Task BeginInstallFromJObject(ProgressCallback callback, CancellationToken cancellationToken, JObject jObj, string tempPath)
+        public void BeginInstallFromJObject(ProgressCallback callback, CancellationToken cancellationToken, JObject jObj, string tempPath)
         {
             var jsonObj = jObj.ToObject<CommonJsonObj>();
             var t = jsonObj.Install.Path.Split(':');

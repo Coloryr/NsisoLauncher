@@ -191,7 +191,7 @@ namespace NsisoLauncherCore.Util
                         string path = JavaKey.OpenSubKey(verStr)?.GetValue("JavaHome")?.ToString() + @"\bin\javaw.exe";
                         if (File.Exists(path))
                         {
-                            if (!jres.ContainsValue(path))
+                            if (!jres.ContainsValue(path) && !jres.ContainsKey(verStr))
                                 jres.Add(verStr, path);
                         }
                     }
@@ -208,7 +208,8 @@ namespace NsisoLauncherCore.Util
                         string path = JavaKey?.OpenSubKey(verStr)?.GetValue("JavaHome")?.ToString() + @"\bin\javaw.exe";
                         if (File.Exists(path))
                         {
-                            jres.Add(verStr, path);
+                            if (!jres.ContainsValue(path) && !jres.ContainsKey(verStr))
+                                jres.Add(verStr, path);
                         }
                     }
                 }
@@ -226,7 +227,8 @@ namespace NsisoLauncherCore.Util
                             string path = temp.OpenSubKey(item)?.OpenSubKey("MSI")?.GetValue("Path").ToString() + @"bin\javaw.exe";
                             if (File.Exists(path))
                             {
-                                jres.Add(verStr, path);
+                                if (!jres.ContainsValue(path) && !jres.ContainsKey(verStr))
+                                    jres.Add(verStr, path);
                             }
                         }
                 }
@@ -260,7 +262,7 @@ namespace NsisoLauncherCore.Util
                         break;
                 }
             }
-            catch (Exception e)
+            catch
             {
                 
             }
