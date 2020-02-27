@@ -18,7 +18,7 @@ namespace NsisoLauncher.Updata
         /// </summary>
         public async Task<UpdataCheck> Check()
         {
-            string Url = App.Config.MainConfig.Server.Updata_Check.Address;
+            string Url = App.Config.MainConfig.Server.UpdataCheck.Address;
             try
             {
                 var http = new HttpRequesterAPI(TimeSpan.FromSeconds(10));
@@ -27,9 +27,9 @@ namespace NsisoLauncher.Updata
                 {
                     JObject json = JObject.Parse(await res.Content.ReadAsStringAsync());
                     UpdataObj = json.ToObject<updata_obj>();
-                    if (string.IsNullOrWhiteSpace(App.Config.MainConfig.Server.Updata_Check.packname))
+                    if (string.IsNullOrWhiteSpace(App.Config.MainConfig.Server.UpdataCheck.Packname))
                         return this;
-                    else if (App.Config.MainConfig.Server.Updata_Check.Vision != UpdataObj.Version)
+                    else if (App.Config.MainConfig.Server.UpdataCheck.Vision != UpdataObj.Version)
                         return this;
                     else
                         return null;
@@ -148,7 +148,7 @@ namespace NsisoLauncher.Updata
             {
                 foreach (UpdataItem updataItem in UpdataObj.config)
                 {
-                    pack.pack_list.Add(updataItem.filename);
+                    pack.packList.Add(updataItem.filename);
                     DownloadTask.Add(new DownloadTask(App.GetResourceString("String.Update.UpdataConfig"), 
                         updataItem.url, App.Handler.GameRootPath + @"\" + updataItem.filename));
                 }

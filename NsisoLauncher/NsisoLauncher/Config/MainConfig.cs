@@ -1,8 +1,9 @@
 ﻿using NsisoLauncherCore.Modules;
+using NsisoLauncherCore.Net;
 using NsisoLauncherCore.Net.MojangApi.Api;
+using NsisoLauncherCore.Net.MojangApi.Responses;
 using System;
 using System.Collections.Generic;
-using static NsisoLauncherCore.Net.MojangApi.Responses.AuthenticateResponse;
 
 namespace NsisoLauncher.Config
 {
@@ -269,6 +270,11 @@ namespace NsisoLauncher.Config
         /// 是否禁止数据追踪
         /// </summary>
         public bool NoTracking { get; set; }
+
+        /// <summary>
+        /// 自动启动游戏
+        /// </summary>
+        public bool AutoRun { get; set; }
     }
 
     /// <summary>
@@ -279,7 +285,7 @@ namespace NsisoLauncher.Config
         /// <summary>
         /// 下载源设置
         /// </summary>
-        public NsisoLauncherCore.Net.DownloadSource DownloadSource { get; set; }
+        public DownloadSource DownloadSource { get; set; }
 
         /// <summary>
         /// 线程数量
@@ -371,10 +377,10 @@ namespace NsisoLauncher.Config
         /// <summary>
         /// 检测更新
         /// </summary>
-        public Updata_Check Updata_Check { get; set; }
+        public UpdataCheck UpdataCheck { get; set; }
     }
 
-    public class Updata_Check
+    public class UpdataCheck
     {
         /// <summary>
         /// 启用资源检查
@@ -387,7 +393,7 @@ namespace NsisoLauncher.Config
         /// <summary>
         /// 整合包名字
         /// </summary>
-        public string packname { get; set; }
+        public string Packname { get; set; }
         /// <summary>
         /// 整合包版本
         /// </summary>
@@ -407,12 +413,12 @@ namespace NsisoLauncher.Config
         /// <summary>
         /// 是否使用自定义背景视频循环播放
         /// </summary>
-        public bool CustomBackGroundVedio_Cyclic { get; set; }
+        public bool CustomBackGroundVedioCyclic { get; set; }
 
         /// <summary>
         /// 使用使用随机播放
         /// </summary>
-        public bool CustomBackGroundVedio_Random { get; set; }
+        public bool CustomBackGroundVedioRandom { get; set; }
 
         /// <summary>
         /// 是否使用自定义背景音乐
@@ -422,12 +428,12 @@ namespace NsisoLauncher.Config
         /// <summary>
         /// 是否使用自定义音乐循环播放
         /// </summary>
-        public bool CustomBackGroundMusic_Cyclic { get; set; }
+        public bool CustomBackGroundMusicCyclic { get; set; }
 
         /// <summary>
         /// 是否随机播放音乐
         /// </summary>
-        public bool CustomBackGroundMusic_Random { get; set; }
+        public bool CustomBackGroundMusicRandom { get; set; }
 
         /// <summary>
         /// 是否使用自定义壁纸
@@ -436,12 +442,12 @@ namespace NsisoLauncher.Config
         /// <summary>
         /// 是否使用自定义壁纸循环
         /// </summary>
-        public bool CustomBackGroundPicture_Cyclic { get; set; }
+        public bool CustomBackGroundPictureCyclic { get; set; }
 
         /// <summary>
         /// 是否使用自定义壁纸循环时间
         /// </summary>
-        public int CustomBackGroundPicture_Cyclic_time { get; set; }
+        public int CustomBackGroundPictureCyclicTime { get; set; }
 
         /// <summary>
         /// 背景音乐大小
@@ -477,7 +483,7 @@ namespace NsisoLauncher.Config
     /// <summary>
     /// 用户验证节点设置
     /// </summary>
-    public class UserNode/* : INotifyPropertyChanged*/
+    public class UserNode
     {
         /// <summary>
         /// 所使用的验证模型
@@ -507,7 +513,7 @@ namespace NsisoLauncher.Config
         /// <summary>
         /// 用户资料
         /// </summary>
-        public UserData UserData { get; set; }
+        public AuthenticateResponse.UserData UserData { get; set; }
 
         public Uuid GetSelectProfileUUID()
         {

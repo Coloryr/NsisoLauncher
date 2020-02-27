@@ -18,15 +18,9 @@
     <sys:String x:Key="String.Base.Launch">启动游戏</sys:String>
     <sys:String x:Key="String.Base.Download">下载</sys:String>
     <sys:String x:Key="String.Base.Cancel">取消</sys:String>
-    <sys:String x:Key="String.Base.Unremember">不再提醒</sys:String>
     <sys:String x:Key="String.Base.Apply">应用</sys:String>
-    <sys:String x:Key="String.Base.Login">登录</sys:String>
     <sys:String x:Key="String.Base.Yes">确认</sys:String>
-    <sys:String x:Key="String.Base.Username">用户名</sys:String>
-    <sys:String x:Key="String.Base.Password">密码</sys:String>
     <sys:String x:Key="String.Base.Register">注册</sys:String>
-    <sys:String x:Key="String.Base.Choose">请选择操作</sys:String>
-    <sys:String x:Key="String.Base.ShouldRememberLogin">记住登录状态</sys:String>
 
     <sys:String x:Key="String.Message.EmptyAuthType">您未选择验证方式</sys:String>
     <sys:String x:Key="String.Message.EmptyAuthType2">请在右侧第一个验证方式栏选择您使用的验证类型</sys:String>
@@ -51,7 +45,6 @@
     <sys:String x:Key="String.Mainwindow.ChooseLaunchVersion">选择启动版本</sys:String>
     <sys:String x:Key="String.Mainwindow.ChooseAuthType">选择验证类型</sys:String>
     <sys:String x:Key="String.Mainwindow.InputPlayerName">输入/选择游戏名称或账号</sys:String>
-    <sys:String x:Key="String.Mainwindow.Launching">启动中...</sys:String>
     <sys:String x:Key="String.Mainwindow.Auth.Nide8.NoID">没有设置服务器ID</sys:String>
     <sys:String x:Key="String.Mainwindow.Auth.Nide8.NoID2">统一验证服务器ID为空，如果您是服主，请在用户设置中填写通行证后台提供的服务器ID。</sys:String>
     <sys:String x:Key="String.Mainwindow.Auth.Registe.NoID">没有设置注册链接</sys:String>
@@ -247,6 +240,7 @@
     <sys:String x:Key="String.Settingwindow.Env.AutoFill.Assets">自动补全丢失的资源库</sys:String>
     <sys:String x:Key="String.Settingwindow.Env.Launcher.Exit">启动后退出启动器</sys:String>
     <sys:String x:Key="String.Settingwindow.Env.Launcher">启动器设置</sys:String>
+    <sys:String x:Key="String.Settingwindow.Env.Launcher.AutoRun">自动启动游戏</sys:String>
     <sys:String x:Key="String.Settingwindow.Env.Launcher.DebugMode">DEBUG模式</sys:String>
     <sys:String x:Key="String.Settingwindow.Env.Note">*请注意：本页面(全局设置)中部分设置需要重启启动器后才能生效</sys:String>
     <sys:String x:Key="String.Settingwindow.Env.NoTracking">禁用数据收集</sys:String>

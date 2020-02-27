@@ -3,7 +3,6 @@ using Newtonsoft.Json.Linq;
 using NsisoLauncherCore.Net;
 using System;
 using System.Collections.Generic;
-using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace NsisoLauncher.ModPack
@@ -56,7 +55,7 @@ namespace NsisoLauncher.ModPack
             window.Minimum = 0;
         }
 
-        private string base_url = @"https://addons-ecs.forgesvc.net/api/v2/addon/{0}/file/{1}";
+        private string BaseUrl = @"https://addons-ecs.forgesvc.net/api/v2/addon/{0}/file/{1}";
         public async Task<List<GetUrlRes>> GeturlAsync(List<FilesItem> mods)
         {
 
@@ -67,7 +66,7 @@ namespace NsisoLauncher.ModPack
             {
                 window.SetMessage(App.GetResourceString("String.NewDownloadTaskWindow.ModPack.Now") 
                     + list.Count + "/" + mods.Count);
-                string res = await client.HttpGetStringAsync(string.Format(base_url, item.projectID, item.fileID));
+                string res = await client.HttpGetStringAsync(string.Format(BaseUrl, item.projectID, item.fileID));
                 if (res == null)
                     return null;
                 var obj1 = JObject.Parse(res).ToObject<UrlResObj>();

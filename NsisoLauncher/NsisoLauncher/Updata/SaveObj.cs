@@ -68,7 +68,7 @@ namespace NsisoLauncher.Updata
         /// </summary>
         public string function { get; set; }
     }
-    class Mod_Obj
+    class ModObj
     {
         /// <summary>
         /// MOD id
@@ -119,12 +119,12 @@ namespace NsisoLauncher.Updata
         /// </summary>
         public List<string> dependencies { get; set; }
     }
-    class Mod_Obj_List
+    class ModObjList
     {
         public class Root
         {
             public int modListVersion { get; set; }
-            public List<Mod_Obj> modList { get; set; }
+            public List<ModObj> modList { get; set; }
         }
     }
 }

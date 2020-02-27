@@ -1,7 +1,6 @@
 ﻿using NsisoLauncher.Config;
 using NsisoLauncher.Utils;
 using NsisoLauncherCore.Net.Server;
-using NsisoLauncherCore.Util;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -12,7 +11,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using Brush = System.Windows.Media.Brush;
 
 namespace NsisoLauncher.Controls
 {
@@ -33,7 +31,7 @@ namespace NsisoLauncher.Controls
         public void APP_Color()
         {
             BrushColor get = new BrushColor();
-            Brush b = get.GetBursh();
+            System.Windows.Media.Brush b = get.GetBursh();
             if (b != null)
             {
                 serverNameTextBlock.Background = b;

@@ -36,6 +36,7 @@ namespace NsisoLauncher
         public string[] Mp4Files;
 
         private Timer timer;
+        private bool cancalrun = false;
 
         int PicNow = 0;
         int MediaNow = 0;
@@ -49,6 +50,17 @@ namespace NsisoLauncher
             App.Handler.GameExit += Handler_GameExit;
             App.MainWindow_ = this;
             CustomizeRefresh();
+            if (App.Config.MainConfig.Launcher.AutoRun)
+            {
+                Task.Factory.StartNew(() =>
+                {
+                    Thread.Sleep(3000);
+                    Application.Current.Dispatcher.Invoke(() =>
+                   {
+                       mainPanel.launchButton_Click(null, null);
+                   });
+                });
+            }
         }
 
         private void ChangeBackPic(Uri uri)
@@ -66,12 +78,12 @@ namespace NsisoLauncher
         }
         public void Pic_cyclic()
         {
-            if (App.Config.MainConfig.Customize.CustomBackGroundPicture_Cyclic && PicFiles.Length > 1)
+            if (App.Config.MainConfig.Customize.CustomBackGroundPictureCyclic && PicFiles.Length > 1)
             {
                 if (timer != null)
                     timer.Dispose();
                 timer = new Timer(new TimerCallback(PicShow), null, TimeSpan.Zero, 
-                    TimeSpan.FromMilliseconds(App.Config.MainConfig.Customize.CustomBackGroundPicture_Cyclic_time));
+                    TimeSpan.FromMilliseconds(App.Config.MainConfig.Customize.CustomBackGroundPictureCyclicTime));
             }
             else
                 ChangeBackPic(new Uri(PicFiles[0]));
@@ -81,7 +93,7 @@ namespace NsisoLauncher
             try
             {
                 mediaElement.Stop();
-                mediaElement.Source = new Uri(Mp4Files[App.Config.MainConfig.Customize.CustomBackGroundVedio_Random ? new Random().Next(Mp4Files.Length) : MediaNow]);
+                mediaElement.Source = new Uri(Mp4Files[App.Config.MainConfig.Customize.CustomBackGroundVedioRandom ? new Random().Next(Mp4Files.Length) : MediaNow]);
                 mediaElement.Volume = (double)App.Config.MainConfig.Customize.CustomBackGroundSound / 100;
                 mediaElement.Play();
                 MediaNow = MediaNow >= Mp4Files.Length ? 0 : +1;
@@ -93,7 +105,7 @@ namespace NsisoLauncher
             try
             {
                 mediaElement.Stop();
-                mediaElement.Source = new Uri(Mp3Files[App.Config.MainConfig.Customize.CustomBackGroundMusic_Random ? new Random().Next(Mp3Files.Length) : MediaNow]);
+                mediaElement.Source = new Uri(Mp3Files[App.Config.MainConfig.Customize.CustomBackGroundMusicRandom ? new Random().Next(Mp3Files.Length) : MediaNow]);
                 mediaElement.Volume = (double)App.Config.MainConfig.Customize.CustomBackGroundSound / 100;
                 mediaElement.Play();
                 MediaNow = MediaNow >= Mp3Files.Length ? 0 : +1;
@@ -102,9 +114,9 @@ namespace NsisoLauncher
         }
         private void mediaElement_MediaEnded(object sender, RoutedEventArgs e)
         {
-            if (Mp4Files?.Length != 0 && App.Config.MainConfig.Customize.CustomBackGroundVedio_Cyclic)
+            if (Mp4Files?.Length != 0 && App.Config.MainConfig.Customize.CustomBackGroundVedioCyclic)
                 Mp4Play();
-            else if (App.Config.MainConfig.Customize.CustomBackGroundMusic_Cyclic)
+            else if (App.Config.MainConfig.Customize.CustomBackGroundMusicCyclic)
                 Mp3Play();
         }
         private async void MainPanel_Launch(object sender, Controls.LaunchEventArgs obj)
@@ -626,11 +638,10 @@ namespace NsisoLauncher
                 {
                     MessageDialogResult downDependResult = await this.ShowMessageAsync(App.GetResourceString("String.Mainwindow.NeedDownloadDepend"),
                         App.GetResourceString("String.Mainwindow.NeedDownloadDepend2"),
-                        MessageDialogStyle.AffirmativeAndNegativeAndSingleAuxiliary, new MetroDialogSettings()
+                        MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings()
                         {
                             AffirmativeButtonText = App.GetResourceString("String.Base.Download"),
                             NegativeButtonText = App.GetResourceString("String.Base.Cancel"),
-                            FirstAuxiliaryButtonText = App.GetResourceString("String.Base.Unremember"),
                             DefaultButtonFocus = MessageDialogResult.Affirmative
                         });
                     switch (downDependResult)
@@ -653,11 +664,10 @@ namespace NsisoLauncher
                 {
                     MessageDialogResult downDependResult = await this.ShowMessageAsync(App.GetResourceString("String.Mainwindow.NeedDownloadAssets"),
                         App.GetResourceString("String.Mainwindow.NeedDownloadAssets2"),
-                        MessageDialogStyle.AffirmativeAndNegativeAndSingleAuxiliary, new MetroDialogSettings()
+                        MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings()
                         {
                             AffirmativeButtonText = App.GetResourceString("String.Base.Download"),
                             NegativeButtonText = App.GetResourceString("String.Base.Cancel"),
-                            FirstAuxiliaryButtonText = App.GetResourceString("String.Base.Unremember"),
                             DefaultButtonFocus = MessageDialogResult.Affirmative
                         });
                     switch (downDependResult)
@@ -679,23 +689,23 @@ namespace NsisoLauncher
                 OtherCheck pack = null;
                 string packname = null;
                 string vision = null;
-                if (App.Config.MainConfig.Server.Updata_Check == null)
+                if (App.Config.MainConfig.Server.UpdataCheck == null)
                 {
-                    App.Config.MainConfig.Server.Updata_Check = new Updata_Check()
+                    App.Config.MainConfig.Server.UpdataCheck = new Config.UpdataCheck()
                     {
                         Enable = false,
                         Address = "",
-                        packname = "modpack",
+                        Packname = "modpack",
                         Vision = "0.0.0"
                     };
                 }
-                if (App.Config.MainConfig.Server.Updata_Check.Enable)
+                if (App.Config.MainConfig.Server.UpdataCheck.Enable)
                 {
                     App.LogHandler.AppendInfo("检查客户端更新...");
                     mainPanel.launchButton.Content = App.GetResourceString("String.Mainwindow.Check.mods");
                     pack = new OtherCheck();
 
-                    var lostmod = await new UpdataCheck().Check();
+                    var lostmod = await new Updata.UpdataCheck().Check();
                     if (lostmod != null)
                     {
                         if (await this.ShowMessageAsync(App.GetResourceString("String.Mainwindow.Check.new"),
@@ -719,26 +729,29 @@ namespace NsisoLauncher
                     if (!App.Downloader.IsBusy)
                     {
                         App.Downloader.SetDownloadTasks(losts);
-                        App.Downloader.StartDownload();
+                        App.Downloader.StartDownloadAsync();
                         var downloadResult = await new DownloadWindow().ShowWhenDownloading();
-                        if (downloadResult?.ErrorList?.Count != 0)
+                        if (downloadResult?.cancel == false)
                         {
-                            foreach (KeyValuePair<DownloadTask, Exception> task in downloadResult?.ErrorList)
+                            if (downloadResult?.ErrorList?.Count != 0)
                             {
-                                string filename = task.Key.To + ".downloadtask";
-                                if (File.Exists(filename))
-                                    File.Delete(filename);
+                                foreach (KeyValuePair<DownloadTask, Exception> task in downloadResult?.ErrorList)
+                                {
+                                    string filename = task.Key.To + ".downloadtask";
+                                    if (File.Exists(filename))
+                                        File.Delete(filename);
+                                }
+                                await this.ShowMessageAsync(string.Format(App.GetResourceString("String.Mainwindow.Download.Errot.Title"), downloadResult.ErrorList.Count),
+                                    App.GetResourceString("String.Mainwindow.Download.Errot.Text"));
+                                return;
                             }
-                            await this.ShowMessageAsync(string.Format(App.GetResourceString("String.Mainwindow.Download.Errot.Title"), downloadResult.ErrorList.Count),
-                                App.GetResourceString("String.Mainwindow.Download.Errot.Text"));
-                            return;
-                        }
-                        else
-                        {
-                            if (pack != null && await pack?.pack())
+                            else
                             {
-                                App.Config.MainConfig.Server.Updata_Check.packname = packname;
-                                App.Config.MainConfig.Server.Updata_Check.Vision = vision;
+                                if (pack != null && await pack?.pack())
+                                {
+                                    App.Config.MainConfig.Server.UpdataCheck.Packname = packname;
+                                    App.Config.MainConfig.Server.UpdataCheck.Vision = vision;
+                                }
                             }
                         }
                     }
@@ -853,7 +866,15 @@ namespace NsisoLauncher
                     {
                         Application.Current.Shutdown();
                     }
-                    this.WindowState = WindowState.Minimized;
+                    if (!cancalrun)
+                    {
+                        WindowState = WindowState.Minimized;
+                    }
+                    else
+                    {
+                        Activate();
+                        cancalrun = false;
+                    }
 
                     mainPanel.isRes = true;
                     mainPanel.Refresh();
@@ -902,13 +923,13 @@ namespace NsisoLauncher
                     {
                         case ArchEnum.x32:
                             App.Downloader.SetDownloadTasks(new DownloadTask("32位JAVA安装包", @"https://bmclapi.bangbang93.com/java/jre_x86.exe", "jre_x86.exe"));
-                            App.Downloader.StartDownload();
+                            App.Downloader.StartDownloadAsync();
                             await new DownloadWindow().ShowWhenDownloading();
                             System.Diagnostics.Process.Start("Explorer.exe", "jre_x86.exe");
                             break;
                         case ArchEnum.x64:
                             App.Downloader.SetDownloadTasks(new DownloadTask("64位JAVA安装包", @"https://bmclapi.bangbang93.com/java/jre_x64.exe", "jre_x64.exe"));
-                            App.Downloader.StartDownload();
+                            App.Downloader.StartDownloadAsync();
                             await new DownloadWindow().ShowWhenDownloading();
                             System.Diagnostics.Process.Start("Explorer.exe", "jre_x64.exe");
                             break;
@@ -934,7 +955,7 @@ namespace NsisoLauncher
                 });
                 if (choose == MessageDialogResult.Affirmative)
                 {
-                    App.Downloader.RequestStop();
+                    Task.Run(() => App.Downloader.RequestStopAsync());
                     timer.Dispose();
                 }
                 else
@@ -949,8 +970,8 @@ namespace NsisoLauncher
             if (!result.Process.HasExited)
             {
                 result.Process.Kill();
+                cancalrun = true;
             }
-            this.Activate();
         }
 
         private void Side_Click(object sender, RoutedEventArgs e)

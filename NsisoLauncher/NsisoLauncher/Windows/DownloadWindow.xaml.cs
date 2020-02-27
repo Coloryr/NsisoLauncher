@@ -134,7 +134,7 @@ namespace NsisoLauncher.Windows
                     });
                 if (result == MessageDialogResult.Affirmative)
                 {
-                    App.Downloader.RequestStop();
+                    await App.Downloader.RequestStopAsync();
                     progressBar.Value = 0;
                     this.Close();
                 }

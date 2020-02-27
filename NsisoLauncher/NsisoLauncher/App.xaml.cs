@@ -8,7 +8,6 @@ using NsisoLauncherCore.Net;
 using NsisoLauncherCore.Net.PhalAPI;
 using NsisoLauncherCore.Util;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -136,7 +135,7 @@ namespace NsisoLauncher
 
             Downloader = new MultiThreadDownloader();
 
-            Re();
+            ProxyRe();
 
             Downloader.ProcessorSize = Config.MainConfig.Download.DownloadThreadsSize;
             Downloader.CheckFileHash = Config.MainConfig.Download.CheckDownloadFileHash;
@@ -154,7 +153,7 @@ namespace NsisoLauncher
 
         }
 
-        public static void Re()
+        public static void ProxyRe()
         {
             Download downloadCfg = Config.MainConfig.Download;
             if (!string.IsNullOrWhiteSpace(downloadCfg.DownloadProxyAddress))
@@ -213,7 +212,7 @@ namespace NsisoLauncher
         /// <param name="admin">是否用管理员模式重启</param>
         public static void Reboot(bool admin)
         {
-            System.Diagnostics.ProcessStartInfo info = new System.Diagnostics.ProcessStartInfo(System.Reflection.Assembly.GetExecutingAssembly().Location);
+            ProcessStartInfo info = new ProcessStartInfo(System.Reflection.Assembly.GetExecutingAssembly().Location);
             var args = System.Environment.GetCommandLineArgs();
             foreach (var item in args)
             {
@@ -224,7 +223,7 @@ namespace NsisoLauncher
                 info.Verb = "runas";
             }
             info.Arguments += "-reboot";
-            System.Diagnostics.Process.Start(info);
+            Process.Start(info);
             Current.Shutdown();
         }
     }

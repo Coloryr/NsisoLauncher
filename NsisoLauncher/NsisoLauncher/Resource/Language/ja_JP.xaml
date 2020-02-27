@@ -10,15 +10,10 @@
     <sys:String x:Key="String.Base.Launch">プレイ</sys:String>
     <sys:String x:Key="String.Base.Download">ダウンロード</sys:String>
     <sys:String x:Key="String.Base.Cancel">キャンセル</sys:String>
-    <sys:String x:Key="String.Base.Unremember">メッセージを表示しない</sys:String>
     <sys:String x:Key="String.Base.Apply">適用する</sys:String>
     <sys:String x:Key="String.Base.Login">ログイン</sys:String>
     <sys:String x:Key="String.Base.Yes">確認する</sys:String>
-    <sys:String x:Key="String.Base.Username">ユーザー名</sys:String>
-    <sys:String x:Key="String.Base.Password">パスワード</sys:String>
     <sys:String x:Key="String.Base.Register">新規登録</sys:String>
-    <sys:String x:Key="String.Base.Choose">選択する</sys:String>
-    <sys:String x:Key="String.Base.ShouldRememberLogin">ログイン状態を保存する</sys:String>
 
     <sys:String x:Key="String.Message.EmptyAuthType">認証方法を選択されていない</sys:String>
     <sys:String x:Key="String.Message.EmptyAuthType2">右側の認証方法フィールドに表示されている認証方法を選択してください</sys:String>
@@ -34,27 +29,21 @@
     <sys:String x:Key="String.Mainwindow.ChooseLaunchVersion">ゲームバージョンを選択する</sys:String>
     <sys:String x:Key="String.Mainwindow.ChooseAuthType">検証方法を選択する</sys:String>
     <sys:String x:Key="String.Mainwindow.InputPlayerName">アカウント又はゲームの名前を選択/入力してください</sys:String>
-    <sys:String x:Key="String.Mainwindow.Launching">起動中...</sys:String>
 
     <!--#region 登陆-->
     <sys:String x:Key="String.Mainwindow.Auth.Nide8.NoID">サーバーIDを設定されていない</sys:String>
     <sys:String x:Key="String.Mainwindow.Auth.Nide8.NoID2">統一認証サーバーIDは空です，管理者の場合は、ユーザー設定のパスポートのバックグラウンドに記載されているサーバーIDを入力してください。</sys:String>
-
     <sys:String x:Key="String.Mainwindow.Auth.REG.NoID">没有设置注册链接</sys:String>
     <sys:String x:Key="String.Mainwindow.Auth.REG.NoID_t">请联系服主获取注册链接</sys:String>
-    
     <sys:String x:Key="String.Mainwindow.Auth.Custom.NoAdrress">認証サーバーのアドレスを設定されていない</sys:String>
     <sys:String x:Key="String.Mainwindow.Auth.Custom.NoAdrress2">設定：ユーザー認証設定：高度な認証でカスタム認証さーばーを設定する(authlibまたはほかの認証システム)</sys:String>
-
     <sys:String x:Key="String.Mainwindow.Auth.Add">認証方法への追加</sys:String>
-
     <sys:String x:Key="String.Mainwindow.Auth.Error.Password">パスワード又はアカウントは空です</sys:String>
     <sys:String x:Key="String.Mainwindow.Auth.Error.Check_Login">ログイン情報は間違っているかどうかをチェックしてください</sys:String>
     <sys:String x:Key="String.Mainwindow.Auth.Error.Login_Error">ログイン失敗しました</sys:String>
     <sys:String x:Key="String.Mainwindow.Auth.Error.Null">ヌルポインタエクセプションが発生しました</sys:String>
     <sys:String x:Key="String.Mainwindow.Auth.Error.Login_Save_out">ログイン情報の有効期限が切れています，もう一度ログインしてください\n{0}</sys:String>
     <sys:String x:Key="String.Mainwindow.Auth.Error.Password_Error">アカウントまたはパスワードが間違っています。\n{0}</sys:String>
-
     <sys:String x:Key="String.Mainwindow.Auth.Error.Auth_Error_notfound">Authlib-Injector認証サーバー（Authlib-Injector認証）またはカスタム認証サーバー（カスタム認証）アドレスが正しいであることとアカウントとゲームキャラクターが存在することを確認します\n{0}</sys:String>
     <sys:String x:Key="String.Mainwindow.Auth.Error.Player_notfound">アカウントは登録されていない\n{0}</sys:String>
     <sys:String x:Key="String.Mainwindow.Auth.Error.Other">他のエラー\n{0}</sys:String>

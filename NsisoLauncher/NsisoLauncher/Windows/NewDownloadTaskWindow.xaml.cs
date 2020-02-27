@@ -278,7 +278,7 @@ namespace NsisoLauncher.Windows
                     tasks.AddRange(await FileHelper.GetLostDependDownloadTaskAsync(App.Config.MainConfig.Download.DownloadSource, App.Handler, ver, this));
 
                     App.Downloader.SetDownloadTasks(tasks);
-                    App.Downloader.StartDownload();
+                    App.Downloader.StartDownloadAsync();
                 }
             }
             catch (WebException ex)
@@ -304,14 +304,14 @@ namespace NsisoLauncher.Windows
         {
             DownloadTask dt = GetDownloadUrl.GetForgeDownloadURL(App.Config.MainConfig.Download.DownloadSource, forge);
             App.Downloader.SetDownloadTasks(dt);
-            App.Downloader.StartDownload();
+            App.Downloader.StartDownloadAsync();
         }
 
         private void AppendLiteloaderDownloadTask(MCVersion ver, JWLiteloader liteloader)
         {
             DownloadTask dt = GetDownloadUrl.GetLiteloaderDownloadURL(App.Config.MainConfig.Download.DownloadSource, liteloader);
             App.Downloader.SetDownloadTasks(dt);
-            App.Downloader.StartDownload();
+            App.Downloader.StartDownloadAsync();
         }
 
         private void RefreshVerButton_Click(object sender, RoutedEventArgs e)
@@ -380,7 +380,7 @@ namespace NsisoLauncher.Windows
                 else
                 {
                     App.Downloader.SetDownloadTasks(res1);
-                    App.Downloader.StartDownload();
+                    App.Downloader.StartDownloadAsync();
                 }
                 await loading.CloseAsync();
                 Close();

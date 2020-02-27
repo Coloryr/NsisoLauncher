@@ -2,6 +2,7 @@
 using NsisoLauncher.Config;
 using NsisoLauncher.Utils;
 using NsisoLauncher.Windows;
+using NsisoLauncherCore.Modules;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -25,7 +26,7 @@ namespace NsisoLauncher.Controls
 
         private ObservableCollection<KeyValuePair<string, UserNode>> UserList { get; set; } = new ObservableCollection<KeyValuePair<string, UserNode>>();
         private ObservableCollection<KeyValuePair<string, AuthenticationNode>> AuthNodeList { get; set; } = new ObservableCollection<KeyValuePair<string, AuthenticationNode>>();
-        private ObservableCollection<NsisoLauncherCore.Modules.MCVersion> VersionList { get; set; } = new ObservableCollection<NsisoLauncherCore.Modules.MCVersion>();
+        private ObservableCollection<MCVersion> VersionList { get; set; } = new ObservableCollection<MCVersion>();
 
         public MainPanelControl()
         {
@@ -80,7 +81,7 @@ namespace NsisoLauncher.Controls
                     }
 
                 //更新版本列表
-                List<NsisoLauncherCore.Modules.MCVersion> versions = await App.Handler.GetVersionsAsync();
+                List<MCVersion> versions = await App.Handler.GetVersionsAsync();
                 VersionList.Clear();
                 foreach (var item in versions)
                 {
@@ -159,8 +160,8 @@ namespace NsisoLauncher.Controls
         public async Task RefreshIcon()
         {
             //头像自定义显示皮肤
-            UserNode node = GetSelectedAuthNode();
-            AuthenticationNode node1 = GetSelectedAuthenticationNode();
+            var node = GetSelectedAuthNode();
+            var node1 = GetSelectedAuthenticationNode();
             if (node == null || node1 == null)
                 return;
             bool isNeedRefreshIcon = !string.IsNullOrWhiteSpace(node.SelectProfileUUID) &&
@@ -175,14 +176,14 @@ namespace NsisoLauncher.Controls
         }
 
         //启动游戏按钮点击
-        private void launchButton_Click(object sender, RoutedEventArgs e)
+        public void launchButton_Click(object sender, RoutedEventArgs e)
         {
             Lock(false);
             //获取启动版本
             NsisoLauncherCore.Modules.MCVersion launchVersion = null;
             if (launchVersionCombobox.SelectedItem != null)
             {
-                launchVersion = (NsisoLauncherCore.Modules.MCVersion)launchVersionCombobox.SelectedItem;
+                launchVersion = (MCVersion)launchVersionCombobox.SelectedItem;
             }
 
             //获取验证方式
@@ -220,8 +221,9 @@ namespace NsisoLauncher.Controls
                 AuthenticationNode node = GetSelectedAuthenticationNode();
                 if (node == null)
                 {
-                    await DialogManager.ShowMessageAsync(App.MainWindow_, App.GetResourceString("String.Mainwindow.Auth.Nide8.NoID"),
-                                App.GetResourceString("String.Mainwindow.Auth.Nide8.NoID2"));
+                    await DialogManager.ShowMessageAsync(App.MainWindow_,
+                        App.GetResourceString("String.Mainwindow.Auth.Nide8.NoID"),
+                        App.GetResourceString("String.Mainwindow.Auth.Nide8.NoID2"));
                     return;
                 }
                 new Register(string.Format("https://login2.nide8.com:233/{0}/loginreg", node.Property["nide8ID"])).ShowDialog();
@@ -375,7 +377,7 @@ namespace NsisoLauncher.Controls
 
     public class LaunchEventArgs : EventArgs
     {
-        public NsisoLauncherCore.Modules.MCVersion LaunchVersion { get; set; }
+        public MCVersion LaunchVersion { get; set; }
         public AuthenticationNode AuthNode { get; set; }
         public UserNode UserNode { get; set; }
         public bool IsNewUser { get; set; }

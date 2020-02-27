@@ -197,7 +197,7 @@ namespace NsisoLauncher.Windows
             }
 
             App.Config.Save();
-            App.Re();
+            App.ProxyRe();
 
             saveButton.Content = App.GetResourceString("String.Settingwindow.Saving");
             Config.Environment env = App.Config.MainConfig.Environment;

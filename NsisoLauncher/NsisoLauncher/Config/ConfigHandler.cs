@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using System.Security;
 using System.Threading;
 using System.Windows;
 
@@ -45,15 +46,13 @@ namespace NsisoLauncher.Config
                 else
                 { Read(); }
                 if (!File.Exists(LauncherProfilesConfigPath))
-                {
-                    NewProfilesConfig();
-                }
+                { NewProfilesConfig(); }
             }
             catch (UnauthorizedAccessException e)
             {
                 NoAccessWarning(e);
             }
-            catch (System.Security.SecurityException e)
+            catch (SecurityException e)
             {
                 NoAccessWarning(e);
             }
@@ -102,7 +101,7 @@ namespace NsisoLauncher.Config
             {
                 NoAccessWarning(e);
             }
-            catch (System.Security.SecurityException e)
+            catch (SecurityException e)
             {
                 NoAccessWarning(e);
             }
@@ -146,7 +145,7 @@ namespace NsisoLauncher.Config
             {
                 NoAccessWarning(e);
             }
-            catch (System.Security.SecurityException e)
+            catch (SecurityException e)
             {
                 NoAccessWarning(e);
             }
@@ -237,22 +236,22 @@ namespace NsisoLauncher.Config
                     ShowServerInfo = false,
                     LaunchToServer = false,
                     Port = 25565,
-                    Updata_Check = new Updata_Check
+                    UpdataCheck = new UpdataCheck
                     {
                         Enable = false,
                         Vision = "0.0.0",
-                        packname = "modpack"
+                        Packname = "modpack"
                     }
                 },
                 Customize = new Customize()
                 {
                     CustomBackGroundVedio = false,
-                    CustomBackGroundVedio_Cyclic = false,
+                    CustomBackGroundVedioCyclic = false,
                     CustomBackGroundMusic = false,
-                    CustomBackGroundMusic_Cyclic = false,
+                    CustomBackGroundMusicCyclic = false,
                     CustomBackGroundPicture = false,
-                    CustomBackGroundPicture_Cyclic = false,
-                    CustomBackGroundPicture_Cyclic_time = 10000,
+                    CustomBackGroundPictureCyclic = false,
+                    CustomBackGroundPictureCyclicTime = 10000,
                     AccentColor = "Blue",
                     AppThme = "BaseLight"
                 },
