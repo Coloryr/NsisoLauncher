@@ -93,6 +93,8 @@
     <sys:String x:Key="String.Mainwindow.GameExit.Error_t">Possible game crash，error code:{0}，game lasted:{1}</sys:String>
 
     <sys:String x:Key="String.MainPanelControl.Error">Fatal error</sys:String>
+    <sys:String x:Key="String.MainPanelControl.Online">Online</sys:String>
+    <sys:String x:Key="String.MainPanelControl.Offline">Offline</sys:String>
 
     <sys:String x:Key="String.Downloadwindow.Windows">Download</sys:String>
     <sys:String x:Key="String.Downloadwindow.TaskName">Task name</sys:String>
@@ -242,6 +244,7 @@
     <sys:String x:Key="String.Settingwindow.Env.AutoFill.Assets">Auto Fill Assets</sys:String>
     <sys:String x:Key="String.Settingwindow.Env.Launcher.Exit">Exit Launcher after Launching</sys:String>
     <sys:String x:Key="String.Settingwindow.Env.Launcher">Launcher Setting</sys:String>
+    <sys:String x:Key="String.Settingwindow.Env.Launcher.AutoRun">Auto Start</sys:String>
     <sys:String x:Key="String.Settingwindow.Env.AutoRun">Auto Start Game</sys:String>
     <sys:String x:Key="String.Settingwindow.Env.Launcher.DebugMode">Debug Mode</sys:String>
     <sys:String x:Key="String.Settingwindow.Env.Note">*Note: Some of the settings require restarting the Launcher</sys:String>

@@ -91,7 +91,9 @@
     <sys:String x:Key="String.Mainwindow.GameExit.Error_t">这很有可能是因为游戏崩溃导致的，退出代码:{0}，游戏持续时间:{1}</sys:String>
 
     <sys:String x:Key="String.MainPanelControl.Error">启动器致命错误</sys:String>
-    
+    <sys:String x:Key="String.MainPanelControl.Online">正版验证</sys:String>
+    <sys:String x:Key="String.MainPanelControl.Offline">离线启动</sys:String>
+
     <sys:String x:Key="String.Downloadwindow.Windows">下载监视器</sys:String>
     <sys:String x:Key="String.Downloadwindow.TaskName">任务名称</sys:String>
     <sys:String x:Key="String.Downloadwindow.TaskState">状态</sys:String>

@@ -69,6 +69,15 @@ namespace NsisoLauncher.Controls
                 if (App.Config.MainConfig.User.AuthenticationDic != null)
                     foreach (var item in App.Config.MainConfig.User.AuthenticationDic)
                     {
+                        switch (item.Key)
+                        {
+                            case "offline":
+                                item.Value.Name = App.GetResourceString("String.MainPanelControl.Offline");
+                                break;
+                            case "online":
+                                item.Value.Name = App.GetResourceString("String.MainPanelControl.Online");
+                                break;
+                        }
                         AuthNodeList.Add(item);
                     }
 
