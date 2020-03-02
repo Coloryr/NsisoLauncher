@@ -129,7 +129,7 @@ namespace NsisoLauncher
             this.Dispatcher.Invoke(new Action(() =>
             {
                 this.WindowState = WindowState.Normal;
-                if (!arg.IsNormalExit())
+                if (!arg.IsNormalExit() && !cancalrun)
                 {
                     this.ShowMessageAsync(App.GetResourceString("String.Mainwindow.GameExit.Error"),
                         string.Format(App.GetResourceString("String.Mainwindow.GameExit.Error_t"),
@@ -507,13 +507,7 @@ namespace NsisoLauncher
                 //如果验证方式不是离线验证
                 if (args.AuthNode.AuthType != AuthenticationType.OFFLINE)
                 {
-                    if (authenticator == null)
-                    {
-                        await this.ShowMessageAsync(App.GetResourceString("String.Mainwindow.Auth.Error.Login_Error"),
-                            App.GetResourceString("String.Mainwindow.Auth.Error.Null"));
-                        return;
-                    }
-                    var authResult = await authenticator.DoAuthenticateAsync();
+                    var authResult = await authenticator?.DoAuthenticateAsync();
 
                     if (authResult == null)
                     {
@@ -586,8 +580,7 @@ namespace NsisoLauncher
                             return;
                         case AuthState.ERR_INSIDE:
                             await this.ShowMessageAsync(App.GetResourceString("String.Mainwindow.Auth.Error.Login_Error"),
-                                string.Format(App.GetResourceString("String.Mainwindow.Auth.Error.Core_Error"),
-                                authResult.Error.ErrorMessage));
+                                string.Format(App.GetResourceString("String.Mainwindow.Auth.Error.Core_Error")));
                             return;
                         default:
                             await this.ShowMessageAsync(App.GetResourceString("String.Mainwindow.Auth.Error.Login_Error"),
@@ -855,7 +848,6 @@ namespace NsisoLauncher
                     catch (Exception ex)
                     {
                         App.LogHandler.AppendFatal(ex);
-                        return;
                     }
 
                     //API使用次数计数器+1
@@ -863,13 +855,9 @@ namespace NsisoLauncher
 
                     App.Config.MainConfig.History.LastLaunchUsingMs = result.LaunchUsingMs;
                     if (App.Config.MainConfig.Environment.ExitAfterLaunch)
-                    {
                         Application.Current.Shutdown();
-                    }
                     if (!cancalrun)
-                    {
                         WindowState = WindowState.Minimized;
-                    }
                     else
                     {
                         Activate();
@@ -881,9 +869,7 @@ namespace NsisoLauncher
 
                     //自定义处理
                     if (!string.IsNullOrWhiteSpace(App.Config.MainConfig.Customize.GameWindowTitle))
-                    {
                         GameHelper.SetGameTitle(result, App.Config.MainConfig.Customize.GameWindowTitle);
-                    }
                 }
             }
             catch (Exception ex)

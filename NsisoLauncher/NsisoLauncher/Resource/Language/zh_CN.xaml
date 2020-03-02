@@ -61,7 +61,7 @@
     <sys:String x:Key="String.Mainwindow.Auth.Error.Auth_Error_notfound">请确认您的Authlib-Injector验证服务器（Authlib-Injector验证）或自定义验证服务器（自定义验证）地址正确或确认账号和游戏角色存在。</sys:String>
     <sys:String x:Key="String.Mainwindow.Auth.Error.Player_notfound">请确认您的账号和游戏角色存在</sys:String>
     <sys:String x:Key="String.Mainwindow.Auth.Error.Other">其他错误:{0}</sys:String>
-    <sys:String x:Key="String.Mainwindow.Auth.Error.Core_Error">启动器内部错误:{0}</sys:String>
+    <sys:String x:Key="String.Mainwindow.Auth.Error.Core_Error">登录失败，请重试</sys:String>
     <sys:String x:Key="String.Mainwindow.Auth.Error.Error">未知错误:{0}</sys:String>
     <sys:String x:Key="String.Mainwindow.Check.mods">检查资源更新</sys:String>
     <sys:String x:Key="String.Mainwindow.Check.new">有新版本的资源文件</sys:String>

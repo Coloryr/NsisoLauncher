@@ -153,6 +153,16 @@ namespace NsisoLauncherCore.Net.MojangApi.Api
             {
                 StringContent contents = new StringContent(endpoint.PostContent, Encoding, "application/json");
                 httpResponse = await Client.client.PostAsync(endpoint.Address, contents);
+                if (httpResponse == null || httpResponse.Content == null)
+                {
+                    return new Response()
+                    {
+                        Code = httpResponse.StatusCode,
+                        RawMessage = rawMessage,
+                        IsSuccess = false,
+                        Error = error
+                    };
+                }
                 rawMessage = await httpResponse.Content.ReadAsStringAsync();
                 httpResponse.EnsureSuccessStatusCode();
             }
@@ -163,6 +173,13 @@ namespace NsisoLauncherCore.Net.MojangApi.Api
                     ErrorMessage = ex.Message,
                     ErrorTag = ex.Message,
                     Exception = ex
+                };
+                return new Response()
+                {
+                    Code = httpResponse.StatusCode,
+                    RawMessage = rawMessage,
+                    IsSuccess = false,
+                    Error = error
                 };
             }
 
