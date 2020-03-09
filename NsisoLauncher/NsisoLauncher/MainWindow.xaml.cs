@@ -322,9 +322,13 @@ namespace NsisoLauncher
                     Version = args.LaunchVersion
                 };
 
+                LaunchResult result = null;
+
                 loadingRing.Visibility = Visibility.Visible;
                 launchInfoBlock.Visibility = Visibility.Visible;
                 loadingRing.IsActive = true;
+                cancelLaunchButton.Visibility = Visibility.Visible;
+                cancelLaunchButton.Click += (x, y) => { CancelLaunching(result); };
 
                 if (string.IsNullOrWhiteSpace(App.Config.MainConfig.User.ClientToken))
                 {
@@ -334,6 +338,9 @@ namespace NsisoLauncher
                 {
                     Requester.ClientToken = App.Config.MainConfig.User.ClientToken;
                 }
+
+                if (cancalrun)
+                    return;
 
                 //主验证器接口
                 App.LogHandler.AppendInfo("登陆中...");
@@ -504,6 +511,9 @@ namespace NsisoLauncher
                         break;
                 }
 
+                if (cancalrun)
+                    return;
+
                 //如果验证方式不是离线验证
                 if (args.AuthNode.AuthType != AuthenticationType.OFFLINE)
                 {
@@ -604,6 +614,9 @@ namespace NsisoLauncher
 
                 List<DownloadTask> losts = new List<DownloadTask>();
 
+                if (cancalrun)
+                    return;
+
                 App.LogHandler.AppendInfo("检查丢失的文件中...");
                 var lostDepend = await FileHelper.GetLostDependDownloadTaskAsync(
                     App.Config.MainConfig.Download.DownloadSource,
@@ -679,6 +692,9 @@ namespace NsisoLauncher
                     }
                 }
 
+                if (cancalrun)
+                    return;
+
                 OtherCheck pack = null;
                 string packname = null;
                 string vision = null;
@@ -716,6 +732,9 @@ namespace NsisoLauncher
                         }
                     }
                 }
+
+                if (cancalrun)
+                    return;
 
                 if (losts.Count != 0)
                 {
@@ -755,6 +774,9 @@ namespace NsisoLauncher
                         return;
                     }
                 }
+
+                if (cancalrun)
+                    return;
 
                 App.LogHandler.AppendInfo("准备启动...");
                 launchSetting.AdvencedGameArguments += App.Config.MainConfig.Environment.AdvencedGameArguments;
@@ -821,12 +843,15 @@ namespace NsisoLauncher
 
                 App.Config.Save();
 
+                if (cancalrun)
+                    return;
+
                 App.LogHandler.AppendInfo("开始启动...");
-                cancelLaunchButton.Visibility = Visibility.Visible;
+                
                 mainPanel.launchButton.Content = App.GetResourceString("String.Mainwindow.Staring");
 
                 //启动游戏
-                var result = await App.Handler.LaunchAsync(launchSetting);
+                result = await App.Handler.LaunchAsync(launchSetting);
 
                 //程序猿是找不到女朋友的了 :) 
                 if (!result.IsSuccess)
@@ -836,8 +861,6 @@ namespace NsisoLauncher
                 }
                 else
                 {
-                    cancelLaunchButton.Click += (x, y) => { CancelLaunching(result); };
-
                     try
                     {
                         await Task.Factory.StartNew(() =>
@@ -854,14 +877,13 @@ namespace NsisoLauncher
                     await App.nsisoAPIHandler.RefreshUsingTimesCounter();
 
                     App.Config.MainConfig.History.LastLaunchUsingMs = result.LaunchUsingMs;
-                    if (App.Config.MainConfig.Environment.ExitAfterLaunch)
+                    if (App.Config.MainConfig.Environment.ExitAfterLaunch && !cancalrun)
                         Application.Current.Shutdown();
                     if (!cancalrun)
                         WindowState = WindowState.Minimized;
                     else
                     {
                         Activate();
-                        cancalrun = false;
                     }
 
                     mainPanel.isRes = true;
@@ -878,6 +900,7 @@ namespace NsisoLauncher
             }
             finally
             {
+                cancalrun = false;
                 App.LogHandler.OnLog -= (a, b) => { this.Invoke(() => { launchInfoBlock.Text = b.Message; }); };
                 mainPanel.Lock(true);
                 Side_E.IsExpanded = true;
@@ -953,10 +976,10 @@ namespace NsisoLauncher
 
         private void CancelLaunching(LaunchResult result)
         {
-            if (!result.Process.HasExited)
+            cancalrun = true;
+            if (result!=null && !result.Process.HasExited)
             {
                 result.Process.Kill();
-                cancalrun = true;
             }
         }
 
