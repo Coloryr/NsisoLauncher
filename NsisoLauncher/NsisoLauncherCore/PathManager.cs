@@ -12,7 +12,7 @@ namespace NsisoLauncherCore
         /// <summary>
         /// 启动器名称（用作配置文件路径组成，请使用英文）
         /// </summary>
-        public static string LauncherName { get; set; } = "NsisoLauncher";
+        public static string LauncherName { get; } = "NsisoLauncher(Color_yr edit)";
 
         /// <summary>
         /// 启动器当前真实目录

@@ -1,4 +1,5 @@
-﻿using NsisoLauncherCore.LaunchException;
+﻿using NsisoLauncher;
+using NsisoLauncherCore.LaunchException;
 using NsisoLauncherCore.Modules;
 using NsisoLauncherCore.Util;
 using System;
@@ -127,7 +128,7 @@ namespace NsisoLauncherCore
                     setting.JavaAgent = null;
                 }
 
-                string arg = argumentsParser.Parse(setting);
+                string arg = argumentsParser.Parse(setting, GameRootPath);
 
                 if (setting.LaunchType == LaunchType.CREATE_SHORT)
                 {

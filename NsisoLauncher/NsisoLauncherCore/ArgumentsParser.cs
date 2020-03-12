@@ -20,7 +20,7 @@ namespace NsisoLauncherCore
             this.handler = handler;
         }
 
-        public string Parse(Modules.LaunchSetting setting)
+        public string Parse(LaunchSetting setting, string replace)
         {
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
@@ -32,7 +32,7 @@ namespace NsisoLauncherCore
             if (!string.IsNullOrWhiteSpace(setting.JavaAgent))
             {
                 jvmHead.Append("-javaagent:");
-                jvmHead.Append(setting.JavaAgent.Trim());
+                jvmHead.Append(setting.JavaAgent.Replace(replace + "\\", "").Trim());
                 jvmHead.Append(' ');
             }
             #endregion
@@ -110,7 +110,7 @@ namespace NsisoLauncherCore
                 {"${auth_access_token}",setting.AuthenticateResult.AccessToken },
                 {"${user_properties}",ToList(setting.AuthenticateResult.UserData?.Properties) },
                 {"${user_type}",legacy },
-                {"${version_type}", string.IsNullOrWhiteSpace(setting.VersionType) ? "NsisoLauncher5":setting.VersionType }
+                {"${version_type}", string.IsNullOrWhiteSpace(setting.VersionType) ? PathManager.LauncherName : setting.VersionType }
             };
             StringBuilder otherGamearg = new StringBuilder();
             if (setting.WindowSize != null)
