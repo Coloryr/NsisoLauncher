@@ -4,6 +4,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Timers;
@@ -333,7 +334,7 @@ namespace NsisoLauncherCore.Net
                 try
                 {
                     //下载流程
-                    using (var getResult = await http.HttpGetAsync(task.From, cancelToken))
+                    using (var getResult = await http.HttpGetAsync(task.From, cancelToken, HttpCompletionOption.ResponseHeadersRead))
                     {
                         getResult.EnsureSuccessStatusCode();
                         task.SetTotalSize(getResult.Content.Headers.ContentLength.GetValueOrDefault());

@@ -34,26 +34,24 @@ namespace NsisoLauncherCore.Net
             client.Timeout = Timeout == null ? TimeSpan.FromSeconds(30) : Timeout;
         }
 
-        /// <summary>
-        /// 异步Get
-        /// </summary>
-        /// <param name="uri">网址</param>
-        /// <returns></returns>
-        public async Task<HttpResponseMessage> HttpGetAsync(string uri)
+        private void httpCheck(string uri)
         {
-            int a = 0;
-
             if (uri.Contains("https://"))
             {
                 ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
             }
             else
                 ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls;
+        }
+
+        private async Task<HttpResponseMessage> httpDoAsync(string uri, CancellationToken cancelToken, HttpCompletionOption option)
+        {
+            int a = 0;
             while (a < 5)
             {
                 try
                 {
-                    var b = await client.GetAsync(uri);
+                    var b = await client.GetAsync(uri, option, cancelToken);
                     return b;
                 }
                 catch
@@ -70,30 +68,32 @@ namespace NsisoLauncherCore.Net
         /// </summary>
         /// <param name="uri">网址</param>
         /// <returns></returns>
+        public async Task<HttpResponseMessage> HttpGetAsync(string uri)
+        {
+            httpCheck(uri);
+            return await httpDoAsync(uri, CancellationToken.None, HttpCompletionOption.ResponseHeadersRead);
+        }
+
+        /// <summary>
+        /// 异步Get
+        /// </summary>
+        /// <param name="uri">网址</param>
+        /// <returns></returns>
         public async Task<HttpResponseMessage> HttpGetAsync(string uri, CancellationToken cancelToken)
         {
-            int a = 0;
+            httpCheck(uri);
+            return await httpDoAsync(uri, cancelToken, HttpCompletionOption.ResponseHeadersRead);
+        }
 
-            if (uri.Contains("https://"))
-            {
-                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-            }
-            else
-                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls;
-            while (a < 5)
-            {
-                try
-                {
-                    var b = await client.GetAsync(uri, cancelToken);
-                    return b;
-                }
-                catch
-                {
-                    client.CancelPendingRequests();
-                    a++;
-                }
-            }
-            return null;
+        /// <summary>
+        /// 异步Get
+        /// </summary>
+        /// <param name="uri">网址</param>
+        /// <returns></returns>
+        public async Task<HttpResponseMessage> HttpGetAsync(string uri, CancellationToken cancelToken, HttpCompletionOption option)
+        {
+            httpCheck(uri);
+            return await httpDoAsync(uri, cancelToken, option);
         }
 
         /// <summary>
@@ -104,7 +104,7 @@ namespace NsisoLauncherCore.Net
         public async Task<string> HttpGetStringAsync(string uri)
         {
             int a = 0;
-            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+            httpCheck(uri);
             while (a < 5)
             {
                 try
