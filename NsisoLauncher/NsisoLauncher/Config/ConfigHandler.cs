@@ -205,6 +205,8 @@ namespace NsisoLauncher.Config
                 {
                     VersionIsolation = false,
                     AutoMemory = true,
+                    MaxMemory = 2048,
+                    MinMemory = 512,
                     GamePathType = GameDirEnum.ROOT,
                     DownloadLostAssets = true,
                     DownloadLostDepend = true,
