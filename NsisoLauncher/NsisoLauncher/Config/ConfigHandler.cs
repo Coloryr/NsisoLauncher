@@ -187,7 +187,6 @@ namespace NsisoLauncher.Config
                             new AuthenticationNode()
                             {
                                 AuthType = AuthenticationType.OFFLINE,
-                                Name="离线验证"
                             }
                         },
                         {
@@ -195,7 +194,6 @@ namespace NsisoLauncher.Config
                             new AuthenticationNode()
                             {
                                 AuthType = AuthenticationType.MOJANG,
-                                Name="正版验证"
                             }
                         }
                     }
@@ -241,7 +239,7 @@ namespace NsisoLauncher.Config
                     UpdataCheck = new UpdataCheck
                     {
                         Enable = false,
-                        Vision = "0.0.0",
+                        Version = "0.0.0",
                         Packname = "modpack"
                     }
                 },

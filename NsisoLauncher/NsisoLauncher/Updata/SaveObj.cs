@@ -9,7 +9,7 @@ namespace NsisoLauncher.Updata
         /// </summary>
         public static string server_local { get; set; }
     }
-    public class updata_obj
+    public class updataOBJ
     {
         /// <summary>
         /// 整合包名字

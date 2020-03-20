@@ -269,9 +269,9 @@ namespace NsisoLauncher.Controls
         private void configButton_Click(object sender, RoutedEventArgs e)
         {
             new SettingWindow().ShowDialog();
-            Refresh();
-            ((MainWindow)Window.GetWindow(this)).CustomizeRefresh();
             App.Lauguage();
+            Refresh();
+            App.MainWindow_.CustomizeRefresh();
             APP_Color();
         }
 

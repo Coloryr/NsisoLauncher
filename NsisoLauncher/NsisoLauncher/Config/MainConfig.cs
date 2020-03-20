@@ -397,7 +397,7 @@ namespace NsisoLauncher.Config
         /// <summary>
         /// 整合包版本
         /// </summary>
-        public string Vision { get; set; }
+        public string Version { get; set; }
     }
 
     /// <summary>

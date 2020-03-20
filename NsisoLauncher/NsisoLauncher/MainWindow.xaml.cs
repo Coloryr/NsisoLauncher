@@ -76,7 +76,7 @@ namespace NsisoLauncher
             PicNow = PicNow >= PicFiles.Length ? 0 : +1;
             ChangeBackPic(new Uri(PicFiles[PicNow]));
         }
-        public void Pic_cyclic()
+        public void PicCyclic()
         {
             if (App.Config.MainConfig.Customize.CustomBackGroundPictureCyclic && PicFiles.Length > 1)
             {
@@ -210,7 +210,7 @@ namespace NsisoLauncher
                             PicFiles[i] = a;
                             i++;
                         }
-                        Pic_cyclic();
+                        PicCyclic();
                     }
                 }
             }
@@ -249,10 +249,10 @@ namespace NsisoLauncher
             {
                 serverInfoControl.SetServerInfo(App.Config.MainConfig.Server);
             }
-            APP_Color();
+            APPColor();
         }
 
-        public void APP_Color()
+        public void APPColor()
         {
             BrushColor get = new BrushColor();
             Brush b = get.GetBursh();
@@ -695,9 +695,9 @@ namespace NsisoLauncher
                 if (cancalrun)
                     return;
 
-                OtherCheck pack = null;
-                string packname = null;
-                string vision = null;
+                OtherCheck zipPack = null;
+                string newPackName = null;
+                string newVerison = null;
                 if (App.Config.MainConfig.Server.UpdataCheck == null)
                 {
                     App.Config.MainConfig.Server.UpdataCheck = new Config.UpdataCheck()
@@ -705,14 +705,14 @@ namespace NsisoLauncher
                         Enable = false,
                         Address = "",
                         Packname = "modpack",
-                        Vision = "0.0.0"
+                        Version = "0.0.0"
                     };
                 }
                 if (App.Config.MainConfig.Server.UpdataCheck.Enable)
                 {
                     App.LogHandler.AppendInfo("检查客户端更新...");
                     mainPanel.launchButton.Content = App.GetResourceString("String.Mainwindow.Check.mods");
-                    pack = new OtherCheck();
+                    zipPack = new OtherCheck();
 
                     var lostmod = await new Updata.UpdataCheck().Check();
                     if (lostmod != null)
@@ -726,9 +726,9 @@ namespace NsisoLauncher
                                 DefaultButtonFocus = MessageDialogResult.Affirmative
                             }) == MessageDialogResult.Affirmative)
                         {
-                            losts.AddRange(await lostmod.CheckUpdata(pack));
-                            packname = lostmod.getpackname();
-                            vision = lostmod.getvision();
+                            losts.AddRange(await lostmod.CheckUpdata(zipPack));
+                            newPackName = lostmod.getPackName();
+                            newVerison = lostmod.getVersion();
                         }
                     }
                 }
@@ -759,10 +759,10 @@ namespace NsisoLauncher
                             }
                             else
                             {
-                                if (pack != null && await pack?.pack())
+                                if (zipPack != null && await zipPack?.pack())
                                 {
-                                    App.Config.MainConfig.Server.UpdataCheck.Packname = packname;
-                                    App.Config.MainConfig.Server.UpdataCheck.Vision = vision;
+                                    App.Config.MainConfig.Server.UpdataCheck.Packname = newPackName;
+                                    App.Config.MainConfig.Server.UpdataCheck.Version = newVerison;
                                 }
                             }
                         }

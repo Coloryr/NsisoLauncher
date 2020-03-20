@@ -12,7 +12,7 @@ namespace NsisoLauncher.Updata
         /// <summary>
         /// 更新信息
         /// </summary>
-        private updata_obj UpdataObj;
+        private updataOBJ UpdataObj;
         /// <summary>
         /// 资源检查
         /// </summary>
@@ -26,10 +26,10 @@ namespace NsisoLauncher.Updata
                 if (res.IsSuccessStatusCode)
                 {
                     JObject json = JObject.Parse(await res.Content.ReadAsStringAsync());
-                    UpdataObj = json.ToObject<updata_obj>();
+                    UpdataObj = json.ToObject<updataOBJ>();
                     if (string.IsNullOrWhiteSpace(App.Config.MainConfig.Server.UpdataCheck.Packname))
                         return this;
-                    else if (App.Config.MainConfig.Server.UpdataCheck.Vision != UpdataObj.Version)
+                    else if (App.Config.MainConfig.Server.UpdataCheck.Version != UpdataObj.Version)
                         return this;
                     else
                         return null;
@@ -156,11 +156,11 @@ namespace NsisoLauncher.Updata
 
             return DownloadTask;
         }
-        public string getvision()
+        public string getVersion()
         {
             return UpdataObj == null ? "0.0.0" : UpdataObj.Version;
         }
-        public string getpackname()
+        public string getPackName()
         {
             return UpdataObj == null ? "modpack" : UpdataObj.packname;
         }
