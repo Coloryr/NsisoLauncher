@@ -612,6 +612,8 @@ namespace NsisoLauncher
                     App.Config.MainConfig.User.UserDatabase.Add(args.UserNode.UserData.Uuid, args.UserNode);
                 }
 
+                await mainPanel.RefreshIcon();
+                
                 List<DownloadTask> losts = new List<DownloadTask>();
 
                 if (cancalrun)

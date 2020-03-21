@@ -174,10 +174,10 @@ namespace NsisoLauncher.Controls
             if (node == null || node1 == null)
                 return;
             bool isNeedRefreshIcon = !string.IsNullOrWhiteSpace(node.SelectProfileUUID) &&
-                (node.AuthModule == "mojang" || node1.AuthType == AuthenticationType.NIDE8);
+                (node.AuthModule == "online" || node1.AuthType == AuthenticationType.NIDE8);
             if (isNeedRefreshIcon)
             {
-                if (node.AuthModule == "mojang")
+                if (node.AuthModule == "online")
                     await headScul.RefreshIcon_online(node.SelectProfileUUID);
                 else if (node1.AuthType == AuthenticationType.NIDE8)
                     await headScul.RefreshIcon_nide8(node.SelectProfileUUID, node1);
