@@ -19,9 +19,11 @@
             <ColumnDefinition Width="150*"/>
         </Grid.ColumnDefinitions>
         <Image x:Name="BG" Width="720" Height="405" Grid.ColumnSpan="3" Visibility="Visible" 
-               Source="/NsisoLauncher;component/Resource/bg.jpg" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,0,-2,0"/>
+               Source="/NsisoLauncher;component/Resource/bg.jpg" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,0,0,0" Stretch="UniformToFill">
+        </Image>
         <MediaElement x:Name="mediaElement" Width="720" Height="405" LoadedBehavior="Manual" 
-                      Grid.ColumnSpan="3" MediaEnded="mediaElement_MediaEnded" Visibility="Hidden"/>
+                      Grid.ColumnSpan="3" MediaEnded="mediaElement_MediaEnded" Visibility="Hidden">
+        </MediaElement>
         <Grid x:Name="userGrid" Grid.Column="2">
             <Grid.Effect>
                 <DropShadowEffect Direction="300" Color="#FF000000" BlurRadius="3" Opacity="0.65"/>

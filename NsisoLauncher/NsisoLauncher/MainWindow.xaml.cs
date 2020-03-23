@@ -73,7 +73,14 @@ namespace NsisoLauncher
         }
         private void PicShow(object sender)
         {
-            PicNow = PicNow >= PicFiles.Length ? 0 : +1;
+            if (PicNow >= PicFiles.Length - 1)
+            {
+                PicNow = 0;
+            }
+            else
+            {
+                PicNow++;
+            }
             ChangeBackPic(new Uri(PicFiles[PicNow]));
         }
         public void PicCyclic()

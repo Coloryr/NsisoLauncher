@@ -380,13 +380,13 @@
                         </Expander>
                         <Expander Header="{DynamicResource String.Settingwindow.Custom.Mods}" Margin="0,0,0,5">
                             <StackPanel>
-                                <CheckBox Content="{DynamicResource String.Settingwindow.Custom.Mods.Enable}" IsChecked="{Binding Server.Updata_Check.Enable}" Margin="0,0,0,5"/>
+                                <CheckBox Content="{DynamicResource String.Settingwindow.Custom.Mods.Enable}" IsChecked="{Binding Server.UpdataCheck.Enable}" Margin="0,0,0,5"/>
                                 <Label Content="{DynamicResource String.Settingwindow.Custom.Mods.Addres}"/>
-                                <TextBox TextWrapping="NoWrap" Text="{Binding Server.Updata_Check.Address}" HorizontalAlignment="Left" Width="300"/>
+                                <TextBox TextWrapping="NoWrap" Text="{Binding Server.UpdataCheck.Address}" HorizontalAlignment="Left" Width="300"/>
                                 <Label Content="{DynamicResource String.Settingwindow.Custom.Mods.Packname}"/>
-                                <Label Content="{Binding Server.Updata_Check.packname}" Name="Pack_Name"/>
+                                <Label Content="{Binding Server.UpdataCheck.packname}" Name="Pack_Name"/>
                                 <Label Content="{DynamicResource String.Settingwindow.Custom.Mods.Vision}"/>
-                                <Label Content="{Binding Server.Updata_Check.Vision}" Name="Pack_Vision"/>
+                                <Label Content="{Binding Server.UpdataCheck.Vision}" Name="Pack_Vision"/>
                             </StackPanel>
                         </Expander>
                     </StackPanel>
