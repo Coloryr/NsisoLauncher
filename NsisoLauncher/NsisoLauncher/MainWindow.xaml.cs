@@ -16,9 +16,11 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
@@ -218,6 +220,11 @@ namespace NsisoLauncher
                             i++;
                         }
                         PicCyclic();
+                        BG.Visibility = Visibility.Visible;
+                    }
+                    else
+                    {
+                        BG.Visibility = Visibility.Hidden;
                     }
                 }
             }
@@ -923,6 +930,7 @@ namespace NsisoLauncher
 
         private async void mainWindow_Loaded(object sender, RoutedEventArgs e)
         {
+            new Grass(this);
             if (App.Handler.Java == null)
             {
                 var result = await this.ShowMessageAsync(App.GetResourceString("String.Message.NoJava"),

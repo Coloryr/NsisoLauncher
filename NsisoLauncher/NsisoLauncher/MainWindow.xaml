@@ -9,25 +9,27 @@
                       mc:Ignorable="d"
         BorderBrush="{DynamicResource AccentColorBrush}"
         WindowStartupLocation="CenterScreen"
-        Title="Nsiso Launcher(Color_yr Edit)" Height="436" Width="720" MinHeight="436" MinWidth="720" ShowMaxRestoreButton="False" 
+        Title="Nsiso Launcher(Color_yr Edit)" Height="436" Width="720" MinHeight="436" MinWidth="720" ShowMaxRestoreButton="False" Background="Transparent"
         ShowMinButton="True" Loaded="mainWindow_Loaded" Closing="mainWindow_Closing" WindowStyle="SingleBorderWindow" ResizeMode="CanMinimize">
+    <WindowChrome.WindowChrome>
+        <WindowChrome GlassFrameThickness="-1" CaptionHeight="0"/>
+    </WindowChrome.WindowChrome>
     <Grid>
-
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="0*"/>
             <ColumnDefinition Width="243*"/>
             <ColumnDefinition Width="150*"/>
         </Grid.ColumnDefinitions>
-        <Image x:Name="BG" Width="720" Height="405" Grid.ColumnSpan="3" Visibility="Visible" 
+        <Image x:Name="BG" Width="720" Height="405" Grid.ColumnSpan="3" Visibility="Hidden" 
                Source="/NsisoLauncher;component/Resource/bg.jpg" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,0,0,0" Stretch="UniformToFill">
         </Image>
         <MediaElement x:Name="mediaElement" Width="720" Height="405" LoadedBehavior="Manual" 
                       Grid.ColumnSpan="3" MediaEnded="mediaElement_MediaEnded" Visibility="Hidden">
         </MediaElement>
         <Grid x:Name="userGrid" Grid.Column="2">
-            <Grid.Effect>
+            <!--<Grid.Effect>
                 <DropShadowEffect Direction="300" Color="#FF000000" BlurRadius="3" Opacity="0.65"/>
-            </Grid.Effect>
+            </Grid.Effect>-->
             <Expander ExpandDirection="Left" Margin="0,0,-26,0" Name="Side_E" BorderBrush="#00000000" IsExpanded="True">
                 <userControl:MainPanelControl x:Name="mainPanel"/>
             </Expander>
