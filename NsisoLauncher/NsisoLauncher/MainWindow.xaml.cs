@@ -16,10 +16,13 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Interop;
 using System.Windows.Media;
+using System.Windows.Media.Effects;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 
@@ -31,6 +34,60 @@ namespace NsisoLauncher
     /// </summary>
     public partial class MainWindow : MetroWindow
     {
+        [DllImport("user32.dll")]
+        internal static extern int SetWindowCompositionAttribute(IntPtr hwnd, ref WindowCompositionAttributeData data);
+
+        [StructLayout(LayoutKind.Sequential)]
+        internal struct WindowCompositionAttributeData
+        {
+            public WindowCompositionAttribute Attribute;
+            public IntPtr Data;
+            public int SizeOfData;
+        }
+
+        internal enum WindowCompositionAttribute
+        {
+            WCA_ACCENT_POLICY = 19
+        }
+
+        internal enum AccentState
+        {
+            ACCENT_DISABLED = 0,
+            ACCENT_ENABLE_GRADIENT = 1,
+            ACCENT_ENABLE_TRANSPARENTGRADIENT = 2,
+            ACCENT_ENABLE_BLURBEHIND = 3,
+            ACCENT_INVALID_STATE = 4
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
+        internal struct AccentPolicy
+        {
+            public AccentState AccentState;
+            public int AccentFlags;
+            public int GradientColor;
+            public int AnimationId;
+        }
+
+        internal void EnableBlur()
+        {
+            var windowHelper = new WindowInteropHelper(this);
+            var accent = new AccentPolicy();
+            var accentStructSize = Marshal.SizeOf(accent);
+            accent.AccentState = AccentState.ACCENT_ENABLE_BLURBEHIND;
+
+            var accentPtr = Marshal.AllocHGlobal(accentStructSize);
+            Marshal.StructureToPtr(accent, accentPtr, false);
+
+            var data = new WindowCompositionAttributeData();
+            data.Attribute = WindowCompositionAttribute.WCA_ACCENT_POLICY;
+            data.SizeOfData = accentStructSize;
+            data.Data = accentPtr;
+
+            SetWindowCompositionAttribute(windowHelper.Handle, ref data);
+
+            Marshal.FreeHGlobal(accentPtr);
+        }
+
         public string[] PicFiles;
         public string[] Mp3Files;
         public string[] Mp4Files;
@@ -219,10 +276,16 @@ namespace NsisoLauncher
                         }
                         PicCyclic();
                         BG.Visibility = Visibility.Visible;
+                        var eff = new DropShadowEffect();
+                        eff.Color = (Color)ColorConverter.ConvertFromString("#FF000000");
+                        eff.BlurRadius = 3;
+                        eff.Opacity = 0.65;
+                        userGrid.Effect = eff;
                     }
                     else
                     {
                         BG.Visibility = Visibility.Hidden;
+                        userGrid.Effect = null;
                     }
                 }
             }
@@ -928,7 +991,6 @@ namespace NsisoLauncher
 
         private async void mainWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            new Grass(this);
             if (App.Handler.Java == null)
             {
                 var result = await this.ShowMessageAsync(App.GetResourceString("String.Message.NoJava"),
@@ -964,6 +1026,7 @@ namespace NsisoLauncher
                     App.GetResourceString("String.Message.Java.Finish.Text"));
                 }
             }
+            EnableBlur();
         }
 
         private void mainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)

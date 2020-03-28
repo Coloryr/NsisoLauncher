@@ -27,9 +27,6 @@
                       Grid.ColumnSpan="3" MediaEnded="mediaElement_MediaEnded" Visibility="Hidden">
         </MediaElement>
         <Grid x:Name="userGrid" Grid.Column="2">
-            <!--<Grid.Effect>
-                <DropShadowEffect Direction="300" Color="#FF000000" BlurRadius="3" Opacity="0.65"/>
-            </Grid.Effect>-->
             <Expander ExpandDirection="Left" Margin="0,0,-26,0" Name="Side_E" BorderBrush="#00000000" IsExpanded="True">
                 <userControl:MainPanelControl x:Name="mainPanel"/>
             </Expander>
