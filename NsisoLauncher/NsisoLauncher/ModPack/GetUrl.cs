@@ -64,7 +64,7 @@ namespace NsisoLauncher.ModPack
             HttpRequesterAPI client = new HttpRequesterAPI(TimeSpan.FromSeconds(20));
             foreach (var item in mods)
             {
-                window.SetMessage(App.GetResourceString("String.NewDownloadTaskWindow.ModPack.Now") 
+                window.SetMessage(App.GetResourceString("String.NewDownloadTaskWindow.ModPack.Now")
                     + list.Count + "/" + mods.Count);
                 string res = await client.HttpGetStringAsync(string.Format(BaseUrl, item.projectID, item.fileID));
                 if (res == null)

@@ -16,11 +16,9 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
@@ -91,7 +89,7 @@ namespace NsisoLauncher
             {
                 if (timer != null)
                     timer.Dispose();
-                timer = new Timer(new TimerCallback(PicShow), null, TimeSpan.Zero, 
+                timer = new Timer(new TimerCallback(PicShow), null, TimeSpan.Zero,
                     TimeSpan.FromMilliseconds(App.Config.MainConfig.Customize.CustomBackGroundPictureCyclicTime));
             }
             else
@@ -627,7 +625,7 @@ namespace NsisoLauncher
                 }
 
                 await mainPanel.RefreshIcon();
-                
+
                 List<DownloadTask> losts = new List<DownloadTask>();
 
                 if (cancalrun)
@@ -863,7 +861,7 @@ namespace NsisoLauncher
                     return;
 
                 App.LogHandler.AppendInfo("开始启动...");
-                
+
                 mainPanel.launchButton.Content = App.GetResourceString("String.Mainwindow.Staring");
 
                 //启动游戏
@@ -994,7 +992,7 @@ namespace NsisoLauncher
         private void CancelLaunching(LaunchResult result)
         {
             cancalrun = true;
-            if (result!=null && !result.Process.HasExited)
+            if (result != null && !result.Process.HasExited)
             {
                 result.Process.Kill();
             }

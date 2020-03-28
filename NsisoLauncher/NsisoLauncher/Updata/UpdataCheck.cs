@@ -104,7 +104,7 @@ namespace NsisoLauncher.Updata
                     }
                     else
                     {
-                        DownloadTask.Add(new DownloadTask(App.GetResourceString("String.Update.LostScripts"), 
+                        DownloadTask.Add(new DownloadTask(App.GetResourceString("String.Update.LostScripts"),
                             updataItem.url, App.Handler.GameRootPath + @"\scripts\" + updataItem.filename));
                     }
                 }
@@ -131,7 +131,7 @@ namespace NsisoLauncher.Updata
                         else
                         {
                             File.Delete(LocalResourcepack.local);
-                            DownloadTask.Add(new DownloadTask(App.GetResourceString("String.Update.UpdateResources"), 
+                            DownloadTask.Add(new DownloadTask(App.GetResourceString("String.Update.UpdateResources"),
                                 updataItem.url, App.Handler.GameRootPath + @"\resourcepacks\" + updataItem.filename));
                             UpdataObj.scripts.Remove(updataItem);
                             LocalResourcepacks.Remove(updataItem.name);
@@ -139,7 +139,7 @@ namespace NsisoLauncher.Updata
                     }
                     else
                     {
-                        DownloadTask.Add(new DownloadTask(App.GetResourceString("String.Update.LostResources"), 
+                        DownloadTask.Add(new DownloadTask(App.GetResourceString("String.Update.LostResources"),
                             updataItem.url, App.Handler.GameRootPath + @"\resourcepacks\" + updataItem.filename));
                     }
                 }
@@ -149,7 +149,7 @@ namespace NsisoLauncher.Updata
                 foreach (UpdataItem updataItem in UpdataObj.config)
                 {
                     pack.packList.Add(updataItem.filename);
-                    DownloadTask.Add(new DownloadTask(App.GetResourceString("String.Update.UpdataConfig"), 
+                    DownloadTask.Add(new DownloadTask(App.GetResourceString("String.Update.UpdataConfig"),
                         updataItem.url, App.Handler.GameRootPath + @"\" + updataItem.filename));
                 }
             }

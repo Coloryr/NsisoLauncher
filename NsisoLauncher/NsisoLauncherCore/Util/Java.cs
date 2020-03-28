@@ -264,7 +264,7 @@ namespace NsisoLauncherCore.Util
             }
             catch
             {
-                
+
             }
             return javas;
         }

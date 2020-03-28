@@ -20,7 +20,7 @@ namespace NsisoLauncherCore.Net.FunctionAPI
 
         public string VersionListURL { get; set; }
         public string ForgeListURL { get; set; }
-        public string LiteloaderListURL { get; set; } 
+        public string LiteloaderListURL { get; set; }
 
         public FunctionAPIHandler(DownloadSource lib)
         {

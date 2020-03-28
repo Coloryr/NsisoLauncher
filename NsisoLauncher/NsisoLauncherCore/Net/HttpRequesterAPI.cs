@@ -18,7 +18,7 @@ namespace NsisoLauncherCore.Net
         /// 客户端
         /// </summary>
         public HttpClient client;
-        
+
         /// <summary>
         /// 请求
         /// </summary>

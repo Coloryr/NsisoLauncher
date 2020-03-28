@@ -100,13 +100,13 @@ namespace NsisoLauncher.Windows
                 {
                     this.javaPathComboBox.Text = java.Path;
                     this.javaInfoLabel.Content = string.Format(
-                        App.GetResourceString("String.Settingwindow.Message.Java.Content"), 
+                        App.GetResourceString("String.Settingwindow.Message.Java.Content"),
                         java.Version, java.Arch);
                 }
                 else
                 {
                     this.javaPathComboBox.Text = dialog.FileName;
-                    await this.ShowMessageAsync(App.GetResourceString("String.Settingwindow.Message.NoJava.Title"), 
+                    await this.ShowMessageAsync(App.GetResourceString("String.Settingwindow.Message.NoJava.Title"),
                         App.GetResourceString("String.Settingwindow.Message.NoJava.Text"));
                 }
             }
@@ -221,7 +221,7 @@ namespace NsisoLauncher.Windows
             }
             else
             {
-                await this.ShowMessageAsync(App.GetResourceString("String.Settingwindow.SaveError"), 
+                await this.ShowMessageAsync(App.GetResourceString("String.Settingwindow.SaveError"),
                     App.GetResourceString("String.Settingwindow.JavaError"));
             }
         }
@@ -301,7 +301,7 @@ namespace NsisoLauncher.Windows
             if (java != null)
             {
                 this.javaInfoLabel.Content = string.Format(
-                    App.GetResourceString("String.Settingwindow.Message.Java.Content"), 
+                    App.GetResourceString("String.Settingwindow.Message.Java.Content"),
                     java.Version, java.Arch);
             }
             else
@@ -321,7 +321,7 @@ namespace NsisoLauncher.Windows
             KeyValuePair<string, UserNode> selectedItem = (KeyValuePair<string, UserNode>)userComboBox.SelectedItem;
             UserNode node = selectedItem.Value;
             node.AccessToken = null;
-            this.ShowMessageAsync(App.GetResourceString("String.Settingwindow.Message.User1.Title"), 
+            this.ShowMessageAsync(App.GetResourceString("String.Settingwindow.Message.User1.Title"),
                 App.GetResourceString("String.Settingwindow.Message.User1.Text"));
         }
 

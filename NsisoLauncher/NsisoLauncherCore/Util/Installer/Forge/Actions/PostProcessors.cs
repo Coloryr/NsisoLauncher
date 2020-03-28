@@ -1,15 +1,13 @@
-﻿using NsisoLauncherCore.Modules;
-using NsisoLauncherCore.Net;
+﻿using NsisoLauncherCore.Net;
 using NsisoLauncherCore.Util.Installer.Forge.Json;
 using System;
 using System.Collections.Generic;
-using System.Text;
-using static NsisoLauncherCore.Util.Installer.Forge.Json.Install;
-using static NsisoLauncherCore.PathManager;
-using System.IO;
 using System.Diagnostics;
-using System.Linq;
+using System.IO;
+using System.Text;
 using System.Text.RegularExpressions;
+using static NsisoLauncherCore.PathManager;
+using static NsisoLauncherCore.Util.Installer.Forge.Json.Install;
 
 namespace NsisoLauncherCore.Util.Installer.Forge.Actions
 {

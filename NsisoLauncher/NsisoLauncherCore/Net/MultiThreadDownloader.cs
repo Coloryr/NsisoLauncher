@@ -163,10 +163,10 @@ namespace NsisoLauncherCore.Net
             {
                 Task.WaitAll(_workers);
                 ClearDownload();
-                DownloadCompleted?.Invoke(this, new DownloadCompletedArg() 
-                { 
-                    ErrorList = _errorList, 
-                    cancel = cancellationTokenSource.IsCancellationRequested 
+                DownloadCompleted?.Invoke(this, new DownloadCompletedArg()
+                {
+                    ErrorList = _errorList,
+                    cancel = cancellationTokenSource.IsCancellationRequested
                 });
                 if (!cancellationTokenSource.IsCancellationRequested)
                     ApendDebugLog("全部下载任务已完成");

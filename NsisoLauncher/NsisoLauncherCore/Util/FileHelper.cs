@@ -1,14 +1,12 @@
-﻿using NsisoLauncherCore.Modules;
+﻿using MahApps.Metro.Controls;
+using MahApps.Metro.Controls.Dialogs;
+using NsisoLauncherCore.Modules;
 using NsisoLauncherCore.Net;
 using NsisoLauncherCore.Net.Tools;
-using System.Collections.Generic;
 using System;
+using System.Collections.Generic;
 using System.IO;
-using System.Security.Cryptography;
-using System.Text;
 using System.Threading.Tasks;
-using MahApps.Metro.Controls;
-using MahApps.Metro.Controls.Dialogs;
 
 namespace NsisoLauncherCore.Util
 {
@@ -247,7 +245,7 @@ namespace NsisoLauncherCore.Util
                 {
                     var http = new HttpRequesterAPI(TimeSpan.FromSeconds(10));
                     innerJsonStr = await http.HttpGetStringAsync(GetDownloadUrl.GetCoreJsonDownloadURL(source, version.InheritsVersion));
-                    if(innerJsonStr == null)
+                    if (innerJsonStr == null)
                     {
                         await window.ShowMessageAsync("检查错误", "检查源错误，请切换下载源后重试");
                         return new List<DownloadTask>();

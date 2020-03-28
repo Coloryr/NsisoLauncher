@@ -1,5 +1,4 @@
-﻿using NsisoLauncher;
-using NsisoLauncherCore.LaunchException;
+﻿using NsisoLauncherCore.LaunchException;
 using NsisoLauncherCore.Modules;
 using NsisoLauncherCore.Util;
 using System;
