@@ -65,6 +65,10 @@ namespace NsisoLauncherCore.Net.Head
             {
                 var http = new HttpRequesterAPI(TimeSpan.FromSeconds(10));
                 var res = await http.HttpGetAsync(url);
+                if (res == null)
+                {
+                    return new BitmapImage(new Uri("pack://application:,,,/Resource/Steve.jpg"));
+                }
                 string data = await res.Content.ReadAsStringAsync();//把流转换为字符串并显示在文本框中
                 if (res.IsSuccessStatusCode)
                 {

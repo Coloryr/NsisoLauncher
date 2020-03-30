@@ -43,15 +43,20 @@ namespace NsisoLauncherCore.Net
             else
                 ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls;
         }
-
-        private async Task<HttpResponseMessage> httpDoAsync(string uri, CancellationToken cancelToken, HttpCompletionOption option)
+        /// <summary>
+        /// 异步Get
+        /// </summary>
+        /// <param name="uri">网址</param>
+        /// <returns></returns>
+        public async Task<HttpResponseMessage> HttpGetAsync(string uri)
         {
+            httpCheck(uri);
             int a = 0;
             while (a < 5)
             {
                 try
                 {
-                    var b = await client.GetAsync(uri, option, cancelToken);
+                    var b = await client.GetAsync(uri);
                     return b;
                 }
                 catch
@@ -68,21 +73,24 @@ namespace NsisoLauncherCore.Net
         /// </summary>
         /// <param name="uri">网址</param>
         /// <returns></returns>
-        public async Task<HttpResponseMessage> HttpGetAsync(string uri)
-        {
-            httpCheck(uri);
-            return await httpDoAsync(uri, CancellationToken.None, HttpCompletionOption.ResponseHeadersRead);
-        }
-
-        /// <summary>
-        /// 异步Get
-        /// </summary>
-        /// <param name="uri">网址</param>
-        /// <returns></returns>
         public async Task<HttpResponseMessage> HttpGetAsync(string uri, CancellationToken cancelToken)
         {
             httpCheck(uri);
-            return await httpDoAsync(uri, cancelToken, HttpCompletionOption.ResponseHeadersRead);
+            int a = 0;
+            while (a < 5)
+            {
+                try
+                {
+                    var b = await client.GetAsync(uri, cancelToken);
+                    return b;
+                }
+                catch
+                {
+                    client.CancelPendingRequests();
+                    a++;
+                }
+            }
+            return null;
         }
 
         /// <summary>
@@ -93,7 +101,21 @@ namespace NsisoLauncherCore.Net
         public async Task<HttpResponseMessage> HttpGetAsync(string uri, CancellationToken cancelToken, HttpCompletionOption option)
         {
             httpCheck(uri);
-            return await httpDoAsync(uri, cancelToken, option);
+            int a = 0;
+            while (a < 5)
+            {
+                try
+                {
+                    var b = await client.GetAsync(uri, option, cancelToken);
+                    return b;
+                }
+                catch
+                {
+                    client.CancelPendingRequests();
+                    a++;
+                }
+            }
+            return null;
         }
 
         /// <summary>

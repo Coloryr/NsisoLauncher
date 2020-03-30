@@ -174,6 +174,15 @@ namespace NsisoLauncherCore.Net.MojangApi.Api
                     ErrorTag = ex.Message,
                     Exception = ex
                 };
+                if (httpResponse == null)
+                {
+                    return new Response()
+                    {
+                        RawMessage = rawMessage,
+                        IsSuccess = false,
+                        Error = error
+                    };
+                }
                 return new Response()
                 {
                     Code = httpResponse.StatusCode,
