@@ -12,7 +12,7 @@ namespace NsisoLauncher.Updata
         /// <summary>
         /// 更新信息
         /// </summary>
-        private updataOBJ UpdataObj;
+        private UpdataOBJ UpdataObj;
         /// <summary>
         /// 资源检查
         /// </summary>
@@ -26,7 +26,7 @@ namespace NsisoLauncher.Updata
                 if (res.IsSuccessStatusCode)
                 {
                     JObject json = JObject.Parse(await res.Content.ReadAsStringAsync());
-                    UpdataObj = json.ToObject<updataOBJ>();
+                    UpdataObj = json.ToObject<UpdataOBJ>();
                     if (string.IsNullOrWhiteSpace(App.Config.MainConfig.Server.UpdataCheck.Packname))
                         return this;
                     else if (App.Config.MainConfig.Server.UpdataCheck.Version != UpdataObj.Version)

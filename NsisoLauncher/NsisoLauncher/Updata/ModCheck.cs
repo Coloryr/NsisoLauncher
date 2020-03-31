@@ -13,6 +13,7 @@ namespace NsisoLauncher.Updata
         public async Task<Dictionary<string, UpdataItem>> ReadModInfo(string path)
         {
             path += @"\mods\";
+            Dictionary<string, UpdataItem> list = new Dictionary<string, UpdataItem>();
             App.LogHandler.AppendInfo("检查mod:" + path.Replace(App.Handler.GameRootPath + path, ""));
             try
             {
@@ -21,7 +22,6 @@ namespace NsisoLauncher.Updata
                     return new Dictionary<string, UpdataItem>();
                 }
                 string[] files = Directory.GetFiles(path, "*.jar");
-                Dictionary<string, UpdataItem> list = new Dictionary<string, UpdataItem>();
                 foreach (string file in files)
                 {
                     await Task.Factory.StartNew(() =>
@@ -33,13 +33,12 @@ namespace NsisoLauncher.Updata
                             list.Add(save.name, save);
                     });
                 }
-                return list;
             }
             catch (Exception e)
             {
                 App.LogHandler.AppendInfo("检查mod错误" + e.Source);
             }
-            return new Dictionary<string, UpdataItem>();
+            return list;
         }
         public UpdataItem GetModsInfo(string path, string fileName)
         {
@@ -94,8 +93,10 @@ namespace NsisoLauncher.Updata
                 {
                     mod.name = fileName.Replace(path + "\\", "");
                 }
-                IChecker checker = new MD5Checker();
-                checker.FilePath = fileName;
+                IChecker checker = new MD5Checker
+                {
+                    FilePath = fileName
+                };
                 mod.check = checker.GetFileChecksum();
                 mod.local = fileName;
                 return mod;

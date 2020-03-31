@@ -25,7 +25,6 @@ namespace NsisoLauncher.Updata
                     UpdataItem mod = new UpdataItem();
                     mod.local = FilePath;
                     mod.name = mod.filename = FilePath.Replace(path, "");
-                    mod.url = server_info.server_local + @"\resourcepacks\" + mod.filename;
                     mod.check = checker.GetFileChecksum();
                     if (list.ContainsKey(mod.name) == false)
                         list.Add(mod.name, mod);
