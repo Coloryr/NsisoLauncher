@@ -252,6 +252,7 @@ namespace NsisoLauncher.Config
                     CustomBackGroundPicture = false,
                     CustomBackGroundPictureCyclic = false,
                     CustomBackGroundPictureCyclicTime = 10000,
+                    CustomBackGroundPictureBlurEffect = true,
                     AccentColor = "Blue",
                     AppThme = "BaseLight"
                 },

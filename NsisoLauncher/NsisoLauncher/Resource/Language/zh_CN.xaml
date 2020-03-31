@@ -316,6 +316,7 @@
     <sys:String x:Key="String.Settingwindow.Custom.Backgroud.Pic.Cyc">开启自定义背景图片循环播放</sys:String>
     <sys:String x:Key="String.Settingwindow.Custom.Backgroud.Pic.Cyc.Time">循环背景图片时间设置，单位毫秒：</sys:String>
     <sys:String x:Key="String.Settingwindow.Custom.Backgroud.Sound">音量大小</sys:String>
+    <sys:String x:Key="String.Settingwindow.Custom.Backgroud.BlurEffect">高斯模糊</sys:String>
     <sys:String x:Key="String.Settingwindow.Custom.Backgroud.Text">把文件放进config文件夹即可，支持jpg和png，自定义视频启用后自定义图片和音乐不可用。</sys:String>
     <sys:String x:Key="String.Settingwindow.Custom.Game">游戏内容设置</sys:String>
     <sys:String x:Key="String.Settingwindow.Custom.Game.LaunchTitle">启动器窗口标题：</sys:String>
@@ -385,4 +386,5 @@
     <sys:String x:Key="String.Update.UpdateResources">更新材质</sys:String>
     <sys:String x:Key="String.Update.LostResources">缺失材质</sys:String>
     <sys:String x:Key="String.Update.UpdataConfig">更新配置</sys:String>
+    <sys:String x:Key="String.Update.LostConfig">丢失配置</sys:String>
 </ResourceDictionary>

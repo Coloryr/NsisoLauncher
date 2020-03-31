@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json.Linq;
+using NsisoLauncherCore;
 using NsisoLauncherCore.Net;
 using System;
 using System.Collections.Generic;
@@ -153,7 +154,40 @@ namespace NsisoLauncher.Updata
                         updataItem.url, App.Handler.GameRootPath + @"\" + updataItem.filename));
                 }
             }
-
+            if (UpdataObj.launch.Count != 0)
+            {
+                var LocalConfig = await new LaunchCheck().ReadLaunchrInfo(PathManager.BaseStorageDirectory + @"\");
+                foreach (UpdataItem updataItem in UpdataObj.launch)
+                {
+                    if (LocalConfig.ContainsKey(updataItem.name))
+                    {
+                        UpdataItem LocalConfig1 = LocalConfig[updataItem.name];
+                        if (string.Equals(LocalConfig1.check, updataItem.check, StringComparison.OrdinalIgnoreCase))
+                        {
+                            LocalConfig.Remove(updataItem.name);
+                        }
+                        else
+                        {
+                            File.Delete(LocalConfig1.local);
+                            DownloadTask.Add(new DownloadTask(App.GetResourceString("String.Update.UpdataConfig"),
+                                updataItem.url, PathManager.BaseStorageDirectory + @"\" + updataItem.filename));
+                            LocalConfig.Remove(updataItem.name);
+                        }
+                    }
+                    else
+                    {
+                        DownloadTask.Add(new DownloadTask(App.GetResourceString("String.Update.LostConfig"),
+                            updataItem.url, PathManager.BaseStorageDirectory + @"\" + updataItem.filename));
+                    }
+                }
+                if (LocalConfig.Count != 0)
+                {
+                    foreach (UpdataItem updataItem in LocalConfig.Values)
+                    {
+                        File.Delete(updataItem.local);
+                    }
+                }
+            }
             return DownloadTask;
         }
         public string getVersion()

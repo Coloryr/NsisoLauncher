@@ -439,10 +439,16 @@ namespace NsisoLauncher.Config
         /// 是否使用自定义壁纸
         /// </summary>
         public bool CustomBackGroundPicture { get; set; }
+
         /// <summary>
         /// 是否使用自定义壁纸循环
         /// </summary>
         public bool CustomBackGroundPictureCyclic { get; set; }
+
+        /// <summary>
+        /// 背景高斯模糊
+        /// </summary>
+        public bool CustomBackGroundPictureBlurEffect { get; set; }
 
         /// <summary>
         /// 是否使用自定义壁纸循环时间

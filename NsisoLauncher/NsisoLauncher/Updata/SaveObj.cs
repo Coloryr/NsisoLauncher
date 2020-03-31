@@ -35,6 +35,10 @@ namespace NsisoLauncher.Updata
         /// 配置文件压缩包
         /// </summary>
         public List<UpdataItem> resourcepacks { get; set; }
+        /// <summary>
+        /// 启动器文件
+        /// </summary>
+        public List<UpdataItem> launch { get; set; }
     }
 
     public class UpdataItem

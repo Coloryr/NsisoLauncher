@@ -222,9 +222,8 @@ namespace NsisoLauncher
             {
                 info.Verb = "runas";
             }
-            info.Arguments += "-reboot";
             Process.Start(info);
-            Current.Shutdown();
+            Current.Dispatcher.Invoke(()=>Current.Shutdown());
         }
     }
 

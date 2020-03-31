@@ -14,16 +14,14 @@ using NsisoLauncherCore.Net.MojangApi.Endpoints;
 using NsisoLauncherCore.Util;
 using System;
 using System.Collections.Generic;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Effects;
-using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 
 namespace NsisoLauncher
@@ -40,6 +38,7 @@ namespace NsisoLauncher
 
         private Timer timer;
         private bool cancalrun = false;
+        private bool checkUpdata = false;
 
         int PicNow = 0;
         int MediaNow = 0;
@@ -53,24 +52,156 @@ namespace NsisoLauncher
             App.Handler.GameExit += Handler_GameExit;
             App.MainWindow_ = this;
             CustomizeRefresh();
-            if (App.Config.MainConfig.Launcher.AutoRun)
-            {
-                Task.Factory.StartNew(() =>
-                {
-                    Thread.Sleep(1000);
-                    Application.Current.Dispatcher.Invoke(() =>
-                   {
-                       mainPanel.launchButton_Click(null, null);
-                   });
-                });
-            }
         }
 
-        private void ChangeBackPic(Uri uri)
+        public async Task launchCheckAsync()
         {
+            try
+            {
+                if (App.Config.MainConfig.Server.UpdataCheck == null)
+                {
+                    App.Config.MainConfig.Server.UpdataCheck = new Config.UpdataCheck()
+                    {
+                        Enable = false,
+                        Address = "",
+                        Packname = "modpack",
+                        Version = "0.0.0"
+                    };
+                }
+                if (App.Config.MainConfig.Server.UpdataCheck.Enable)
+                {
+                    checkUpdata = true;
+                    string newPackName = null;
+                    string newVerison = null;
+                    List<DownloadTask> losts = new List<DownloadTask>();
+                    App.LogHandler.AppendInfo("检查客户端更新...");
+                    Dispatcher.Invoke(() =>
+                    {
+                        mainPanel.launchButton.IsEnabled = false;
+                        mainPanel.launchButton.Content = App.GetResourceString("String.Mainwindow.Check.mods");
+                    });
+                    OtherCheck zipPack = new OtherCheck();
+
+                    var lostmod = await new Updata.UpdataCheck().Check();
+                    if (lostmod != null)
+                    {
+                        await Dispatcher.Invoke(async () =>
+                        {
+                            mediaElement.Close();
+                            if (await this.ShowMessageAsync(App.GetResourceString("String.Mainwindow.Check.new"),
+                            App.GetResourceString("String.Mainwindow.Check.new.ask"),
+                            MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings()
+                            {
+                                AffirmativeButtonText = App.GetResourceString("String.Base.Download"),
+                                NegativeButtonText = App.GetResourceString("String.Base.Cancel"),
+                                DefaultButtonFocus = MessageDialogResult.Affirmative
+                            }) == MessageDialogResult.Affirmative)
+                            {
+                                losts.AddRange(await lostmod.CheckUpdata(zipPack));
+                                newPackName = lostmod.getPackName();
+                                newVerison = lostmod.getVersion();
+                            }
+                        });
+                    }
+
+                    if (losts.Count != 0)
+                    {
+                        if (!App.Downloader.IsBusy)
+                        {
+                            App.Downloader.SetDownloadTasks(losts);
+                            App.Downloader.StartDownloadAsync();
+                            var downloadResult = new DownloadCompletedArg();
+                            await Dispatcher.Invoke(async () =>
+                            {
+                                downloadResult = await new DownloadWindow().ShowWhenDownloading();
+                            });
+                            if (downloadResult?.cancel == false)
+                            {
+                                if (downloadResult?.ErrorList?.Count != 0)
+                                {
+                                    foreach (KeyValuePair<DownloadTask, Exception> task in downloadResult?.ErrorList)
+                                    {
+                                        string filename = task.Key.To + ".downloadtask";
+                                        if (File.Exists(filename))
+                                            File.Delete(filename);
+                                    }
+                                    await Dispatcher.Invoke(async () =>
+                                    {
+                                        await this.ShowMessageAsync(string.Format(App.GetResourceString("String.Mainwindow.Download.Errot.Title"), downloadResult.ErrorList.Count),
+                                        App.GetResourceString("String.Mainwindow.Download.Errot.Text"));
+                                    });
+                                    return;
+                                }
+                                else
+                                {
+                                    if (zipPack != null && await zipPack?.pack())
+                                    {
+                                        App.Config.MainConfig.Server.UpdataCheck.Packname = newPackName;
+                                        App.Config.MainConfig.Server.UpdataCheck.Version = newVerison;
+                                        var Mp4Files = Directory.GetFiles(Path.GetDirectoryName(App.Config.MainConfigPath), "*.mp4");
+                                        if (Mp4Files.Length != 0)
+                                        {
+                                            App.Config.MainConfig.Customize.CustomBackGroundVedio = true;
+                                            App.Config.MainConfig.Customize.CustomBackGroundMusic = false;
+                                            App.Config.MainConfig.Customize.CustomBackGroundPicture = false;
+                                            App.Config.MainConfig.Customize.CustomBackGroundSound = 20;
+                                        }
+                                        else
+                                        {
+                                            var Mp3Files = Directory.GetFiles(Path.GetDirectoryName(App.Config.MainConfigPath), "*.mp3");
+                                            if (Mp3Files.Length != 0)
+                                            {
+                                                App.Config.MainConfig.Customize.CustomBackGroundVedio = false;
+                                                App.Config.MainConfig.Customize.CustomBackGroundMusic = true;
+                                                App.Config.MainConfig.Customize.CustomBackGroundSound = 20;
+                                            }
+                                            string[] files = Directory.GetFiles(Path.GetDirectoryName(App.Config.MainConfigPath), "*.png");
+                                            string[] files1 = Directory.GetFiles(Path.GetDirectoryName(App.Config.MainConfigPath), "*.jpg");
+                                            if (files.Length != 0 || files1.Length != 0)
+                                            {
+                                                App.Config.MainConfig.Customize.CustomBackGroundVedio = false;
+                                                App.Config.MainConfig.Customize.CustomBackGroundPicture = true;
+                                            }
+                                        }
+                                        App.Config.Save();
+                                        App.Reboot(false);
+                                    }
+                                }
+                            }
+                        }
+                        else
+                        {
+                            await Dispatcher.Invoke(async () =>
+                            {
+                                await this.ShowMessageAsync(App.GetResourceString("String.Mainwindow.Download.Busy.Title"),
+                                App.GetResourceString("String.Mainwindow.Download.Busy.Title"));
+                            });
+                            return;
+                        }
+                    }
+                    Dispatcher.Invoke(() =>
+                    {
+                        mainPanel.launchButton.IsEnabled = true;
+                        mainPanel.launchButton.Content = App.GetResourceString("String.Base.Launch");
+                    });
+                    checkUpdata = false;
+                }
+            }
+            catch(Exception e)
+            {
+
+            }
+        }
+        private void ChangeBackPic(string uri)
+        {
+            System.Drawing.Bitmap bitmap = new System.Drawing.Bitmap(uri);
+            MemoryStream stream = new MemoryStream();
+            bitmap.Save(stream, ImageFormat.Png);
+            ImageSourceConverter imageSourceConverter = new ImageSourceConverter();
             Dispatcher.Invoke(() =>
             {
-                BG.Source = new BitmapImage(uri);
+                BG.Source = (ImageSource)imageSourceConverter.ConvertFrom(stream);
+                bitmap.Dispose();
             });
             GC.Collect();
         }
@@ -84,7 +215,7 @@ namespace NsisoLauncher
             {
                 PicNow++;
             }
-            ChangeBackPic(new Uri(PicFiles[PicNow]));
+            ChangeBackPic(PicFiles[PicNow]);
         }
         public void PicCyclic()
         {
@@ -96,7 +227,7 @@ namespace NsisoLauncher
                     TimeSpan.FromMilliseconds(App.Config.MainConfig.Customize.CustomBackGroundPictureCyclicTime));
             }
             else
-                ChangeBackPic(new Uri(PicFiles[0]));
+                ChangeBackPic(PicFiles[0]);
         }
         public void Mp4Play()
         {
@@ -203,7 +334,12 @@ namespace NsisoLauncher
                     string[] icon = Directory.GetFiles(Path.GetDirectoryName(App.Config.MainConfigPath), "icon.ico");
                     if (icon.Length != 0)
                     {
-                        this.Icon = new BitmapImage(new Uri(icon[0]));
+                        System.Drawing.Bitmap bitmap = new System.Drawing.Bitmap(icon[0]);
+                        MemoryStream stream = new MemoryStream();
+                        bitmap.Save(stream, ImageFormat.Png);
+                        ImageSourceConverter imageSourceConverter = new ImageSourceConverter();
+                        Icon = (ImageSource)imageSourceConverter.ConvertFrom(stream);
+                        bitmap.Dispose();
                         ShowIconOnTitleBar = false;
                     }
                     if (files.Count() + files1.Count() != 0)
@@ -222,17 +358,21 @@ namespace NsisoLauncher
                         }
                         PicCyclic();
                         BG.Visibility = Visibility.Visible;
-                        var eff = new DropShadowEffect();
-                        eff.Color = (Color)ColorConverter.ConvertFromString("#FF000000");
-                        eff.BlurRadius = 3;
-                        eff.Opacity = 0.65;
-                        userGrid.Effect = eff;
                     }
-                    else
-                    {
-                        BG.Visibility = Visibility.Hidden;
-                        userGrid.Effect = null;
-                    }
+                }
+                if (!App.Config.MainConfig.Customize.CustomBackGroundPictureBlurEffect)
+                {
+                    var eff = new DropShadowEffect();
+                    eff.Color = (Color)ColorConverter.ConvertFromString("#FF000000");
+                    eff.BlurRadius = 3;
+                    eff.Opacity = 0.65;
+                    userGrid.Effect = eff;
+                    BlurEffect.Radius = 0;
+                }
+                else
+                {
+                    BlurEffect.Radius = 10;
+                    userGrid.Effect = null;
                 }
             }
             if (App.Config.MainConfig.User.Nide8ServerDependence)
@@ -635,10 +775,10 @@ namespace NsisoLauncher
 
                 await mainPanel.RefreshIcon();
 
-                List<DownloadTask> losts = new List<DownloadTask>();
-
                 if (cancalrun)
                     return;
+
+                List<DownloadTask> losts = new List<DownloadTask>();
 
                 App.LogHandler.AppendInfo("检查丢失的文件中...");
                 var lostDepend = await FileHelper.GetLostDependDownloadTaskAsync(
@@ -718,47 +858,6 @@ namespace NsisoLauncher
                 if (cancalrun)
                     return;
 
-                OtherCheck zipPack = null;
-                string newPackName = null;
-                string newVerison = null;
-                if (App.Config.MainConfig.Server.UpdataCheck == null)
-                {
-                    App.Config.MainConfig.Server.UpdataCheck = new Config.UpdataCheck()
-                    {
-                        Enable = false,
-                        Address = "",
-                        Packname = "modpack",
-                        Version = "0.0.0"
-                    };
-                }
-                if (App.Config.MainConfig.Server.UpdataCheck.Enable)
-                {
-                    App.LogHandler.AppendInfo("检查客户端更新...");
-                    mainPanel.launchButton.Content = App.GetResourceString("String.Mainwindow.Check.mods");
-                    zipPack = new OtherCheck();
-
-                    var lostmod = await new Updata.UpdataCheck().Check();
-                    if (lostmod != null)
-                    {
-                        if (await this.ShowMessageAsync(App.GetResourceString("String.Mainwindow.Check.new"),
-                            App.GetResourceString("String.Mainwindow.Check.new.ask"),
-                            MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings()
-                            {
-                                AffirmativeButtonText = App.GetResourceString("String.Base.Download"),
-                                NegativeButtonText = App.GetResourceString("String.Base.Cancel"),
-                                DefaultButtonFocus = MessageDialogResult.Affirmative
-                            }) == MessageDialogResult.Affirmative)
-                        {
-                            losts.AddRange(await lostmod.CheckUpdata(zipPack));
-                            newPackName = lostmod.getPackName();
-                            newVerison = lostmod.getVersion();
-                        }
-                    }
-                }
-
-                if (cancalrun)
-                    return;
-
                 if (losts.Count != 0)
                 {
                     if (!App.Downloader.IsBusy)
@@ -779,14 +878,6 @@ namespace NsisoLauncher
                                 await this.ShowMessageAsync(string.Format(App.GetResourceString("String.Mainwindow.Download.Errot.Title"), downloadResult.ErrorList.Count),
                                     App.GetResourceString("String.Mainwindow.Download.Errot.Text"));
                                 return;
-                            }
-                            else
-                            {
-                                if (zipPack != null && await zipPack?.pack())
-                                {
-                                    App.Config.MainConfig.Server.UpdataCheck.Packname = newPackName;
-                                    App.Config.MainConfig.Server.UpdataCheck.Version = newVerison;
-                                }
                             }
                         }
                     }
@@ -971,6 +1062,19 @@ namespace NsisoLauncher
                     await this.ShowMessageAsync(App.GetResourceString("String.Message.Java.Finish.Title"),
                     App.GetResourceString("String.Message.Java.Finish.Text"));
                 }
+            }
+            await Task.Factory.StartNew(async () =>
+             {
+                 await launchCheckAsync();
+             });
+            if (App.Config.MainConfig.Launcher.AutoRun)
+            {
+                await Task.Factory.StartNew(() =>
+                 {
+                     Thread.Sleep(500);
+                     while (checkUpdata) { }
+                         mainPanel.launchButton_Click(null, null);
+                 });
             }
         }
 

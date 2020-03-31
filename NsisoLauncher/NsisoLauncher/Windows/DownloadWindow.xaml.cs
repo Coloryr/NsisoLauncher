@@ -22,10 +22,10 @@ namespace NsisoLauncher.Windows
 
         public DownloadWindow(bool auto = false)
         {
-            InitializeComponent();
             App.Downloader.DownloadProgressChanged += Downloader_DownloadProgressChanged;
             App.Downloader.DownloadSpeedChanged += Downloader_DownloadSpeedChanged;
             App.Downloader.DownloadCompleted += Downloader_DownloadCompleted;
+            InitializeComponent();
             Refresh();
             if (auto)
                 time = new Timer(new TimerCallback(Time), null, 100, -1);

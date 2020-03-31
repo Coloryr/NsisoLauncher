@@ -342,6 +342,7 @@
                                     <Label x:Name="set" Content="{DynamicResource String.Settingwindow.Custom.Backgroud.Pic.Cyc.Time}" IsEnabled="False"/>
                                     <TextBox x:Name="Text" HorizontalAlignment="Left" Height="3" TextWrapping="Wrap" Text="{Binding Customize.CustomBackGroundPictureCyclicTime}" Width="132" TextChanged="TextBox_TextChanged" IsEnabled="False"/>
                                 </StackPanel>
+                                <CheckBox x:Name="checkBox4" Content="{DynamicResource String.Settingwindow.Custom.Backgroud.BlurEffect}" IsChecked="{Binding Customize.CustomBackGroundPictureBlurEffect}"/>
                                 <Grid>
                                     <Label x:Name="set1" Content="{DynamicResource String.Settingwindow.Custom.Backgroud.Sound}" IsEnabled="False"/>
                                     <Slider x:Name="Text1" HorizontalAlignment="Left" Height="16" Margin="61,5,0,4" Value="{Binding Customize.CustomBackGroundSound}" Width="132" IsEnabled="False" SmallChange="1"/>
