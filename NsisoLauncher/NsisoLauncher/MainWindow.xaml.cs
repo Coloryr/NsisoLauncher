@@ -1066,16 +1066,13 @@ namespace NsisoLauncher
             await Task.Factory.StartNew(async () =>
              {
                  await launchCheckAsync();
-             });
-            if (App.Config.MainConfig.Launcher.AutoRun)
-            {
-                await Task.Factory.StartNew(() =>
+                 if (App.Config.MainConfig.Launcher.AutoRun)
                  {
                      Thread.Sleep(500);
                      while (checkUpdata) { }
-                         mainPanel.launchButton_Click(null, null);
-                 });
-            }
+                     mainPanel.launchButton_Click(null, null);
+                 }
+             });
         }
 
         private void mainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
