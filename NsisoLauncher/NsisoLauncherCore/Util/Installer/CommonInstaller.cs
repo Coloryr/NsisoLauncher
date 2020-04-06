@@ -55,7 +55,7 @@ namespace NsisoLauncherCore.Util.Installer
             this.Options = options ?? throw new ArgumentNullException("Install options is null");
         }
 
-        public async Task BeginInstall(ProgressCallback callback, CancellationToken cancellationToken)
+        public async void BeginInstall(ProgressCallback callback, CancellationToken cancellationToken)
         {
             string installerName = Path.GetFileNameWithoutExtension(InstallerPath);
             string tempPath = string.Format("{0}\\{1}Temp", PathManager.TempDirectory, installerName);
@@ -68,13 +68,13 @@ namespace NsisoLauncherCore.Util.Installer
             string mainJson = File.ReadAllText(tempPath + "\\install_profile.json");
             JObject jObject = JObject.Parse(mainJson);
 
-            await Task.Factory.StartNew(() => BeginInstallFromJObject(callback, cancellationToken, jObject, tempPath));
+            await BeginInstallFromJObject(callback, cancellationToken, jObject, tempPath);
 
             Directory.Delete(tempPath, true);
             File.Delete(InstallerPath);
         }
 
-        public void BeginInstallFromJObject(ProgressCallback callback, CancellationToken cancellationToken, JObject jObj, string tempPath)
+        public async Task BeginInstallFromJObject(ProgressCallback callback, CancellationToken cancellationToken, JObject jObj, string tempPath)
         {
             var jsonObj = jObj.ToObject<CommonJsonObj>();
             var t = jsonObj.Install.Path.Split(':');
@@ -89,23 +89,21 @@ namespace NsisoLauncherCore.Util.Installer
             {
                 Directory.CreateDirectory(libDir);
             }
-            File.Copy(tempPath + '\\' + jsonObj.Install.FilePath, libPath, true);
-
-            string newPath = PathManager.GetJsonPath(Options.GameRootPath, jsonObj.Install.Target);
-            string newDir = Path.GetDirectoryName(newPath);
-            string jarPath = PathManager.GetJarPath(Options.GameRootPath, jsonObj.Install.Target);
-
-            if (!Directory.Exists(newDir))
+            await Task.Factory.StartNew(() =>
             {
-                Directory.CreateDirectory(newDir);
-            }
-            File.WriteAllText(newPath, jsonObj.VersionInfo.ToString());
-            File.Copy(tempPath + '\\' + jsonObj.Install.FilePath, jarPath, true);
-        }
+                File.Copy(tempPath + '\\' + jsonObj.Install.FilePath, libPath, true);
 
-        public async Task BeginInstallAsync(ProgressCallback callback, CancellationToken cancellationToken)
-        {
-            await BeginInstall(callback, cancellationToken);
+                string newPath = PathManager.GetJsonPath(Options.GameRootPath, jsonObj.Install.Target);
+                string newDir = Path.GetDirectoryName(newPath);
+                string jarPath = PathManager.GetJarPath(Options.GameRootPath, jsonObj.Install.Target);
+
+                if (!Directory.Exists(newDir))
+                {
+                    Directory.CreateDirectory(newDir);
+                }
+                File.WriteAllText(newPath, jsonObj.VersionInfo.ToString());
+                File.Copy(tempPath + '\\' + jsonObj.Install.FilePath, jarPath, true);
+            });
         }
     }
 }

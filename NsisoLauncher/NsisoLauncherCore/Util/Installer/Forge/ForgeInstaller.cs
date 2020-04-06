@@ -120,7 +120,7 @@ namespace NsisoLauncherCore.Util.Installer.Forge
             this.Options = options ?? throw new ArgumentNullException("Install options is null");
         }
 
-        public async Task BeginInstall(ProgressCallback monitor, CancellationToken cancellationToken)
+        public async void BeginInstall(ProgressCallback monitor, CancellationToken cancellationToken)
         {
             string installerName = Path.GetFileNameWithoutExtension(InstallerPath);
             string tempPath = string.Format("{0}\\{1}Temp", PathManager.TempDirectory, installerName);
@@ -136,7 +136,7 @@ namespace NsisoLauncherCore.Util.Installer.Forge
             if (jObject.ContainsKey("install") && jObject.ContainsKey("versionInfo"))
             {
                 CommonInstaller commonInstaller = new CommonInstaller(InstallerPath, Options);
-                commonInstaller.BeginInstallFromJObject(monitor, cancellationToken, jObject, tempPath);
+                await commonInstaller.BeginInstallFromJObject(monitor, cancellationToken, jObject, tempPath);
             }
             else if (jObject.ContainsKey("data") && jObject.ContainsKey("processors") && jObject.ContainsKey("libraries"))
             {
@@ -150,11 +150,6 @@ namespace NsisoLauncherCore.Util.Installer.Forge
 
             Directory.Delete(tempPath, true);
             File.Delete(InstallerPath);
-        }
-
-        public async Task BeginInstallAsync(ProgressCallback monitor, CancellationToken cancellationToken)
-        {
-            await BeginInstall(monitor, cancellationToken);
         }
     }
 }
