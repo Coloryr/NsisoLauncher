@@ -33,6 +33,10 @@ namespace NsisoLauncher.ModPack
                 {
                     if (isfind == false && theEntry.Name == "manifest.json")
                     {
+                        if (theEntry.Size < 0)
+                        {
+                            theEntry.Size = 4096 * 1024;
+                        }
                         byte[] data = new byte[theEntry.Size];
                         zip.Read(data, 0, (int)theEntry.Size);
                         string a = Encoding.Default.GetString(data);
