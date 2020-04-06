@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace NsisoLauncher.Updata
 {
-    class LaunchCheck
+    class LaunchSelfCheck
     {
-        public async Task<Dictionary<string, UpdataItem>> ReadLaunchrInfo(string path)
+        public async Task<Dictionary<string, UpdataItem>> ReadLaunchrSelfInfo(string path)
         {
             if (!Directory.Exists(path))
             {
@@ -19,7 +19,7 @@ namespace NsisoLauncher.Updata
             await Task.Factory.StartNew(() =>
             {
                 var GetFiles = new GetFiles();
-                foreach (string FilePath in GetFiles.getDirectory(path))
+                foreach (string FilePath in GetFiles.getFileName(path))
                 {
                     checker.FilePath = FilePath;
                     UpdataItem mod = new UpdataItem();

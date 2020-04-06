@@ -385,9 +385,9 @@
                                 <Label Content="{DynamicResource String.Settingwindow.Custom.Mods.Addres}"/>
                                 <TextBox TextWrapping="NoWrap" Text="{Binding Server.UpdataCheck.Address}" HorizontalAlignment="Left" Width="300"/>
                                 <Label Content="{DynamicResource String.Settingwindow.Custom.Mods.Packname}"/>
-                                <Label Content="{Binding Server.UpdataCheck.packname}" Name="Pack_Name"/>
+                                <Label Content="{Binding Server.UpdataCheck.Packname}" Name="Packname"/>
                                 <Label Content="{DynamicResource String.Settingwindow.Custom.Mods.Vision}"/>
-                                <Label Content="{Binding Server.UpdataCheck.Vision}" Name="Pack_Vision"/>
+                                <Label Content="{Binding Server.UpdataCheck.Version}" Name="Version"/>
                             </StackPanel>
                         </Expander>
                     </StackPanel>

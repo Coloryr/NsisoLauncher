@@ -29,7 +29,7 @@
     <sys:String x:Key="String.Message.EmptyLaunchVersion">您未选择启动版本</sys:String>
     <sys:String x:Key="String.Message.EmptyLaunchVersion2">请在右侧第二个启动版本栏选择您要启动的版本</sys:String>
     <sys:String x:Key="String.Message.NoJava">该电脑上未安装Java</sys:String>
-    <sys:String x:Key="String.Message.NoJava2">Minecraft依赖于Java启动，请您移步安装Java，否则将无法启动。是否自动帮您下载并启动JAVA安装包？</sys:String>
+    <sys:String x:Key="String.Message.NoJava2">Minecraft依赖于Java启动，请您移步安装Java，否则将无法启动。</sys:String>
     <sys:String x:Key="String.Message.NoFrameworkUpdate">当前电脑环境缺少KB2468871v2补丁</sys:String>
     <sys:String x:Key="String.Message.NoFrameworkUpdate2">该启动器依赖于Framework KB2468871v2补丁，您的系统由于缺少该补丁导致Nsiso启动器无法启动。您需要安装Framework KB2468871v2补丁。是否帮您打开帮助页面？否将尝试启动。</sys:String>
     <sys:String x:Key="String.Message.Java.Finish.Title">安装JAVA</sys:String>
@@ -66,6 +66,8 @@
     <sys:String x:Key="String.Mainwindow.Check.mods">检查资源更新</sys:String>
     <sys:String x:Key="String.Mainwindow.Check.new">有新版本的资源文件</sys:String>
     <sys:String x:Key="String.Mainwindow.Check.new.ask">是否更新客户端的资源文件</sys:String>
+    <sys:String x:Key="String.Mainwindow.Check.Error.Title">自动更新出错</sys:String>
+    <sys:String x:Key="String.Mainwindow.Check.Error.Text">自动更新发生了错误，请检查json文件</sys:String>
     <sys:String x:Key="String.Mainwindow.Download.Errot.Title">有{0}个文件下载补全失败</sys:String>
     <sys:String x:Key="String.Mainwindow.Download.Errot.Text">这可能是因为本地网络问题或下载源问题，您可以尝试检查网络环境或在设置中切换首选下载源。</sys:String>
     <sys:String x:Key="String.Mainwindow.Download.Busy.Title">无法下载补全</sys:String>

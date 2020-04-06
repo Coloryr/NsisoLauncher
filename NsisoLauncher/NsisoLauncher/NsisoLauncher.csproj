@@ -105,6 +105,7 @@
     <Compile Include="ModPack\GetUrl.cs" />
     <Compile Include="ModPack\manifestObj.cs" />
     <Compile Include="Updata\LaunchCheck.cs" />
+    <Compile Include="Updata\LaunchSelfCheck.cs" />
     <Compile Include="Utils\BrushColor.cs" />
     <Compile Include="Config\ConfigHandler.cs" />
     <Compile Include="Config\LauncherProfilesConfig.cs" />
@@ -124,7 +125,7 @@
     <Compile Include="Updata\ModCheck.cs" />
     <Compile Include="Updata\ResourcepacksCheck.cs" />
     <Compile Include="Updata\ScriptsCheck.cs" />
-    <Compile Include="Updata\UpdataCheck.cs" />
+    <Compile Include="Updata\UpdataCheckDo.cs" />
     <Compile Include="Updata\OtherCheck.cs" />
     <Compile Include="Utils\Converter.cs" />
     <Compile Include="Utils\DataChecker.cs" />
@@ -322,9 +323,11 @@
   <Import Project="..\NsisoLauncherCore\NsisoLauncherCore.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>ren "$(TargetPath)" "$(ProjectName)(Color_yr edit).exe"</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
-    <PreBuildEvent>del "$(TargetDir)$(ProjectName)(Color_yr edit).exe"</PreBuildEvent>
+    <PreBuildEvent>
+    </PreBuildEvent>
   </PropertyGroup>
 </Project>

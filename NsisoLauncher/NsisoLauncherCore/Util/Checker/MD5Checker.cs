@@ -24,7 +24,7 @@ namespace NsisoLauncherCore.Util.Checker
             {
                 throw new ArgumentException("检验器校验目标文件路径为空");
             }
-            FileStream file = new FileStream(FilePath, FileMode.Open);
+            FileStream file = new FileStream(FilePath, FileMode.Open, FileAccess.Read);
             try
             {
                 MD5 md5 = new MD5CryptoServiceProvider();//创建SHA1对象

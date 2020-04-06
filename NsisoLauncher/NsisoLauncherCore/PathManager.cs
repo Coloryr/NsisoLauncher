@@ -49,7 +49,7 @@ namespace NsisoLauncherCore
         /// <param name="gameRootPath">游戏根目录</param>
         /// <param name="ver">版本</param>
         /// <returns></returns>
-        public static string GetGameVersionRootDir(bool versionIsolation, string gameRootPath, Modules.MCVersion ver)
+        public static string GetGameVersionRootDir(bool versionIsolation, string gameRootPath, MCVersion ver)
         {
             if (versionIsolation)
             {

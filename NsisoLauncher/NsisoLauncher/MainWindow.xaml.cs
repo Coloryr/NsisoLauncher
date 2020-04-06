@@ -14,9 +14,11 @@ using NsisoLauncherCore.Net.MojangApi.Endpoints;
 using NsisoLauncherCore.Util;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -39,6 +41,9 @@ namespace NsisoLauncher
         private Timer timer;
         private bool cancalrun = false;
         private bool checkUpdata = false;
+
+        [System.Runtime.InteropServices.DllImport("kernel32.dll")]
+        public static extern uint WinExec(string lpCmdLine, uint uCmdShow);
 
         int PicNow = 0;
         int MediaNow = 0;
@@ -82,8 +87,8 @@ namespace NsisoLauncher
                     });
                     OtherCheck zipPack = new OtherCheck();
 
-                    var lostmod = await new Updata.UpdataCheck().Check();
-                    if (lostmod != null)
+                    var lostmod = await new UpdataCheckDo().Check();
+                    if (lostmod is UpdataCheckDo)
                     {
                         await Dispatcher.Invoke(async () =>
                         {
@@ -102,6 +107,15 @@ namespace NsisoLauncher
                                 newVerison = lostmod.getVersion();
                             }
                         });
+                    }
+                    else if (lostmod is false)
+                    {
+                        await Dispatcher.Invoke(async () =>
+                        {
+                            await this.ShowMessageAsync(App.GetResourceString("String.Mainwindow.Check.Error.Title"),
+                            App.GetResourceString("String.Mainwindow.Check.Error.Text"));
+                        });
+                        return;
                     }
 
                     if (losts.Count != 0)
@@ -130,12 +144,12 @@ namespace NsisoLauncher
                                         await this.ShowMessageAsync(string.Format(App.GetResourceString("String.Mainwindow.Download.Errot.Title"), downloadResult.ErrorList.Count),
                                         App.GetResourceString("String.Mainwindow.Download.Errot.Text"));
                                     });
-                                    return;
                                 }
                                 else
                                 {
                                     if (zipPack != null && await zipPack?.pack())
                                     {
+                                        App.Config.Read();
                                         App.Config.MainConfig.Server.UpdataCheck.Packname = newPackName;
                                         App.Config.MainConfig.Server.UpdataCheck.Version = newVerison;
                                         var Mp4Files = Directory.GetFiles(Path.GetDirectoryName(App.Config.MainConfigPath), "*.mp4");
@@ -164,8 +178,33 @@ namespace NsisoLauncher
                                             }
                                         }
                                         App.Config.Save();
-                                        App.Reboot(false);
                                     }
+                                    if (lostmod.UpdataSelf)
+                                    {
+                                        string name = Process.GetCurrentProcess().MainModule.FileName;
+                                        string newname = PathManager.BaseStorageDirectory + @"\" + "NsisoLauncher.exe";
+                                        string vBatFile = Path.GetDirectoryName(PathManager.BaseStorageDirectory) + @"\Config\Updata.bat";
+                                        using (StreamWriter vStreamWriter = new StreamWriter(vBatFile, false, Encoding.Default))
+                                        {
+                                            vStreamWriter.Write(string.Format(
+                                                ":del\r\n" +
+                                                "del \"{0}\"\r\n" +
+                                                "if exist \"{0}\" goto del\r\n" +
+                                                "if exist \"{1}\" copy \"{1}\" \"{0}\"\r\n" +
+                                                "del \"{1}\"\r\n" +
+                                                "\"{0}\"\r\n" +
+                                                "del %0\r\n", name, newname));
+                                        }
+                                        WinExec(vBatFile, 0);
+                                        Process[] proc = Process.GetProcessesByName("NsisoLauncher");
+                                        //关闭原有应用程序的所有进程 
+                                        foreach (Process pro in proc)
+                                        {
+                                            pro.Kill();
+                                        }
+                                    }
+                                    else
+                                        App.Reboot(false);
                                 }
                             }
                         }
@@ -176,7 +215,6 @@ namespace NsisoLauncher
                                 await this.ShowMessageAsync(App.GetResourceString("String.Mainwindow.Download.Busy.Title"),
                                 App.GetResourceString("String.Mainwindow.Download.Busy.Title"));
                             });
-                            return;
                         }
                     }
                     Dispatcher.Invoke(() =>
@@ -1032,36 +1070,7 @@ namespace NsisoLauncher
             {
                 var result = await this.ShowMessageAsync(App.GetResourceString("String.Message.NoJava"),
                     App.GetResourceString("String.Message.NoJava2"),
-                    MessageDialogStyle.AffirmativeAndNegative,
-                    new MetroDialogSettings()
-                    {
-                        AffirmativeButtonText = App.GetResourceString("String.Base.Yes"),
-                        NegativeButtonText = App.GetResourceString("String.Base.Cancel"),
-                        DefaultButtonFocus = MessageDialogResult.Affirmative
-                    });
-                if (result == MessageDialogResult.Affirmative)
-                {
-                    var arch = SystemTools.GetSystemArch();
-                    switch (arch)
-                    {
-                        case ArchEnum.x32:
-                            App.Downloader.SetDownloadTasks(new DownloadTask("32位JAVA安装包", @"https://bmclapi.bangbang93.com/java/jre_x86.exe", "jre_x86.exe"));
-                            App.Downloader.StartDownloadAsync();
-                            await new DownloadWindow().ShowWhenDownloading();
-                            System.Diagnostics.Process.Start("Explorer.exe", "jre_x86.exe");
-                            break;
-                        case ArchEnum.x64:
-                            App.Downloader.SetDownloadTasks(new DownloadTask("64位JAVA安装包", @"https://bmclapi.bangbang93.com/java/jre_x64.exe", "jre_x64.exe"));
-                            App.Downloader.StartDownloadAsync();
-                            await new DownloadWindow().ShowWhenDownloading();
-                            System.Diagnostics.Process.Start("Explorer.exe", "jre_x64.exe");
-                            break;
-                        default:
-                            break;
-                    }
-                    await this.ShowMessageAsync(App.GetResourceString("String.Message.Java.Finish.Title"),
-                    App.GetResourceString("String.Message.Java.Finish.Text"));
-                }
+                    MessageDialogStyle.Affirmative);
             }
             await Task.Factory.StartNew(async () =>
              {

@@ -8,16 +8,20 @@ using System.Threading.Tasks;
 
 namespace NsisoLauncher.Updata
 {
-    class UpdataCheck
+    class UpdataCheckDo
     {
         /// <summary>
         /// 更新信息
         /// </summary>
         private UpdataOBJ UpdataObj;
         /// <summary>
+        /// 更新自己
+        /// </summary>
+        public bool UpdataSelf { get; private set; } = false;
+        /// <summary>
         /// 资源检查
         /// </summary>
-        public async Task<UpdataCheck> Check()
+        public async Task<dynamic> Check()
         {
             string Url = App.Config.MainConfig.Server.UpdataCheck.Address;
             try
@@ -28,12 +32,14 @@ namespace NsisoLauncher.Updata
                 {
                     JObject json = JObject.Parse(await res.Content.ReadAsStringAsync());
                     UpdataObj = json.ToObject<UpdataOBJ>();
+                    if (UpdataObj == null)
+                        return false;
                     if (string.IsNullOrWhiteSpace(App.Config.MainConfig.Server.UpdataCheck.Packname))
                         return this;
                     else if (App.Config.MainConfig.Server.UpdataCheck.Version != UpdataObj.Version)
                         return this;
                     else
-                        return null;
+                        return true;
                 }
             }
             catch
@@ -46,7 +52,7 @@ namespace NsisoLauncher.Updata
         public async Task<List<DownloadTask>> CheckUpdata(OtherCheck pack)
         {
             List<DownloadTask> DownloadTask = new List<DownloadTask>();
-            if (UpdataObj.mods.Count != 0)
+            if (UpdataObj.mods!=null &&UpdataObj.mods.Count != 0)
             {
                 try
                 {
@@ -83,7 +89,7 @@ namespace NsisoLauncher.Updata
                     App.LogHandler.AppendFatal(e);
                 }
             }
-            if (UpdataObj.scripts.Count != 0)
+            if (UpdataObj.scripts!=null && UpdataObj.scripts.Count != 0)
             {
                 var LocalScripts = await new ScriptsCheck().ReadscriptsInfo(App.Handler.GameRootPath);
                 foreach (UpdataItem updataItem in UpdataObj.scripts)
@@ -117,7 +123,7 @@ namespace NsisoLauncher.Updata
                     }
                 }
             }
-            if (UpdataObj.resourcepacks.Count != 0)
+            if (UpdataObj.resourcepacks!=null && UpdataObj.resourcepacks.Count != 0)
             {
                 var LocalResourcepacks = await new ResourcepacksCheck().ReadresourcepacksInfo(App.Handler.GameRootPath);
                 foreach (UpdataItem updataItem in UpdataObj.resourcepacks)
@@ -145,7 +151,7 @@ namespace NsisoLauncher.Updata
                     }
                 }
             }
-            if (UpdataObj.config.Count != 0)
+            if (UpdataObj.config!=null && UpdataObj.config.Count != 0)
             {
                 foreach (UpdataItem updataItem in UpdataObj.config)
                 {
@@ -154,7 +160,7 @@ namespace NsisoLauncher.Updata
                         updataItem.url, App.Handler.GameRootPath + @"\" + updataItem.filename));
                 }
             }
-            if (UpdataObj.launch.Count != 0)
+            if (UpdataObj.launch!=null && UpdataObj.launch.Count != 0)
             {
                 var LocalConfig = await new LaunchCheck().ReadLaunchrInfo(PathManager.BaseStorageDirectory + @"\");
                 foreach (UpdataItem updataItem in UpdataObj.launch)
@@ -185,6 +191,69 @@ namespace NsisoLauncher.Updata
                     foreach (UpdataItem updataItem in LocalConfig.Values)
                     {
                         File.Delete(updataItem.local);
+                    }
+                }
+            }
+            if (UpdataObj.self != null&&UpdataObj.self.Count != 0)
+            {
+                var LocalSelf = await new LaunchSelfCheck().ReadLaunchrSelfInfo(PathManager.CurrentLauncherDirectory + @"\");
+                foreach (UpdataItem updataItem in UpdataObj.self)
+                {
+                    if (LocalSelf.ContainsKey(updataItem.name))
+                    {
+                        var updata = false;
+                        if (updataItem.name.Contains("NsisoLauncher.exe"))
+                        {
+                            updata = true;
+                        }
+                        UpdataItem LocalConfig1 = LocalSelf[updataItem.name];
+                        if (string.Equals(LocalConfig1.check, updataItem.check, StringComparison.OrdinalIgnoreCase))
+                        {
+                            LocalSelf.Remove(updataItem.name);
+                        }
+                        else
+                        {
+                            if (updata)
+                            {
+                                DownloadTask.Add(new DownloadTask(App.GetResourceString("String.Update.UpdataConfig"),
+                                    updataItem.url, PathManager.BaseStorageDirectory + @"\" + updataItem.filename));
+                                LocalSelf.Remove(updataItem.name);
+                                UpdataSelf = true;
+                            }
+                            else
+                            {
+                                try
+                                {
+                                    File.Delete(LocalConfig1.local);
+                                }
+                                catch
+                                { 
+                                    
+                                }
+                                DownloadTask.Add(new DownloadTask(App.GetResourceString("String.Update.UpdataConfig"),
+                                    updataItem.url, PathManager.BaseStorageDirectory + @"\" + updataItem.filename));
+                                LocalSelf.Remove(updataItem.name);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        DownloadTask.Add(new DownloadTask(App.GetResourceString("String.Update.LostConfig"),
+                            updataItem.url, PathManager.BaseStorageDirectory + @"\" + updataItem.filename));
+                    }
+                }
+                if (LocalSelf.Count != 0)
+                {
+                    foreach (UpdataItem updataItem in LocalSelf.Values)
+                    {
+                        try
+                        {
+                            File.Delete(updataItem.local);
+                        }
+                        catch
+                        {
+
+                        }
                     }
                 }
             }

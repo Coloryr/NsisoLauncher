@@ -39,6 +39,10 @@ namespace NsisoLauncher.Updata
         /// 启动器文件
         /// </summary>
         public List<UpdataItem> launch { get; set; }
+        /// <summary>
+        /// 启动器
+        /// </summary>
+        public List<UpdataItem> self { get; set; }
     }
 
     public class UpdataItem
