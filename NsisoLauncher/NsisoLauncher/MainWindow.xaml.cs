@@ -409,7 +409,7 @@ namespace NsisoLauncher
                 }
                 else
                 {
-                    BlurEffect.Radius = 10;
+                    BlurEffect.Radius = App.Config.MainConfig.Customize.CustomBackGroundPictureBlurEffectSize;
                     userGrid.Effect = null;
                 }
             }

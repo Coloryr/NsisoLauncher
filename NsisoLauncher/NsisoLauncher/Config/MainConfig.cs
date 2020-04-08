@@ -451,6 +451,11 @@ namespace NsisoLauncher.Config
         public bool CustomBackGroundPictureBlurEffect { get; set; }
 
         /// <summary>
+        /// 模糊程度
+        /// </summary>
+        public int CustomBackGroundPictureBlurEffectSize { get; set; }
+
+        /// <summary>
         /// 是否使用自定义壁纸循环时间
         /// </summary>
         public int CustomBackGroundPictureCyclicTime { get; set; }

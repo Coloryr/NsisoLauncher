@@ -500,6 +500,7 @@ namespace NsisoLauncher.Windows
                     set.IsEnabled = false;
                     Text.IsEnabled = false;
                 }
+                Text2.IsEnabled = checkBox4.IsChecked == true ? true : false;
             }
         }
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e)

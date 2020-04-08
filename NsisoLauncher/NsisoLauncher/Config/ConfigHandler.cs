@@ -214,8 +214,8 @@ namespace NsisoLauncher.Config
                     WindowSize = new NsisoLauncherCore.Modules.WindowSize()
                     {
                         FullScreen = false,
-                        Height = 720,
-                        Width = 1280
+                        Height = 0,
+                        Width = 0
                     },
                     ExitAfterLaunch = false,
                     AdvencedJvmArguments = "-XX:-UseAdaptiveSizePolicy -XX:-OmitStackTraceInFastThrow"
@@ -252,7 +252,8 @@ namespace NsisoLauncher.Config
                     CustomBackGroundPicture = false,
                     CustomBackGroundPictureCyclic = false,
                     CustomBackGroundPictureCyclicTime = 10000,
-                    CustomBackGroundPictureBlurEffect = true,
+                    CustomBackGroundPictureBlurEffect = false,
+                    CustomBackGroundPictureBlurEffectSize = 5,
                     AccentColor = "Blue",
                     AppThme = "BaseLight"
                 },
