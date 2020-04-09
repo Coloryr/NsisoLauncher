@@ -85,7 +85,6 @@ namespace NsisoLauncherCore.Net.Server
         /// <summary>
         /// 获取与特定格式代码相关联的颜色代码
         /// </summary>
-        public static Dictionary<char, string> MinecraftColors { get { return new Dictionary<char, string>() { { '0', "#000000" }, { '1', "#0000AA" }, { '2', "#00AA00" }, { '3', "#00AAAA" }, { '4', "#AA0000" }, { '5', "#AA00AA" }, { '6', "#FFAA00" }, { '7', "#AAAAAA" }, { '8', "#555555" }, { '9', "#5555FF" }, { 'a', "#55FF55" }, { 'b', "#55FFFF" }, { 'c', "#FF5555" }, { 'd', "#FF55FF" }, { 'e', "#FFFF55" }, { 'f', "#FFFFFF" } }; } }
 
         public enum StateType
         {
@@ -330,11 +329,18 @@ namespace NsisoLauncherCore.Net.Server
 
         private string ClearColor(string str)
         {
-            while (str.Contains('§'))
-            {
-                str = str.Remove(str.IndexOf('§'), 2);
-            }
-            return str;
+            return str
+                .Replace("§0", "").Replace("§a", "")
+                .Replace("§1", "").Replace("§b", "")
+                .Replace("§2", "").Replace("§c", "")
+                .Replace("§3", "").Replace("§d", "")
+                .Replace("§4", "").Replace("§e", "")
+                .Replace("§5", "").Replace("§f", "")
+                .Replace("§6", "").Replace("§n", "")
+                .Replace("§7", "").Replace("§m", "")
+                .Replace("§8", "").Replace("§k", "")
+                .Replace("§9", "").Replace("§r", "")
+                .Replace("§l", "");
         }
     }
 }
