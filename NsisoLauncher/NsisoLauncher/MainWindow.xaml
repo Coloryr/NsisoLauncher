@@ -43,7 +43,7 @@
             <iconPacks:PackIconFontAwesome x:Name="volumeButtonIcon" Kind="PauseSolid" />
         </Button>
 
-        <TextBlock x:Name="launchInfoBlock" TextAlignment="Right" Foreground="Gray" Margin="65,374,0,4"
+        <TextBlock x:Name="launchInfoBlock" TextAlignment="Right" Foreground="White" Margin="65,374,0,4"
                    Grid.ColumnSpan="3" FontSize="20" TextWrapping="Wrap" HorizontalAlignment="Left"/>
         <controls:ProgressRing x:Name="loadingRing" Width="24" IsActive="False" Margin="37,373,380,5" Grid.Column="1"
                                Foreground="#FFFFFFFF" Background="#00FFFFFF" BorderBrush="#00FFFFFF" Visibility="Hidden"/>
