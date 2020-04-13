@@ -17,7 +17,8 @@ namespace NsisoLauncherCore.Net.Head
             try
             {
                 isload = true;
-                string url = "https://auth2.nide8.com:233/" + args.Property["nide8ID"] + "/sessionserver/session/minecraft/profile/" + uuid;
+                string url = "https://auth2.nide8.com:233/" + args.Property["nide8ID"] +
+                    "/sessionserver/session/minecraft/profile/" + uuid;
                 img = await new HeadUtils().GetByJsonAsync(url);
                 Nide8Head.uuid = uuid;
                 return img;
