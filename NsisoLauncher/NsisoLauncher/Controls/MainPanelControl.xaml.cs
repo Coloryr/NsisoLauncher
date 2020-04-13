@@ -3,6 +3,7 @@ using NsisoLauncher.Config;
 using NsisoLauncher.Utils;
 using NsisoLauncher.Windows;
 using NsisoLauncherCore.Modules;
+using NsisoLauncherCore.Net.Head;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -177,10 +178,24 @@ namespace NsisoLauncher.Controls
                 (node.AuthModule == "online" || node1.AuthType == AuthenticationType.NIDE8);
             if (isNeedRefreshIcon)
             {
-                if (node.AuthModule == "online")
-                    await headScul.RefreshIcon_online(node.SelectProfileUUID);
+                if (node1.AuthType == AuthenticationType.MOJANG)
+                {
+                    if (OnlineHead.isload)
+                        return;
+                        await headScul.RefreshIconOnline(node.SelectProfileUUID);
+                }
                 else if (node1.AuthType == AuthenticationType.NIDE8)
-                    await headScul.RefreshIcon_nide8(node.SelectProfileUUID, node1);
+                {
+                    if (Nide8Head.isload)
+                        return;
+                    await headScul.RefreshIconNide8(node.SelectProfileUUID, node1);
+                }
+                else if (node1.AuthType != AuthenticationType.OFFLINE)
+                {
+                    if (InjectorHead.isload)
+                        return;
+                    await headScul.RefreshIconInjector(node.SelectProfileUUID, node1);
+                }
             }
         }
 
@@ -189,7 +204,7 @@ namespace NsisoLauncher.Controls
         {
             Lock(false);
             //获取启动版本
-            NsisoLauncherCore.Modules.MCVersion launchVersion = null;
+            MCVersion launchVersion = null;
             if (launchVersionCombobox.SelectedItem != null)
             {
                 launchVersion = (MCVersion)launchVersionCombobox.SelectedItem;

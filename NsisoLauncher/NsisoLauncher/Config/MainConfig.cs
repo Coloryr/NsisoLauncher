@@ -559,6 +559,11 @@ namespace NsisoLauncher.Config
         public string RegisteAddress { get; set; }
 
         /// <summary>
+        /// 皮肤网址
+        /// </summary>
+        public string SkinUrl { get; set; }
+
+        /// <summary>
         /// 使用内部浏览器
         /// </summary>
         public bool UseSelfBrowser { get; set; }

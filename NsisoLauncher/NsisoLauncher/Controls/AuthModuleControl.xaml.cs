@@ -33,23 +33,24 @@ namespace NsisoLauncher.Controls
                 saveButton.Visibility = delButton.Visibility = Visibility.Visible;
                 authmoduleNameTextbox.Text = authModule.Value.Name;
                 REGISTER_URI.Text = authModule.Value.RegisteAddress;
+                SKIN_URI.Text = authModule.Value.SkinUrl;
                 Bro_IN.IsChecked = authModule.Value.UseSelfBrowser;
                 switch (authModule.Value.AuthType)
                 {
                     case AuthenticationType.NIDE8:
                         nide8Radio.IsChecked = true;
                         authDataTextbox.Text = authModule.Value.Property["nide8ID"];
-                        Bro_IN.Visibility = REGISTER.Visibility = Visibility.Hidden;
+                        SKIN.Visibility = Bro_IN.Visibility = REGISTER.Visibility = Visibility.Hidden;
                         break;
                     case AuthenticationType.AUTHLIB_INJECTOR:
                         aiRadio.IsChecked = true;
                         authDataTextbox.Text = authModule.Value.Property["authserver"];
-                        Bro_IN.Visibility = REGISTER.Visibility = Visibility.Visible;
+                        SKIN.Visibility = Bro_IN.Visibility = REGISTER.Visibility = Visibility.Visible;
                         break;
                     case AuthenticationType.CUSTOM_SERVER:
                         customRadio.IsChecked = true;
                         authDataTextbox.Text = authModule.Value.Property["authserver"];
-                        Bro_IN.Visibility = REGISTER.Visibility = Visibility.Visible;
+                        SKIN.Visibility = Bro_IN.Visibility = REGISTER.Visibility = Visibility.Visible;
                         break;
                     default:
                         return;
@@ -163,6 +164,7 @@ namespace NsisoLauncher.Controls
                 authModule.Value.Property.Clear();
                 authModule.Value.AuthType = authenticationType;
                 authModule.Value.RegisteAddress = REGISTER_URI.Text;
+                authModule.Value.SkinUrl = SKIN_URI.Text;
                 authModule.Value.UseSelfBrowser = Bro_IN.IsChecked == true ? true : false;
                 switch (authenticationType)
                 {

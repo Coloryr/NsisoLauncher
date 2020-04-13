@@ -97,6 +97,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Net\DownloadSource.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Net\FunctionAPI\APIModules.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Net\FunctionAPI\FunctionAPIHandler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Net\Head\HeadUtils.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Net\Head\InjectorHead.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Net\MojangAPI\Api\Requester.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Net\MojangAPI\Api\Uuid.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Net\MojangAPI\Endpoints\ApiStatus.cs" />
@@ -144,7 +146,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Util\Checker\SHA256Checker.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Util\FileHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Util\GameHelper.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Util\ImageDO.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Util\Installer\CommonInstaller.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Util\Installer\Forge\Actions\PostProcessors.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Util\Installer\Forge\ForgeInstaller.cs" />

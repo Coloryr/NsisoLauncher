@@ -15,16 +15,23 @@ namespace NsisoLauncher.Controls
             InitializeComponent();
         }
 
-        public async Task RefreshIcon_online(string uuid)
+        public async Task RefreshIconOnline(string uuid)
         {
-            OnlineHead head = new OnlineHead();
+            var head = new OnlineHead();
             progressRing.IsActive = true;
             iconImage.Source = await head.GetHeadSculSource(uuid);
             progressRing.IsActive = false;
         }
-        public async Task RefreshIcon_nide8(string uuid, AuthenticationNode args)
+        public async Task RefreshIconNide8(string uuid, AuthenticationNode args)
         {
-            Nide8Head head = new Nide8Head();
+            var head = new Nide8Head();
+            progressRing.IsActive = true;
+            iconImage.Source = await head.GetHeadSculSource(uuid, args);
+            progressRing.IsActive = false;
+        }
+        public async Task RefreshIconInjector(string uuid, AuthenticationNode args)
+        {
+            var head = new InjectorHead();
             progressRing.IsActive = true;
             iconImage.Source = await head.GetHeadSculSource(uuid, args);
             progressRing.IsActive = false;
