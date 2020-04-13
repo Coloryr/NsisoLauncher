@@ -7,7 +7,8 @@
                       xmlns:userControl="clr-namespace:NsisoLauncher.Controls"
                       xmlns:util="clr-namespace:NsisoLauncher.Utils"
                       mc:Ignorable="d"
-        Title="{DynamicResource String.Settingwindow.Title}" Height="450" Width="800" WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize">
+        Title="{DynamicResource String.Settingwindow.Title}" Height="450" Width="800" 
+                      WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize">
     <Controls:MetroWindow.Resources>
         <util:BoolToOppositeBoolConverter x:Key="BoolToOppositeBoolConverter"/>
         <util:SettingDirRadioButtonConverter x:Key="SettingDirRadioButtonConverter" />
@@ -37,13 +38,16 @@
                                 <ComboBox x:Name="javaPathComboBox"
                                       IsEditable="True"
                                       IsReadOnly="True"
-                                      IsEnabled="{Binding IsChecked, Converter={StaticResource BoolToOppositeBoolConverter}, ElementName=isAutoJavaToggle}"
+                                      IsEnabled="{Binding IsChecked, Converter={StaticResource BoolToOppositeBoolConverter}, 
+                                    ElementName=isAutoJavaToggle}"
                                       DisplayMemberPath="Path"
                                       Text="{Binding Environment.JavaPath}" SelectionChanged="javaPathComboBox_SelectionChanged"
                                       />
-                                <Label x:Name="javaInfoLabel" IsEnabled="{Binding IsChecked, Converter={StaticResource BoolToOppositeBoolConverter}, ElementName=isAutoJavaToggle}"/>
+                                <Label x:Name="javaInfoLabel" IsEnabled="{Binding IsChecked, Converter={StaticResource BoolToOppositeBoolConverter}, 
+                                    ElementName=isAutoJavaToggle}"/>
                                 <Button x:Name="chooseJavaButton" Content="{DynamicResource String.Settingwindow.Env.Java.Select}" Margin="0,5,0,0"
-                                    IsEnabled="{Binding IsChecked, Converter={StaticResource BoolToOppositeBoolConverter}, ElementName=isAutoJavaToggle}" Click="chooseJavaButton_Click"
+                                    IsEnabled="{Binding IsChecked, Converter={StaticResource BoolToOppositeBoolConverter}, ElementName=isAutoJavaToggle}" 
+                                        Click="chooseJavaButton_Click"
                                     />
                             </StackPanel>
                         </Expander>
@@ -63,7 +67,8 @@
                                     UpperValueChanged="memorySlider_UpperValueChanged"
                                     LowerValueChanged="memorySlider_LowerValueChanged"
                                     Margin="0,30"/>
-                                <Label Content="{DynamicResource String.Settingwindow.Env.Memory.Min}" HorizontalAlignment="Left" Height="25" VerticalAlignment="Bottom"/>
+                                <Label Content="{DynamicResource String.Settingwindow.Env.Memory.Min}" HorizontalAlignment="Left" 
+                                       Height="25" VerticalAlignment="Bottom"/>
                                 <TextBox x:Name="minMemoryTextBox" HorizontalAlignment="Left" Height="23" Margin="88,0,0,0" TextWrapping="Wrap"
                                      Text="{Binding Path=Environment.MinMemory}"
                                      IsEnabled="{Binding Path=Environment.AutoMemory, Converter={StaticResource BoolToOppositeBoolConverter}}"
@@ -78,7 +83,8 @@
                                      InputMethod.IsInputMethodEnabled="False"
                                      MaxLength="6"
                                      HorizontalAlignment="Right" Width="60" VerticalAlignment="Bottom"/>
-                                <Label Content="{DynamicResource String.Settingwindow.Env.Memory.Max}" HorizontalAlignment="Right" Margin="0,0,61,0" VerticalAlignment="Bottom"/>
+                                <Label Content="{DynamicResource String.Settingwindow.Env.Memory.Max}" HorizontalAlignment="Right" 
+                                       Margin="0,0,61,0" VerticalAlignment="Bottom"/>
                             </Grid>
                         </Expander>
                         <Expander Header="{DynamicResource String.Settingwindow.Env.Pro}" Margin="0,0,0,5">
@@ -86,9 +92,8 @@
                                 <Label Content="{DynamicResource String.Settingwindow.Env.Pro.Agent}"/>
                                 <TextBox TextWrapping="NoWrap" Text="{Binding Environment.JavaAgent}"/>
                                 <Label Content="{DynamicResource String.Settingwindow.Env.Pro.GC}" Margin="0,5,0,0"/>
-                                <RadioButton
-                                             Content="{DynamicResource String.Settingwindow.Env.Pro.GC.G1}"
-                                    IsChecked="{Binding Environment.GCType, Converter={StaticResource SettingCGRadioButtonConverter},ConverterParameter=0}"/>
+                                <RadioButton Content="{DynamicResource String.Settingwindow.Env.Pro.GC.G1}"
+                                             IsChecked="{Binding Environment.GCType, Converter={StaticResource SettingCGRadioButtonConverter},ConverterParameter=0}"/>
                                 <RadioButton Margin="0,5,0,0"
                                              Content="{DynamicResource String.Settingwindow.Env.Pro.GC.Serial}"
                                              IsChecked="{Binding Environment.GCType, Converter={StaticResource SettingCGRadioButtonConverter},ConverterParameter=1}"/>
@@ -114,29 +119,32 @@
                                 OnLabel="{DynamicResource String.Settingwindow.Env.Root.VersionIsolationOn}"
                                 OffLabel="{DynamicResource String.Settingwindow.Env.Root.VersionIsolationOff}"
                                 Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}"
-                                IsChecked="{Binding Environment.VersionIsolation}"
-                                />
+                                IsChecked="{Binding Environment.VersionIsolation}"/>
 
                                 <Label Content="{DynamicResource String.Settingwindow.Env.Root.TypeTitle}" Margin="0,10,0,0"/>
                                 <RadioButton Margin="0,0,0,5"
-                                             Content="{DynamicResource String.Settingwindow.Env.Root.Root}" IsChecked="{Binding Path=Environment.GamePathType,
-                                    Converter={StaticResource SettingDirRadioButtonConverter},ConverterParameter=0}"/>
+                                             Content="{DynamicResource String.Settingwindow.Env.Root.Root}" 
+                                             IsChecked="{Binding Path=Environment.GamePathType,
+                                             Converter={StaticResource SettingDirRadioButtonConverter},ConverterParameter=0}"/>
                                 <RadioButton Margin="0,0,0,5"
                                              Content="{DynamicResource String.Settingwindow.Env.Root.AppData}" 
                                              IsChecked="{Binding Path=Environment.GamePathType,
-                                    Converter={StaticResource SettingDirRadioButtonConverter},ConverterParameter=1}"/>
+                                             Converter={StaticResource SettingDirRadioButtonConverter},ConverterParameter=1}"/>
                                 <RadioButton Margin="0,0,0,5" 
                                              Content="{DynamicResource String.Settingwindow.Env.Root.Programe}"
                                              IsChecked="{Binding Path=Environment.GamePathType,
-                                    Converter={StaticResource SettingDirRadioButtonConverter},ConverterParameter=2}"/>
+                                             Converter={StaticResource SettingDirRadioButtonConverter},ConverterParameter=2}"/>
                                 <RadioButton x:Name="dir_customRadio" Margin="0,0,0,5" 
                                              Content="{DynamicResource String.Settingwindow.Env.Root.Custom}"
                                              IsChecked="{Binding Path=Environment.GamePathType,
-                                    Converter={StaticResource SettingDirRadioButtonConverter},ConverterParameter=3}"/>
+                                             Converter={StaticResource SettingDirRadioButtonConverter},ConverterParameter=3}"/>
                                 <TextBox x:Name="gamedirPathTextBox"  Margin="0,0,0,5"
-                                         IsEnabled="{Binding IsChecked, ElementName=dir_customRadio}" Text="{Binding Path=Environment.GamePath}"/>
+                                         IsEnabled="{Binding IsChecked, ElementName=dir_customRadio}" 
+                                         Text="{Binding Path=Environment.GamePath}"/>
                                 <Button x:Name="gamedirChooseButton"
-                                        Content="{DynamicResource String.Settingwindow.Env.Root.Choose}" IsEnabled="{Binding IsChecked, ElementName=dir_customRadio}" Click="gamedirChooseButton_Click"/>
+                                        Content="{DynamicResource String.Settingwindow.Env.Root.Choose}" 
+                                        IsEnabled="{Binding IsChecked, ElementName=dir_customRadio}" 
+                                        Click="gamedirChooseButton_Click"/>
                             </StackPanel>
                         </Expander>
                         <Expander Header="{DynamicResource String.Settingwindow.Env.Window}" Margin="0,0,0,5">
@@ -145,13 +153,15 @@
                                          PreviewTextInput="textBox1_PreviewTextInput"
                                          InputMethod.IsInputMethodEnabled="False"
                                          Text="{Binding Environment.WindowSize.Width}" 
-                                         IsEnabled="{Binding Environment.WindowSize.FullScreen, Converter={StaticResource BoolToOppositeBoolConverter}}" Width="50"/>
+                                         IsEnabled="{Binding Environment.WindowSize.FullScreen, Converter={StaticResource BoolToOppositeBoolConverter}}" 
+                                         Width="50"/>
                                 <Label Content="{DynamicResource String.Settingwindow.Env.Window.WH}"/>
                                 <TextBox TextWrapping="Wrap"
                                          PreviewTextInput="textBox1_PreviewTextInput"
                                          InputMethod.IsInputMethodEnabled="False"
                                          Text="{Binding Environment.WindowSize.Height}"
-                                         IsEnabled="{Binding Environment.WindowSize.FullScreen, Converter={StaticResource BoolToOppositeBoolConverter}}" Width="50"/>
+                                         IsEnabled="{Binding Environment.WindowSize.FullScreen, Converter={StaticResource BoolToOppositeBoolConverter}}" 
+                                         Width="50"/>
                                 <Label Content="{DynamicResource String.Settingwindow.Env.Window.Text}" Margin="0,0,20,0"/>
                                 <CheckBox Content="{DynamicResource String.Settingwindow.Env.Window.Full}"
                                           IsChecked="{Binding Environment.WindowSize.FullScreen}"/>
@@ -159,18 +169,25 @@
                         </Expander>
                         <Expander Header="{DynamicResource String.Settingwindow.Env.AutoFill}" Margin="0,0,0,5">
                             <StackPanel>
-                                <CheckBox Content="{DynamicResource String.Settingwindow.Env.AutoFill.Lib}" IsChecked="{Binding Environment.DownloadLostDepend}" Margin="0,0,0,5"/>
-                                <CheckBox Content="{DynamicResource String.Settingwindow.Env.AutoFill.Assets}" IsChecked="{Binding Environment.DownloadLostAssets}"/>
+                                <CheckBox Content="{DynamicResource String.Settingwindow.Env.AutoFill.Lib}" 
+                                          IsChecked="{Binding Environment.DownloadLostDepend}" Margin="0,0,0,5"/>
+                                <CheckBox Content="{DynamicResource String.Settingwindow.Env.AutoFill.Assets}" 
+                                          IsChecked="{Binding Environment.DownloadLostAssets}"/>
                             </StackPanel>
                         </Expander>
                         <Expander Header="{DynamicResource String.Settingwindow.Env.Launcher}" Margin="0,0,0,5">
                             <StackPanel>
                                 <Label Content="{DynamicResource String.Settingwindow.User.Lauguage}" Margin="0,0,0,0"/>
-                                <ComboBox HorizontalAlignment="Left" Margin="0,0,0,0" Width="120" Text="{Binding Lauguage}" Name="Lauguage"/>
-                                <CheckBox Content="{DynamicResource String.Settingwindow.Env.Launcher.AutoRun}" IsChecked="{Binding Launcher.AutoRun}" Margin="0,5,0,5"/>
-                                <CheckBox Content="{DynamicResource String.Settingwindow.Env.Launcher.Exit}" IsChecked="{Binding Environment.ExitAfterLaunch}" Margin="0,0,0,5"/>
-                                <CheckBox Content="{DynamicResource String.Settingwindow.Env.NoTracking}" IsChecked="{Binding Launcher.NoTracking}" Margin="0,0,0,5"/>
-                                <CheckBox Content="{DynamicResource String.Settingwindow.Env.Launcher.DebugMode}" IsChecked="{Binding Launcher.Debug}" Margin="0,0,0,5"/>
+                                <ComboBox HorizontalAlignment="Left" Margin="0,0,0,0" Width="120" 
+                                          Text="{Binding Lauguage}" Name="Lauguage"/>
+                                <CheckBox Content="{DynamicResource String.Settingwindow.Env.Launcher.AutoRun}" 
+                                          IsChecked="{Binding Launcher.AutoRun}" Margin="0,5,0,5"/>
+                                <CheckBox Content="{DynamicResource String.Settingwindow.Env.Launcher.Exit}" 
+                                          IsChecked="{Binding Environment.ExitAfterLaunch}" Margin="0,0,0,5"/>
+                                <CheckBox Content="{DynamicResource String.Settingwindow.Env.NoTracking}" 
+                                          IsChecked="{Binding Launcher.NoTracking}" Margin="0,0,0,5"/>
+                                <CheckBox Content="{DynamicResource String.Settingwindow.Env.Launcher.DebugMode}" 
+                                          IsChecked="{Binding Launcher.Debug}" Margin="0,0,0,5"/>
                             </StackPanel>
                         </Expander>
                         <TextBlock TextWrapping="Wrap" Text="{DynamicResource String.Settingwindow.Env.Note}"/>
@@ -184,13 +201,16 @@
                             <StackPanel>
                                 <RadioButton Content="{DynamicResource String.Settingwindow.Download.Source.Mojang}"
                                              IsChecked="{Binding Download.DownloadSource,
-                                    Converter={StaticResource SettingDownloadRadioButtonConverter},ConverterParameter=0}" Margin="0,0,0,5"/>
+                                             Converter={StaticResource SettingDownloadRadioButtonConverter},ConverterParameter=0}"
+                                             Margin="0,0,0,5"/>
                                 <RadioButton Content="{DynamicResource String.Settingwindow.Download.Source.BMCLAPI}"
                                              IsChecked="{Binding Download.DownloadSource,
-                                    Converter={StaticResource SettingDownloadRadioButtonConverter},ConverterParameter=1}" Margin="0,0,0,5"/>
+                                             Converter={StaticResource SettingDownloadRadioButtonConverter},ConverterParameter=1}"
+                                             Margin="0,0,0,5"/>
                                 <RadioButton Content="{DynamicResource String.Settingwindow.Download.Source.MCBBS}"
                                              IsChecked="{Binding Download.DownloadSource,
-                                    Converter={StaticResource SettingDownloadRadioButtonConverter},ConverterParameter=2}" Margin="0,0,0,5"/>
+                                             Converter={StaticResource SettingDownloadRadioButtonConverter},ConverterParameter=2}"
+                                             Margin="0,0,0,5"/>
                             </StackPanel>
                         </Expander>
                         <Expander Header="{DynamicResource String.Settingwindow.Download.Thread}" Margin="0,0,0,5">
@@ -220,7 +240,8 @@
                         </Expander>
                         <Expander Header="{DynamicResource String.Settingwindow.Download.Advance}" Margin="0,0,0,5">
                             <StackPanel>
-                                <CheckBox Content="{DynamicResource String.Settingwindow.Download.Check}" IsChecked="{Binding Download.CheckDownloadFileHash}"/>
+                                <CheckBox Content="{DynamicResource String.Settingwindow.Download.Check}" 
+                                          IsChecked="{Binding Download.CheckDownloadFileHash}"/>
                             </StackPanel>
                         </Expander>
                     </StackPanel>
@@ -231,32 +252,42 @@
                     <ScrollViewer>
                         <StackPanel>
                             <StackPanel Orientation="Horizontal" Margin="0,5,0,5" Name="VersionChose">
-                                <Label x:Name="label6" Content="{DynamicResource String.Settingwindow.Version.ChooseText}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,1,0,0"/>
-                                <ComboBox x:Name="VersionsComboBox" Margin="5,0,5,0" VerticalAlignment="Top" DisplayMemberPath="ID" SelectionChanged="VersionsComboBox_SelectionChanged"
-                                      Width="480"/>
+                                <Label x:Name="label6" Content="{DynamicResource String.Settingwindow.Version.ChooseText}"
+                                       HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,1,0,0"/>
+                                <ComboBox x:Name="VersionsComboBox" Margin="5,0,5,0" VerticalAlignment="Top" 
+                                          DisplayMemberPath="ID" SelectionChanged="VersionsComboBox_SelectionChanged" Width="480"/>
                                 <Button x:Name="refreshVersionsButton" Content="{DynamicResource String.Settingwindow.Version.Refresh}"
-                            VerticalAlignment="Top" HorizontalAlignment="Right" Click="refreshVersionsButton_Click" Margin="0,-1,10,0" Width="131"/>
+                                        VerticalAlignment="Top" HorizontalAlignment="Right" Click="refreshVersionsButton_Click" 
+                                        Margin="0,-1,10,0" Width="131"/>
                             </StackPanel>
                             <Expander x:Name="groupBox7" Header="{DynamicResource String.Settingwindow.Version.Options}" Margin="10,0,10,5">
                                 <Grid Height="238">
-                                    <DataGrid x:Name="versionOptionsGrid" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" Margin="0,0,0,20" CellEditEnding="VersionOptionsGrid_CellEditEnding">
+                                    <DataGrid x:Name="versionOptionsGrid" AutoGenerateColumns="False" CanUserAddRows="False" 
+                                              CanUserDeleteRows="False" Margin="0,0,0,20" CellEditEnding="VersionOptionsGrid_CellEditEnding">
                                         <DataGrid.Columns>
-                                            <DataGridTextColumn Header="{DynamicResource String.Settingwindow.Version.Options.T}" Binding="{Binding Key}" IsReadOnly="True"/>
-                                            <DataGridTextColumn Header="{DynamicResource String.Settingwindow.Version.Options.V}" Binding="{Binding Value}"/>
+                                            <DataGridTextColumn Header="{DynamicResource String.Settingwindow.Version.Options.T}" 
+                                                                Binding="{Binding Key}" IsReadOnly="True"/>
+                                            <DataGridTextColumn Header="{DynamicResource String.Settingwindow.Version.Options.V}"
+                                                                Binding="{Binding Value}"/>
                                         </DataGrid.Columns>
                                     </DataGrid>
-                                    <TextBlock TextWrapping="Wrap" Text="{DynamicResource String.Settingwindow.Version.Options.Note}" VerticalAlignment="Bottom"/>
+                                    <TextBlock TextWrapping="Wrap" Text="{DynamicResource String.Settingwindow.Version.Options.Note}" 
+                                               VerticalAlignment="Bottom"/>
                                 </Grid>
                             </Expander>
                             <Expander x:Name="groupBox8" Header="{DynamicResource String.Settingwindow.Version.Optionsof}" Margin="10,0,10,5">
                                 <Grid Height="238">
-                                    <DataGrid x:Name="versionOptionsofGrid" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" Margin="0,0,0,20" CellEditEnding="VersionOptionsofGrid_CellEditEnding">
+                                    <DataGrid x:Name="versionOptionsofGrid" AutoGenerateColumns="False" CanUserAddRows="False" 
+                                              CanUserDeleteRows="False" Margin="0,0,0,20" CellEditEnding="VersionOptionsofGrid_CellEditEnding">
                                         <DataGrid.Columns>
-                                            <DataGridTextColumn Header="{DynamicResource String.Settingwindow.Version.Options.T}" Binding="{Binding Key}" IsReadOnly="True"/>
-                                            <DataGridTextColumn Header="{DynamicResource String.Settingwindow.Version.Options.V}" Binding="{Binding Value}"/>
+                                            <DataGridTextColumn Header="{DynamicResource String.Settingwindow.Version.Options.T}" 
+                                                                Binding="{Binding Key}" IsReadOnly="True"/>
+                                            <DataGridTextColumn Header="{DynamicResource String.Settingwindow.Version.Options.V}" 
+                                                                Binding="{Binding Value}"/>
                                         </DataGrid.Columns>
                                     </DataGrid>
-                                    <TextBlock TextWrapping="Wrap" Text="{DynamicResource String.Settingwindow.Version.Optionsof.Note}" VerticalAlignment="Bottom"/>
+                                    <TextBlock TextWrapping="Wrap" Text="{DynamicResource String.Settingwindow.Version.Optionsof.Note}" 
+                                               VerticalAlignment="Bottom"/>
                                 </Grid>
                             </Expander>
                         </StackPanel>
@@ -273,7 +304,8 @@
                                     <ComboBox x:Name="authModuleCombobox" Width="200" Margin="0,0,5,0"
                                     DisplayMemberPath="Value.Name" SelectionChanged="AuthModuleCombobox_SelectionChanged"
                                     SelectedValuePath="Key" ItemsSource="{Binding User.AuthenticationDic}"/>
-                                    <Button x:Name="clearAuthselectButton" Width="100" Margin="0,0,5,0" Content="{DynamicResource String.Settingwindow.User.Add}" Click="ClearAuthselectButton_Click"/>
+                                    <Button x:Name="clearAuthselectButton" Width="100" Margin="0,0,5,0" 
+                                            Content="{DynamicResource String.Settingwindow.User.Add}" Click="ClearAuthselectButton_Click"/>
                                 </StackPanel>
                                 <userControl:AuthModuleControl x:Name="authmoduleControl"/>
                             </StackPanel>
@@ -287,10 +319,19 @@
                                               DisplayMemberPath="Value.UserName"/>
                                     <Label Content="{DynamicResource String.Settingwindow.User.Text}"/>
                                 </StackPanel>
-                                <Button Style="{DynamicResource SquareButtonStyle}" Content="{DynamicResource String.Settingwindow.User.Info.UnRemember}" Margin="0,5,0,5" Click="forgetUserButton_Click"/>
-                                <Button Style="{DynamicResource SquareButtonStyle}" Content="{DynamicResource String.Settingwindow.User.Info.Clear}" Margin="0,0,0,5" Click="clearUserButton_Click"/>
-                                <Button Style="{DynamicResource SquareButtonStyle}" Content="{DynamicResource String.Settingwindow.User.Info.Del}" Margin="0,0,0,5" Click="delUserButton_Click" Background="IndianRed" Foreground="White"/>
-                                <Button Style="{DynamicResource SquareButtonStyle}" Content="{DynamicResource String.Settingwindow.User.All.DeleteAll}" Background="IndianRed" Foreground="White" Click="delAllUserButton_Click"/>
+                                <Button Style="{DynamicResource SquareButtonStyle}" 
+                                        Content="{DynamicResource String.Settingwindow.User.Info.UnRemember}" 
+                                        Margin="0,5,0,5" Click="forgetUserButton_Click"/>
+                                <Button Style="{DynamicResource SquareButtonStyle}" 
+                                        Content="{DynamicResource String.Settingwindow.User.Info.Clear}" 
+                                        Margin="0,0,0,5" Click="clearUserButton_Click"/>
+                                <Button Style="{DynamicResource SquareButtonStyle}" 
+                                        Content="{DynamicResource String.Settingwindow.User.Info.Del}" 
+                                        Margin="0,0,0,5" Click="delUserButton_Click" Background="IndianRed" Foreground="White"/>
+                                <Button Style="{DynamicResource SquareButtonStyle}" 
+                                        Content="{DynamicResource String.Settingwindow.User.All.DeleteAll}" 
+                                        Background="IndianRed" Foreground="White" 
+                                        Click="delAllUserButton_Click"/>
                             </StackPanel>
                         </Expander>
                         <Expander Header="{DynamicResource String.Settingwindow.User.All}">
@@ -299,12 +340,17 @@
                                     <Label Content="{DynamicResource String.Settingwindow.User.All.Auth}"/>
                                     <ComboBox x:Name="lockauthCombobox" Width="200" Margin="0,0,5,0"
                                     DisplayMemberPath="Value.Name" ItemsSource="{Binding User.AuthenticationDic}"              
-                                    SelectedValuePath="Key" SelectedValue="{Binding User.LockAuthName}" SelectionChanged="lockauthCombobox_SelectionChanged"/>
-                                    <Button Width="100" Content="{DynamicResource String.Settingwindow.User.All.Clear}" Click="clearAllauthButton_Click"/>
+                                    SelectedValuePath="Key" SelectedValue="{Binding User.LockAuthName}" 
+                                              SelectionChanged="lockauthCombobox_SelectionChanged"/>
+                                    <Button Width="100" Content="{DynamicResource String.Settingwindow.User.All.Clear}" 
+                                            Click="clearAllauthButton_Click"/>
                                 </StackPanel>
-                                <CheckBox Margin="0,0,0,10" Content="{DynamicResource String.Settingwindow.User.All.Nide}" IsChecked="{Binding User.Nide8ServerDependence}"
+                                <CheckBox Margin="0,0,0,10" Content="{DynamicResource String.Settingwindow.User.All.Nide}" 
+                                          IsChecked="{Binding User.Nide8ServerDependence}"
                                           Name="NIDE8_C" Visibility="Collapsed"/>
-                                <Button Style="{DynamicResource SquareButtonStyle}" Content="{DynamicResource String.Settingwindow.User.All.Delete}" Background="IndianRed" Foreground="White" Margin="0,0,0,5" Click="delAllAuthnodeButton_Click"/>
+                                <Button Style="{DynamicResource SquareButtonStyle}" 
+                                        Content="{DynamicResource String.Settingwindow.User.All.Delete}" Background="IndianRed" 
+                                        Foreground="White" Margin="0,0,0,5" Click="delAllAuthnodeButton_Click"/>
                             </StackPanel>
                         </Expander>
                     </StackPanel>
@@ -316,10 +362,12 @@
                         <Expander Header="{DynamicResource String.Settingwindow.Custom.Launch}" Margin="0,0,0,5">
                             <StackPanel>
                                 <Label Content="{DynamicResource String.Settingwindow.Custom.Color}"/>
-                                <ComboBox x:Name="AccentColorComboBox" DisplayMemberPath="Name" SelectionChanged="AccentColorComboBox_SelectionChanged"
+                                <ComboBox x:Name="AccentColorComboBox" DisplayMemberPath="Name" 
+                                          SelectionChanged="AccentColorComboBox_SelectionChanged"
                                           Text="{Binding Customize.AccentColor}" HorizontalAlignment="Left" Width="200"/>
                                 <Label Content="{DynamicResource String.Settingwindow.Custom.Main}"/>
-                                <ComboBox x:Name="appThmeComboBox" SelectionChanged="appThmeComboBox_SelectionChanged" DisplayMemberPath="Name"
+                                <ComboBox x:Name="appThmeComboBox" SelectionChanged="appThmeComboBox_SelectionChanged" 
+                                          DisplayMemberPath="Name"
                                           Text="{Binding Customize.AppThme}" HorizontalAlignment="Left" Width="200"/>
                             </StackPanel>
                         </Expander>
@@ -327,28 +375,62 @@
                         <Expander Header="{DynamicResource String.Settingwindow.Custom.Backgroud}" Margin="0,0,0,5">
                             <StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
-                                    <CheckBox x:Name="checkBox1" Content="{DynamicResource String.Settingwindow.Custom.Backgroud.Vedio}" IsChecked="{Binding Customize.CustomBackGroundVedio}" Click="CheckBox_Checked"/>
-                                    <CheckBox x:Name="checkBox1_s" Content="{DynamicResource String.Settingwindow.Custom.Backgroud.Vedio.Cyc}" Margin="5,0,0,0" IsChecked="{Binding Customize.CustomBackGroundVedioCyclic}" IsEnabled="False"/>
-                                    <CheckBox x:Name="checkBox1_r" Content="{DynamicResource String.Settingwindow.Custom.Backgroud.Vedio.Random}" Margin="5,0,0,0" IsChecked="{Binding Customize.CustomBackGroundVedioRandom}" IsEnabled="False"/>
+                                    <CheckBox x:Name="checkBox1" 
+                                              Content="{DynamicResource String.Settingwindow.Custom.Backgroud.Vedio}" 
+                                              IsChecked="{Binding Customize.CustomBackGroundVedio}" Click="CheckBox_Checked"/>
+                                    <CheckBox x:Name="checkBox1_s"
+                                              Content="{DynamicResource String.Settingwindow.Custom.Backgroud.Vedio.Cyc}" 
+                                              Margin="5,0,0,0" IsChecked="{Binding Customize.CustomBackGroundVedioCyclic}"
+                                              IsEnabled="False"/>
+                                    <CheckBox x:Name="checkBox1_r"
+                                              Content="{DynamicResource String.Settingwindow.Custom.Backgroud.Vedio.Random}"
+                                              Margin="5,0,0,0" IsChecked="{Binding Customize.CustomBackGroundVedioRandom}" 
+                                              IsEnabled="False"/>
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,2">
-                                    <CheckBox x:Name="checkBox2" Content="{DynamicResource String.Settingwindow.Custom.Backgroud.Music}" IsChecked="{Binding Customize.CustomBackGroundMusic}" Click="CheckBox_Checked"/>
-                                    <CheckBox x:Name="checkBox2_s" Content="{DynamicResource String.Settingwindow.Custom.Backgroud.Music.Cyc}" Margin="5,0,0,0" IsChecked="{Binding Customize.CustomBackGroundMusicCyclic}" IsEnabled="False"/>
-                                    <CheckBox x:Name="checkBox2_r" Content="{DynamicResource String.Settingwindow.Custom.Backgroud.Music.Random}" Margin="5,0,0,0" IsChecked="{Binding Customize.CustomBackGroundMusicRandom}" IsEnabled="False"/>
+                                    <CheckBox x:Name="checkBox2" 
+                                              Content="{DynamicResource String.Settingwindow.Custom.Backgroud.Music}" 
+                                              IsChecked="{Binding Customize.CustomBackGroundMusic}" Click="CheckBox_Checked"/>
+                                    <CheckBox x:Name="checkBox2_s"
+                                              Content="{DynamicResource String.Settingwindow.Custom.Backgroud.Music.Cyc}"
+                                              Margin="5,0,0,0" IsChecked="{Binding Customize.CustomBackGroundMusicCyclic}"
+                                              IsEnabled="False" 
+                                              Click="checkBox2_s_Check"/>
+                                    <CheckBox x:Name="checkBox2_r"
+                                              Content="{DynamicResource String.Settingwindow.Custom.Backgroud.Music.Random}"
+                                              Margin="5,0,0,0" IsChecked="{Binding Customize.CustomBackGroundMusicRandom}"
+                                              IsEnabled="False"/>
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
-                                    <CheckBox x:Name="checkBox3" Content="{DynamicResource String.Settingwindow.Custom.Backgroud.Pic}" IsChecked="{Binding Customize.CustomBackGroundPicture}" Click="CheckBox_Checked"/>
-                                    <CheckBox x:Name="checkBox3_s" Content="{DynamicResource String.Settingwindow.Custom.Backgroud.Pic.Cyc}" Margin="5,0,0,0" IsChecked="{Binding Customize.CustomBackGroundPictureCyclic}" IsEnabled="False" Click="CheckBox_Checked"/>
-                                    <Label x:Name="set" Content="{DynamicResource String.Settingwindow.Custom.Backgroud.Pic.Cyc.Time}" IsEnabled="False"/>
-                                    <TextBox x:Name="Text" HorizontalAlignment="Left" Height="3" TextWrapping="Wrap" Text="{Binding Customize.CustomBackGroundPictureCyclicTime}" Width="132" TextChanged="TextBox_TextChanged" IsEnabled="False"/>
+                                    <CheckBox x:Name="checkBox3" 
+                                              Content="{DynamicResource String.Settingwindow.Custom.Backgroud.Pic}" 
+                                              IsChecked="{Binding Customize.CustomBackGroundPicture}" Click="CheckBox_Checked"/>
+                                    <CheckBox x:Name="checkBox3_s" 
+                                              Content="{DynamicResource String.Settingwindow.Custom.Backgroud.Pic.Cyc}" 
+                                              Margin="5,0,0,0" IsChecked="{Binding Customize.CustomBackGroundPictureCyclic}" 
+                                              IsEnabled="False" Click="CheckBox_Checked"/>
+                                    <Label x:Name="set" 
+                                           Content="{DynamicResource String.Settingwindow.Custom.Backgroud.Pic.Cyc.Time}" 
+                                           IsEnabled="False"/>
+                                    <TextBox x:Name="Text" HorizontalAlignment="Left" Height="3" TextWrapping="Wrap" 
+                                             Text="{Binding Customize.CustomBackGroundPictureCyclicTime}" Width="132" 
+                                             TextChanged="TextBox_TextChanged" IsEnabled="False"/>
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal">
-                                    <CheckBox x:Name="checkBox4" Content="{DynamicResource String.Settingwindow.Custom.Backgroud.BlurEffect}" IsChecked="{Binding Customize.CustomBackGroundPictureBlurEffect}" Click="CheckBox_Checked"/>
-                                    <Slider x:Name="Text2" HorizontalAlignment="Left" Height="16" Margin="10,5,0,4" Value="{Binding Customize.CustomBackGroundPictureBlurEffectSize}" Width="132" IsEnabled="False" SmallChange="1"/>
+                                    <CheckBox x:Name="checkBox4"
+                                              Content="{DynamicResource String.Settingwindow.Custom.Backgroud.BlurEffect}" 
+                                              IsChecked="{Binding Customize.CustomBackGroundPictureBlurEffect}"
+                                              Click="CheckBox_Checked"/>
+                                    <Slider x:Name="Text2" HorizontalAlignment="Left" Height="16" Margin="10,5,0,4" 
+                                            Value="{Binding Customize.CustomBackGroundPictureBlurEffectSize}" 
+                                            Width="132" IsEnabled="False" SmallChange="1"/>
                                 </StackPanel>
                                 <Grid>
-                                    <Label x:Name="set1" Content="{DynamicResource String.Settingwindow.Custom.Backgroud.Sound}" IsEnabled="False"/>
-                                    <Slider x:Name="Text1" HorizontalAlignment="Left" Height="16" Margin="61,5,0,4" Value="{Binding Customize.CustomBackGroundSound}" Width="132" IsEnabled="False" SmallChange="1"/>
+                                    <Label x:Name="set1" Content="{DynamicResource String.Settingwindow.Custom.Backgroud.Sound}" 
+                                           IsEnabled="False"/>
+                                    <Slider x:Name="Text1" HorizontalAlignment="Left" Height="16" Margin="61,5,0,4" 
+                                            Value="{Binding Customize.CustomBackGroundSound}" Width="132" 
+                                            IsEnabled="False" SmallChange="1"/>
                                 </Grid>
                                 <Label Content="{DynamicResource String.Settingwindow.Custom.Backgroud.Text}"/>
                             </StackPanel>
@@ -367,12 +449,16 @@
 
                         <Expander Header="{DynamicResource String.Settingwindow.Custom.Server}" Margin="0,0,0,5">
                             <StackPanel>
-                                <CheckBox Content="{DynamicResource String.Settingwindow.Custom.Server.Show}" IsChecked="{Binding Server.ShowServerInfo}" Margin="0,0,0,5"/>
-                                <CheckBox Content="{DynamicResource String.Settingwindow.Custom.Server.Join}" IsChecked="{Binding Server.LaunchToServer}" Margin="0,0,0,5"/>
+                                <CheckBox Content="{DynamicResource String.Settingwindow.Custom.Server.Show}" 
+                                          IsChecked="{Binding Server.ShowServerInfo}" Margin="0,0,0,5"/>
+                                <CheckBox Content="{DynamicResource String.Settingwindow.Custom.Server.Join}" 
+                                          IsChecked="{Binding Server.LaunchToServer}" Margin="0,0,0,5"/>
                                 <Label Content="{DynamicResource String.Settingwindow.Custom.Server.Name}"/>
-                                <TextBox TextWrapping="NoWrap" Text="{Binding Server.ServerName}" HorizontalAlignment="Left" Width="300"/>
+                                <TextBox TextWrapping="NoWrap" Text="{Binding Server.ServerName}" 
+                                         HorizontalAlignment="Left" Width="300"/>
                                 <Label Content="{DynamicResource String.Settingwindow.Custom.Server.Addres}"/>
-                                <TextBox TextWrapping="NoWrap" Text="{Binding Server.Address}" HorizontalAlignment="Left" Width="300" TextChanged="TextBox_TextChanged_1"
+                                <TextBox TextWrapping="NoWrap" Text="{Binding Server.Address}" 
+                                         HorizontalAlignment="Left" Width="300" TextChanged="TextBox_TextChanged_1"
                                          Name="ServerAddres"/>
                                 <Label Content="{DynamicResource String.Settingwindow.Custom.Server.Pore}"/>
                                 <TextBox Text="{Binding Server.Port}"
@@ -384,9 +470,11 @@
                         </Expander>
                         <Expander Header="{DynamicResource String.Settingwindow.Custom.Mods}" Margin="0,0,0,5">
                             <StackPanel>
-                                <CheckBox Content="{DynamicResource String.Settingwindow.Custom.Mods.Enable}" IsChecked="{Binding Server.UpdataCheck.Enable}" Margin="0,0,0,5"/>
+                                <CheckBox Content="{DynamicResource String.Settingwindow.Custom.Mods.Enable}"
+                                          IsChecked="{Binding Server.UpdataCheck.Enable}" Margin="0,0,0,5"/>
                                 <Label Content="{DynamicResource String.Settingwindow.Custom.Mods.Addres}"/>
-                                <TextBox TextWrapping="NoWrap" Text="{Binding Server.UpdataCheck.Address}" HorizontalAlignment="Left" Width="300"/>
+                                <TextBox TextWrapping="NoWrap" Text="{Binding Server.UpdataCheck.Address}" 
+                                         HorizontalAlignment="Left" Width="300"/>
                                 <Label Content="{DynamicResource String.Settingwindow.Custom.Mods.Packname}"/>
                                 <Label Content="{Binding Server.UpdataCheck.Packname}" Name="Packname"/>
                                 <Label Content="{DynamicResource String.Settingwindow.Custom.Mods.Vision}"/>
@@ -400,36 +488,41 @@
             <TabItem Header="{DynamicResource String.Settingwindow.Custom.About}">
                 <StackPanel>
                     <TextBlock Margin="10,0" FontSize="18">
-                        启动器原来的仓库
+                        <Run Text="启动器原来的仓库 "/>
                         <Hyperlink Click="Hyperlink_Click" NavigateUri="https://github.com/Nsiso/NsisoLauncher">
                             https://github.com/Nsiso/NsisoLauncher
                         </Hyperlink>
                     </TextBlock>
-                    <TextBlock Margin="10,0" FontSize="18"><Run Text="启动器Fork后的仓库 "/><Hyperlink Click="Hyperlink_Click" NavigateUri="https://github.com/Coloryr/NsisoLauncher"><Run Text="https://github.com/Coloryr/NsisoLauncher"/></Hyperlink></TextBlock>
                     <TextBlock Margin="10,0" FontSize="18">
-                        启动器声明
+                        <Run Text="启动器Fork后的仓库 "/>
+                        <Hyperlink Click="Hyperlink_Click" NavigateUri="https://github.com/Coloryr/NsisoLauncher">
+                            <Run Text="https://github.com/Coloryr/NsisoLauncher"/>
+                        </Hyperlink>
+                    </TextBlock>
+                    <TextBlock Margin="10,0" FontSize="18">
+                        <Run Text="启动器声明 "/>
                         <Hyperlink Click="Hyperlink_Click" NavigateUri="https://github.com/Nsiso/NsisoLauncher/blob/master/README.md">
-                            https://github.com/Nsiso/NsisoLauncher/blob/master/README.md
+                            <Run Text="https://github.com/Nsiso/NsisoLauncher/blob/master/README.md"/>
                         </Hyperlink>
                     </TextBlock>
                     <TextBlock Margin="10,0" FontSize="18">
-                        启动器文档
+                        <Run Text="启动器文档 "/>
                         <Hyperlink Click="Hyperlink_Click" NavigateUri="https://github.com/Nsiso/NsisoLauncher/wiki">
-                            https://github.com/Nsiso/NsisoLauncher/wiki
+                            <Run Text="https://github.com/Nsiso/NsisoLauncher/wiki"/>
                         </Hyperlink>
                     </TextBlock>
-                    <TextBlock Margin="10,0" FontSize="24">
-                        该启动器版权由Nsiso所有
-                    </TextBlock>
+                    <TextBlock Margin="10,0" FontSize="24" Text="该启动器版权由Nsiso所有"/>
                 </StackPanel>
             </TabItem>
             <TextBox Height="35" TextWrapping="Wrap" Text="TextBox" Width="70"/>
 
         </TabControl>
         <Button x:Name="saveButton" Content="{DynamicResource String.Base.Apply}"
-                Margin="0,0,10,10" Style="{StaticResource AccentedSquareButtonStyle}" Height="35" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="120" Click="saveButton_Click"/>
+                Margin="0,0,10,10" Style="{StaticResource AccentedSquareButtonStyle}" Height="35" 
+                VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="120" Click="saveButton_Click"/>
         <Button x:Name="cancelButton" Content="{DynamicResource String.Base.Cancel}" 
-                Margin="0,0,135,10" Style="{DynamicResource SquareButtonStyle}" Height="35" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="120" Click="cancelButton_Click"/>
+                Margin="0,0,135,10" Style="{DynamicResource SquareButtonStyle}" Height="35" 
+                VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="120" Click="cancelButton_Click"/>
         <StackPanel Orientation="Horizontal" Margin="10,0,0,10" VerticalAlignment="Bottom">
             <TextBlock Opacity="0.5" TextWrapping="Wrap" Text="Nsiso Launcher(Color_yr Edit)" Height="15" Margin="0,0,10,0"/>
             <TextBlock x:Name="versionTextBlock" Opacity="0.5" TextWrapping="Wrap" Text="0.0.0.0" Height="15"/>

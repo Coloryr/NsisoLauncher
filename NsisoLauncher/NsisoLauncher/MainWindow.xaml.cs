@@ -284,7 +284,7 @@ namespace NsisoLauncher
             try
             {
                 mediaElement.Stop();
-                mediaElement.Source = new Uri(Mp3Files[App.Config.MainConfig.Customize.CustomBackGroundMusicRandom ? new Random().Next(Mp3Files.Length) : MediaNow]);
+                mediaElement.Source = new Uri(Mp3Files[App.Config.MainConfig.Customize.CustomBackGroundMusicRandom ? new Random().Next(Mp3Files.Length - 1) : MediaNow]);
                 mediaElement.Volume = (double)App.Config.MainConfig.Customize.CustomBackGroundSound / 100;
                 mediaElement.Play();
                 MediaNow = MediaNow >= Mp3Files.Length ? 0 : +1;

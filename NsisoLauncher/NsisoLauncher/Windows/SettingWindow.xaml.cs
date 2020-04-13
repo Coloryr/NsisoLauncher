@@ -76,6 +76,7 @@ namespace NsisoLauncher.Windows
                 versionOptionsofGrid.ItemsSource = await GameHelper.GetOptionsAsync(VersionOption.Type.optionsof, App.Handler, new MCVersion() { ID = "null" });
             }
             CheckBox_Checked(null, null);
+            checkBox2_s_Check(null, null);
             isload = false;
         }
 
@@ -553,6 +554,18 @@ namespace NsisoLauncher.Windows
                 App.Config.MainConfig.Server.Port = 0;
             }
             ischange = false;
+        }
+
+        private void checkBox2_s_Check(object sender, RoutedEventArgs e)
+        {
+            if (checkBox2_s.IsChecked == true)
+            {
+                checkBox2_r.IsEnabled = true;
+            }
+            else if (checkBox2_s.IsChecked == false)
+            {
+                checkBox2_r.IsEnabled = false;
+            }
         }
     }
 }
