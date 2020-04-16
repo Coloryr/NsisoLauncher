@@ -122,6 +122,7 @@ namespace NsisoLauncherCore.Util.Installer.Forge
 
         public async void BeginInstall(ProgressCallback monitor, CancellationToken cancellationToken)
         {
+            CommonInstaller.IsInstal = true;
             string installerName = Path.GetFileNameWithoutExtension(InstallerPath);
             string tempPath = string.Format("{0}\\{1}Temp", PathManager.TempDirectory, installerName);
             if (Directory.Exists(tempPath))
@@ -150,6 +151,7 @@ namespace NsisoLauncherCore.Util.Installer.Forge
 
             Directory.Delete(tempPath, true);
             File.Delete(InstallerPath);
+            CommonInstaller.IsInstal = false;
         }
     }
 }

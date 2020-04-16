@@ -12,6 +12,7 @@ using NsisoLauncherCore.Net;
 using NsisoLauncherCore.Net.MojangApi.Api;
 using NsisoLauncherCore.Net.MojangApi.Endpoints;
 using NsisoLauncherCore.Util;
+using NsisoLauncherCore.Util.Installer;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -485,6 +486,12 @@ namespace NsisoLauncher
         {
             try
             {
+                if (CommonInstaller.IsInstal)
+                {
+                    await this.ShowMessageAsync(App.GetResourceString("String.Mainwindow.Forge.Title"),
+                        App.GetResourceString("String.Mainwindow.Forge.Text"));
+                    return;
+                }
                 App.LogHandler.OnLog += (a, b) => { this.Invoke(() => { launchInfoBlock.Text = b.Message; }); };
                 Side_E.IsExpanded = false;
                 App.LogHandler.AppendInfo("检查有效数据...");

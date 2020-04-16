@@ -42,6 +42,7 @@ namespace NsisoLauncherCore.Util.Installer
 
     public class CommonInstaller : IInstaller
     {
+        public static bool IsInstal;
         public string InstallerPath { get; set; }
         public CommonInstallOptions Options { get; set; }
 
@@ -57,6 +58,7 @@ namespace NsisoLauncherCore.Util.Installer
 
         public async void BeginInstall(ProgressCallback callback, CancellationToken cancellationToken)
         {
+            IsInstal = true;
             string installerName = Path.GetFileNameWithoutExtension(InstallerPath);
             string tempPath = string.Format("{0}\\{1}Temp", PathManager.TempDirectory, installerName);
             if (Directory.Exists(tempPath))
@@ -72,6 +74,7 @@ namespace NsisoLauncherCore.Util.Installer
 
             Directory.Delete(tempPath, true);
             File.Delete(InstallerPath);
+            IsInstal = false;
         }
 
         public async Task BeginInstallFromJObject(ProgressCallback callback, CancellationToken cancellationToken, JObject jObj, string tempPath)
