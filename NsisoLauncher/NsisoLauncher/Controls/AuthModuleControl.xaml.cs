@@ -35,22 +35,33 @@ namespace NsisoLauncher.Controls
                 REGISTER_URI.Text = authModule.Value.RegisteAddress;
                 SKIN_URI.Text = authModule.Value.SkinUrl;
                 Bro_IN.IsChecked = authModule.Value.UseSelfBrowser;
+                if (authModule.Value.HeadType == HeadType.URL)
+                {
+                    SKIN_T_U.IsChecked = true;
+                }
+                else
+                {
+                    SKIN_T_J.IsChecked = true;
+                }
                 switch (authModule.Value.AuthType)
                 {
                     case AuthenticationType.NIDE8:
                         nide8Radio.IsChecked = true;
                         authDataTextbox.Text = authModule.Value.Property["nide8ID"];
-                        SKIN.Visibility = Bro_IN.Visibility = REGISTER.Visibility = Visibility.Hidden;
+                        SKIN.Visibility = Bro_IN.Visibility = REGISTER.Visibility =
+                            SKIN_TYPE.Visibility = Visibility.Hidden;
                         break;
                     case AuthenticationType.AUTHLIB_INJECTOR:
                         aiRadio.IsChecked = true;
                         authDataTextbox.Text = authModule.Value.Property["authserver"];
-                        SKIN.Visibility = Bro_IN.Visibility = REGISTER.Visibility = Visibility.Visible;
+                        SKIN.Visibility = Bro_IN.Visibility = REGISTER.Visibility =
+                            SKIN_TYPE.Visibility = Visibility.Visible;
                         break;
                     case AuthenticationType.CUSTOM_SERVER:
                         customRadio.IsChecked = true;
                         authDataTextbox.Text = authModule.Value.Property["authserver"];
-                        SKIN.Visibility = Bro_IN.Visibility = REGISTER.Visibility = Visibility.Visible;
+                        SKIN.Visibility = Bro_IN.Visibility = REGISTER.Visibility =
+                            SKIN_TYPE.Visibility = Visibility.Visible;
                         break;
                     default:
                         return;
@@ -195,6 +206,18 @@ namespace NsisoLauncher.Controls
             }
             ((SettingWindow)Window.GetWindow(this)).DeleteAuthModule(authModule);
 
+        }
+
+        private void SKIN_T_U_Checked(object sender, RoutedEventArgs e)
+        {
+            authModule.Value.HeadType = HeadType.URL;
+            SKIN_T_J.IsChecked = false;
+        }
+
+        private void SKIN_T_J_Checked(object sender, RoutedEventArgs e)
+        {
+            authModule.Value.HeadType = HeadType.JSON;
+            SKIN_T_J.IsChecked = true;
         }
     }
 }

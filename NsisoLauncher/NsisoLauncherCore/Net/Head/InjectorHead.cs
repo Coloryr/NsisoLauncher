@@ -17,8 +17,11 @@ namespace NsisoLauncherCore.Net.Head
             try
             {
                 isload = true;
-                string url = args.SkinUrl + "/"+ uuid;
-                img = await new HeadUtils().GetByJsonAsync(url);
+                string url = args.SkinUrl + uuid;
+                if (args.HeadType == HeadType.URL)
+                    img = await new HeadUtils().GetByUrl(url);
+                else
+                    img = await new HeadUtils().GetByJson(url);
                 InjectorHead.uuid = uuid;
                 return img;
             }

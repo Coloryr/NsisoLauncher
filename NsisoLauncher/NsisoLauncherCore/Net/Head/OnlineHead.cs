@@ -17,7 +17,7 @@ namespace NsisoLauncherCore.Net.Head
             {
                 isload = true;
                 string url = "https://sessionserver.mojang.com/session/minecraft/profile/" + uuid;
-                img = await new HeadUtils().GetByJsonAsync(url);
+                img = await new HeadUtils().GetByJson(url);
                 OnlineHead.uuid = uuid;
                 return img;
             }

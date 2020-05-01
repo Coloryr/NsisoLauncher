@@ -31,6 +31,11 @@
                 <Label x:Name="SKIN_HTTP" Content="{DynamicResource String.Settingwindow.AuthModule.Skin}"/>
                 <TextBox x:Name="SKIN_URI" Width="409" Margin="-1,0,0,0"/>
             </StackPanel>
+            <StackPanel Orientation="Horizontal" Name="SKIN_TYPE" Margin="0,0,0,5">
+                <Label Content="{DynamicResource String.AuthModuleControl.Head}"/>
+                <RadioButton x:Name="SKIN_T_U" Content="{DynamicResource String.AuthModuleControl.Head.Url}" Margin="0,0,10,0" Checked="SKIN_T_U_Checked"/>
+                <RadioButton x:Name="SKIN_T_J" Content="{DynamicResource String.AuthModuleControl.Head.Json}" Checked="SKIN_T_J_Checked"/>
+            </StackPanel>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,0,5">
                 <Button x:Name="addButton" Width="50" Margin="0,0,5,0" Content="{DynamicResource String.Settingwindow.AuthModule.Add}" Click="AddButton_Click"/>
                 <Button x:Name="saveButton" Width="50" Margin="0,0,5,0" Content="{DynamicResource String.Settingwindow.AuthModule.Save}" Click="SaveButton_Click" Visibility="Collapsed"/>

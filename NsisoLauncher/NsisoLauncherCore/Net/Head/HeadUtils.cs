@@ -79,7 +79,7 @@ namespace NsisoLauncherCore.Net.Head
 
             return bitmapImage;
         }
-        public async Task<BitmapImage> GetByJsonAsync(string url)
+        public async Task<BitmapImage> GetByJson(string url)
         {
             var http = new HttpRequesterAPI(TimeSpan.FromSeconds(10));
             string data = await http.HttpGetStringAsync(url);
@@ -96,6 +96,17 @@ namespace NsisoLauncherCore.Net.Head
                 var obj2 = JObject.Parse(c);
                 var textures = obj2["textures"]["SKIN"]["url"].ToString();
                 HttpResponseMessage temp = await http.HttpGetAsync(textures);
+                var img = Image.FromStream(await temp.Content.ReadAsStreamAsync());
+                return CaptureImage(img);
+            }
+            return bitmap;
+        }
+        public async Task<BitmapImage> GetByUrl(string url)
+        {
+            var http = new HttpRequesterAPI(TimeSpan.FromSeconds(10));
+            HttpResponseMessage temp = await http.HttpGetAsync(url);
+            if (temp != null)
+            {
                 var img = Image.FromStream(await temp.Content.ReadAsStreamAsync());
                 return CaptureImage(img);
             }

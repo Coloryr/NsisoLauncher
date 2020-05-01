@@ -8,7 +8,18 @@ using System.Collections.Generic;
 namespace NsisoLauncher.Config
 {
     #region Enum
+    public enum HeadType
+    {
+        /// <summary>
+        /// 直接获取图片
+        /// </summary>
+        URL,
 
+        /// <summary>
+        /// 通过JSON解密图片
+        /// </summary>
+        JSON
+    }
     public enum AuthenticationType
     {
         /// <summary>
@@ -567,6 +578,11 @@ namespace NsisoLauncher.Config
         /// 使用内部浏览器
         /// </summary>
         public bool UseSelfBrowser { get; set; }
+
+        /// <summary>
+        /// 获取头像的方式
+        /// </summary>
+        public HeadType HeadType { get; set; } = HeadType.JSON;
     }
 
     /// <summary>

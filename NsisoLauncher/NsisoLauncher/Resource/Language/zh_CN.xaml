@@ -5,6 +5,9 @@
     <sys:String x:Key="String.AuthModuleControl.Nide8">统一通行证ID：</sys:String>
     <sys:String x:Key="String.AuthModuleControl.Adress">验证地址：</sys:String>
     <sys:String x:Key="String.AuthModuleControl.Local">代理服务器地址：</sys:String>
+    <sys:String x:Key="String.AuthModuleControl.Head">获取头像方式</sys:String>
+    <sys:String x:Key="String.AuthModuleControl.Head.Url">直接得到头像图片</sys:String>
+    <sys:String x:Key="String.AuthModuleControl.Head.Json">得到JSON后解析(Mojang那种)</sys:String>
     <sys:String x:Key="String.AuthModuleControl.NoChose.Title">未选择验证模型</sys:String>
     <sys:String x:Key="String.AuthModuleControl.NoChose.Text">请选择您要使用的验证模型</sys:String>
     <sys:String x:Key="String.AuthModuleControl.NoName.Title">未填写验证模型名称</sys:String>
