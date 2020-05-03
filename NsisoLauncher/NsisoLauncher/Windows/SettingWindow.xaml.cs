@@ -466,6 +466,8 @@ namespace NsisoLauncher.Windows
             {
                 checkBox1_s.IsEnabled = false;
                 checkBox1_r.IsEnabled = false;
+                checkBox2.IsEnabled = true;
+                checkBox3.IsEnabled = true;
                 checkBox4.IsEnabled = true;
                 if (checkBox2.IsChecked == true)
                 {
