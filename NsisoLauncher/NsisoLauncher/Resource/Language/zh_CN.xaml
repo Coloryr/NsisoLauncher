@@ -237,6 +237,7 @@
     <sys:String x:Key="String.Settingwindow.Env.Pro">Java启动参数设置</sys:String>
     <sys:String x:Key="String.Settingwindow.Env.Pro.Agent">JavaAgent参数:（无需再添加-javaagent前缀）</sys:String>
     <sys:String x:Key="String.Settingwindow.Env.Pro.GC">GC类型</sys:String>
+    <sys:String x:Key="String.Settingwindow.Env.Pro.GC.None">无</sys:String>
     <sys:String x:Key="String.Settingwindow.Env.Pro.GC.G1">G1GC (Garbage First Garbage Collector)</sys:String>
     <sys:String x:Key="String.Settingwindow.Env.Pro.GC.Serial">SerialGC (串行垃圾回收器)</sys:String>
     <sys:String x:Key="String.Settingwindow.Env.Pro.GC.Paralle">ParallelGC (并行垃圾回收器)</sys:String>

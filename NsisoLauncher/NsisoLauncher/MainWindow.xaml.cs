@@ -228,7 +228,7 @@ namespace NsisoLauncher
             }
             catch(Exception e)
             {
-
+                MessageBox.Show(e.Message);
             }
         }
         private void ChangeBackPic(string uri)

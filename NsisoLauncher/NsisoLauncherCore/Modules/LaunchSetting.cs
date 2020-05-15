@@ -23,6 +23,11 @@ namespace NsisoLauncherCore.Modules
         /// 并发标记扫描垃圾回收器
         /// </summary>
         CMSGC = 3,
+
+        /// <summary>
+        /// 无
+        /// </summary>
+        None = 4
     }
 
     public enum LaunchType
