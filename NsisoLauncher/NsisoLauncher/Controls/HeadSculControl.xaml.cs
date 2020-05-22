@@ -29,7 +29,7 @@ namespace NsisoLauncher.Controls
             iconImage.Source = await head.GetHeadSculSource(uuid, args);
             progressRing.IsActive = false;
         }
-        public async Task RefreshIconInjector(string uuid, AuthenticationNode args)
+        public async Task RefreshIconInjector(UserNode uuid, AuthenticationNode args)
         {
             var head = new InjectorHead();
             progressRing.IsActive = true;

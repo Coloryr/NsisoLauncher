@@ -10,19 +10,27 @@ namespace NsisoLauncherCore.Net.Head
         public static bool isload = false;
         private static BitmapImage img;
         private static string uuid;
-        public async Task<ImageSource> GetHeadSculSource(string uuid, AuthenticationNode args)
+        public async Task<ImageSource> GetHeadSculSource(UserNode uuid, AuthenticationNode args)
         {
-            if (InjectorHead.uuid == uuid)
+            if (InjectorHead.uuid == uuid.SelectProfileUUID)
                 return img ?? HeadUtils.bitmap;
             try
             {
                 isload = true;
-                string url = args.SkinUrl + uuid;
+                string url = args.SkinUrl;
+                if (args.SkinUrl.Contains("{UUID}"))
+                {
+                    url = url.Replace("{UUID}", uuid.SelectProfileUUID);
+                }
+                else if (args.SkinUrl.Contains("{NAME}"))
+                {
+                    url = url.Replace("{NAME}", uuid.UserName);
+                }
                 if (args.HeadType == HeadType.URL)
                     img = await new HeadUtils().GetByUrl(url);
                 else
                     img = await new HeadUtils().GetByJson(url);
-                InjectorHead.uuid = uuid;
+                InjectorHead.uuid = uuid.SelectProfileUUID;
                 return img;
             }
             finally

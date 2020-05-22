@@ -194,7 +194,7 @@ namespace NsisoLauncher.Controls
                 {
                     if (InjectorHead.isload)
                         return;
-                    await headScul.RefreshIconInjector(node.SelectProfileUUID, node1);
+                    await headScul.RefreshIconInjector(node, node1);
                 }
             }
         }

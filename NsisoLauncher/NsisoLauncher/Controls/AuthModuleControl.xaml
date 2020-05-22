@@ -27,9 +27,9 @@
                 <Label x:Name="REGISTER_HTTP" Content="{DynamicResource String.Settingwindow.AuthModule.RegisteAddress}"/>
                 <TextBox x:Name="REGISTER_URI" Width="500" Margin="-1,0,0,0"/>
             </StackPanel>
-            <StackPanel x:Name="SKIN" Orientation="Horizontal" Margin="0,0,0,5">
+            <StackPanel x:Name="SKIN" Margin="0,0,0,5">
                 <Label x:Name="SKIN_HTTP" Content="{DynamicResource String.Settingwindow.AuthModule.Skin}"/>
-                <TextBox x:Name="SKIN_URI" Width="409" Margin="-1,0,0,0"/>
+                <TextBox x:Name="SKIN_URI" Width="700" Margin="10,0,80,0"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal" Name="SKIN_TYPE" Margin="0,0,0,5">
                 <Label Content="{DynamicResource String.AuthModuleControl.Head}"/>

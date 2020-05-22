@@ -85,7 +85,7 @@ namespace NsisoLauncherCore.Net.Head
             string data = await http.HttpGetStringAsync(url);
             if (data == null || data.Contains("error"))
             {
-                return bitmap;
+                return null;
             }
             var obj1 = JObject.Parse(data);
             var properties = obj1["properties"];
@@ -99,7 +99,7 @@ namespace NsisoLauncherCore.Net.Head
                 var img = Image.FromStream(await temp.Content.ReadAsStreamAsync());
                 return CaptureImage(img);
             }
-            return bitmap;
+            return null;
         }
         public async Task<BitmapImage> GetByUrl(string url)
         {
@@ -110,7 +110,7 @@ namespace NsisoLauncherCore.Net.Head
                 var img = Image.FromStream(await temp.Content.ReadAsStreamAsync());
                 return CaptureImage(img);
             }
-            return bitmap;
+            return null;
         }
     }
 }
