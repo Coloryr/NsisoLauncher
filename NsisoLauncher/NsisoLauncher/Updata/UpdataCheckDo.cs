@@ -18,6 +18,23 @@ namespace NsisoLauncher.Updata
         /// 更新自己
         /// </summary>
         public bool UpdataSelf { get; private set; } = false;
+
+        private bool CheckVersion()
+        {
+            if (string.IsNullOrWhiteSpace(UpdataObj.LastVersion))
+                return true;
+            string oldVersion = App.Config.MainConfig.Server.UpdataCheck.Version.Replace(".", "");
+            bool b = int.TryParse(oldVersion, out int a);
+            if (b == false)
+                return false;
+            b = int.TryParse(UpdataObj.LastVersion.Replace(".", ""), out int c);
+            if (b == false)
+                return false;
+            if (c > a)
+                return false;
+            return true;
+        }
+
         /// <summary>
         /// 资源检查
         /// </summary>
@@ -33,9 +50,11 @@ namespace NsisoLauncher.Updata
                     JObject json = JObject.Parse(await res.Content.ReadAsStringAsync());
                     UpdataObj = json.ToObject<UpdataOBJ>();
                     if (UpdataObj == null)
-                        return false;
+                        return true;
                     if (string.IsNullOrWhiteSpace(App.Config.MainConfig.Server.UpdataCheck.Packname))
                         return this;
+                    else if (!CheckVersion())
+                        return false;
                     else if (App.Config.MainConfig.Server.UpdataCheck.Version != UpdataObj.Version)
                         return this;
                     else

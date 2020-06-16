@@ -20,6 +20,10 @@ namespace NsisoLauncher.Updata
         /// </summary>
         public string Version { get; set; }
         /// <summary>
+        /// 最低版本要求
+        /// </summary>
+        public string LastVersion { get; set; }
+        /// <summary>
         /// mod列表
         /// </summary>
         public Dictionary<string, UpdataItem> mods { get; set; }

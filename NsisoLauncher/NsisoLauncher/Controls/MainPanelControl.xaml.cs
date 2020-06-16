@@ -175,7 +175,7 @@ namespace NsisoLauncher.Controls
             if (node == null || node1 == null)
                 return;
             bool isNeedRefreshIcon = !string.IsNullOrWhiteSpace(node.SelectProfileUUID) &&
-                (node.AuthModule == "online" || node1.AuthType == AuthenticationType.NIDE8);
+                (node1.AuthType != AuthenticationType.OFFLINE);
             if (isNeedRefreshIcon)
             {
                 if (node1.AuthType == AuthenticationType.MOJANG)

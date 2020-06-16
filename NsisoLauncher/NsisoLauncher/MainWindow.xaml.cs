@@ -109,12 +109,21 @@ namespace NsisoLauncher
                             }
                         });
                     }
-                    else if (lostmod is false)
+                    else if (lostmod is true)
                     {
                         await Dispatcher.Invoke(async () =>
                         {
                             await this.ShowMessageAsync(App.GetResourceString("String.Mainwindow.Check.Error.Title"),
                             App.GetResourceString("String.Mainwindow.Check.Error.Text"));
+                        });
+                        return;
+                    }
+                    else if (lostmod is false)
+                    {
+                        await Dispatcher.Invoke(async () =>
+                        {
+                            await this.ShowMessageAsync(App.GetResourceString("String.Mainwindow.Check.Error1.Title"),
+                            App.GetResourceString("String.Mainwindow.Check.Error1.Text"));
                         });
                         return;
                     }
