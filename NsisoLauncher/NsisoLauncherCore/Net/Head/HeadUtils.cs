@@ -85,21 +85,26 @@ namespace NsisoLauncherCore.Net.Head
             string data = await http.HttpGetStringAsync(url);
             if (data == null || data.Contains("error"))
             {
-                return null;
+                return bitmap;
             }
             var obj1 = JObject.Parse(data);
             var properties = obj1["properties"];
             byte[] inArray = Convert.FromBase64String(properties[0]["value"].ToString());
             string c = Encoding.UTF8.GetString(inArray);
-            if (c != "")
+            if (!string.IsNullOrWhiteSpace(c))
             {
                 var obj2 = JObject.Parse(c);
-                var textures = obj2["textures"]["SKIN"]["url"].ToString();
-                HttpResponseMessage temp = await http.HttpGetAsync(textures);
-                var img = Image.FromStream(await temp.Content.ReadAsStreamAsync());
-                return CaptureImage(img);
+                var obj3 = obj2["textures"];
+                if (obj3.HasValues)
+                {
+                    var textures = obj3["SKIN"]["url"].ToString();
+                    HttpResponseMessage temp = await http.HttpGetAsync(textures);
+                    var img = Image.FromStream(await temp.Content.ReadAsStreamAsync());
+                    return CaptureImage(img);
+                }
+                return bitmap;
             }
-            return null;
+            return bitmap;
         }
         public async Task<BitmapImage> GetByUrl(string url)
         {
@@ -110,7 +115,7 @@ namespace NsisoLauncherCore.Net.Head
                 var img = Image.FromStream(await temp.Content.ReadAsStreamAsync());
                 return CaptureImage(img);
             }
-            return null;
+            return bitmap;
         }
     }
 }
