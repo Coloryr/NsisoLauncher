@@ -285,7 +285,9 @@ namespace NsisoLauncher
                 mediaElement.Source = new Uri(Mp4Files[App.Config.MainConfig.Customize.CustomBackGroundVedioRandom ? new Random().Next(Mp4Files.Length) : MediaNow]);
                 mediaElement.Volume = (double)App.Config.MainConfig.Customize.CustomBackGroundSound / 100;
                 mediaElement.Play();
-                MediaNow = MediaNow >= Mp4Files.Length ? 0 : +1;
+                MediaNow++;
+                if (MediaNow >= Mp4Files.Length)
+                    MediaNow = 0;
             }
             catch (Exception) { }
         }
@@ -297,7 +299,9 @@ namespace NsisoLauncher
                 mediaElement.Source = new Uri(Mp3Files[App.Config.MainConfig.Customize.CustomBackGroundMusicRandom ? new Random().Next(Mp3Files.Length - 1) : MediaNow]);
                 mediaElement.Volume = (double)App.Config.MainConfig.Customize.CustomBackGroundSound / 100;
                 mediaElement.Play();
-                MediaNow = MediaNow >= Mp3Files.Length ? 0 : +1;
+                MediaNow++;
+                if (MediaNow >= Mp3Files.Length)
+                    MediaNow = 0;
             }
             catch (Exception) { }
         }
@@ -305,7 +309,7 @@ namespace NsisoLauncher
         {
             if (Mp4Files?.Length != 0 && App.Config.MainConfig.Customize.CustomBackGroundVedioCyclic)
                 Mp4Play();
-            else if (App.Config.MainConfig.Customize.CustomBackGroundMusicCyclic)
+            else if (Mp3Files?.Length != 0 && App.Config.MainConfig.Customize.CustomBackGroundMusicCyclic)
                 Mp3Play();
         }
         private async void MainPanel_Launch(object sender, Controls.LaunchEventArgs obj)
