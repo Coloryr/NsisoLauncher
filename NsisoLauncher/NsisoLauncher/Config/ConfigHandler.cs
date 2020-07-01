@@ -254,8 +254,7 @@ namespace NsisoLauncher.Config
                     CustomBackGroundPictureCyclicTime = 10000,
                     CustomBackGroundPictureBlurEffect = false,
                     CustomBackGroundPictureBlurEffectSize = 5,
-                    AccentColor = "Blue",
-                    AppThme = "BaseLight"
+                    AppThme = "Light.Blue"
                 },
                 ConfigVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString(),
                 Lauguage = "中文"

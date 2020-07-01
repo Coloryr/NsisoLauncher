@@ -34,7 +34,7 @@ namespace NsisoLauncher.Controls
             InitializeComponent();
             FirstBinding();
             Refresh();
-            APP_Color();
+            APPColor();
             DataContext = this;
         }
 
@@ -287,7 +287,7 @@ namespace NsisoLauncher.Controls
             App.Lauguage();
             Refresh();
             App.MainWindow_.CustomizeRefresh();
-            APP_Color();
+            APPColor();
         }
 
         private void addAuthButton_Click(object sender, RoutedEventArgs e)
@@ -328,7 +328,7 @@ namespace NsisoLauncher.Controls
             }
             await RefreshIcon();
         }
-        public void APP_Color()
+        public void APPColor()
         {
             BrushColor get = new BrushColor();
             Brush b = get.GetBursh();
@@ -342,6 +342,16 @@ namespace NsisoLauncher.Controls
                 downloadButton.Background = b;
                 launchButton.Background = b;
                 PasswordBox.Background = b;
+
+                
+            }
+
+            b = get.GetLDBursh();
+            if (b != null)
+            {
+                launchVersionCombobox.BorderBrush = b;
+                authTypeCombobox.BorderBrush = b;
+                userComboBox.BorderBrush = b;
             }
         }
         private void AuthTypeCombobox_SelectionChanged(object sender, SelectionChangedEventArgs e)

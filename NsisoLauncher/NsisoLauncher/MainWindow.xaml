@@ -34,7 +34,7 @@
         <Button Margin="265,145,0,0" VerticalAlignment="Top" Height="100" Name="Side" Click="Side_Click" Grid.Column="2"/>
         <userControl:ServerInfoControl x:Name="serverInfoControl" Margin="5,5,0,0" VerticalAlignment="Top" Grid.ColumnSpan="1" Grid.Column="1" Visibility="Hidden"/>
 
-        <Button x:Name="volumeButton" Style ="{DynamicResource MahApps.Metro.Styles.MetroCircleButtonStyle}"
+        <Button x:Name="volumeButton" Style ="{DynamicResource MahApps.Styles.Button.Circle}"
                 Width="30" Height="30" Margin="0,373,409,0" VerticalAlignment="Top" HorizontalAlignment="Right"
                 BorderBrush="Black" Foreground="Black" Click="volumeButton_Click" Grid.Column="1" Visibility="Hidden">
             <Button.Effect>

@@ -18,9 +18,6 @@
         <util:StringToIntConverter x:Key="StringToIntConverter" />
     </Controls:MetroWindow.Resources>
     <Grid>
-        <Grid.Resources>
-            <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.AnimatedTabControl.xaml" />
-        </Grid.Resources>
         <TabControl x:Name="tabControl" Margin="0,0,0,50">
             <TabItem Header="{DynamicResource String.Settingwindow.Env}">
                 <ScrollViewer>
@@ -29,24 +26,23 @@
                             <StackPanel>
                                 <Controls:ToggleSwitch
                                 x:Name="isAutoJavaToggle"
-                                OnLabel="{DynamicResource String.Settingwindow.Env.Java.AutoOn}"
-                                OffLabel="{DynamicResource String.Settingwindow.Env.Java.AutoOff}"
-                                Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}"
-                                IsChecked="{Binding Path=Environment.AutoJava}"
+                                OnContentStringFormat="{DynamicResource String.Settingwindow.Env.Java.AutoOn}"
+                                OffContentStringFormat="{DynamicResource String.Settingwindow.Env.Java.AutoOff}"
+                                IsOn="{Binding Path=Environment.AutoJava}"
                                 />
                                 <Label Content="{DynamicResource String.Settingwindow.Env.Java.Path}" Margin="0,10,0,0"/>
                                 <ComboBox x:Name="javaPathComboBox"
                                       IsEditable="True"
                                       IsReadOnly="True"
-                                      IsEnabled="{Binding IsChecked, Converter={StaticResource BoolToOppositeBoolConverter}, 
+                                      IsEnabled="{Binding IsOn, Converter={StaticResource BoolToOppositeBoolConverter}, 
                                     ElementName=isAutoJavaToggle}"
                                       DisplayMemberPath="Path"
                                       Text="{Binding Environment.JavaPath}" SelectionChanged="javaPathComboBox_SelectionChanged"
                                       />
-                                <Label x:Name="javaInfoLabel" IsEnabled="{Binding IsChecked, Converter={StaticResource BoolToOppositeBoolConverter}, 
+                                <Label x:Name="javaInfoLabel" IsEnabled="{Binding IsOn, Converter={StaticResource BoolToOppositeBoolConverter}, 
                                     ElementName=isAutoJavaToggle}"/>
                                 <Button x:Name="chooseJavaButton" Content="{DynamicResource String.Settingwindow.Env.Java.Select}" Margin="0,5,0,0"
-                                    IsEnabled="{Binding IsChecked, Converter={StaticResource BoolToOppositeBoolConverter}, ElementName=isAutoJavaToggle}" 
+                                    IsEnabled="{Binding IsOn, Converter={StaticResource BoolToOppositeBoolConverter}, ElementName=isAutoJavaToggle}" 
                                         Click="chooseJavaButton_Click"
                                     />
                             </StackPanel>
@@ -54,10 +50,9 @@
                         <Expander Header="{DynamicResource String.Settingwindow.Env.Memory}" Margin="0,0,0,5">
                             <Grid >
                                 <Controls:ToggleSwitch 
-                                    Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}"
-                                    OnLabel="{DynamicResource String.Settingwindow.Env.Memory.AutoOn}"
-                                    OffLabel="{DynamicResource String.Settingwindow.Env.Memory.AutoOff}"
-                                    IsChecked="{Binding Path=Environment.AutoMemory}"
+                                    OnContentStringFormat="{DynamicResource String.Settingwindow.Env.Memory.AutoOn}"
+                                    OffContentStringFormat="{DynamicResource String.Settingwindow.Env.Memory.AutoOff}"
+                                    IsOn="{Binding Path=Environment.AutoMemory}"
                                     VerticalAlignment="Top" />
                                 <Controls:RangeSlider x:Name="memorySlider"
                                     IsSnapToTickEnabled="True"
@@ -118,10 +113,9 @@
                         <Expander Header="{DynamicResource String.Settingwindow.Env.Root}" Margin="0,0,0,5">
                             <StackPanel>
                                 <Controls:ToggleSwitch
-                                OnLabel="{DynamicResource String.Settingwindow.Env.Root.VersionIsolationOn}"
-                                OffLabel="{DynamicResource String.Settingwindow.Env.Root.VersionIsolationOff}"
-                                Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}"
-                                IsChecked="{Binding Environment.VersionIsolation}"/>
+                                OnContentStringFormat="{DynamicResource String.Settingwindow.Env.Root.VersionIsolationOn}"
+                                OffContentStringFormat="{DynamicResource String.Settingwindow.Env.Root.VersionIsolationOff}"
+                                IsOn="{Binding Environment.VersionIsolation}"/>
 
                                 <Label Content="{DynamicResource String.Settingwindow.Env.Root.TypeTitle}" Margin="0,10,0,0"/>
                                 <RadioButton Margin="0,0,0,5"
@@ -363,10 +357,6 @@
                     <StackPanel x:Name="customGrid" Margin="10,0,10,0">
                         <Expander Header="{DynamicResource String.Settingwindow.Custom.Launch}" Margin="0,0,0,5">
                             <StackPanel>
-                                <Label Content="{DynamicResource String.Settingwindow.Custom.Color}"/>
-                                <ComboBox x:Name="AccentColorComboBox" DisplayMemberPath="Name" 
-                                          SelectionChanged="AccentColorComboBox_SelectionChanged"
-                                          Text="{Binding Customize.AccentColor}" HorizontalAlignment="Left" Width="200"/>
                                 <Label Content="{DynamicResource String.Settingwindow.Custom.Main}"/>
                                 <ComboBox x:Name="appThmeComboBox" SelectionChanged="appThmeComboBox_SelectionChanged" 
                                           DisplayMemberPath="Name"
@@ -520,10 +510,10 @@
 
         </TabControl>
         <Button x:Name="saveButton" Content="{DynamicResource String.Base.Apply}"
-                Margin="0,0,10,10" Style="{StaticResource AccentedSquareButtonStyle}" Height="35" 
+                Margin="0,0,10,10" Style="{StaticResource MahApps.Styles.Button.Square.Accent}" Height="35" 
                 VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="120" Click="saveButton_Click"/>
         <Button x:Name="cancelButton" Content="{DynamicResource String.Base.Cancel}" 
-                Margin="0,0,135,10" Style="{DynamicResource SquareButtonStyle}" Height="35" 
+                Margin="0,0,135,10" Style="{DynamicResource MahApps.Styles.Button.Square}" Height="35" 
                 VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="120" Click="cancelButton_Click"/>
         <StackPanel Orientation="Horizontal" Margin="10,0,0,10" VerticalAlignment="Bottom">
             <TextBlock Opacity="0.5" TextWrapping="Wrap" Text="Nsiso Launcher(Color_yr Edit)" Height="15" Margin="0,0,10,0"/>

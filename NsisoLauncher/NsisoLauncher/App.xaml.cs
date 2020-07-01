@@ -1,4 +1,5 @@
-﻿using MahApps.Metro;
+﻿using ControlzEx.Theming;
+using MahApps.Metro;
 using NsisoLauncher.Config;
 using NsisoLauncher.Core.Util;
 using NsisoLauncher.Windows;
@@ -142,11 +143,10 @@ namespace NsisoLauncher
             Downloader.DownloadLog += (s, log) => LogHandler?.AppendLog(s, log);
 
             var custom = Config.MainConfig.Customize;
-            if (!string.IsNullOrWhiteSpace(custom.AccentColor) && !string.IsNullOrWhiteSpace(custom.AppThme))
+            if (!string.IsNullOrWhiteSpace(custom.AppThme))
             {
-                LogHandler.AppendInfo("自定义->更改主题颜色:" + custom.AccentColor);
                 LogHandler.AppendInfo("自定义->更改主题:" + custom.AppThme);
-                ThemeManager.ChangeAppStyle(Current, ThemeManager.GetAccent(custom.AccentColor), ThemeManager.GetAppTheme(custom.AppThme));
+                ThemeManager.Current.ChangeTheme(Current, custom.AppThme);
             }
 
             Lauguage();

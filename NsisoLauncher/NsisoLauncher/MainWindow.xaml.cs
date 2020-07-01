@@ -11,6 +11,7 @@ using NsisoLauncherCore.Modules;
 using NsisoLauncherCore.Net;
 using NsisoLauncherCore.Net.MojangApi.Api;
 using NsisoLauncherCore.Net.MojangApi.Endpoints;
+using NsisoLauncherCore.Net.Nide8API;
 using NsisoLauncherCore.Util;
 using NsisoLauncherCore.Util.Installer;
 using System;
@@ -436,7 +437,7 @@ namespace NsisoLauncher
                         (lockAuthNode.AuthType == AuthenticationType.NIDE8))
                     {
                         Config.Server nide8Server = new Config.Server() { ShowServerInfo = true };
-                        var nide8ReturnResult = await (new NsisoLauncherCore.Net.Nide8API.APIHandler(lockAuthNode.Property["nide8ID"])).GetInfoAsync();
+                        var nide8ReturnResult = await new APIHandler(lockAuthNode.Property["nide8ID"]).GetInfoAsync();
                         if (!string.IsNullOrWhiteSpace(nide8ReturnResult.Meta.ServerIP))
                         {
                             string[] serverIp = nide8ReturnResult.Meta.ServerIP.Split(':');
@@ -474,8 +475,9 @@ namespace NsisoLauncher
                 cancelLaunchButton.Background = b;
                 launchInfoBlock.Background = b;
                 Side.Background = b;
-                volumeButton.BorderBrush = volumeButton.Foreground =
-                new SolidColorBrush((Color)ColorConverter.ConvertFromString(App.Config.MainConfig.Customize.AccentColor));
+                volumeButton.Foreground = get.GetNBursh();
+                volumeButton.BorderBrush = get.GetLDBursh();
+        
             }
         }
 
