@@ -182,7 +182,7 @@ namespace NsisoLauncher.Controls
                 {
                     if (OnlineHead.isload)
                         return;
-                        await headScul.RefreshIconOnline(node.SelectProfileUUID);
+                    await headScul.RefreshIconOnline(node.SelectProfileUUID);
                 }
                 else if (node1.AuthType == AuthenticationType.NIDE8)
                 {
@@ -342,8 +342,6 @@ namespace NsisoLauncher.Controls
                 downloadButton.Background = b;
                 launchButton.Background = b;
                 PasswordBox.Background = b;
-
-                
             }
 
             b = get.GetLDBursh();
@@ -352,6 +350,10 @@ namespace NsisoLauncher.Controls
                 launchVersionCombobox.BorderBrush = b;
                 authTypeCombobox.BorderBrush = b;
                 userComboBox.BorderBrush = b;
+                addauth.BorderBrush = b;
+                configButton.BorderBrush = b;
+                downloadButton.BorderBrush = b;
+                launchButton.BorderBrush = b;
             }
         }
         private void AuthTypeCombobox_SelectionChanged(object sender, SelectionChangedEventArgs e)

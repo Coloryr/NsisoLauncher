@@ -1,5 +1,4 @@
 ﻿using ControlzEx.Theming;
-using MahApps.Metro;
 using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
 using NsisoLauncher.Config;
@@ -362,6 +361,7 @@ namespace NsisoLauncher.Windows
         private void delAllUserButton_Click(object sender, RoutedEventArgs e)
         {
             App.Config.MainConfig.User.UserDatabase.Clear();
+            App.Config.MainConfig.User.ClientToken = null;
             this.ShowMessageAsync(App.GetResourceString("String.Settingwindow.Message.User6.Title"),
                  App.GetResourceString("String.Settingwindow.Message.User6.Text"));
         }

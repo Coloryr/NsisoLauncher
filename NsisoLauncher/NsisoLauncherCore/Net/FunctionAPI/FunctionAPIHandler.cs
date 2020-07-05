@@ -3,6 +3,7 @@ using NsisoLauncherCore.Modules;
 using NsisoLauncherCore.Net.Tools;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using static NsisoLauncherCore.Net.FunctionAPI.APIModules;
 
@@ -18,8 +19,13 @@ namespace NsisoLauncherCore.Net.FunctionAPI
 
         const string ForgeUrl = "https://files.minecraftforge.net";
 
+        const string FabricUrl = "https://meta.fabricmc.net";
+
         public string VersionListURL { get; set; }
         public string ForgeListURL { get; set; }
+
+        public string FabricListURL { get; set; }
+        public string FabricListVEURL { get; set; }
         public string LiteloaderListURL { get; set; }
 
         public FunctionAPIHandler(DownloadSource lib)
@@ -31,16 +37,22 @@ namespace NsisoLauncherCore.Net.FunctionAPI
                     VersionListURL = "https://launchermeta.mojang.com/mc/game/version_manifest.json";
                     ForgeListURL = BMCLBase + "/forge/minecraft";
                     LiteloaderListURL = BMCLBase + "/liteloader/list";
+                    FabricListURL = FabricUrl + "/v2/versions/loader";
+                    FabricListVEURL = FabricUrl + "/v2/versions/game";
                     break;
                 case DownloadSource.BMCLAPI:
                     VersionListURL = BMCLBase + "/mc/game/version_manifest.json";
                     ForgeListURL = BMCLBase + "/forge/minecraft";
                     LiteloaderListURL = BMCLBase + "/liteloader/list";
+                    FabricListURL = FabricUrl + "/v2/versions/loader";
+                    FabricListVEURL = FabricUrl + "/v2/versions/game";
                     break;
                 case DownloadSource.MCBBS:
                     VersionListURL = MCBBSUrl + "/mc/game/version_manifest.json";
                     ForgeListURL = MCBBSUrl + "/forge/minecraft";
                     LiteloaderListURL = MCBBSUrl + "/liteloader/list";
+                    FabricListURL = FabricUrl + "/v2/versions/loader";
+                    FabricListVEURL = FabricUrl + "/v2/versions/game";
                     break;
             }
         }
@@ -76,6 +88,35 @@ namespace NsisoLauncherCore.Net.FunctionAPI
             var http = new HttpRequesterAPI(TimeSpan.FromSeconds(10));
             string json = await http.HttpGetStringAsync(string.Format("{0}/{1}", ForgeListURL, version.ID));
             var e = JsonConvert.DeserializeObject<List<JWForge>>(json);
+            return e;
+        }
+
+        /// <summary>
+        /// 联网获取指定版本所有的FABRIC
+        /// </summary>
+        /// <param name="version">要搜索的版本</param>
+        /// <returns>Forge列表</returns>
+        public async Task<List<JWFabric>> GetFabricList(MCVersion version)
+        {
+            var http = new HttpRequesterAPI(TimeSpan.FromSeconds(10));
+            string json = await http.HttpGetStringAsync(FabricListVEURL);
+            var e = JsonConvert.DeserializeObject<List<JWFabric>>(json);
+            string ver;
+            if (string.IsNullOrWhiteSpace(version.InheritsVersion))
+            {
+                ver = version.ID;
+            }
+            else
+            {
+                ver = version.InheritsVersion;
+            }
+            var a = e.Where(b => b.Version == ver).ToList();
+            if (a.Count == 0)
+            {
+                return null;
+            }
+            json = await http.HttpGetStringAsync(FabricListURL);
+            e = JsonConvert.DeserializeObject<List<JWFabric>>(json);
             return e;
         }
 

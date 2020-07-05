@@ -4,6 +4,7 @@ using NsisoLauncherCore.Net.FunctionAPI;
 using NsisoLauncherCore.Util;
 using NsisoLauncherCore.Util.Checker;
 using NsisoLauncherCore.Util.Installer;
+using NsisoLauncherCore.Util.Installer.Fabric;
 using NsisoLauncherCore.Util.Installer.Forge;
 using System;
 using System.Collections.Generic;
@@ -250,6 +251,43 @@ namespace NsisoLauncherCore.Net.Tools
                         IsClient = true,
                         DownloadSource = App.Config.MainConfig.Download.DownloadSource,
                         Java = App.Handler.Java
+                    });
+                    installer.BeginInstall(callback, cancelToken);
+                    return null;
+                }
+                catch (Exception ex)
+                { return ex; }
+            });
+            return dt;
+        }
+
+        /// <summary>
+        /// 获取Fabric下载
+        /// </summary>
+        /// <param name="downloadSource">下载源</param>
+        /// <param name="forge">Forge信息</param>
+        /// <returns></returns>
+        public static DownloadTask GetFabricDownloadURL(DownloadSource downloadSource, APIModules.JWFabric fabric, MCVersion version)
+        {
+            string local = PathManager.TempDirectory + "\\fabric-installer-0.6.1.45.jar";
+
+            DownloadTask dt = new DownloadTask(App.GetResourceString("String.NewDownloadTaskWindow.Core.Fabric"),
+                @"https://maven.fabricmc.net/net/fabricmc/fabric-installer/0.6.1.45/fabric-installer-0.6.1.45.jar", local);
+            dt.Todo = new Func<ProgressCallback, CancellationToken, Exception>((callback, cancelToken) =>
+            {
+                try
+                {
+                    IInstaller installer = new FabricInstaller(local, new CommonInstallOptions()
+                    {
+                        GameRootPath = App.Handler.GameRootPath,
+                        IsClient = true,
+                        DownloadSource = App.Config.MainConfig.Download.DownloadSource,
+                        Java = App.Handler.Java,
+                        obj = new APIModules.TwoObj
+                        {
+                            fabric = fabric,
+                            version = version
+                        }
                     });
                     installer.BeginInstall(callback, cancelToken);
                     return null;

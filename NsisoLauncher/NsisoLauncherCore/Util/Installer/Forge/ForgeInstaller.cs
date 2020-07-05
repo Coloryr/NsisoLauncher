@@ -96,12 +96,15 @@ namespace NsisoLauncherCore.Util.Installer.Forge
                 FileHelper.CopyDirectory(item, librariesDir + '\\' + info.Name, true);
             }
 
-            PostProcessors postProcessors = new PostProcessors(profile, Options.IsClient, monitor);
-            Exception procExc = postProcessors.Process(tempPath, Options.GameRootPath, clientTarget, Options.Java);
-            if (procExc != null)
+            await Task.Factory.StartNew(() =>
             {
-                throw procExc;
-            }
+                PostProcessors postProcessors = new PostProcessors(profile, Options.IsClient, monitor);
+                Exception procExc = postProcessors.Process(tempPath, Options.GameRootPath, clientTarget, Options.Java);
+                if (procExc != null)
+                {
+                    throw procExc;
+                }
+            });
         }
     }
 

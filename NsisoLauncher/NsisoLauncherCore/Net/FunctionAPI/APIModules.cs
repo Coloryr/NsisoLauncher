@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using NsisoLauncherCore.Modules;
 using System;
 using System.Collections.Generic;
 
@@ -8,6 +9,27 @@ namespace NsisoLauncherCore.Net.FunctionAPI
     {
         public class JWLiteloader
         {
+            [JsonProperty("version")]
+            public string Version { get; set; }
+        }
+
+        public class TwoObj
+        {
+            public JWFabric fabric { get; set; }
+            public MCVersion version { get; set; }
+        }
+
+        public class JWFabric
+        {
+            /// <summary>
+            /// Build
+            /// </summary>
+            [JsonProperty("build")]
+            public int Build { get; set; }
+
+            /// <summary>
+            /// 版本号
+            /// </summary>
             [JsonProperty("version")]
             public string Version { get; set; }
         }

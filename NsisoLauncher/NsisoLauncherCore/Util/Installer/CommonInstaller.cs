@@ -38,6 +38,8 @@ namespace NsisoLauncherCore.Util.Installer
         public DownloadSource DownloadSource { get; set; }
 
         public Java Java { get; set; }
+
+        public object obj { get; set; }
     }
 
     public class CommonInstaller : IInstaller

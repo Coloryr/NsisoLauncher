@@ -1,5 +1,4 @@
 ﻿using ControlzEx.Theming;
-using MahApps.Metro;
 using NsisoLauncher.Config;
 using NsisoLauncher.Core.Util;
 using NsisoLauncher.Windows;
@@ -223,7 +222,7 @@ namespace NsisoLauncher
                 info.Verb = "runas";
             }
             Process.Start(info);
-            Current.Dispatcher.Invoke(()=>Current.Shutdown());
+            Current.Dispatcher.Invoke(() => Current.Shutdown());
         }
     }
 

@@ -15,6 +15,7 @@ using System.IO;
 using System.Net;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Forms;
 using static NsisoLauncherCore.Net.FunctionAPI.APIModules;
@@ -28,6 +29,7 @@ namespace NsisoLauncher.Windows
     {
         ObservableCollection<JWVersion> verList = new ObservableCollection<JWVersion>();
         ObservableCollection<JWForge> forgeList = new ObservableCollection<JWForge>();
+        ObservableCollection<JWFabric> fabricList = new ObservableCollection<JWFabric>();
         ObservableCollection<JWLiteloader> liteloaderList = new ObservableCollection<JWLiteloader>();
 
         public string Local { get; set; }
@@ -40,6 +42,7 @@ namespace NsisoLauncher.Windows
             InitializeComponent();
             versionListDataGrid.ItemsSource = verList;
             forgeListDataGrid.ItemsSource = forgeList;
+            fabricListDataGrid.ItemsSource = fabricList;
             liteloaderListDataGrid.ItemsSource = liteloaderList;
             ICollectionView vwV = CollectionViewSource.GetDefaultView(verList);
             vwV.GroupDescriptions.Add(new PropertyGroupDescription("Type"));
@@ -56,13 +59,16 @@ namespace NsisoLauncher.Windows
             List<MCVersion> vers = await App.Handler.GetVersionsAsync();
             verToInstallForgeComboBox.ItemsSource = vers;
             verToInstallLiteComboBox.ItemsSource = vers;
+            verToInstallFabricComboBox.ItemsSource = vers;
         }
 
         private async void RefreshVersion()
         {
-            var loading = await this.ShowProgressAsync(App.GetResourceString("String.NewDownloadTaskWindow.Get.Title"),
-                App.GetResourceString("String.NewDownloadTaskWindow.Get.Text"));
-            loading.SetIndeterminate();
+            versionListDataGrid.IsEnabled = false;
+            VersionDown.IsEnabled = false;
+            VersionRe.IsEnabled = false;
+            VersionLoadingRing.Visibility = Visibility.Visible;
+            VersionLoadingRing.IsActive = true;
             List<JWVersion> result;
             try
             {
@@ -72,7 +78,15 @@ namespace NsisoLauncher.Windows
             {
                 result = null;
             }
-            await loading.CloseAsync();
+            finally
+            {
+                versionListDataGrid.IsEnabled = true;
+                VersionDown.IsEnabled = true;
+                VersionRe.IsEnabled = true;
+                VersionLoadingRing.Visibility = Visibility.Hidden;
+                VersionLoadingRing.IsActive = false;
+            }
+
             verList.Clear();
             if (result == null)
             {
@@ -102,9 +116,12 @@ namespace NsisoLauncher.Windows
                 App.GetResourceString("String.NewDownloadTaskWindow.Forge.Text"));
                 return;
             }
-            var loading = await this.ShowProgressAsync(App.GetResourceString("String.NewDownloadTaskWindow.ForgeList.Title"),
-                App.GetResourceString("String.NewDownloadTaskWindow.ForgeList.Text"));
-            loading.SetIndeterminate();
+            ForgeLoadingRing.Visibility = Visibility.Visible;
+            ForgeLoadingRing.IsActive = true;
+            forgeListDataGrid.IsEnabled = false;
+            verToInstallForgeComboBox.IsEnabled = false;
+            ForgeDown.IsEnabled = false;
+            ForgeRe.IsEnabled = false;
             List<JWForge> result;
             forgeList.Clear();
             try
@@ -117,7 +134,15 @@ namespace NsisoLauncher.Windows
                 App.GetResourceString("String.NewDownloadTaskWindow.ForgeListFail.Text"));
                 return;
             }
-            await loading.CloseAsync();
+            finally
+            {
+                ForgeLoadingRing.Visibility = Visibility.Hidden;
+                ForgeLoadingRing.IsActive = false;
+                forgeListDataGrid.IsEnabled = true;
+                verToInstallForgeComboBox.IsEnabled = true;
+                ForgeDown.IsEnabled = true;
+                ForgeRe.IsEnabled = true;
+            }
             if (result == null || result.Count == 0)
             {
                 await this.ShowMessageAsync(App.GetResourceString("String.NewDownloadTaskWindow.ForgeListNull.Title"),
@@ -128,6 +153,60 @@ namespace NsisoLauncher.Windows
                 foreach (var item in result)
                 {
                     forgeList.Add(item);
+                }
+            }
+        }
+
+        private async void RefreshFabric()
+        {
+            MCVersion ver;
+            if (verToInstallFabricComboBox.SelectedItem != null)
+            {
+                ver = (MCVersion)verToInstallFabricComboBox.SelectedItem;
+            }
+            else
+            {
+                await this.ShowMessageAsync(App.GetResourceString("String.NewDownloadTaskWindow.Fabric.Title"),
+                App.GetResourceString("String.NewDownloadTaskWindow.Fabric.Text"));
+                return;
+            }
+            FabricLoadingRing.Visibility = Visibility.Visible;
+            FabricLoadingRing.IsActive = true;
+            fabricListDataGrid.IsEnabled = false;
+            verToInstallFabricComboBox.IsEnabled = false;
+            FabricDown.IsEnabled = false;
+            FabricRe.IsEnabled = false;
+            List<JWFabric> result;
+            fabricList.Clear();
+            try
+            {
+                result = await apiHandler.GetFabricList(ver);
+            }
+            catch (WebException)
+            {
+                await this.ShowMessageAsync(App.GetResourceString("String.NewDownloadTaskWindow.FabricListFail.Title"),
+                App.GetResourceString("String.NewDownloadTaskWindow.FabricListFail.Text"));
+                return;
+            }
+            finally
+            {
+                FabricLoadingRing.Visibility = Visibility.Hidden;
+                FabricLoadingRing.IsActive = false;
+                fabricListDataGrid.IsEnabled = true;
+                verToInstallFabricComboBox.IsEnabled = true;
+                FabricDown.IsEnabled = true;
+                FabricRe.IsEnabled = true;
+            }
+            if (result == null || result.Count == 0)
+            {
+                await this.ShowMessageAsync(App.GetResourceString("String.NewDownloadTaskWindow.FabricListNull.Title"),
+                App.GetResourceString("String.NewDownloadTaskWindow.FabricListNull.Text"));
+            }
+            else
+            {
+                foreach (var item in result)
+                {
+                    fabricList.Add(item);
                 }
             }
         }
@@ -145,9 +224,12 @@ namespace NsisoLauncher.Windows
                 App.GetResourceString("String.NewDownloadTaskWindow.Liteloader.Text"));
                 return;
             }
-            var loading = await this.ShowProgressAsync(App.GetResourceString("String.NewDownloadTaskWindow.LiteloaderList.Title"),
-                App.GetResourceString("String.NewDownloadTaskWindow.LiteloaderList.Text"));
-            loading.SetIndeterminate();
+            LiteLoadingRing.Visibility = Visibility.Visible;
+            LiteLoadingRing.IsActive = true;
+            liteloaderListDataGrid.IsEnabled = false;
+            LiteDown.IsEnabled = false;
+            LiteRe.IsEnabled = false;
+            verToInstallLiteComboBox.IsEnabled = false;
             JWLiteloader result;
             liteloaderList.Clear();
             try
@@ -160,7 +242,15 @@ namespace NsisoLauncher.Windows
                 App.GetResourceString("String.NewDownloadTaskWindow.LiteloaderListFail.Text"));
                 return;
             }
-            await loading.CloseAsync();
+            finally
+            {
+                LiteLoadingRing.IsActive = false;
+                LiteLoadingRing.Visibility = Visibility.Hidden;
+                liteloaderListDataGrid.IsEnabled = true;
+                LiteDown.IsEnabled = true;
+                LiteRe.IsEnabled = true;
+                verToInstallLiteComboBox.IsEnabled = true;
+            }
             if (result == null)
             {
                 await this.ShowMessageAsync(App.GetResourceString("String.NewDownloadTaskWindow.LiteloaderListNull.Title"),
@@ -235,7 +325,7 @@ namespace NsisoLauncher.Windows
                 return;
             }
 
-            JWLiteloader liteloader = null;
+            JWLiteloader liteloader;
             if (liteloaderListDataGrid.SelectedItem != null)
             {
                 liteloader = (JWLiteloader)liteloaderListDataGrid.SelectedItem;
@@ -248,6 +338,36 @@ namespace NsisoLauncher.Windows
             }
 
             AppendLiteloaderDownloadTask(ver, liteloader);
+            Close();
+        }
+
+        private async void DownloadFabricButton_Click(object sender, RoutedEventArgs e)
+        {
+            MCVersion ver;
+            if (verToInstallFabricComboBox.SelectedItem != null)
+            {
+                ver = (MCVersion)verToInstallFabricComboBox.SelectedItem;
+            }
+            else
+            {
+                await this.ShowMessageAsync(App.GetResourceString("String.NewDownloadTaskWindow.FabricChose.Title"),
+                App.GetResourceString("String.NewDownloadTaskWindow.FabricChose.Text"));
+                return;
+            }
+
+            JWFabric fabric;
+            if (fabricListDataGrid.SelectedItem != null)
+            {
+                fabric = (JWFabric)fabricListDataGrid.SelectedItem;
+            }
+            else
+            {
+                await this.ShowMessageAsync(App.GetResourceString("String.NewDownloadTaskWindow.ChoseFabric.Title"),
+                App.GetResourceString("String.NewDownloadTaskWindow.ChoseFabric.Text"));
+                return;
+            }
+
+            AppendFabricDownloadTask(ver, fabric);
             Close();
         }
 
@@ -307,6 +427,13 @@ namespace NsisoLauncher.Windows
             App.Downloader.StartDownloadAsync();
         }
 
+        private void AppendFabricDownloadTask(MCVersion ver, JWFabric fabric)
+        {
+            DownloadTask dt = GetDownloadUrl.GetFabricDownloadURL(App.Config.MainConfig.Download.DownloadSource, fabric, ver);
+            App.Downloader.SetDownloadTasks(dt);
+            App.Downloader.StartDownloadAsync();
+        }
+
         private void AppendLiteloaderDownloadTask(MCVersion ver, JWLiteloader liteloader)
         {
             DownloadTask dt = GetDownloadUrl.GetLiteloaderDownloadURL(App.Config.MainConfig.Download.DownloadSource, liteloader);
@@ -324,17 +451,26 @@ namespace NsisoLauncher.Windows
             RefreshForge();
         }
 
+        private void RefreshFabricButton_Click(object sender, RoutedEventArgs e)
+        {
+            RefreshFabric();
+        }
+
         private void RefresLiteButton_Click(object sender, RoutedEventArgs e)
         {
             RefreshLiteloader();
         }
 
-        private void VerToInstallForgeComboBox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        private void VerToInstallForgeComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             RefreshForge();
         }
+        private void VerToInstallFabricComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            RefreshFabric();
+        }
 
-        private void VerToInstallLiteComboBox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        private void VerToInstallLiteComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             RefreshLiteloader();
         }
@@ -356,6 +492,12 @@ namespace NsisoLauncher.Windows
 
         private async void Button_Click_1(object sender, RoutedEventArgs e)
         {
+            if (string.IsNullOrWhiteSpace(Local))
+            {
+                await this.ShowMessageAsync(App.GetResourceString("String.NewDownloadTaskWindow.ModPack.Null"),
+                App.GetResourceString("String.NewDownloadTaskWindow.ModPack.Null1"));
+                return;
+            }
             var res = await this.ShowMessageAsync(App.GetResourceString("String.NewDownloadTaskWindow.ModPack.Title"),
                 App.GetResourceString("String.NewDownloadTaskWindow.ModPack.Text"),
                 MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings()

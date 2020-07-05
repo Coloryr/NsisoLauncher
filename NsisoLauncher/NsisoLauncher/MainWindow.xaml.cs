@@ -236,7 +236,7 @@ namespace NsisoLauncher
                     checkUpdata = false;
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 MessageBox.Show(e.Message);
             }
@@ -477,7 +477,7 @@ namespace NsisoLauncher
                 Side.Background = b;
                 volumeButton.Foreground = get.GetNBursh();
                 volumeButton.BorderBrush = get.GetLDBursh();
-        
+
             }
         }
 

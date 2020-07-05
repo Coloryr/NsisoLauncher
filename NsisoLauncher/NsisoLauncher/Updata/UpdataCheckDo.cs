@@ -71,7 +71,7 @@ namespace NsisoLauncher.Updata
         public async Task<List<DownloadTask>> CheckUpdata(OtherCheck pack)
         {
             List<DownloadTask> DownloadTask = new List<DownloadTask>();
-            if (UpdataObj.mods!=null &&UpdataObj.mods.Count != 0)
+            if (UpdataObj.mods != null && UpdataObj.mods.Count != 0)
             {
                 try
                 {
@@ -108,7 +108,7 @@ namespace NsisoLauncher.Updata
                     App.LogHandler.AppendFatal(e);
                 }
             }
-            if (UpdataObj.scripts!=null && UpdataObj.scripts.Count != 0)
+            if (UpdataObj.scripts != null && UpdataObj.scripts.Count != 0)
             {
                 var LocalScripts = await new ScriptsCheck().ReadscriptsInfo(App.Handler.GameRootPath);
                 foreach (UpdataItem updataItem in UpdataObj.scripts)
@@ -142,7 +142,7 @@ namespace NsisoLauncher.Updata
                     }
                 }
             }
-            if (UpdataObj.resourcepacks!=null && UpdataObj.resourcepacks.Count != 0)
+            if (UpdataObj.resourcepacks != null && UpdataObj.resourcepacks.Count != 0)
             {
                 var LocalResourcepacks = await new ResourcepacksCheck().ReadresourcepacksInfo(App.Handler.GameRootPath);
                 foreach (UpdataItem updataItem in UpdataObj.resourcepacks)
@@ -170,7 +170,7 @@ namespace NsisoLauncher.Updata
                     }
                 }
             }
-            if (UpdataObj.config!=null && UpdataObj.config.Count != 0)
+            if (UpdataObj.config != null && UpdataObj.config.Count != 0)
             {
                 foreach (UpdataItem updataItem in UpdataObj.config)
                 {
@@ -179,7 +179,7 @@ namespace NsisoLauncher.Updata
                         updataItem.url, App.Handler.GameRootPath + @"\" + updataItem.filename));
                 }
             }
-            if (UpdataObj.launch!=null && UpdataObj.launch.Count != 0)
+            if (UpdataObj.launch != null && UpdataObj.launch.Count != 0)
             {
                 var LocalConfig = await new LaunchCheck().ReadLaunchrInfo(PathManager.BaseStorageDirectory + @"\");
                 foreach (UpdataItem updataItem in UpdataObj.launch)
@@ -213,7 +213,7 @@ namespace NsisoLauncher.Updata
                     }
                 }
             }
-            if (UpdataObj.self != null&&UpdataObj.self.Count != 0)
+            if (UpdataObj.self != null && UpdataObj.self.Count != 0)
             {
                 var LocalSelf = await new LaunchSelfCheck().ReadLaunchrSelfInfo(PathManager.CurrentLauncherDirectory + @"\");
                 foreach (UpdataItem updataItem in UpdataObj.self)
@@ -246,8 +246,8 @@ namespace NsisoLauncher.Updata
                                     File.Delete(LocalConfig1.local);
                                 }
                                 catch
-                                { 
-                                    
+                                {
+
                                 }
                                 DownloadTask.Add(new DownloadTask(App.GetResourceString("String.Update.UpdataConfig"),
                                     updataItem.url, PathManager.BaseStorageDirectory + @"\" + updataItem.filename));
