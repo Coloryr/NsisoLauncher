@@ -296,7 +296,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="ControlzEx">
-      <Version>4.3.0</Version>
+      <Version>4.3.1</Version>
     </PackageReference>
     <PackageReference Include="Costura.Fody">
       <Version>4.1.0</Version>
@@ -310,7 +310,7 @@
       <Version>0.9.7</Version>
     </PackageReference>
     <PackageReference Include="MahApps.Metro">
-      <Version>2.1.0</Version>
+      <Version>2.1.1</Version>
     </PackageReference>
     <PackageReference Include="MahApps.Metro.IconPacks.FontAwesome">
       <Version>4.2.0</Version>

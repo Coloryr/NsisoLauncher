@@ -315,16 +315,16 @@
                                               DisplayMemberPath="Value.UserName"/>
                                     <Label Content="{DynamicResource String.Settingwindow.User.Text}"/>
                                 </StackPanel>
-                                <Button Style="{DynamicResource SquareButtonStyle}" 
+                                <Button Style="{DynamicResource MahApps.Styles.Button.Square}" 
                                         Content="{DynamicResource String.Settingwindow.User.Info.UnRemember}" 
                                         Margin="0,5,0,5" Click="forgetUserButton_Click"/>
-                                <Button Style="{DynamicResource SquareButtonStyle}" 
+                                <Button Style="{DynamicResource MahApps.Styles.Button.Square}" 
                                         Content="{DynamicResource String.Settingwindow.User.Info.Clear}" 
                                         Margin="0,0,0,5" Click="clearUserButton_Click"/>
-                                <Button Style="{DynamicResource SquareButtonStyle}" 
+                                <Button Style="{DynamicResource MahApps.Styles.Button.Square}" 
                                         Content="{DynamicResource String.Settingwindow.User.Info.Del}" 
                                         Margin="0,0,0,5" Click="delUserButton_Click" Background="IndianRed" Foreground="White"/>
-                                <Button Style="{DynamicResource SquareButtonStyle}" 
+                                <Button Style="{DynamicResource MahApps.Styles.Button.Square}" 
                                         Content="{DynamicResource String.Settingwindow.User.All.DeleteAll}" 
                                         Background="IndianRed" Foreground="White" 
                                         Click="delAllUserButton_Click"/>
@@ -344,7 +344,7 @@
                                 <CheckBox Margin="0,0,0,10" Content="{DynamicResource String.Settingwindow.User.All.Nide}" 
                                           IsChecked="{Binding User.Nide8ServerDependence}"
                                           Name="NIDE8_C" Visibility="Collapsed"/>
-                                <Button Style="{DynamicResource SquareButtonStyle}" 
+                                <Button Style="{DynamicResource MahApps.Styles.Button.Square}" 
                                         Content="{DynamicResource String.Settingwindow.User.All.Delete}" Background="IndianRed" 
                                         Foreground="White" Margin="0,0,0,5" Click="delAllAuthnodeButton_Click"/>
                             </StackPanel>

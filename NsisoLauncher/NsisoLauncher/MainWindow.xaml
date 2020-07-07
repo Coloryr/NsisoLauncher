@@ -7,7 +7,7 @@
                       xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
                       xmlns:userControl="clr-namespace:NsisoLauncher.Controls"
                       mc:Ignorable="d"
-        BorderBrush="{DynamicResource AccentColorBrush}"
+        BorderBrush="{DynamicResource MahApps.Brushes.Accent}"
         WindowStartupLocation="CenterScreen"
         Title="Nsiso Launcher(Color_yr Edit)" Height="436" Width="720" MinHeight="436" MinWidth="720" ShowMaxRestoreButton="False" Background="Transparent"
         ShowMinButton="True" Loaded="mainWindow_Loaded" Closing="mainWindow_Closing" WindowStyle="SingleBorderWindow" ResizeMode="CanMinimize">
