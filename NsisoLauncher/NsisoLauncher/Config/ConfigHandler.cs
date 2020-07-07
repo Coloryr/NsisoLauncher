@@ -202,7 +202,6 @@ namespace NsisoLauncher.Config
                 Environment = new Environment()
                 {
                     VersionIsolation = false,
-                    AutoMemory = true,
                     MaxMemory = 2048,
                     MinMemory = 512,
                     GamePathType = GameDirEnum.ROOT,

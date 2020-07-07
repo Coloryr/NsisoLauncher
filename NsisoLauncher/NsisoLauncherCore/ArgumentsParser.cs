@@ -1,4 +1,5 @@
-﻿using NsisoLauncherCore.Modules;
+﻿using NsisoLauncher;
+using NsisoLauncherCore.Modules;
 using NsisoLauncherCore.Net.Server;
 using System;
 using System.Collections.Generic;
@@ -32,7 +33,12 @@ namespace NsisoLauncherCore
             if (!string.IsNullOrWhiteSpace(setting.JavaAgent))
             {
                 jvmHead.Append("-javaagent:");
-                jvmHead.Append(setting.JavaAgent.Replace(replace + "\\", "").Trim());
+                if (!App.Handler.VersionIsolation)
+                    jvmHead.Append(setting.JavaAgent.Replace(replace + "\\", "").Trim());
+                else
+                {
+                    jvmHead.Append(setting.JavaAgent.Replace(replace + "\\", "..\\..\\").Trim());
+                }
                 jvmHead.Append(' ');
             }
             #endregion

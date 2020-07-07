@@ -222,11 +222,6 @@ namespace NsisoLauncher.Config
         public string JavaAgent { get; set; }
 
         /// <summary>
-        /// 是否使用自动内存分配
-        /// </summary>
-        public bool AutoMemory { get; set; }
-
-        /// <summary>
         /// 游戏最大内存
         /// </summary>
         public int MaxMemory { get; set; }

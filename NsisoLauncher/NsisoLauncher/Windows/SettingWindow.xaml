@@ -26,8 +26,8 @@
                             <StackPanel>
                                 <Controls:ToggleSwitch
                                 x:Name="isAutoJavaToggle"
-                                OnContentStringFormat="{DynamicResource String.Settingwindow.Env.Java.AutoOn}"
-                                OffContentStringFormat="{DynamicResource String.Settingwindow.Env.Java.AutoOff}"
+                                OnContent="{DynamicResource String.Settingwindow.Env.Java.AutoOn}"
+                                OffContent="{DynamicResource String.Settingwindow.Env.Java.AutoOff}"
                                 IsOn="{Binding Path=Environment.AutoJava}"
                                 />
                                 <Label Content="{DynamicResource String.Settingwindow.Env.Java.Path}" Margin="0,10,0,0"/>
@@ -49,11 +49,6 @@
                         </Expander>
                         <Expander Header="{DynamicResource String.Settingwindow.Env.Memory}" Margin="0,0,0,5">
                             <Grid >
-                                <Controls:ToggleSwitch 
-                                    OnContentStringFormat="{DynamicResource String.Settingwindow.Env.Memory.AutoOn}"
-                                    OffContentStringFormat="{DynamicResource String.Settingwindow.Env.Memory.AutoOff}"
-                                    IsOn="{Binding Path=Environment.AutoMemory}"
-                                    VerticalAlignment="Top" />
                                 <Controls:RangeSlider x:Name="memorySlider"
                                     IsSnapToTickEnabled="True"
                                     IsEnabled="{Binding Path=Environment.AutoMemory, Converter={StaticResource BoolToOppositeBoolConverter}}"
@@ -113,8 +108,8 @@
                         <Expander Header="{DynamicResource String.Settingwindow.Env.Root}" Margin="0,0,0,5">
                             <StackPanel>
                                 <Controls:ToggleSwitch
-                                OnContentStringFormat="{DynamicResource String.Settingwindow.Env.Root.VersionIsolationOn}"
-                                OffContentStringFormat="{DynamicResource String.Settingwindow.Env.Root.VersionIsolationOff}"
+                                OnContent="{DynamicResource String.Settingwindow.Env.Root.VersionIsolationOn}"
+                                OffContent="{DynamicResource String.Settingwindow.Env.Root.VersionIsolationOff}"
                                 IsOn="{Binding Environment.VersionIsolation}"/>
 
                                 <Label Content="{DynamicResource String.Settingwindow.Env.Root.TypeTitle}" Margin="0,10,0,0"/>

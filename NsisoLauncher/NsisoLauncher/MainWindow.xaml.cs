@@ -1001,17 +1001,7 @@ namespace NsisoLauncher
                     };
                 }
 
-                //自动内存设置
-                if (App.Config.MainConfig.Environment.AutoMemory)
-                {
-                    var m = SystemTools.GetBestMemory(App.Handler.Java);
-                    App.Config.MainConfig.Environment.MaxMemory = m;
-                    launchSetting.MaxMemory = m;
-                }
-                else
-                {
-                    launchSetting.MaxMemory = App.Config.MainConfig.Environment.MaxMemory;
-                }
+                launchSetting.MaxMemory = App.Config.MainConfig.Environment.MaxMemory;
                 launchSetting.VersionType = App.Config.MainConfig.Customize.VersionInfo;
                 launchSetting.WindowSize = App.Config.MainConfig.Environment.WindowSize;
 

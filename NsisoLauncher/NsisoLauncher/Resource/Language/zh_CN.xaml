@@ -239,8 +239,6 @@
     <sys:String x:Key="String.Settingwindow.Env.Root.Custom">自定义</sys:String>
     <sys:String x:Key="String.Settingwindow.Env.Root.Choose">选择</sys:String>
     <sys:String x:Key="String.Settingwindow.Env.Memory">Java内存设置</sys:String>
-    <sys:String x:Key="String.Settingwindow.Env.Memory.AutoOn">自动设置内存: 启用</sys:String>
-    <sys:String x:Key="String.Settingwindow.Env.Memory.AutoOff">自动设置内存: 禁用</sys:String>
     <sys:String x:Key="String.Settingwindow.Env.Memory.Min">最小内存(MB):</sys:String>
     <sys:String x:Key="String.Settingwindow.Env.Memory.Max">最大内存(MB):</sys:String>
     <sys:String x:Key="String.Settingwindow.Env.Window">游戏窗口设置</sys:String>
