@@ -56,7 +56,7 @@
                                     LowerValue="{Binding ElementName=minMemoryTextBox, Path=Text, Converter={StaticResource StringToIntConverter}}"
                                     UpperValueChanged="memorySlider_UpperValueChanged"
                                     LowerValueChanged="memorySlider_LowerValueChanged"
-                                    Margin="0,30"/>
+                                    Margin="0,0,0,30"/>
                                 <Label Content="{DynamicResource String.Settingwindow.Env.Memory.Min}" HorizontalAlignment="Left" 
                                        Height="25" VerticalAlignment="Bottom"/>
                                 <TextBox x:Name="minMemoryTextBox" HorizontalAlignment="Left" Height="23" Margin="88,0,0,0" TextWrapping="Wrap"

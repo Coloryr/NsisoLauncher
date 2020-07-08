@@ -58,7 +58,7 @@ namespace NsisoLauncher.Updata
                     else if (App.Config.MainConfig.Server.UpdataCheck.Version != UpdataObj.Version)
                         return this;
                     else
-                        return true;
+                        return null;
                 }
             }
             catch
