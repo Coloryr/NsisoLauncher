@@ -29,7 +29,7 @@
             </StackPanel>
             <StackPanel x:Name="SKIN" Margin="0,0,0,5">
                 <Label x:Name="SKIN_HTTP" Content="{DynamicResource String.Settingwindow.AuthModule.Skin}"/>
-                <TextBox x:Name="SKIN_URI" Width="700" Margin="10,0,80,0"/>
+                <TextBox x:Name="SKIN_URI" Margin="10,0,221,0"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal" Name="SKIN_TYPE" Margin="0,0,0,5">
                 <Label Content="{DynamicResource String.AuthModuleControl.Head}"/>

@@ -77,21 +77,24 @@ namespace NsisoLauncher.Controls
         {
             authmoduleLable.Content = App.GetResourceString("String.AuthModuleControl.Nide8");
             authenticationType = AuthenticationType.NIDE8;
-            Bro_IN.Visibility = REGISTER.Visibility = Visibility.Hidden;
+            Bro_IN.Visibility = REGISTER.Visibility =
+            SKIN.Visibility = SKIN_TYPE.Visibility = Visibility.Hidden;
         }
 
         private void AI_Checked(object sender, RoutedEventArgs e)
         {
             authmoduleLable.Content = App.GetResourceString("String.AuthModuleControl.Adress");
             authenticationType = AuthenticationType.AUTHLIB_INJECTOR;
-            Bro_IN.Visibility = REGISTER.Visibility = Visibility.Visible;
+            Bro_IN.Visibility = REGISTER.Visibility =
+            SKIN.Visibility = SKIN_TYPE.Visibility = Visibility.Visible;
         }
 
         private void Custom_Checked(object sender, RoutedEventArgs e)
         {
             authmoduleLable.Content = App.GetResourceString("String.AuthModuleControl.Local");
             authenticationType = AuthenticationType.CUSTOM_SERVER;
-            Bro_IN.Visibility = REGISTER.Visibility = Visibility.Visible;
+            Bro_IN.Visibility = REGISTER.Visibility =
+            SKIN.Visibility = SKIN_TYPE.Visibility = Visibility.Visible;
         }
 
         public void ClearAll()
