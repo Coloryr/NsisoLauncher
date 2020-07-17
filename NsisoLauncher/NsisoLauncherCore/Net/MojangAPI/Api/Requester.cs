@@ -151,6 +151,12 @@ namespace NsisoLauncherCore.Net.MojangApi.Api
 
             try
             {
+                if (endpoint.Address.AbsoluteUri.Contains("https://"))
+                {
+                    ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+                }
+                else
+                    ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls;
                 StringContent contents = new StringContent(endpoint.PostContent, Encoding, "application/json");
                 httpResponse = await Client.client.PostAsync(endpoint.Address, contents);
                 if (httpResponse == null || httpResponse.Content == null)
