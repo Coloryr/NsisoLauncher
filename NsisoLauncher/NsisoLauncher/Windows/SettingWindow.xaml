@@ -210,7 +210,7 @@
                                 <TextBox Text="{Binding Download.DownloadThreadsSize}"
                                          PreviewTextInput="textBox1_PreviewTextInput"
                                          InputMethod.IsInputMethodEnabled="False"
-                                         Width="60" HorizontalAlignment="Left" MaxLength="2"/>
+                                         Width="60" HorizontalAlignment="Left"/>
                             </StackPanel>
                         </Expander>
                         <Expander Header="{DynamicResource String.Settingwindow.Download.Proxy}" Margin="0,0,0,5">
