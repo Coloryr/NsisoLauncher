@@ -22,6 +22,7 @@ namespace NsisoLauncher.Controls
     {
         public bool isRes = false;
         private bool isUse = false;
+        private bool goReg = false;
 
         public event Action<object, LaunchEventArgs> Launch;
 
@@ -142,17 +143,20 @@ namespace NsisoLauncher.Controls
                         authTypeCombobox.SelectedValue = node.AuthModule;
                     isRes = false;
                 }
-                if (string.IsNullOrWhiteSpace(App.Config.MainConfig.User.LockAuthName) == false)
+                AuthenticationNode node2 = App.Config.MainConfig.User.GetLockAuthNode();
+                if (node2 != null && (node2.Name != "offline" || node2.Name != "online"))
                 {
                     downloadButton.Content = App.GetResourceString("String.Base.Register");
                     addauth.Visibility = Visibility.Hidden;
                     authTypeCombobox.Margin = new Thickness(10, 151, 10, 0);
+                    goReg = true;
                 }
                 else
                 {
                     downloadButton.Content = App.GetResourceString("String.Base.Download");
                     addauth.Visibility = Visibility.Visible;
                     authTypeCombobox.Margin = new Thickness(10, 151, 50, 0);
+                    goReg = false;
                 }
                 await RefreshIcon();
                 App.LogHandler.AppendDebug("启动器主窗体数据重载完毕");
@@ -252,7 +256,7 @@ namespace NsisoLauncher.Controls
                 }
                 new Register(string.Format("https://login2.nide8.com:233/{0}/loginreg", node.Property["nide8ID"])).ShowDialog();
             }
-            else if (string.IsNullOrWhiteSpace(App.Config.MainConfig.User.LockAuthName) == false)
+            else if (goReg)
             {
                 AuthenticationNode node = GetSelectedAuthenticationNode();
                 if (string.IsNullOrWhiteSpace(node.RegisteAddress) == true)
