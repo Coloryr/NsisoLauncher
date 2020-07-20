@@ -83,7 +83,7 @@ namespace NsisoLauncherCore.Net.Head
         {
             var http = new HttpRequesterAPI(TimeSpan.FromSeconds(10));
             string data = await http.HttpGetStringAsync(url);
-            if (data == null || data.Contains("error"))
+            if (string.IsNullOrWhiteSpace(data) || data.Contains("error"))
             {
                 return bitmap;
             }
