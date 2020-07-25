@@ -20,6 +20,10 @@ namespace NsisoLauncherCore.Net.Head
                 string url = args.SkinUrl;
                 if (args.SkinUrl.Contains("{UUID}"))
                 {
+                    url = url.Replace("{UUID}", uuid.SelectProfileUUID.Replace("-", ""));
+                }
+                else if (args.SkinUrl.Contains("{U-U-ID}"))
+                {
                     url = url.Replace("{UUID}", uuid.SelectProfileUUID);
                 }
                 else if (args.SkinUrl.Contains("{NAME}"))

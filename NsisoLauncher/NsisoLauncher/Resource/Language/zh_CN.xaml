@@ -222,7 +222,7 @@
     <sys:String x:Key="String.Settingwindow.AuthModule.Add">添加</sys:String>
     <sys:String x:Key="String.Settingwindow.AuthModule.Save">修改</sys:String>
     <sys:String x:Key="String.Settingwindow.AuthModule.Delete">删除</sys:String>
-    <sys:String x:Key="String.Settingwindow.AuthModule.Skin">皮肤网址设置，使用{UUID}或者{NAME}来添加玩家信息：</sys:String>
+    <sys:String x:Key="String.Settingwindow.AuthModule.Skin">皮肤网址设置，使用{U-U-ID}、{UUID}或者{NAME}来添加玩家信息：</sys:String>
     <sys:String x:Key="String.Settingwindow.Env">全局设置</sys:String>
     <sys:String x:Key="String.Settingwindow.Env.Java">Java路径设置</sys:String>
     <sys:String x:Key="String.Settingwindow.Env.Java.AutoOn">自动选择Java: 开启</sys:String>
