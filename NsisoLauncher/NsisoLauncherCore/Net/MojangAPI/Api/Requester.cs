@@ -7,6 +7,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Reflection;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace NsisoLauncherCore.Net.MojangApi.Api
@@ -21,7 +22,7 @@ namespace NsisoLauncherCore.Net.MojangApi.Api
         /// <summary>
         /// 定义http请求的超时时间.
         /// </summary>
-        public static TimeSpan Timeout = TimeSpan.FromSeconds(5);
+        public static TimeSpan Timeout = TimeSpan.FromSeconds(20);
 
         /// <summary>
         /// 定义读取响应和写入请求的编码.
@@ -172,6 +173,22 @@ namespace NsisoLauncherCore.Net.MojangApi.Api
                 rawMessage = await httpResponse.Content.ReadAsStringAsync();
                 httpResponse.EnsureSuccessStatusCode();
             }
+            catch (TaskCanceledException ex)
+            {
+                error = new Error()
+                {
+                    ErrorMessage = "TimeOut",
+                    ErrorTag = ex.Message,
+                    Exception = ex
+                };
+                return new Response()
+                {
+                    Code = HttpStatusCode.GatewayTimeout,
+                    RawMessage = rawMessage,
+                    IsSuccess = false,
+                    Error = error
+                };
+            }
             catch (Exception ex)
             {
                 error = new Error()
@@ -184,6 +201,7 @@ namespace NsisoLauncherCore.Net.MojangApi.Api
                 {
                     return new Response()
                     {
+                        Code = HttpStatusCode.ServiceUnavailable,
                         RawMessage = rawMessage,
                         IsSuccess = false,
                         Error = error
