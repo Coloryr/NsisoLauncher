@@ -24,7 +24,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Modules\Log.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Modules\MCVersion.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Net\AuthlibInjectorAPI\APIHandler.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)..\..\..\..\C#%27s src\NsisoLauncher测试\NsisoLauncher\NsisoLauncherCore\Net\Head\OnlineHead.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Net\Head\OnlineHead.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Net\Dns\Header.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Net\Dns\Question.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Net\Dns\RecordReader.cs" />
@@ -130,7 +130,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Net\Nide8API\APIHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Net\Nide8API\APIModules.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Net\HttpRequesterAPI.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)..\..\..\..\C#%27s src\NsisoLauncher测试\NsisoLauncher\NsisoLauncherCore\Net\Head\Nide8Head.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Net\Head\Nide8Head.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Net\PhalAPI\APIHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Net\PhalAPI\APIModules.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Net\Server\ForgeInfo.cs" />
@@ -156,7 +156,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Util\JsonTools.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Util\SystemTools.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Util\Unzip.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)..\..\..\..\C#%27s src\NsisoLauncher测试\NsisoLauncher\NsisoLauncherCore\VersionReader.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)VersionReader.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="$(MSBuildThisFileDirectory)Net\Dns\Records\totla.txt" />

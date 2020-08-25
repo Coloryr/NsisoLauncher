@@ -27,8 +27,8 @@
 
     <sys:String x:Key="String.Message.EmptyAuthType">您未选择验证方式</sys:String>
     <sys:String x:Key="String.Message.EmptyAuthType2">请在右侧第一个验证方式栏选择您使用的验证类型</sys:String>
-    <sys:String x:Key="String.Message.EmptyUsername">您的用户名未填写</sys:String>
-    <sys:String x:Key="String.Message.EmptyUsername2">请在右侧第三个用户名栏填写您的用户名</sys:String>
+    <sys:String x:Key="String.Message.EmptyUsername">您的邮箱/用户名未填写</sys:String>
+    <sys:String x:Key="String.Message.EmptyUsername2">请在右侧第三个用户名栏填写您的邮箱/用户名</sys:String>
     <sys:String x:Key="String.Message.EmptyLaunchVersion">您未选择启动版本</sys:String>
     <sys:String x:Key="String.Message.EmptyLaunchVersion2">请在右侧第二个启动版本栏选择您要启动的版本</sys:String>
     <sys:String x:Key="String.Message.NoJava">该电脑上未安装Java</sys:String>
@@ -47,7 +47,7 @@
     <sys:String x:Key="String.Mainwindow.InputPassWord">请在这里输入密码</sys:String>
     <sys:String x:Key="String.Mainwindow.ChooseLaunchVersion">选择启动版本</sys:String>
     <sys:String x:Key="String.Mainwindow.ChooseAuthType">选择验证类型</sys:String>
-    <sys:String x:Key="String.Mainwindow.InputPlayerName">输入/选择游戏名称或账号</sys:String>
+    <sys:String x:Key="String.Mainwindow.InputPlayerName">输入/选择-邮箱/用户名</sys:String>
     <sys:String x:Key="String.Mainwindow.Auth.Nide8.NoID">没有设置服务器ID</sys:String>
     <sys:String x:Key="String.Mainwindow.Auth.Nide8.NoID2">统一验证服务器ID为空，如果您是服主，请在用户设置中填写通行证后台提供的服务器ID。</sys:String>
     <sys:String x:Key="String.Mainwindow.Auth.Registe.NoID">没有设置注册链接</sys:String>
@@ -55,7 +55,7 @@
     <sys:String x:Key="String.Mainwindow.Auth.Custom.NoAdrress">未设置自定义验证服务器地址</sys:String>
     <sys:String x:Key="String.Mainwindow.Auth.Custom.NoAdrress2">请在设置：用户验证设置：高级验证中设置自定义验证服务器(authlib或其它验证系统)</sys:String>
     <sys:String x:Key="String.Mainwindow.Auth.Add">添加新验证方式</sys:String>
-    <sys:String x:Key="String.Mainwindow.Auth.Error.Password">您输入的账号或密码为空</sys:String>
+    <sys:String x:Key="String.Mainwindow.Auth.Error.Password">您输入的邮箱/用户名或密码为空</sys:String>
     <sys:String x:Key="String.Mainwindow.Auth.Error.Check_Login">请检查您是否正确填写登陆信息</sys:String>
     <sys:String x:Key="String.Mainwindow.Auth.Error.Login_Error">登录失败</sys:String>
     <sys:String x:Key="String.Mainwindow.Auth.Error.Null">未知错误，请重试重新登陆</sys:String>
