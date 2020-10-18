@@ -19,7 +19,7 @@ namespace NsisoLauncher.Updata
             await Task.Factory.StartNew(() =>
             {
                 var GetFiles = new GetFiles();
-                foreach (string FilePath in GetFiles.getFileName(path))
+                foreach (string FilePath in GetFiles.GetFileName(path))
                 {
                     checker.FilePath = FilePath;
                     UpdataItem mod = new UpdataItem();

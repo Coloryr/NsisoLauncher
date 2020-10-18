@@ -5,7 +5,7 @@ namespace NsisoLauncher.Utils
 {
     class GetFiles
     {
-        public List<string> getFileName(string path)
+        public List<string> GetFileName(string path)
         {
             List<string> files = new List<string>();
             DirectoryInfo root = new DirectoryInfo(path);
@@ -15,14 +15,14 @@ namespace NsisoLauncher.Utils
             }
             return files;
         }
-        public List<string> getDirectory(string path)
+        public List<string> GetDirectory(string path)
         {
             List<string> files = new List<string>();
-            files.AddRange(getFileName(path));
+            files.AddRange(GetFileName(path));
             DirectoryInfo root = new DirectoryInfo(path);
             foreach (DirectoryInfo d in root.GetDirectories())
             {
-                files.AddRange(getDirectory(d.FullName));
+                files.AddRange(GetDirectory(d.FullName));
             }
             return files;
         }

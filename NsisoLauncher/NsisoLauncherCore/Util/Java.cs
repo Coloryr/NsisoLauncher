@@ -62,26 +62,6 @@ namespace NsisoLauncherCore.Util
         }
 
         /// <summary>
-        /// 安装JAVA
-        /// </summary>
-        /// <param name="installerPath">JAVA安装包路径</param>
-        /// <param name="options">JAVA安装选项</param>
-        /// <returns></returns>
-        public static Process InstallJava(string installerPath, InstallJavaOptions options)
-        {
-            Process p = Process.Start(
-                new ProcessStartInfo()
-                {
-                    FileName = "cmd.exe",
-                    Arguments = string.Format("{0} {1}", installerPath, options.ToArg()),
-                    RedirectStandardOutput = true,
-                    UseShellExecute = false,
-                    Verb = "RunAs"
-                });
-            return p;
-        }
-
-        /// <summary>
         /// 根据路径获取单个JAVA详细信息
         /// </summary>
         /// <param name="javaPath"></param>
