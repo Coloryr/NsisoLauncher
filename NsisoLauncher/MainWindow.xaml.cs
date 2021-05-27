@@ -764,10 +764,10 @@ namespace NsisoLauncher
                                 uuid
                             },
                             SelectedProfileUUID = uuid,
-                            UserData = new()
-                            {
-                                Uuid = OauthLoginWindow.LoggedInUser.MinecraftToken.Username.Replace("-","")
-                            }
+                        };
+                        authResult.UserData = args.UserNode.UserData ?? new()
+                        {
+                            Uuid = OauthLoginWindow.LoggedInUser.MinecraftToken.Username.Replace("-", "")
                         };
                     }
                     else
