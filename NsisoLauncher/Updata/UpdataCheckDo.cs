@@ -43,8 +43,7 @@ namespace NsisoLauncher.Updata
             string Url = App.Config.MainConfig.Server.UpdataCheck.Address;
             try
             {
-                var http = new HttpRequesterAPI(TimeSpan.FromSeconds(10));
-                var res = await http.HttpGetAsync(Url);
+                var res = await HttpRequesterAPI.HttpGetAsync(Url);
                 if (res.IsSuccessStatusCode)
                 {
                     JObject json = JObject.Parse(await res.Content.ReadAsStringAsync());

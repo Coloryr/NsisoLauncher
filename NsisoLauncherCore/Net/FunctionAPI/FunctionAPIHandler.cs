@@ -68,8 +68,7 @@ namespace NsisoLauncherCore.Net.FunctionAPI
         /// <returns>版本列表</returns>
         public async Task<List<JWVersion>> GetVersionList()
         {
-            var http = new HttpRequesterAPI(TimeSpan.FromSeconds(10));
-            string json = await http.HttpGetStringAsync(VersionListURL);
+            string json = await HttpRequesterAPI.HttpGetStringAsync(VersionListURL);
             if (json != null)
             {
                 var e = JsonConvert.DeserializeObject<JWVersions>(json);
@@ -85,8 +84,7 @@ namespace NsisoLauncherCore.Net.FunctionAPI
         /// <returns>Forge列表</returns>
         public async Task<List<JWForge>> GetForgeList(MCVersion version)
         {
-            var http = new HttpRequesterAPI(TimeSpan.FromSeconds(10));
-            string json = await http.HttpGetStringAsync(string.Format("{0}/{1}", ForgeListURL, version.ID));
+            string json = await HttpRequesterAPI.HttpGetStringAsync(string.Format("{0}/{1}", ForgeListURL, version.ID));
             var e = JsonConvert.DeserializeObject<List<JWForge>>(json);
             return e;
         }
@@ -98,8 +96,7 @@ namespace NsisoLauncherCore.Net.FunctionAPI
         /// <returns>Forge列表</returns>
         public async Task<List<JWFabric>> GetFabricList(MCVersion version)
         {
-            var http = new HttpRequesterAPI(TimeSpan.FromSeconds(10));
-            string json = await http.HttpGetStringAsync(FabricListVEURL);
+            string json = await HttpRequesterAPI.HttpGetStringAsync(FabricListVEURL);
             var e = JsonConvert.DeserializeObject<List<JWFabric>>(json);
             string ver;
             if (string.IsNullOrWhiteSpace(version.InheritsVersion))
@@ -115,7 +112,7 @@ namespace NsisoLauncherCore.Net.FunctionAPI
             {
                 return null;
             }
-            json = await http.HttpGetStringAsync(FabricListURL);
+            json = await HttpRequesterAPI.HttpGetStringAsync(FabricListURL);
             e = JsonConvert.DeserializeObject<List<JWFabric>>(json);
             return e;
         }
@@ -127,8 +124,7 @@ namespace NsisoLauncherCore.Net.FunctionAPI
         /// <returns>Liteloader列表</returns>
         public async Task<JWLiteloader> GetLiteloaderList(MCVersion version)
         {
-            var http = new HttpRequesterAPI(TimeSpan.FromSeconds(10));
-            string json = await http.HttpGetStringAsync(string.Format("{0}/?mcversion={1}", LiteloaderListURL, version.ID));
+            string json = await HttpRequesterAPI.HttpGetStringAsync(string.Format("{0}/?mcversion={1}", LiteloaderListURL, version.ID));
             var e = JsonConvert.DeserializeObject<JWLiteloader>(json);
             return e;
         }

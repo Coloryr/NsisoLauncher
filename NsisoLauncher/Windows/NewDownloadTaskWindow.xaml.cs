@@ -378,8 +378,7 @@ namespace NsisoLauncher.Windows
             {
                 foreach (JWVersion item in list)
                 {
-                    var http = new HttpRequesterAPI(TimeSpan.FromSeconds(10));
-                    string json = await http.HttpGetStringAsync(apiHandler.DoURLReplace(item.Url));
+                    string json = await HttpRequesterAPI.HttpGetStringAsync(apiHandler.DoURLReplace(item.Url));
                     MCVersion ver = App.Handler.JsonToVersion(json);
                     string jsonPath = App.Handler.GetJsonPath(ver.ID);
 

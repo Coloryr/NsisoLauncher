@@ -9,50 +9,55 @@ namespace NsisoLauncherCore.Net
 {
     public class HttpRequesterAPI
     {
-        /// <summary>
-        /// 代理
-        /// </summary>
-        public static WebProxy Proxy;
-
+        private static WebProxy _Proxy;
         /// <summary>
         /// 客户端
         /// </summary>
-        public HttpClient client;
-
+        public static HttpClient client { get; private set; }
         /// <summary>
-        /// 请求
+        /// 代理
         /// </summary>
-        /// <param name="Timeout">超时</param>
-        public HttpRequesterAPI(TimeSpan Timeout)
+        public static WebProxy Proxy
+        {
+            get
+            {
+                return _Proxy;
+            }
+            set
+            {
+                _Proxy = value;
+                var handler = new HttpClientHandler()
+                {
+                    Proxy = _Proxy,
+                    UseProxy = _Proxy != null
+                };
+                client?.Dispose();
+                client = new HttpClient(handler)
+                {
+                    Timeout = TimeSpan.FromSeconds(20)
+                };
+            }
+        }
+
+        static HttpRequesterAPI()
         {
             var handler = new HttpClientHandler()
             {
-                Proxy = Proxy,
-                UseProxy = Proxy != null
+                Proxy = _Proxy,
+                UseProxy = _Proxy != null
             };
             client = new HttpClient(handler)
             {
-                Timeout = Timeout
+                Timeout = TimeSpan.FromSeconds(20)
             };
-        }
-
-        private void httpCheck(string uri)
-        {
-            if (uri.Contains("https://"))
-            {
-                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-            }
-            else
-                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls;
         }
         /// <summary>
         /// 异步Get
         /// </summary>
         /// <param name="uri">网址</param>
         /// <returns></returns>
-        public async Task<HttpResponseMessage> HttpGetAsync(string uri)
+        public static async Task<HttpResponseMessage> HttpGetAsync(string uri)
         {
-            httpCheck(uri);
             int a = 0;
             while (a < 5)
             {
@@ -75,9 +80,8 @@ namespace NsisoLauncherCore.Net
         /// </summary>
         /// <param name="uri">网址</param>
         /// <returns></returns>
-        public async Task<HttpResponseMessage> HttpGetAsync(string uri, CancellationToken cancelToken)
+        public static async Task<HttpResponseMessage> HttpGetAsync(string uri, CancellationToken cancelToken)
         {
-            httpCheck(uri);
             int a = 0;
             while (a < 5)
             {
@@ -100,9 +104,8 @@ namespace NsisoLauncherCore.Net
         /// </summary>
         /// <param name="uri">网址</param>
         /// <returns></returns>
-        public async Task<HttpResponseMessage> HttpGetAsync(string uri, CancellationToken cancelToken, HttpCompletionOption option)
+        public static async Task<HttpResponseMessage> HttpGetAsync(string uri, CancellationToken cancelToken, HttpCompletionOption option)
         {
-            httpCheck(uri);
             int a = 0;
             while (a < 5)
             {
@@ -125,10 +128,9 @@ namespace NsisoLauncherCore.Net
         /// </summary>
         /// <param name="uri">网址</param>
         /// <returns></returns>
-        public async Task<string> HttpGetStringAsync(string uri)
+        public static async Task<string> HttpGetStringAsync(string uri)
         {
             int a = 0;
-            httpCheck(uri);
             while (a < 5)
             {
                 try
@@ -151,7 +153,7 @@ namespace NsisoLauncherCore.Net
         /// <param name="uri">网址</param>
         /// <param name="arg">参数</param>
         /// <returns></returns>
-        public async Task<HttpResponseMessage> HttpPostAsync(string uri, Dictionary<string, string> arg)
+        public static async Task<HttpResponseMessage> HttpPostAsync(string uri, Dictionary<string, string> arg)
         {
             return await client.PostAsync(uri, new FormUrlEncodedContent(arg));
         }
@@ -162,7 +164,7 @@ namespace NsisoLauncherCore.Net
         /// <param name="uri">网址</param>
         /// <param name="arg">参数</param>
         /// <returns></returns>
-        public async Task<string> HttpPostReadAsStringForString(string uri, Dictionary<string, string> arg)
+        public static async Task<string> HttpPostReadAsStringForString(string uri, Dictionary<string, string> arg)
         {
             var result = await HttpPostAsync(uri, arg);
             return await result.Content.ReadAsStringAsync();

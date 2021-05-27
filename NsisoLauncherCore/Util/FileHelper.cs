@@ -243,8 +243,7 @@ namespace NsisoLauncherCore.Util
                 string innerJsonStr;
                 if (!File.Exists(innerJsonPath))
                 {
-                    var http = new HttpRequesterAPI(TimeSpan.FromSeconds(10));
-                    innerJsonStr = await http.HttpGetStringAsync(GetDownloadUrl.GetCoreJsonDownloadURL(source, version.InheritsVersion));
+                    innerJsonStr = await HttpRequesterAPI.HttpGetStringAsync(GetDownloadUrl.GetCoreJsonDownloadURL(source, version.InheritsVersion));
                     if (innerJsonStr == null)
                     {
                         await window.ShowMessageAsync("检查错误", "检查源错误，请切换下载源后重试");
@@ -298,9 +297,8 @@ namespace NsisoLauncherCore.Util
             {
                 if (ver.AssetIndex != null)
                 {
-                    var http = new HttpRequesterAPI(TimeSpan.FromSeconds(10));
                     string jsonUrl = GetDownloadUrl.DoURLReplace(source, ver.AssetIndex.URL);
-                    string assetsJson = await http.HttpGetStringAsync(jsonUrl);
+                    string assetsJson = await HttpRequesterAPI.HttpGetStringAsync(jsonUrl);
                     assets = core.GetAssetsByJson(assetsJson);
                     tasks.Add(new DownloadTask("资源文件引导", jsonUrl, assetsPath));
                 }

@@ -222,7 +222,6 @@ namespace NsisoLauncherCore.Net
 
         private async Task ThreadDownloadWorkAsync(CancellationToken cancelToken)
         {
-            var http = new HttpRequesterAPI(TimeSpan.FromSeconds(10));
             try
             {
                 while ((!cancelToken.IsCancellationRequested) && (!_downloadTasks.IsEmpty))
@@ -230,7 +229,7 @@ namespace NsisoLauncherCore.Net
                     if (_downloadTasks.TryDequeue(out DownloadTask item))
                     {
                         item.SetState("下载中");
-                        await HTTPDownload(item, cancelToken, http);
+                        await HTTPDownload(item, cancelToken);
 
                         if (!cancelToken.IsCancellationRequested)
                         {
@@ -309,7 +308,7 @@ namespace NsisoLauncherCore.Net
             }
         }
 
-        private async Task HTTPDownload(DownloadTask task, CancellationToken cancelToken, HttpRequesterAPI http)
+        private async Task HTTPDownload(DownloadTask task, CancellationToken cancelToken)
         {
 
             if (string.IsNullOrWhiteSpace(task.From) || string.IsNullOrWhiteSpace(task.To))
@@ -336,7 +335,7 @@ namespace NsisoLauncherCore.Net
                 try
                 {
                     //下载流程
-                    using (var getResult = await http.HttpGetAsync(task.From, cancelToken, HttpCompletionOption.ResponseHeadersRead))
+                    using (var getResult = await HttpRequesterAPI.HttpGetAsync(task.From, cancelToken, HttpCompletionOption.ResponseHeadersRead))
                     {
                         getResult.EnsureSuccessStatusCode();
                         task.SetTotalSize(getResult.Content.Headers.ContentLength.GetValueOrDefault());

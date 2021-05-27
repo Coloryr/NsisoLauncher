@@ -12,7 +12,6 @@ namespace NsisoLauncherCore.Net.Tools
         {
             try
             {
-                var http = new HttpRequesterAPI(TimeSpan.FromSeconds(10));
                 foreach (var item in libs)
                 {
                     monitor.SetDoneSize(0);
@@ -47,7 +46,7 @@ namespace NsisoLauncherCore.Net.Tools
                                 File.Delete(buffFilename);
                             }
 
-                            using (var getResult = await http.HttpGetAsync(from, cancelToken))
+                            using (var getResult = await HttpRequesterAPI.HttpGetAsync(from, cancelToken))
                             {
                                 getResult.EnsureSuccessStatusCode();
                                 monitor.SetTotalSize(getResult.Content.Headers.ContentLength.GetValueOrDefault());

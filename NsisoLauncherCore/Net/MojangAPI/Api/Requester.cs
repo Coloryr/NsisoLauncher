@@ -18,12 +18,6 @@ namespace NsisoLauncherCore.Net.MojangApi.Api
     /// </summary>
     public static class Requester
     {
-
-        /// <summary>
-        /// 定义http请求的超时时间.
-        /// </summary>
-        public static TimeSpan Timeout = TimeSpan.FromSeconds(20);
-
         /// <summary>
         /// 定义读取响应和写入请求的编码.
         /// </summary>
@@ -62,24 +56,6 @@ namespace NsisoLauncherCore.Net.MojangApi.Api
         private static string _clientToken;
 
         /// <summary>
-        /// 表示Web请求中使用的http客户端.
-        /// </summary>
-        internal static HttpRequesterAPI Client
-        {
-            get
-            {
-                if (_client == null)
-                    _client = new HttpRequesterAPI(Timeout);
-                return _client;
-            }
-            private set
-            {
-                _client = value;
-            }
-        }
-        private static HttpRequesterAPI _client;
-
-        /// <summary>
         /// 向给定endpoint发送GET请求.
         /// </summary>
         /// <typeparam name="T">返回响应的类型</typeparam>
@@ -94,16 +70,19 @@ namespace NsisoLauncherCore.Net.MojangApi.Api
 
             try
             {
+                HttpRequestMessage requestMessage = new();
                 // 如果给予了令牌
                 if (authenticate && endpoint.Arguments.Count > 0)
                 {
                     //application/x-www-form-urlencoded
-                    Client.client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", endpoint.Arguments[0]);
-                    Client.client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("*/*"));
-                    Client.client.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue(Name, Version));
+                    requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", endpoint.Arguments[0]);
+                    requestMessage.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("*/*"));
+                    requestMessage.Headers.UserAgent.Add(new ProductInfoHeaderValue(Name, Version));
                 }
 
-                httpResponse = await Client.client.GetAsync(endpoint.Address);
+                requestMessage.RequestUri = endpoint.Address;
+                requestMessage.Method = HttpMethod.Get;
+                httpResponse = await HttpRequesterAPI.client.SendAsync(requestMessage);
                 rawMessage = await httpResponse.Content.ReadAsStringAsync();
                 httpResponse.EnsureSuccessStatusCode();
             }
@@ -152,14 +131,8 @@ namespace NsisoLauncherCore.Net.MojangApi.Api
 
             try
             {
-                if (endpoint.Address.AbsoluteUri.Contains("https://"))
-                {
-                    ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-                }
-                else
-                    ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls;
                 StringContent contents = new StringContent(endpoint.PostContent, Encoding, "application/json");
-                httpResponse = await Client.client.PostAsync(endpoint.Address, contents);
+                httpResponse = await HttpRequesterAPI.client.PostAsync(endpoint.Address, contents);
                 if (httpResponse == null || httpResponse.Content == null)
                 {
                     return new Response()
@@ -250,12 +223,17 @@ namespace NsisoLauncherCore.Net.MojangApi.Api
 
             try
             {
+                HttpRequestMessage requestMessage = new();
                 //application/x-www-form-urlencoded
-                Client.client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", endpoint.Arguments[0]);
-                Client.client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("*/*"));
-                Client.client.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue(Name, Version));
+                requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", endpoint.Arguments[0]);
+                requestMessage.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("*/*"));
+                requestMessage.Headers.UserAgent.Add(new ProductInfoHeaderValue(Name, Version));
 
-                httpResponse = await Client.client.PostAsync(endpoint.Address, new FormUrlEncodedContent(toEncode));
+                requestMessage.RequestUri = endpoint.Address;
+                requestMessage.Method = HttpMethod.Post;
+                using var content = new FormUrlEncodedContent(toEncode);
+                requestMessage.Content = content;
+                httpResponse = await HttpRequesterAPI.client.SendAsync(requestMessage);
                 rawMessage = await httpResponse.Content.ReadAsStringAsync();
                 httpResponse.EnsureSuccessStatusCode();
             }
@@ -321,21 +299,24 @@ namespace NsisoLauncherCore.Net.MojangApi.Api
 
             try
             {
+                HttpRequestMessage requestMessage = new();
                 //application/x-www-form-urlencoded
-                Client.client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", endpoint.Arguments[0]);
-                Client.client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("*/*"));
-                Client.client.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue(Name, Version));
+                requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", endpoint.Arguments[0]);
+                requestMessage.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("*/*"));
+                requestMessage.Headers.UserAgent.Add(new ProductInfoHeaderValue(Name, Version));
 
+                using var contents = new MultipartFormDataContent();
 
-                using (var contents = new MultipartFormDataContent())
-                {
-                    contents.Add(new StringContent(bool.Parse(endpoint.Arguments[1]) == true ? "true" : "false"), "model");
-                    contents.Add(new ByteArrayContent(File.ReadAllBytes(file.FullName)), "file", file.Name);
+                contents.Add(new StringContent(bool.Parse(endpoint.Arguments[1]) == true ? "true" : "false"), "model");
+                contents.Add(new ByteArrayContent(File.ReadAllBytes(file.FullName)), "file", file.Name);
 
-                    httpResponse = await Client.client.PutAsync(endpoint.Address, contents);
-                    rawMessage = await httpResponse.Content.ReadAsStringAsync();
-                    httpResponse.EnsureSuccessStatusCode();
-                }
+                requestMessage.Method = HttpMethod.Put;
+                requestMessage.Content = contents;
+                requestMessage.RequestUri = endpoint.Address;
+
+                httpResponse = await HttpRequesterAPI.client.SendAsync(requestMessage);
+                rawMessage = await httpResponse.Content.ReadAsStringAsync();
+                httpResponse.EnsureSuccessStatusCode();
 
             }
             catch (Exception ex)
@@ -394,12 +375,15 @@ namespace NsisoLauncherCore.Net.MojangApi.Api
 
             try
             {
+                HttpRequestMessage requestMessage = new();
                 //application/x-www-form-urlencoded
-                Client.client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", endpoint.Arguments[0]);
-                Client.client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("*/*"));
-                Client.client.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue(Name, Version));
+                requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", endpoint.Arguments[0]);
+                requestMessage.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("*/*"));
+                requestMessage.Headers.UserAgent.Add(new ProductInfoHeaderValue(Name, Version));
+                requestMessage.RequestUri = endpoint.Address;
+                requestMessage.Method = HttpMethod.Delete;
 
-                httpResponse = await Client.client.DeleteAsync(endpoint.Address);
+                httpResponse = await HttpRequesterAPI.client.SendAsync(requestMessage);
                 rawMessage = await httpResponse.Content.ReadAsStringAsync();
                 httpResponse.EnsureSuccessStatusCode();
 

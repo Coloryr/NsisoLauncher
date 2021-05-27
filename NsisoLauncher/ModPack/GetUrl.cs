@@ -59,14 +59,12 @@ namespace NsisoLauncher.ModPack
         public async Task<List<GetUrlRes>> GeturlAsync(List<FilesItem> mods)
         {
 
-            List<GetUrlRes> list = new List<GetUrlRes>();
-
-            HttpRequesterAPI client = new HttpRequesterAPI(TimeSpan.FromSeconds(20));
+            List<GetUrlRes> list = new();
             foreach (var item in mods)
             {
                 window.SetMessage(App.GetResourceString("String.NewDownloadTaskWindow.ModPack.Now")
                     + list.Count + "/" + mods.Count);
-                string res = await client.HttpGetStringAsync(string.Format(BaseUrl, item.projectID, item.fileID));
+                string res = await HttpRequesterAPI.HttpGetStringAsync(string.Format(BaseUrl, item.projectID, item.fileID));
                 if (res == null)
                     return null;
                 var obj1 = JObject.Parse(res).ToObject<UrlResObj>();

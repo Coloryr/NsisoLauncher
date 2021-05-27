@@ -8,7 +8,7 @@
     <Description>A Minecraft Launcher</Description>
     <Authors>Nsiso Studio/Color_yr</Authors>
     <Product>NsisoLauncher(Color_yr Edit)</Product>
-    <Version>4.8.1</Version>
+    <Version>4.9.0</Version>
     <ApplicationIcon>Resource\icon.ico</ApplicationIcon>
   </PropertyGroup>
 
@@ -30,14 +30,6 @@
 
   <ItemGroup>
     <PackageReference Include="ControlzEx" Version="5.0.0" />
-    <PackageReference Include="Costura.Fody" Version="5.3.0">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="Fody" Version="6.5.1">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
     <PackageReference Include="Heijden.Dns.Portable" Version="2.0.19" />
     <PackageReference Include="LiveCharts.Wpf.NetCore3" Version="0.9.7" />
     <PackageReference Include="MahApps.Metro" Version="2.4.5" />
