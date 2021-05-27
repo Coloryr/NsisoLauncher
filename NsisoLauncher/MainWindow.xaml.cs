@@ -1110,7 +1110,7 @@ namespace NsisoLauncher
                 if (choose == MessageDialogResult.Affirmative)
                 {
                     Task.Run(() => App.Downloader.RequestStopAsync());
-                    timer.Dispose();
+                    timer?.Dispose();
                 }
                 else
                 {

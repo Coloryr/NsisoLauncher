@@ -205,7 +205,7 @@ namespace NsisoLauncherCore.Net.Tools
                         DownloadSource = App.Config.MainConfig.Download.DownloadSource,
                         Java = App.Handler.Java
                     });
-                    installer.BeginInstall(callback, cancelToken);
+                    installer.BeginInstall(callback, cancelToken).Wait();
                     return null;
                 }
                 catch (Exception ex)
@@ -252,7 +252,7 @@ namespace NsisoLauncherCore.Net.Tools
                         DownloadSource = App.Config.MainConfig.Download.DownloadSource,
                         Java = App.Handler.Java
                     });
-                    installer.BeginInstall(callback, cancelToken);
+                    installer.BeginInstall(callback, cancelToken).Wait();
                     return null;
                 }
                 catch (Exception ex)
@@ -289,7 +289,7 @@ namespace NsisoLauncherCore.Net.Tools
                             version = version
                         }
                     });
-                    installer.BeginInstall(callback, cancelToken);
+                    installer.BeginInstall(callback, cancelToken).Wait();
                     return null;
                 }
                 catch (Exception ex)

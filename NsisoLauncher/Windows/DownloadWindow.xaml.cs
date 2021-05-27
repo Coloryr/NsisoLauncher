@@ -1,6 +1,6 @@
 ﻿using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
-using Microsoft.WindowsAPICodePack.Taskbar;
+using NsisoLauncher.Utils;
 using NsisoLauncherCore.Net;
 using System;
 using System.Collections.ObjectModel;
@@ -29,6 +29,11 @@ namespace NsisoLauncher.Windows
             Refresh();
             if (auto)
                 time = new Timer(new TimerCallback(Time), null, 100, -1);
+        }
+
+        public void Forge()
+        { 
+            
         }
 
         private void Time(object state)
@@ -112,9 +117,11 @@ namespace NsisoLauncher.Windows
             {
                 progressBar.Maximum = e.TaskCount;
                 progressBar.Value = e.TaskCount - e.LastTaskCount;
-                double progress = ((double)(e.TaskCount - e.LastTaskCount) / (double)e.TaskCount);
+                double progress = (e.TaskCount - e.LastTaskCount) / (double)e.TaskCount;
                 if (progress > 0)
-                    TaskbarManager.Instance.SetProgressValue((int)(progress * 100), 100);
+                {
+                    TaskbarManager.SetProgressValue((int)(progress * 100), 100, CriticalHandle);
+                }
                 progressPerTextBlock.Text = progress.ToString("0%");
                 Tasks.Remove(e.DoneTask);
             }));
@@ -136,7 +143,7 @@ namespace NsisoLauncher.Windows
                 {
                     await App.Downloader.RequestStopAsync();
                     progressBar.Value = 0;
-                    this.Close();
+                    Close();
                 }
             }
             else
@@ -181,7 +188,6 @@ namespace NsisoLauncher.Windows
         {
             App.DownloadWindow_ = null;
             App.MainWindow_.Refresh();
-            TaskbarManager.Instance.SetProgressState(TaskbarProgressBarState.NoProgress);
         }
     }
 }

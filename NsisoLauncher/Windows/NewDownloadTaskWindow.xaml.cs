@@ -1,6 +1,7 @@
 ﻿using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
 using NsisoLauncher.ModPack;
+using NsisoLauncher.Utils;
 using NsisoLauncherCore.Modules;
 using NsisoLauncherCore.Net;
 using NsisoLauncherCore.Net.FunctionAPI;
@@ -271,6 +272,7 @@ namespace NsisoLauncher.Windows
             }
             else
             {
+                TaskbarManager.SetProgressState(TaskbarProgressBarState.Indeterminate);
                 var loading = await this.ShowProgressAsync(App.GetResourceString("String.NewDownloadTaskWindow.DownLoad.Title"),
                     string.Format(App.GetResourceString("String.NewDownloadTaskWindow.DownLoad.Title"), selectItems.Count));
                 loading.SetIndeterminate();

@@ -1,6 +1,7 @@
 ﻿using ControlzEx.Theming;
 using NsisoLauncher.Config;
 using NsisoLauncher.Core.Util;
+using NsisoLauncher.Utils;
 using NsisoLauncher.Windows;
 using NsisoLauncherCore;
 using NsisoLauncherCore.Modules;

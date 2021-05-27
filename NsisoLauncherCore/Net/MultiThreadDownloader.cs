@@ -1,4 +1,5 @@
-﻿using NsisoLauncherCore.Modules;
+﻿using NsisoLauncher.Utils;
+using NsisoLauncherCore.Modules;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -266,7 +267,8 @@ namespace NsisoLauncherCore.Net
                                 callback.ProgressChanged += item.AcceptProgressChangedArg;
                                 try
                                 {
-                                    Exception exc = await Task.Run(() => item.Todo(callback, cancelToken));
+                                    TaskbarManager.SetProgressState(TaskbarProgressBarState.Indeterminate);
+                                    Exception exc = item.Todo(callback, cancelToken);
                                     if (exc != null)
                                     {
                                         SendDownloadErrLog(item, exc);

@@ -123,7 +123,7 @@ namespace NsisoLauncherCore.Util.Installer.Forge
             this.Options = options ?? throw new ArgumentNullException("Install options is null");
         }
 
-        public async void BeginInstall(ProgressCallback monitor, CancellationToken cancellationToken)
+        public async Task BeginInstall(ProgressCallback monitor, CancellationToken cancellationToken)
         {
             CommonInstaller.IsInstal = true;
             string installerName = Path.GetFileNameWithoutExtension(InstallerPath);

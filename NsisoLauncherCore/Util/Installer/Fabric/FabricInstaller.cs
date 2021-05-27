@@ -26,7 +26,7 @@ namespace NsisoLauncherCore.Util.Installer.Fabric
             this.Options = options ?? throw new ArgumentNullException("Install options is null");
         }
 
-        public async void BeginInstall(ProgressCallback callback, CancellationToken cancellationToken)
+        public async Task BeginInstall(ProgressCallback callback, CancellationToken cancellationToken)
         {
             CommonInstaller.IsInstal = true;
             Monitor = callback;
@@ -46,7 +46,7 @@ namespace NsisoLauncherCore.Util.Installer.Fabric
                 RedirectStandardOutput = true,
                 UseShellExecute = false
             };
-            await Task.Factory.StartNew(() =>
+            await Task.Run(() =>
             {
                 var result = Process.Start(processStartInfo);
                 result.BeginOutputReadLine();
