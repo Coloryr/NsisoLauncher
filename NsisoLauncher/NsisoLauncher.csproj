@@ -1,0 +1,56 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net5.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <PackageId>NsisoLauncher(Color_yr Edit)</PackageId>
+    <Description>A Minecraft Launcher</Description>
+    <Authors>Nsiso Studio/Color_yr</Authors>
+    <Product>NsisoLauncher(Color_yr Edit)</Product>
+    <Version>4.8.1</Version>
+    <ApplicationIcon>Resource\icon.ico</ApplicationIcon>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <OutputPath>..\build_out</OutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Resource\bg.jpg" />
+    <None Remove="Resource\Steve.jpg" />
+    <None Remove="Resource\unknown_server.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resource\bg.jpg" />
+    <Resource Include="Resource\Steve.jpg" />
+    <Resource Include="Resource\unknown_server.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="ControlzEx" Version="5.0.0" />
+    <PackageReference Include="Costura.Fody" Version="5.0.2">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Fody" Version="6.3.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Heijden.Dns.Portable" Version="2.0.19" />
+    <PackageReference Include="LiveCharts.Wpf" Version="0.9.7" />
+    <PackageReference Include="MahApps.Metro" Version="2.4.4" />
+    <PackageReference Include="MahApps.Metro.IconPacks.FontAwesome" Version="4.8.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="NotifyIconWpf" Version="1.0.0" />
+    <PackageReference Include="PropertyChanged.Fody" Version="3.3.2" />
+    <PackageReference Include="SharpZipLib" Version="1.3.1" />
+    <PackageReference Include="System.Drawing.Common" Version="5.0.1" />
+    <PackageReference Include="WindowsAPICodePack-Shell" Version="1.1.1" />
+    <PackageReference Include="WPFFolderBrowser" Version="1.0.2" />
+  </ItemGroup>
+
+  <Import Project="..\NsisoLauncherCore\NsisoLauncherCore.projitems" Label="Shared" />
+
+</Project>

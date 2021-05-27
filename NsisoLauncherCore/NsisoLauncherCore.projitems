@@ -1,0 +1,92 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects Condition="'$(MSBuildVersion)' == '' Or '$(MSBuildVersion)' &lt; '16.0'">$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>85753710-ba3e-441f-91f0-26a79e3ac2b6</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>NsisoLauncherCore</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)ArgumentsParser.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Auth\AuthlibInjectorAuthenticator.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Auth\IAuthenticator.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Auth\Nide8Authenticator.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Auth\OfflineAuthenticator.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Auth\YggdrasilAuthenticator.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)LaunchException\LaunchException.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)LaunchException\NativeNotFoundException.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)LaunchException\NullJavaExceptioncs.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)LaunchHandler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Modules\LaunchResult.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Modules\LaunchSetting.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Modules\Log.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Modules\MCVersion.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Net\AuthlibInjectorAPI\APIHandler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Net\DownloadSource.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Net\DownloadTask.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Net\FunctionAPI\APIModules.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Net\FunctionAPI\FunctionAPIHandler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Net\Head\HeadUtils.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Net\Head\InjectorHead.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Net\Head\Nide8Head.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Net\Head\OnlineHead.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Net\HttpRequesterAPI.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Net\MojangAPI\Api\Requester.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Net\MojangAPI\Api\Uuid.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Net\MojangAPI\Endpoints\ApiStatus.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Net\MojangAPI\Endpoints\Authentication.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Net\MojangAPI\Endpoints\BlockedServers.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Net\MojangAPI\Endpoints\Challenges.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Net\MojangAPI\Endpoints\ChangeSkin.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Net\MojangAPI\Endpoints\IEndpoint.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Net\MojangAPI\Endpoints\NameHistory.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Net\MojangAPI\Endpoints\Profile.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Net\MojangAPI\Endpoints\ResetSkin.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Net\MojangAPI\Endpoints\SecureIP.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Net\MojangAPI\Endpoints\Statistics.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Net\MojangAPI\Endpoints\UploadSkin.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Net\MojangAPI\Endpoints\UuidAtTime.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Net\MojangAPI\Endpoints\UuidByNames.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Net\MojangAPI\Responses\ApiStatusResponse.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Net\MojangAPI\Responses\AuthenticationResponses.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Net\MojangAPI\Responses\BlockedServersResponse.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Net\MojangAPI\Responses\ChallengesResponse.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Net\MojangAPI\Responses\NameHistoryResponse.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Net\MojangAPI\Responses\ProfileResponses.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Net\MojangAPI\Responses\Response.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Net\MojangAPI\Responses\StatisticsResponse.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Net\MojangAPI\Responses\UuidAtTimeResponse.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Net\MojangAPI\Responses\UuidByNamesResponse.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Net\MultiThreadDownloader.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Net\Nide8API\APIHandler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Net\Nide8API\APIModules.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Net\PhalAPI\APIHandler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Net\PhalAPI\APIModules.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Net\Server\ForgeInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Net\Server\ProtocolHandler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Net\Server\ServerInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Net\Tools\DownloadUtils.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Net\Tools\GetDownloadUrl.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)PathManager.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Util\AssetsReader.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Util\Checker\IChecker.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Util\Checker\MD5Checker.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Util\Checker\SHA1Checker.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Util\Checker\SHA256Checker.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Util\FileHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Util\GameHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Util\Installer\CommonInstaller.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Util\Installer\Fabric\FabricInstaller.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Util\Installer\Forge\Actions\PostProcessors.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Util\Installer\Forge\ForgeInstaller.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Util\Installer\Forge\Json\Install.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Util\Installer\IInstaller.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Util\Java.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Util\JsonTools.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Util\SystemTools.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Util\Unzip.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)VersionReader.cs" />
+  </ItemGroup>
+</Project>
