@@ -119,6 +119,7 @@ namespace NsisoLauncher.Windows
             }
             catch (Exception ex)
             {
+                LoggedInUser = null;
                 await this.ShowMessageAsync("登录发生异常", ex.ToString());
             }
         }
