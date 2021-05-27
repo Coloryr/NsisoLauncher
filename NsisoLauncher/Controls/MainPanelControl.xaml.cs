@@ -231,10 +231,22 @@ namespace NsisoLauncher.Controls
             string userName = userComboBox.Text;
             string selectedUserUUID = (string)userComboBox.SelectedValue;
             bool isNewUser = string.IsNullOrWhiteSpace(selectedUserUUID);
-            UserNode userNode;
+            UserNode userNode=null;
             if (!string.IsNullOrWhiteSpace(userName))
             {
                 userNode = isNewUser ? new UserNode() { AuthModule = authNodeName, UserName = userName } : ((KeyValuePair<string, UserNode>)userComboBox.SelectedItem).Value;
+            }
+            else if (authNode.AuthType == AuthenticationType.MICROSOFT)
+            {
+                foreach (var item in UserList)
+                {
+                    if (item.Value.AuthModule == "Microsoft")
+                    {
+                        userNode = item.Value;
+                        break;
+                    }
+                }
+                userNode ??= new UserNode() { AuthModule = "Microsoft", UserName = userName, UserData = new() { } };
             }
             else
             {

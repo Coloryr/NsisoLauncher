@@ -1,9 +1,11 @@
 ﻿using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
+using Microsoft.Win32;
 using NsisoLauncherCore.Net.MicrosoftLogin;
 using NsisoLauncherCore.Net.MicrosoftLogin.Modules;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -58,8 +60,14 @@ namespace NsisoLauncher.Windows
 
         public void ShowLogin()
         {
-            wb.Source = OAuthFlower.GetAuthorizeUri();
-            ShowLoading();
+            var temp = OAuthFlower.GetAuthorizeUri().OriginalString;
+            //从注册表中读取默认浏览器可执行文件路径
+            RegistryKey key = Registry.ClassesRoot.OpenSubKey(@"http\shell\open\command\");
+            string s = key.GetValue("").ToString();
+
+            //s就是你的默认浏览器，不过后面带了参数，把它截去，不过需要注意的是：不同的浏览器后面的参数不一样！
+            //"D:\Program Files (x86)\Google\Chrome\Application\chrome.exe" -- "%1"
+            System.Diagnostics.Process.Start(s.Substring(0, s.Length - 8), temp);
             ShowDialog();
         }
 
@@ -76,32 +84,6 @@ namespace NsisoLauncher.Windows
 
             return mc_result;
 
-        }
-
-        private async void wb_Navigating(object sender, NavigatingCancelEventArgs e)
-        {
-            Uri uri = e.Uri;
-            Uri = e.Uri.ToString();
-            await NavigatingUriHandle(uri);
-        }
-
-        private void wb_Navigated(object sender, NavigationEventArgs e)
-        {
-            Uri uri = e.Uri;
-            if (uri == OAuthFlower.GetAuthorizeUri())
-            {
-                HideLoading();
-            }
-        }
-
-        private async Task NavigatingUriHandle(Uri uri)
-        {
-            if (uri.Host == OAuthFlower.RedirectUri.Host && uri.AbsolutePath == OAuthFlower.RedirectUri.AbsolutePath)
-            {
-                ShowLoading();
-                string code = OAuthFlower.RedirectUrlToAuthCode(uri);
-                await Authenticate(code);
-            }
         }
 
         private async Task Authenticate(string code)
@@ -129,6 +111,7 @@ namespace NsisoLauncher.Windows
                 }
                 else
                 {
+
                     LoggedInUser = null;
                     await this.ShowMessageAsync("您的微软账号没有拥有Minecraft正版", "请确认您微软账号中购买了Minecraft正版，并拥有完整游戏权限");
                     Close();
@@ -154,18 +137,10 @@ namespace NsisoLauncher.Windows
             return mc_result;
         }
 
-        private void ShowLoading()
+        private async void Button_Click(object sender, RoutedEventArgs e)
         {
-            wb.Visibility = Visibility.Hidden;
-            progress.IsActive = true;
-            loadingPanel.Visibility = Visibility.Visible;
-        }
-
-        private void HideLoading()
-        {
-            wb.Visibility = Visibility.Visible;
-            progress.IsActive = false;
-            loadingPanel.Visibility = Visibility.Collapsed;
+            string code = OAuthFlower.RedirectUrlToAuthCode(new(url.Text));
+            await Authenticate(code);
         }
     }
 }

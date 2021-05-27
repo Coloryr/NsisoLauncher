@@ -523,7 +523,7 @@ namespace NsisoLauncher
                         App.GetResourceString("String.Message.EmptyAuthType2"));
                     return;
                 }
-                if (args.UserNode == null && args.AuthNode.AuthType != AuthenticationType.MICROSOFT)
+                if (args.UserNode == null)
                 {
                     await this.ShowMessageAsync(App.GetResourceString("String.Message.EmptyUsername"),
                         App.GetResourceString("String.Message.EmptyUsername2"));
@@ -721,6 +721,8 @@ namespace NsisoLauncher
                             }
                         }
                         break;
+                    case AuthenticationType.MICROSOFT:
+                        break;
                     default:
                         if (args.IsNewUser)
                         {
@@ -741,7 +743,7 @@ namespace NsisoLauncher
                 //如果验证方式不是离线验证
                 if (args.AuthNode.AuthType != AuthenticationType.OFFLINE)
                 {
-                    var authResult = await authenticator?.DoAuthenticateAsync();
+                    AuthenticateResult authResult;
                     if (args.AuthNode.AuthType == AuthenticationType.MICROSOFT)
                     {
                         new OauthLoginWindow().ShowLogin();
@@ -762,8 +764,15 @@ namespace NsisoLauncher
                                 uuid
                             },
                             SelectedProfileUUID = uuid,
-                            UserData = args.UserNode.UserData
+                            UserData = new()
+                            {
+                                Uuid = OauthLoginWindow.LoggedInUser.MinecraftToken.Username.Replace("-","")
+                            }
                         };
+                    }
+                    else
+                    {
+                        authResult = await authenticator?.DoAuthenticateAsync();
                     }
                     
                     if (authResult == null)
