@@ -517,16 +517,16 @@ namespace NsisoLauncher
                         App.GetResourceString("String.Message.EmptyLaunchVersion2"));
                     return;
                 }
-                if (args.UserNode == null)
-                {
-                    await this.ShowMessageAsync(App.GetResourceString("String.Message.EmptyUsername"),
-                        App.GetResourceString("String.Message.EmptyUsername2"));
-                    return;
-                }
                 if (args.AuthNode == null)
                 {
                     await this.ShowMessageAsync(App.GetResourceString("String.Message.EmptyAuthType"),
                         App.GetResourceString("String.Message.EmptyAuthType2"));
+                    return;
+                }
+                if (args.UserNode == null && args.AuthNode.AuthType != AuthenticationType.MICROSOFT)
+                {
+                    await this.ShowMessageAsync(App.GetResourceString("String.Message.EmptyUsername"),
+                        App.GetResourceString("String.Message.EmptyUsername2"));
                     return;
                 }
                 if (App.Handler.Java == null)
@@ -567,8 +567,11 @@ namespace NsisoLauncher
                 App.LogHandler.AppendInfo("登陆中...");
                 IAuthenticator authenticator = null;
                 bool shouldRemember = false;
-
-                bool isRemember = (!string.IsNullOrWhiteSpace(args.UserNode.AccessToken)) && (args.UserNode.SelectProfileUUID != null);
+                bool isRemember = true;
+                if (args.AuthNode.AuthType != AuthenticationType.MICROSOFT)
+                {
+                    isRemember = (!string.IsNullOrWhiteSpace(args.UserNode.AccessToken)) && (args.UserNode.SelectProfileUUID != null);
+                }
                 mainPanel.launchButton.Content = App.GetResourceString("String.Mainwindow.Loging");
                 switch (args.AuthNode.AuthType)
                 {
@@ -739,7 +742,30 @@ namespace NsisoLauncher
                 if (args.AuthNode.AuthType != AuthenticationType.OFFLINE)
                 {
                     var authResult = await authenticator?.DoAuthenticateAsync();
-
+                    if (args.AuthNode.AuthType == AuthenticationType.MICROSOFT)
+                    {
+                        new OauthLoginWindow().ShowLogin();
+                        if (OauthLoginWindow.LoggedInUser == null)
+                        {
+                            return;
+                        }
+                        Uuid uuid = new()
+                        {
+                            PlayerName = OauthLoginWindow.LoggedInUser.LaunchPlayerName,
+                            Value = OauthLoginWindow.LoggedInUser.LaunchUuid
+                        };
+                        authResult = new AuthenticateResult(AuthState.SUCCESS)
+                        {
+                            AccessToken = OauthLoginWindow.LoggedInUser.LaunchAccessToken,
+                            Profiles = new()
+                            {
+                                uuid
+                            },
+                            SelectedProfileUUID = uuid,
+                            UserData = args.UserNode.UserData
+                        };
+                    }
+                    
                     if (authResult == null)
                     {
                         await this.ShowMessageAsync(App.GetResourceString("String.Mainwindow.Auth.Error.Login_Error"),

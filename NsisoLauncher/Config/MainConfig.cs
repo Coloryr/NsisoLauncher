@@ -45,7 +45,12 @@ namespace NsisoLauncher.Config
         /// <summary>
         /// 自定义服务器验证
         /// </summary>
-        CUSTOM_SERVER
+        CUSTOM_SERVER,
+
+        /// <summary>
+        /// 微软登录
+        /// </summary>
+        MICROSOFT
     }
 
     public enum GameDirEnum
@@ -160,7 +165,7 @@ namespace NsisoLauncher.Config
         /// <returns>锁定的验证模型</returns>
         public AuthenticationNode GetLockAuthNode()
         {
-            if ((!string.IsNullOrWhiteSpace(LockAuthName)) && (AuthenticationDic.ContainsKey(LockAuthName)))
+            if ((!string.IsNullOrWhiteSpace(LockAuthName)) && AuthenticationDic.ContainsKey(LockAuthName))
             {
                 return AuthenticationDic[LockAuthName];
             }

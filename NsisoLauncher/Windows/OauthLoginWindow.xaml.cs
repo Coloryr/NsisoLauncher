@@ -129,7 +129,9 @@ namespace NsisoLauncher.Windows
                 }
                 else
                 {
+                    LoggedInUser = null;
                     await this.ShowMessageAsync("您的微软账号没有拥有Minecraft正版", "请确认您微软账号中购买了Minecraft正版，并拥有完整游戏权限");
+                    Close();
                 }
             }
             catch (Exception ex)

@@ -102,6 +102,7 @@
     <sys:String x:Key="String.MainPanelControl.Error">启动器致命错误</sys:String>
     <sys:String x:Key="String.MainPanelControl.Online">正版验证</sys:String>
     <sys:String x:Key="String.MainPanelControl.Offline">离线启动</sys:String>
+    <sys:String x:Key="String.MainPanelControl.Microsoft">微软登录</sys:String>
 
     <sys:String x:Key="String.Downloadwindow.Windows">下载监视器</sys:String>
     <sys:String x:Key="String.Downloadwindow.TaskName">任务名称</sys:String>

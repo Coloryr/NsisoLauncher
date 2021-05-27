@@ -71,13 +71,16 @@ namespace NsisoLauncher.Controls
                 if (App.Config.MainConfig.User.AuthenticationDic != null)
                     foreach (var item in App.Config.MainConfig.User.AuthenticationDic)
                     {
-                        switch (item.Key)
+                        switch (item.Value.AuthType)
                         {
-                            case "offline":
+                            case AuthenticationType.OFFLINE:
                                 item.Value.Name = App.GetResourceString("String.MainPanelControl.Offline");
                                 break;
-                            case "online":
+                            case AuthenticationType.MOJANG:
                                 item.Value.Name = App.GetResourceString("String.MainPanelControl.Online");
+                                break;
+                            case AuthenticationType.MICROSOFT:
+                                item.Value.Name = App.GetResourceString("String.MainPanelControl.Microsoft");
                                 break;
                         }
                         AuthNodeList.Add(item);
@@ -101,7 +104,7 @@ namespace NsisoLauncher.Controls
 
                 launchVersionCombobox.Text = App.Config.MainConfig.History.LastLaunchVersion;
                 if ((App.Config.MainConfig.History.SelectedUserNodeID != null) &&
-                    (App.Config.MainConfig.User.UserDatabase.ContainsKey(App.Config.MainConfig.History.SelectedUserNodeID)))
+                    App.Config.MainConfig.User.UserDatabase.ContainsKey(App.Config.MainConfig.History.SelectedUserNodeID))
                 {
                     userComboBox.SelectedValue = App.Config.MainConfig.History.SelectedUserNodeID;
                     UserComboBox_SelectionChanged(null, null);
@@ -144,7 +147,7 @@ namespace NsisoLauncher.Controls
                     isRes = false;
                 }
                 AuthenticationNode node2 = App.Config.MainConfig.User.GetLockAuthNode();
-                if (node2 != null && (node2.Name != "offline" || node2.Name != "online"))
+                if (node2 != null && (node2.AuthType is AuthenticationType.AUTHLIB_INJECTOR or AuthenticationType.CUSTOM_SERVER or AuthenticationType.NIDE8))
                 {
                     downloadButton.Content = App.GetResourceString("String.Base.Register");
                     addauth.Visibility = Visibility.Hidden;
@@ -182,7 +185,7 @@ namespace NsisoLauncher.Controls
                 (node1.AuthType != AuthenticationType.OFFLINE);
             if (isNeedRefreshIcon)
             {
-                if (node1.AuthType == AuthenticationType.MOJANG)
+                if (node1.AuthType is AuthenticationType.MOJANG or AuthenticationType.MICROSOFT)
                 {
                     if (OnlineHead.isload)
                         return;
@@ -310,7 +313,7 @@ namespace NsisoLauncher.Controls
                 return;
             }
             if ((App.Config.MainConfig.History.SelectedUserNodeID != null) &&
-                    (App.Config.MainConfig.User.UserDatabase.ContainsKey(App.Config.MainConfig.History.SelectedUserNodeID)))
+                    App.Config.MainConfig.User.UserDatabase.ContainsKey(App.Config.MainConfig.History.SelectedUserNodeID))
             {
                 if (node1 != null && node1.AuthType != AuthenticationType.OFFLINE && node != null && node.AuthModule == "offline")
                 {
@@ -376,6 +379,11 @@ namespace NsisoLauncher.Controls
                 switch (node.AuthType)
                 {
                     case AuthenticationType.OFFLINE: //离线模式
+                        PasswordBox.Visibility = Visibility.Hidden;
+                        PasswordBox.Password = null;
+                        break;
+                    case AuthenticationType.MICROSOFT:
+                        userComboBox.Visibility = Visibility.Hidden;
                         PasswordBox.Visibility = Visibility.Hidden;
                         PasswordBox.Password = null;
                         break;

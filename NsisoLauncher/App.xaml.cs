@@ -153,7 +153,6 @@ namespace NsisoLauncher
             }
 
             Lauguage();
-            new OauthLoginWindow().ShowLogin();
         }
 
         public static void ProxyRe()

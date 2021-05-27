@@ -186,14 +186,21 @@ namespace NsisoLauncher.Config
                             "offline",
                             new AuthenticationNode()
                             {
-                                AuthType = AuthenticationType.OFFLINE,
+                                AuthType = AuthenticationType.OFFLINE
                             }
                         },
                         {
                             "online",
                             new AuthenticationNode()
                             {
-                                AuthType = AuthenticationType.MOJANG,
+                                AuthType = AuthenticationType.MOJANG
+                            }
+                        },
+                        {
+                            "Microsoft",
+                            new AuthenticationNode()
+                            { 
+                                AuthType = AuthenticationType.MICROSOFT
                             }
                         }
                     }
