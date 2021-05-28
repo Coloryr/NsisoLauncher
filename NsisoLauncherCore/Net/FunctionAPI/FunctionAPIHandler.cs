@@ -1,7 +1,6 @@
 ﻿using Newtonsoft.Json;
 using NsisoLauncherCore.Modules;
 using NsisoLauncherCore.Net.Tools;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;

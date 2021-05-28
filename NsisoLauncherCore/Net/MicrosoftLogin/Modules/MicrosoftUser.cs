@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace NsisoLauncherCore.Net.MicrosoftLogin.Modules
+﻿namespace NsisoLauncherCore.Net.MicrosoftLogin.Modules
 {
     public class MicrosoftUser
     {

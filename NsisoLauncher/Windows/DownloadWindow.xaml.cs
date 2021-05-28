@@ -32,8 +32,8 @@ namespace NsisoLauncher.Windows
         }
 
         public void Forge()
-        { 
-            
+        {
+
         }
 
         private void Time(object state)

@@ -6,12 +6,59 @@
         xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
         xmlns:local="clr-namespace:NsisoLauncher.Windows"
         mc:Ignorable="d" WindowStartupLocation="CenterScreen"
-        Title="OauthLoginWindow" Height="600" Width="650">
-    <Grid>
-        <Label Content="请把登录后的网址复制到下面" HorizontalAlignment="Left" VerticalAlignment="Top" />
-        <TextBox Text="" TextWrapping="Wrap" Name="url" Margin="10,32,10,10" />
-        <Button Content="确定" Margin="608,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Click="Button_Click"/>
-
-
+        Title="OauthLoginWindow" Height="600" Width="800">
+    <Grid Background="White">
+        <TabControl SelectionChanged="TabControl_SelectionChanged" x:Name="Tabs">
+            <TabItem Header="内置登录" Name="Self">
+                <Grid Background="White">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <StackPanel Orientation="Horizontal" Grid.Row="0" Margin="5">
+                        <TextBlock Text="当前uri："/>
+                        <TextBlock Text="" Name="Uri"/>
+                    </StackPanel>
+                    <WebBrowser x:Name="wb" Grid.Row="1" Navigating="wb_Navigating" Navigated="wb_Navigated"/>
+                    <StackPanel x:Name="loadingPanel" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <controls:ProgressRing x:Name="progress" Margin="0,0,0,10"/>
+                        <TextBlock Text="请稍后..." HorizontalAlignment="Center"/>
+                        <StackPanel>
+                            <TextBlock Text="微软登录服务器位于境外，加载可能需要耐心等待一段时间" TextAlignment="Center" Foreground="Gray"/>
+                            <TextBlock Text="若长时间仍未加载成功，建议重新打开此登录界面" TextAlignment="Center" Foreground="Gray"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+            <TabItem Header="网页登录" Name="Web">
+                <StackPanel>
+                    <Label Content="请复制下面网址到浏览器打开" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                    <TextBox Text="" TextWrapping="Wrap" Name="weburl" IsReadOnly="True" Height="80"/>
+                    <Label Content="请把登录后的网址复制到下面" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                    <TextBox Text="" TextWrapping="Wrap" Name="url" Height="80"/>
+                    <Button Content="确定" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,5,0,0"
+                                Click="Button_Click" Style="{StaticResource MahApps.Styles.Button.Square.Accent}" Width="62"/>
+                    <TextBlock Text="若需要切换账户，请先打开https//www.minecraft.net选择微软登录，然后登出，再次打开上面的网址。"/>
+                </StackPanel>
+            </TabItem>
+            <TabItem Header="账户信息" Name="UserInfo" Visibility="Collapsed">
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="玩家名字：" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                        <Label Name="UserName" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="玩家UUID：" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                        <Label Name="UserUUID" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Button Content="切换账户" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="5,5,0,0"
+                                Style="{StaticResource MahApps.Styles.Button.Square}" Width="62" Click="Button_Click_1"/>
+                        <Button Content="启动" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="5,5,0,0"
+                                 Style="{StaticResource MahApps.Styles.Button.Square.Accent}" Width="62" Click="Button_Click_2"/>
+                    </StackPanel>
+                </StackPanel>
+            </TabItem>
+        </TabControl>
     </Grid>
 </controls:MetroWindow>

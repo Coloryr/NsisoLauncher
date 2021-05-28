@@ -231,7 +231,7 @@ namespace NsisoLauncher.Controls
             string userName = userComboBox.Text;
             string selectedUserUUID = (string)userComboBox.SelectedValue;
             bool isNewUser = string.IsNullOrWhiteSpace(selectedUserUUID);
-            UserNode userNode=null;
+            UserNode userNode = null;
             if (!string.IsNullOrWhiteSpace(userName))
             {
                 userNode = isNewUser ? new UserNode() { AuthModule = authNodeName, UserName = userName } : ((KeyValuePair<string, UserNode>)userComboBox.SelectedItem).Value;
@@ -410,6 +410,12 @@ namespace NsisoLauncher.Controls
                     case AuthenticationType.OFFLINE: //离线模式
                         PasswordBox.Visibility = Visibility.Hidden;
                         PasswordBox.Password = null;
+                        break;
+                    case AuthenticationType.MICROSOFT:
+                        userComboBox.Visibility = Visibility.Hidden;
+                        PasswordBox.Visibility = Visibility.Hidden;
+                        PasswordBox.Password = null;
+                        userComboBox.SelectedItem = null;
                         break;
                     default: //非离线模式
                         PasswordBox.Visibility = Visibility.Visible;

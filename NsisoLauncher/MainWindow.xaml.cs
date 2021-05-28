@@ -751,6 +751,7 @@ namespace NsisoLauncher
                         {
                             return;
                         }
+                        string uuid1 = OauthLoginWindow.LoggedInUser.MinecraftToken.Username.Replace("-", "");
                         Uuid uuid = new()
                         {
                             PlayerName = OauthLoginWindow.LoggedInUser.LaunchPlayerName,
@@ -767,14 +768,18 @@ namespace NsisoLauncher
                         };
                         authResult.UserData = args.UserNode.UserData ?? new()
                         {
-                            Uuid = OauthLoginWindow.LoggedInUser.MinecraftToken.Username.Replace("-", "")
+                            Uuid = uuid1
                         };
+                        if (authResult.UserData.Uuid == null)
+                        {
+                            authResult.UserData.Uuid = uuid1;
+                        }
                     }
                     else
                     {
                         authResult = await authenticator?.DoAuthenticateAsync();
                     }
-                    
+
                     if (authResult == null)
                     {
                         await this.ShowMessageAsync(App.GetResourceString("String.Mainwindow.Auth.Error.Login_Error"),

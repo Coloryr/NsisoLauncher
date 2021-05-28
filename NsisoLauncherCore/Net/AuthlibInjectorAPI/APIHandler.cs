@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json.Linq;
-using System;
 using System.Threading.Tasks;
 
 namespace NsisoLauncherCore.Net.AuthlibInjectorAPI

@@ -1,7 +1,6 @@
 ﻿using Heijden.Dns.Portable;
 using Heijden.DNS;
 using Newtonsoft.Json;
-using System;
 using System.Threading.Tasks;
 
 namespace NsisoLauncherCore.Net.Nide8API

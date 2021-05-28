@@ -199,7 +199,7 @@ namespace NsisoLauncher.Config
                         {
                             "Microsoft",
                             new AuthenticationNode()
-                            { 
+                            {
                                 AuthType = AuthenticationType.MICROSOFT
                             }
                         }

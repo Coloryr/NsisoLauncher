@@ -1,11 +1,10 @@
-﻿using NsisoLauncherCore.Net.MicrosoftLogin.Modules;
+﻿using Newtonsoft.Json;
+using NsisoLauncherCore.Net.MicrosoftLogin.Modules;
 using System;
-using System.Threading.Tasks;
-using Newtonsoft.Json;
 using System.Net.Http;
-using System.Threading;
 using System.Net.Http.Headers;
-using NsisoLauncherCore.Modules;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace NsisoLauncherCore.Net.MicrosoftLogin
 {

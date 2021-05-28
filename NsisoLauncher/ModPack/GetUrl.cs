@@ -1,7 +1,6 @@
 ﻿using MahApps.Metro.Controls.Dialogs;
 using Newtonsoft.Json.Linq;
 using NsisoLauncherCore.Net;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 

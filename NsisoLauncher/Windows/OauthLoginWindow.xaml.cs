@@ -1,24 +1,16 @@
 ﻿using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
 using Microsoft.Win32;
+using NsisoLauncher.Utils;
 using NsisoLauncherCore.Net.MicrosoftLogin;
 using NsisoLauncherCore.Net.MicrosoftLogin.Modules;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace NsisoLauncher.Windows
 {
@@ -27,18 +19,6 @@ namespace NsisoLauncher.Windows
     /// </summary>
     public partial class OauthLoginWindow : MetroWindow
     {
-        /// <summary>
-        /// The uri of the web view
-        /// </summary>
-        public string Uri { get; set; }
-
-        /// <summary>
-        /// The progress of the auth
-        /// </summary>
-        public string Progress { get; set; } = "初始化";
-
-        public Visibility WebBrowserVisibility { get; set; }
-
         public OAuthFlow OAuthFlower { get; set; }
         public XboxliveAuth XboxliveAuther { get; set; }
         public MinecraftServices McServices { get; set; }
@@ -46,6 +26,9 @@ namespace NsisoLauncher.Windows
         public CancellationToken CancelToken { get; set; } = default;
 
         public static MicrosoftUser LoggedInUser { get; set; }
+
+        private bool loginout;
+        private bool islogin;
 
         public OauthLoginWindow()
         {
@@ -60,61 +43,43 @@ namespace NsisoLauncher.Windows
 
         public void ShowLogin()
         {
-            var temp = OAuthFlower.GetAuthorizeUri().OriginalString;
-            //从注册表中读取默认浏览器可执行文件路径
-            RegistryKey key = Registry.ClassesRoot.OpenSubKey(@"http\shell\open\command\");
-            string s = key.GetValue("").ToString();
-
-            //s就是你的默认浏览器，不过后面带了参数，把它截去，不过需要注意的是：不同的浏览器后面的参数不一样！
-            //"D:\Program Files (x86)\Google\Chrome\Application\chrome.exe" -- "%1"
-            System.Diagnostics.Process.Start(s.Substring(0, s.Length - 8), temp);
+            wb.Source = OAuthFlower.GetAuthorizeUri();
+            ShowLoading();
             ShowDialog();
-        }
-
-        public async Task<MinecraftToken> RefreshMinecraftToken(MicrosoftToken token)
-        {
-            Progress = "MicrosoftCodeToAccessToken";
-            var result = await OAuthFlower.RefreshMicrosoftAccessToken(token, CancelToken);
-
-            Progress = "XboxliveAuther.Authenticate";
-            var xbox_result = await XboxliveAuther.Authenticate(result, CancelToken);
-
-            Progress = "McServices.Authenticate";
-            var mc_result = await McServices.Authenticate(xbox_result, CancelToken);
-
-            return mc_result;
-
         }
 
         private async Task Authenticate(string code)
         {
             try
             {
-                Progress = "MicrosoftCodeToAccessToken";
+                TaskbarManager.SetProgressState(TaskbarProgressBarState.Indeterminate);
+
                 var result = await OAuthFlower.MicrosoftCodeToAccessToken(code, CancelToken);
-
-                Progress = "XboxliveAuther.Authenticate";
                 var xbox_result = await XboxliveAuther.Authenticate(result, CancelToken);
-
-                Progress = "McServices.Authenticate";
                 var mc_result = await McServices.Authenticate(xbox_result, CancelToken);
-
-                Progress = "McServices.CheckHaveGameOwnership";
                 var owner_result = await McServices.CheckHaveGameOwnership(mc_result, CancelToken);
 
                 if (owner_result)
                 {
-                    Progress = "McServices.GetProfile";
                     MicrosoftUser microsoftUser = await McServices.GetProfile(result, mc_result, CancelToken);
                     LoggedInUser = microsoftUser;
-                    Close();
+                    islogin = true;
+                    LoginChange();
                 }
                 else
                 {
-
+                    islogin = false;
                     LoggedInUser = null;
-                    await this.ShowMessageAsync("您的微软账号没有拥有Minecraft正版", "请确认您微软账号中购买了Minecraft正版，并拥有完整游戏权限");
-                    Close();
+                    var res = await this.ShowMessageAsync("您的微软账号没有拥有Minecraft正版", "请确认您微软账号中购买了Minecraft正版，并拥有完整游戏权限", MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings()
+                    {
+                        AffirmativeButtonText = "返回",
+                        NegativeButtonText = "切换账户",
+                        DefaultButtonFocus = MessageDialogResult.Negative
+                    });
+                    if (res == MessageDialogResult.Negative)
+                    {
+                        LoginOut();
+                    }
                 }
             }
             catch (Exception ex)
@@ -122,26 +87,136 @@ namespace NsisoLauncher.Windows
                 LoggedInUser = null;
                 await this.ShowMessageAsync("登录发生异常", ex.ToString());
             }
+            finally
+            {
+                TaskbarManager.SetProgressState(TaskbarProgressBarState.NoProgress);
+            }
         }
 
-        private async Task<MinecraftToken> Refresh(MicrosoftToken token)
+        private void LoginOut()
         {
-            Progress = "MicrosoftCodeToAccessToken";
-            var result = await OAuthFlower.RefreshMicrosoftAccessToken(token, CancelToken);
-
-            Progress = "XboxliveAuther.Authenticate";
-            var xbox_result = await XboxliveAuther.Authenticate(result, CancelToken);
-
-            Progress = "McServices.Authenticate";
-            var mc_result = await McServices.Authenticate(xbox_result, CancelToken);
-
-            return mc_result;
+            wb.Source = new Uri("https://login.live.com/oauth20_logout.srf?client_id=ca634a9a-f102-4033-b081-3a4393a6f65d&redirect_uri=https%3A%2F%2Fsisu.xboxlive.com%2Fconnect%2Foauth%2FXboxLive%2Fsignout%3Fstate%3Dlogout%26ru%3Dhttps%253A%252F%252Fwww.minecraft.net%252Fzh-hans");
+            loginout = true;
         }
 
         private async void Button_Click(object sender, RoutedEventArgs e)
         {
+            if (string.IsNullOrWhiteSpace(url.Text))
+            {
+                await this.ShowMessageAsync("登录错误", "填写内容不正确");
+                return;
+            }
             string code = OAuthFlower.RedirectUrlToAuthCode(new(url.Text));
+            var loading = await this.ShowProgressAsync("验证中", "正在验证你的登录");
             await Authenticate(code);
+            await loading.CloseAsync();
+        }
+
+        private async void wb_Navigating(object sender, NavigatingCancelEventArgs e)
+        {
+            Uri uri = e.Uri;
+            Uri.Text = e.Uri.ToString();
+            if (loginout)
+                return;
+            await NavigatingUriHandle(uri);
+        }
+
+        private void wb_Navigated(object sender, NavigationEventArgs e)
+        {
+            Uri uri = e.Uri;
+            if (uri == OAuthFlower.GetAuthorizeUri())
+            {
+                HideLoading();
+            }
+            else if (uri.ToString() == "https://www.minecraft.net/zh-hans")
+            {
+                wb.Source = OAuthFlower.GetAuthorizeUri();
+                loginout = false;
+            }
+        }
+
+        private async Task NavigatingUriHandle(Uri uri)
+        {
+            if (uri.Host == OAuthFlower.RedirectUri.Host && uri.AbsolutePath == OAuthFlower.RedirectUri.AbsolutePath)
+            {
+                ShowLoading();
+                string code = OAuthFlower.RedirectUrlToAuthCode(uri);
+                await Authenticate(code);
+            }
+        }
+
+        private void ShowLoading()
+        {
+            wb.Visibility = Visibility.Hidden;
+            progress.IsActive = true;
+            loadingPanel.Visibility = Visibility.Visible;
+        }
+
+        private void HideLoading()
+        {
+            wb.Visibility = Visibility.Visible;
+            progress.IsActive = false;
+            loadingPanel.Visibility = Visibility.Collapsed;
+        }
+
+        private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (e.AddedItems.Count == 0 || loginout)
+                return;
+            var item = e.AddedItems[0] as TabItem;
+            if (item.Name is "Web")
+            {
+                var temp = OAuthFlower.GetAuthorizeUri().OriginalString;
+                weburl.Text = temp;
+                try
+                {
+                    RegistryKey key = Registry.ClassesRoot.OpenSubKey(@"http\shell\open\command\");
+                    string s = key.GetValue("").ToString();
+                    Process.Start(s.Substring(0, s.Length - 8), temp);
+                }
+                catch
+                {
+
+                }
+            }
+            else if (item.Name is "Self")
+            {
+                wb.Source = OAuthFlower.GetAuthorizeUri();
+            }
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            LoggedInUser = null;
+            islogin = false;
+            UserName.Content = UserUUID.Content = "";
+            LoginOut();
+            LoginChange();
+        }
+
+        private void Button_Click_2(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
+
+        private void LoginChange()
+        {
+            if (islogin)
+            {
+                Tabs.SelectedIndex = 2;
+                Self.Visibility = Visibility.Collapsed;
+                Web.Visibility = Visibility.Collapsed;
+                UserInfo.Visibility = Visibility.Visible;
+                UserName.Content = LoggedInUser.Name;
+                UserUUID.Content = LoggedInUser.LaunchUuid;
+            }
+            else
+            {
+                Tabs.SelectedIndex = 0;
+                Self.Visibility = Visibility.Visible;
+                Web.Visibility = Visibility.Visible;
+                UserInfo.Visibility = Visibility.Collapsed;
+            }
         }
     }
 }
