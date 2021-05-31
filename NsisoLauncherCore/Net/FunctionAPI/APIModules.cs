@@ -5,21 +5,21 @@ using System.Collections.Generic;
 
 namespace NsisoLauncherCore.Net.FunctionAPI
 {
-    public class APIModules
+    public record APIModules
     {
-        public class JWLiteloader
+        public record JWLiteloader
         {
             [JsonProperty("version")]
             public string Version { get; set; }
         }
 
-        public class TwoObj
+        public record TwoObj
         {
             public JWFabric fabric { get; set; }
             public MCVersion version { get; set; }
         }
 
-        public class JWFabric
+        public record JWFabric
         {
             /// <summary>
             /// Build
@@ -34,7 +34,7 @@ namespace NsisoLauncherCore.Net.FunctionAPI
             public string Version { get; set; }
         }
 
-        public class JWForge
+        public record JWForge
         {
             /// <summary>
             /// Build
@@ -49,7 +49,7 @@ namespace NsisoLauncherCore.Net.FunctionAPI
             public string Version { get; set; }
         }
 
-        public class JWJava
+        public record JWJava
         {
             /// <summary>
             /// JAVA标题
@@ -64,7 +64,7 @@ namespace NsisoLauncherCore.Net.FunctionAPI
             public string File { get; set; }
         }
 
-        public class JWNews
+        public record JWNews
         {
             /// <summary>
             /// 新闻标题
@@ -91,7 +91,7 @@ namespace NsisoLauncherCore.Net.FunctionAPI
             public string Link { get; set; }
         }
 
-        public class JWVersions
+        public record JWVersions
         {
             /// <summary>
             /// 版本集合
@@ -100,7 +100,7 @@ namespace NsisoLauncherCore.Net.FunctionAPI
             public List<JWVersion> Versions { get; set; }
         }
 
-        public class JWVersion
+        public record JWVersion
         {
             /// <summary>
             /// 版本ID
@@ -133,7 +133,7 @@ namespace NsisoLauncherCore.Net.FunctionAPI
             public string Url { get; set; }
         }
 
-        public class JLauncherVersion
+        public record JLauncherVersion
         {
             [JsonProperty("id")]
             public string ID { get; set; }

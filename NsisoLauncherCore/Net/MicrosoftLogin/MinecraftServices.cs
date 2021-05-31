@@ -20,7 +20,7 @@ namespace NsisoLauncherCore.Net.MicrosoftLogin
 
         public async Task<MinecraftToken> Authenticate(XboxLiveToken token, CancellationToken cancellation)
         {
-            MinecraftAuthenticateRequest request = new MinecraftAuthenticateRequest()
+            MinecraftAuthenticateRequest request = new()
             {
                 IdentityToken = string.Format("XBL3.0 x={0};{1}", token.Uhs, token.XstsToken)
             };
@@ -38,7 +38,7 @@ namespace NsisoLauncherCore.Net.MicrosoftLogin
 
         public async Task<bool> CheckHaveGameOwnership(MinecraftToken token, CancellationToken cancellation)
         {
-            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, CheckGameOwnershipUri);
+            HttpRequestMessage request = new(HttpMethod.Get, CheckGameOwnershipUri);
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token.AccessToken);
             var result = await HttpRequesterAPI.client.SendAsync(request, cancellation);
             result.EnsureSuccessStatusCode();
@@ -58,7 +58,7 @@ namespace NsisoLauncherCore.Net.MicrosoftLogin
 
         public async Task<MicrosoftUser> GetProfile(MicrosoftToken ms_token, MinecraftToken mc_token, CancellationToken cancellation)
         {
-            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, ProfileUri);
+            HttpRequestMessage request = new(HttpMethod.Get, ProfileUri);
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", mc_token.AccessToken);
             var result = await HttpRequesterAPI.client.SendAsync(request, cancellation);
             result.EnsureSuccessStatusCode();

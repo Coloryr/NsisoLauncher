@@ -1,7 +1,7 @@
 ﻿using ControlzEx.Theming;
 using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
-using NsisoLauncher.Config;
+using NsisoLauncher.Config.ConfigObj;
 using NsisoLauncherCore.Modules;
 using NsisoLauncherCore.Util;
 using System;
@@ -47,7 +47,7 @@ namespace NsisoLauncher.Windows
         {
 
             //绑定content设置
-            this.DataContext = App.Config.MainConfig;
+            DataContext = App.Config.MainConfig;
 
             javaPathComboBox.ItemsSource = App.JavaList;
             memorySlider.Maximum = SystemTools.GetTotalMemory();
@@ -55,9 +55,9 @@ namespace NsisoLauncher.Windows
             authModules.Clear();
             foreach (var item in App.Config.MainConfig.User.AuthenticationDic)
             {
-                if (item.Key == "offline" || item.Key == "online")
+                if (item.Key is "offline" or "online" or "Microsoft")
                     continue;
-                authModules.Add(new KeyValuePair<string, AuthenticationNode>(item.Key, item.Value));
+                authModules.Add(new KeyValuePair<string, AuthenticationNodeObj>(item.Key, item.Value));
             }
 
             VersionsComboBox.ItemsSource = await App.Handler.GetVersionsAsync();
@@ -70,8 +70,8 @@ namespace NsisoLauncher.Windows
             else
             {
                 VersionChose.Visibility = Visibility.Collapsed;
-                versionOptionsGrid.ItemsSource = await GameHelper.GetOptionsAsync(VersionOption.Type.options, App.Handler, new MCVersion() { ID = "null" });
-                versionOptionsofGrid.ItemsSource = await GameHelper.GetOptionsAsync(VersionOption.Type.optionsof, App.Handler, new MCVersion() { ID = "null" });
+                versionOptionsGrid.ItemsSource = await GameHelper.GetOptionsAsync(VersionOption.Type.options, App.Handler, new() { ID = "null" });
+                versionOptionsofGrid.ItemsSource = await GameHelper.GetOptionsAsync(VersionOption.Type.optionsof, App.Handler, new() { ID = "null" });
             }
             CheckBox_Checked(null, null);
             checkBox2_s_Check(null, null);
@@ -97,14 +97,14 @@ namespace NsisoLauncher.Windows
                 Java java = await Java.GetJavaInfoAsync(dialog.FileName);
                 if (java != null)
                 {
-                    this.javaPathComboBox.Text = java.Path;
-                    this.javaInfoLabel.Content = string.Format(
+                    javaPathComboBox.Text = java.Path;
+                    javaInfoLabel.Content = string.Format(
                         App.GetResourceString("String.Settingwindow.Message.Java.Content"),
                         java.Version, java.Arch);
                 }
                 else
                 {
-                    this.javaPathComboBox.Text = dialog.FileName;
+                    javaPathComboBox.Text = dialog.FileName;
                     await this.ShowMessageAsync(App.GetResourceString("String.Settingwindow.Message.NoJava.Title"),
                         App.GetResourceString("String.Settingwindow.Message.NoJava.Text"));
                 }
@@ -131,12 +131,12 @@ namespace NsisoLauncher.Windows
         }
         private void memorySlider_UpperValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            App.Config.MainConfig.Environment.MaxMemory = Convert.ToInt32(((RangeSlider)sender).UpperValue);
+            App.Config.MainConfig.Environment.MaxMemory = Convert.ToInt32((sender as RangeSlider)?.UpperValue);
         }
 
         private void memorySlider_LowerValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            App.Config.MainConfig.Environment.MinMemory = Convert.ToInt32(((RangeSlider)sender).LowerValue);
+            App.Config.MainConfig.Environment.MinMemory = Convert.ToInt32((sender as RangeSlider)?.LowerValue);
         }
 
         private void textBox1_PreviewTextInput(object sender, TextCompositionEventArgs e)
@@ -154,10 +154,10 @@ namespace NsisoLauncher.Windows
                     App.Handler.GameRootPath = Path.GetFullPath(".minecraft");
                     break;
                 case GameDirEnum.APPDATA:
-                    App.Handler.GameRootPath = System.Environment.GetFolderPath(System.Environment.SpecialFolder.ApplicationData) + "\\.minecraft";
+                    App.Handler.GameRootPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\.minecraft";
                     break;
                 case GameDirEnum.PROGRAMFILES:
-                    App.Handler.GameRootPath = System.Environment.GetFolderPath(System.Environment.SpecialFolder.ProgramFiles) + "\\.minecraft";
+                    App.Handler.GameRootPath = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles) + "\\.minecraft";
                     break;
                 case GameDirEnum.CUSTOM:
                     App.Handler.GameRootPath = App.Config.MainConfig.Environment.GamePath + "\\.minecraft";
@@ -173,25 +173,25 @@ namespace NsisoLauncher.Windows
                 if (App.Config.MainConfig.Environment.VersionIsolation)
                 {
                     await GameHelper.SaveOptionsAsync(VersionOption.Type.options,
-                    (List<VersionOption>)versionOptionsGrid.ItemsSource,
+                    versionOptionsGrid.ItemsSource as List<VersionOption>,
                     App.Handler,
-                    (MCVersion)VersionsComboBox.SelectedItem);
+                    VersionsComboBox.SelectedItem as MCVersion);
 
                     await GameHelper.SaveOptionsAsync(VersionOption.Type.optionsof,
-                   (List<VersionOption>)versionOptionsofGrid.ItemsSource,
+                   versionOptionsofGrid.ItemsSource as List<VersionOption>,
                    App.Handler,
-                   (MCVersion)VersionsComboBox.SelectedItem);
+                   VersionsComboBox.SelectedItem as MCVersion);
                 }
                 else
                 {
                     await GameHelper.SaveOptionsAsync(VersionOption.Type.options,
-                    (List<VersionOption>)versionOptionsGrid.ItemsSource,
+                    versionOptionsGrid.ItemsSource as List<VersionOption>,
                     App.Handler,
-                    new MCVersion() { ID = "null" });
+                    new() { ID = "null" });
                     await GameHelper.SaveOptionsAsync(VersionOption.Type.optionsof,
-                    (List<VersionOption>)versionOptionsofGrid.ItemsSource,
+                    versionOptionsofGrid.ItemsSource as List<VersionOption>,
                     App.Handler,
-                    new MCVersion() { ID = "null" });
+                    new() { ID = "null" });
                 }
             }
 
@@ -199,7 +199,7 @@ namespace NsisoLauncher.Windows
             App.ProxyRe();
 
             saveButton.Content = App.GetResourceString("String.Settingwindow.Saving");
-            Config.Environment env = App.Config.MainConfig.Environment;
+            EnvironmentObj env = App.Config.MainConfig.Environment;
             Java java = null;
             if (env.AutoJava)
             {
@@ -233,12 +233,12 @@ namespace NsisoLauncher.Windows
 
         private async void VersionsComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            System.Windows.Controls.ComboBox comboBox = (System.Windows.Controls.ComboBox)sender;
+            ComboBox comboBox = sender as ComboBox;
 
             if (comboBox.SelectedItem != null)
             {
-                versionOptionsGrid.ItemsSource = await GameHelper.GetOptionsAsync(VersionOption.Type.options, App.Handler, (MCVersion)comboBox.SelectedItem);
-                versionOptionsofGrid.ItemsSource = await GameHelper.GetOptionsAsync(VersionOption.Type.optionsof, App.Handler, (MCVersion)comboBox.SelectedItem);
+                versionOptionsGrid.ItemsSource = await GameHelper.GetOptionsAsync(VersionOption.Type.options, App.Handler, comboBox.SelectedItem as MCVersion);
+                versionOptionsofGrid.ItemsSource = await GameHelper.GetOptionsAsync(VersionOption.Type.optionsof, App.Handler, comboBox.SelectedItem as MCVersion);
             }
             else
             {
@@ -253,10 +253,10 @@ namespace NsisoLauncher.Windows
 
         private void appThmeComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            Theme item = (Theme)((System.Windows.Controls.ComboBox)sender).SelectedItem;
+            Theme item = (sender as ComboBox)?.SelectedItem as Theme;
             if (item != null)
             {
-                ThemeManager.Current.ChangeTheme(System.Windows.Application.Current, item);
+                ThemeManager.Current.ChangeTheme(Application.Current, item);
             }
         }
 
@@ -283,7 +283,7 @@ namespace NsisoLauncher.Windows
         }
         private void javaPathComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            Java java = (Java)(((System.Windows.Controls.ComboBox)sender).SelectedItem);
+            Java java = (sender as ComboBox).SelectedItem as Java;
             if (java != null)
             {
                 this.javaInfoLabel.Content = string.Format(
@@ -304,8 +304,8 @@ namespace NsisoLauncher.Windows
                         App.GetResourceString("String.Settingwindow.Message.User.Text"));
                 return;
             }
-            KeyValuePair<string, UserNode> selectedItem = (KeyValuePair<string, UserNode>)userComboBox.SelectedItem;
-            UserNode node = selectedItem.Value;
+            KeyValuePair<string, UserNodeObj> selectedItem = (KeyValuePair<string, UserNodeObj>)userComboBox.SelectedItem;
+            UserNodeObj node = selectedItem.Value;
             node.AccessToken = null;
             this.ShowMessageAsync(App.GetResourceString("String.Settingwindow.Message.User1.Title"),
                 App.GetResourceString("String.Settingwindow.Message.User1.Text"));
@@ -320,8 +320,8 @@ namespace NsisoLauncher.Windows
                 return;
             }
 
-            KeyValuePair<string, UserNode> selectedItem = (KeyValuePair<string, UserNode>)userComboBox.SelectedItem;
-            UserNode node = selectedItem.Value;
+            KeyValuePair<string, UserNodeObj> selectedItem = (KeyValuePair<string, UserNodeObj>)userComboBox.SelectedItem;
+            UserNodeObj node = selectedItem.Value;
             node.AccessToken = null;
             node.Profiles = null;
             node.UserData = null;
@@ -348,7 +348,7 @@ namespace NsisoLauncher.Windows
         private void delAllAuthnodeButton_Click(object sender, RoutedEventArgs e)
         {
             App.Config.MainConfig.User.AuthenticationDic.Clear();
-            App.Config.MainConfig.User.AuthenticationDic.Add("mojang", new AuthenticationNode()
+            App.Config.MainConfig.User.AuthenticationDic.Add("mojang", new AuthenticationNodeObj()
             {
                 AuthType = AuthenticationType.MOJANG,
                 Name = App.GetResourceString("String.Mainwindow.Auth.Mojang")
@@ -369,10 +369,10 @@ namespace NsisoLauncher.Windows
         {
             Hyperlink link = sender as Hyperlink;
             // 激活的是当前默认的浏览器
-            Process.Start(new ProcessStartInfo(link.NavigateUri.AbsoluteUri));
+            Process.Start(link.NavigateUri.AbsoluteUri);
         }
 
-        ObservableCollection<KeyValuePair<string, AuthenticationNode>> authModules = new ObservableCollection<KeyValuePair<string, AuthenticationNode>>();
+        ObservableCollection<KeyValuePair<string, AuthenticationNodeObj>> authModules = new();
 
         private void AuthModuleCombobox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -383,11 +383,11 @@ namespace NsisoLauncher.Windows
             }
             else
             {
-                authmoduleControl.SelectionChangedAccept((KeyValuePair<string, AuthenticationNode>)selectedItem);
+                authmoduleControl.SelectionChangedAccept((KeyValuePair<string, AuthenticationNodeObj>)selectedItem);
             }
         }
 
-        public async void AddAuthModule(string name, AuthenticationNode authmodule)
+        public async void AddAuthModule(string name, AuthenticationNodeObj authmodule)
         {
             if (authModules.Any(x => x.Key == name))
             {
@@ -395,19 +395,19 @@ namespace NsisoLauncher.Windows
                  App.GetResourceString("String.Settingwindow.Message.User7.Text"));
                 return;
             }
-            var item = new KeyValuePair<string, AuthenticationNode>(name, authmodule);
+            var item = new KeyValuePair<string, AuthenticationNodeObj>(name, authmodule);
             authModules.Add(item);
             App.Config.MainConfig.User.AuthenticationDic.Add(name, authmodule);
             authModuleCombobox.SelectedItem = item;
         }
 
-        public async void SaveAuthModule(KeyValuePair<string, AuthenticationNode> node)
+        public async void SaveAuthModule(KeyValuePair<string, AuthenticationNodeObj> node)
         {
             await this.ShowMessageAsync(App.GetResourceString("String.Settingwindow.Message.User8.Title"),
                  App.GetResourceString("String.Settingwindow.Message.User8.Text"));
         }
 
-        public async void DeleteAuthModule(KeyValuePair<string, AuthenticationNode> node)
+        public async void DeleteAuthModule(KeyValuePair<string, AuthenticationNodeObj> node)
         {
             authModules.Remove(node);
             App.Config.MainConfig.User.AuthenticationDic.Remove(node.Key);

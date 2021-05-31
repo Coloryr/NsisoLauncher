@@ -2,7 +2,7 @@
 
 namespace NsisoLauncherCore.Net.MicrosoftLogin.Modules
 {
-    public class XboxLiveToken
+    public record XboxLiveToken
     {
         public XboxLiveAuthResult XblAuthResult { get; set; }
 

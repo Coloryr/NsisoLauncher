@@ -55,6 +55,7 @@
     <sys:String x:Key="String.Mainwindow.Auth.Custom.NoAdrress">未设置自定义验证服务器地址</sys:String>
     <sys:String x:Key="String.Mainwindow.Auth.Custom.NoAdrress2">请在设置：用户验证设置：高级验证中设置自定义验证服务器(authlib或其它验证系统)</sys:String>
     <sys:String x:Key="String.Mainwindow.Auth.Add">添加新验证方式</sys:String>
+    <sys:String x:Key="String.Mainwindow.Auth.Error">发生错误</sys:String>
     <sys:String x:Key="String.Mainwindow.Auth.Error.Password">您输入的邮箱/用户名或密码为空</sys:String>
     <sys:String x:Key="String.Mainwindow.Auth.Error.Check_Login">请检查您是否正确填写登陆信息</sys:String>
     <sys:String x:Key="String.Mainwindow.Auth.Error.Login_Error">登录失败</sys:String>
@@ -408,4 +409,15 @@
     <sys:String x:Key="String.Update.LostResources">缺失材质</sys:String>
     <sys:String x:Key="String.Update.UpdataConfig">更新配置</sys:String>
     <sys:String x:Key="String.Update.LostConfig">丢失配置</sys:String>
+
+    <sys:String x:Key="String.OauthLogin.NoMinecraft">您的微软账号没有拥有Minecraft正版</sys:String>
+    <sys:String x:Key="String.OauthLogin.NoMinecraft1">请确认您微软账号中购买了Minecraft正版，并拥有完整游戏权限</sys:String>
+    <sys:String x:Key="String.OauthLogin.Back">返回</sys:String>
+    <sys:String x:Key="String.OauthLogin.Change">切换账户</sys:String>
+    <sys:String x:Key="String.OauthLogin.LoginError">登录发生异常</sys:String>
+    <sys:String x:Key="String.OauthLogin.Error1.Title">登录错误</sys:String>
+    <sys:String x:Key="String.OauthLogin.Error1.Text">填写内容不正确</sys:String>
+    <sys:String x:Key="String.OauthLogin.Logining.Title">验证中</sys:String>
+    <sys:String x:Key="String.OauthLogin.Logining.Text">正在验证你的登录</sys:String>
+    
 </ResourceDictionary>

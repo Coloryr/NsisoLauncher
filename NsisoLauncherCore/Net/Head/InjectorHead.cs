@@ -1,4 +1,4 @@
-﻿using NsisoLauncher.Config;
+﻿using NsisoLauncher.Config.ConfigObj;
 using System.Threading.Tasks;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -10,7 +10,7 @@ namespace NsisoLauncherCore.Net.Head
         public static bool isload = false;
         private static BitmapImage img;
         private static string uuid;
-        public async Task<ImageSource> GetHeadSculSource(UserNode uuid, AuthenticationNode args)
+        public async Task<ImageSource> GetHeadSculSource(UserNodeObj uuid, AuthenticationNodeObj args)
         {
             if (InjectorHead.uuid == uuid.SelectProfileUUID)
                 return img ?? HeadUtils.bitmap;

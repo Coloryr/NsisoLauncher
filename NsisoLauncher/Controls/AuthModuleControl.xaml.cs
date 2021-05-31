@@ -1,6 +1,6 @@
 ﻿using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
-using NsisoLauncher.Config;
+using NsisoLauncher.Config.ConfigObj;
 using NsisoLauncher.Windows;
 using System.Collections.Generic;
 using System.Windows;
@@ -13,7 +13,7 @@ namespace NsisoLauncher.Controls
     /// </summary>
     public partial class AuthModuleControl : UserControl
     {
-        private KeyValuePair<string, AuthenticationNode> authModule;
+        private KeyValuePair<string, AuthenticationNodeObj> authModule;
 
         private AuthenticationType authenticationType = AuthenticationType.OFFLINE;
 
@@ -24,7 +24,7 @@ namespace NsisoLauncher.Controls
             delButton.IsEnabled = false;
         }
 
-        public void SelectionChangedAccept(KeyValuePair<string, AuthenticationNode> node)
+        public void SelectionChangedAccept(KeyValuePair<string, AuthenticationNodeObj> node)
         {
             authModule = node;
             if (authModule.Value != null)
@@ -120,7 +120,7 @@ namespace NsisoLauncher.Controls
             {
                 string authName = authmoduleNameTextbox.Text;
                 string authData = authDataTextbox.Text;
-                AuthenticationNode node = new AuthenticationNode()
+                AuthenticationNodeObj node = new()
                 {
                     AuthType = authenticationType,
                     Name = authName,
@@ -142,7 +142,7 @@ namespace NsisoLauncher.Controls
                         node.Property.Add("authserver", authData);
                         break;
                 }
-                ((SettingWindow)Window.GetWindow(this)).AddAuthModule(authName, node);
+                (Window.GetWindow(this) as SettingWindow).AddAuthModule(authName, node);
                 SaveButton_Click(null, null);
             }
         }
@@ -151,19 +151,19 @@ namespace NsisoLauncher.Controls
         {
             if (authenticationType == AuthenticationType.OFFLINE)
             {
-                ((MetroWindow)Window.GetWindow(this)).ShowMessageAsync(App.GetResourceString("String.AuthModuleControl.NoChose.Title"),
+                (Window.GetWindow(this) as MetroWindow).ShowMessageAsync(App.GetResourceString("String.AuthModuleControl.NoChose.Title"),
                     App.GetResourceString("String.AuthModuleControl.NoChose.Text"));
                 return true;
             }
             if (string.IsNullOrWhiteSpace(authmoduleNameTextbox.Text))
             {
-                ((MetroWindow)Window.GetWindow(this)).ShowMessageAsync(App.GetResourceString("String.AuthModuleControl.NoName.Title"),
+                (Window.GetWindow(this) as MetroWindow).ShowMessageAsync(App.GetResourceString("String.AuthModuleControl.NoName.Title"),
                     App.GetResourceString("String.AuthModuleControl.NoName.Text"));
                 return true;
             }
             if (string.IsNullOrWhiteSpace(authDataTextbox.Text))
             {
-                ((MetroWindow)Window.GetWindow(this)).ShowMessageAsync(App.GetResourceString("String.AuthModuleControl.NoData.Title"),
+                (Window.GetWindow(this) as MetroWindow).ShowMessageAsync(App.GetResourceString("String.AuthModuleControl.NoData.Title"),
                     App.GetResourceString("String.AuthModuleControl.NoData.Text"));
                 return true;
             }
@@ -195,7 +195,7 @@ namespace NsisoLauncher.Controls
                         authModule.Value.Property.Add("authserver", authData);
                         break;
                 }
-                ((SettingWindow)Window.GetWindow(this)).SaveAuthModule(authModule);
+                (Window.GetWindow(this) as SettingWindow).SaveAuthModule(authModule);
             }
         }
 
@@ -203,11 +203,11 @@ namespace NsisoLauncher.Controls
         {
             if (authModule.Value.Name == "mojang" || authModule.Value.Name == "offline")
             {
-                ((MetroWindow)Window.GetWindow(this)).ShowMessageAsync(App.GetResourceString("String.AuthModuleControl.Error.Title"),
+                (Window.GetWindow(this) as MetroWindow).ShowMessageAsync(App.GetResourceString("String.AuthModuleControl.Error.Title"),
                     App.GetResourceString("String.AuthModuleControl.Error.Text"));
                 return;
             }
-            ((SettingWindow)Window.GetWindow(this)).DeleteAuthModule(authModule);
+            (Window.GetWindow(this) as SettingWindow).DeleteAuthModule(authModule);
 
         }
 

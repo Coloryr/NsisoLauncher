@@ -17,7 +17,7 @@ namespace NsisoLauncherCore.Net.MicrosoftLogin
 
         public async Task<XboxLiveAuthResult> XblAuthenticate(XblAuthProperties properties, CancellationToken cancellation = default)
         {
-            XblAuthRequest request = new XblAuthRequest()
+            XblAuthRequest request = new()
             {
                 Properties = properties,
                 RelyingParty = "http://auth.xboxlive.com",
@@ -28,7 +28,7 @@ namespace NsisoLauncherCore.Net.MicrosoftLogin
 
         public async Task<XboxLiveAuthResult> XstsAuthenticate(XstsAuthProperties properties, CancellationToken cancellation = default)
         {
-            XstsAuthRequest request = new XstsAuthRequest()
+            XstsAuthRequest request = new()
             {
                 Properties = properties,
                 RelyingParty = "rp://api.minecraftservices.com/",

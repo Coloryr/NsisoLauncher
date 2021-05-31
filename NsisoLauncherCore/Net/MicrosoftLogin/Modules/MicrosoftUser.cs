@@ -1,6 +1,6 @@
 ﻿namespace NsisoLauncherCore.Net.MicrosoftLogin.Modules
 {
-    public class MicrosoftUser
+    public record MicrosoftUser
     {
         /// <summary>
         /// 用户id

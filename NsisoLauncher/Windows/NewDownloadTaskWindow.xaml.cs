@@ -27,10 +27,10 @@ namespace NsisoLauncher.Windows
     /// </summary>
     public partial class NewDownloadTaskWindow : MetroWindow
     {
-        ObservableCollection<JWVersion> verList = new ObservableCollection<JWVersion>();
-        ObservableCollection<JWForge> forgeList = new ObservableCollection<JWForge>();
-        ObservableCollection<JWFabric> fabricList = new ObservableCollection<JWFabric>();
-        ObservableCollection<JWLiteloader> liteloaderList = new ObservableCollection<JWLiteloader>();
+        ObservableCollection<JWVersion> verList = new();
+        ObservableCollection<JWForge> forgeList = new();
+        ObservableCollection<JWFabric> fabricList = new();
+        ObservableCollection<JWLiteloader> liteloaderList = new();
 
         public string Local { get; set; }
 
@@ -38,7 +38,7 @@ namespace NsisoLauncher.Windows
 
         public NewDownloadTaskWindow(bool res = false)
         {
-            apiHandler = new FunctionAPIHandler(App.Config.MainConfig.Download.DownloadSource);
+            apiHandler = new(App.Config.MainConfig.Download.DownloadSource);
             InitializeComponent();
             versionListDataGrid.ItemsSource = verList;
             forgeListDataGrid.ItemsSource = forgeList;
@@ -108,7 +108,7 @@ namespace NsisoLauncher.Windows
             MCVersion ver;
             if (verToInstallForgeComboBox.SelectedItem != null)
             {
-                ver = (MCVersion)verToInstallForgeComboBox.SelectedItem;
+                ver = verToInstallForgeComboBox.SelectedItem as MCVersion;
             }
             else
             {
@@ -162,7 +162,7 @@ namespace NsisoLauncher.Windows
             MCVersion ver;
             if (verToInstallFabricComboBox.SelectedItem != null)
             {
-                ver = (MCVersion)verToInstallFabricComboBox.SelectedItem;
+                ver = verToInstallFabricComboBox.SelectedItem as MCVersion;
             }
             else
             {
@@ -216,7 +216,7 @@ namespace NsisoLauncher.Windows
             MCVersion ver;
             if (verToInstallLiteComboBox.SelectedItem != null)
             {
-                ver = (MCVersion)verToInstallLiteComboBox.SelectedItem;
+                ver = verToInstallLiteComboBox.SelectedItem as MCVersion;
             }
             else
             {
@@ -287,7 +287,7 @@ namespace NsisoLauncher.Windows
             MCVersion ver;
             if (verToInstallForgeComboBox.SelectedItem != null)
             {
-                ver = (MCVersion)verToInstallForgeComboBox.SelectedItem;
+                ver = verToInstallForgeComboBox.SelectedItem as MCVersion;
             }
             else
             {
@@ -299,7 +299,7 @@ namespace NsisoLauncher.Windows
             JWForge forge;
             if (forgeListDataGrid.SelectedItem != null)
             {
-                forge = (JWForge)forgeListDataGrid.SelectedItem;
+                forge = forgeListDataGrid.SelectedItem as JWForge;
             }
             else
             {
@@ -317,7 +317,7 @@ namespace NsisoLauncher.Windows
             MCVersion ver;
             if (verToInstallLiteComboBox.SelectedItem != null)
             {
-                ver = (MCVersion)verToInstallLiteComboBox.SelectedItem;
+                ver = verToInstallLiteComboBox.SelectedItem as MCVersion;
             }
             else
             {
@@ -329,7 +329,7 @@ namespace NsisoLauncher.Windows
             JWLiteloader liteloader;
             if (liteloaderListDataGrid.SelectedItem != null)
             {
-                liteloader = (JWLiteloader)liteloaderListDataGrid.SelectedItem;
+                liteloader = liteloaderListDataGrid.SelectedItem as JWLiteloader;
             }
             else
             {
@@ -347,7 +347,7 @@ namespace NsisoLauncher.Windows
             MCVersion ver;
             if (verToInstallFabricComboBox.SelectedItem != null)
             {
-                ver = (MCVersion)verToInstallFabricComboBox.SelectedItem;
+                ver = verToInstallFabricComboBox.SelectedItem as MCVersion;
             }
             else
             {
@@ -359,7 +359,7 @@ namespace NsisoLauncher.Windows
             JWFabric fabric;
             if (fabricListDataGrid.SelectedItem != null)
             {
-                fabric = (JWFabric)fabricListDataGrid.SelectedItem;
+                fabric = fabricListDataGrid.SelectedItem as JWFabric;
             }
             else
             {
@@ -390,7 +390,7 @@ namespace NsisoLauncher.Windows
 
                     File.WriteAllText(jsonPath, json);
 
-                    List<DownloadTask> tasks = new List<DownloadTask>();
+                    List<DownloadTask> tasks = new();
 
                     tasks.Add(new DownloadTask(App.GetResourceString("String.NewDownloadTaskWindow.Source"),
                         apiHandler.DoURLReplace(ver.AssetIndex.URL), App.Handler.GetAssetsIndexPath(ver.Assets)));
@@ -411,9 +411,9 @@ namespace NsisoLauncher.Windows
             }
             catch (Exception ex)
             {
-                AggregateExceptionArgs args = new AggregateExceptionArgs()
+                AggregateExceptionArgs args = new()
                 {
-                    AggregateException = new AggregateException(ex)
+                    AggregateException = new(ex)
                 };
                 App.CatchAggregateException(this, args);
             }
@@ -513,7 +513,7 @@ namespace NsisoLauncher.Windows
                 App.GetResourceString("String.NewDownloadTaskWindow.ModPack.Text2"));
                 loading.SetIndeterminate();
 
-                CheckModPack CheckModPack = new CheckModPack(loading);
+                CheckModPack CheckModPack = new(loading);
                 var res1 = await CheckModPack.Check(Local);
                 if (res1 == null)
                 {
@@ -535,7 +535,7 @@ namespace NsisoLauncher.Windows
             if (App.Downloader.haveTask())
             {
                 if (App.DownloadWindow_ == null)
-                    App.DownloadWindow_ = new DownloadWindow();
+                    App.DownloadWindow_ = new();
                 else
                     App.DownloadWindow_.Refresh();
             }

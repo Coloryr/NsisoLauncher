@@ -70,10 +70,13 @@ namespace NsisoLauncher.Windows
                 {
                     islogin = false;
                     LoggedInUser = null;
-                    var res = await this.ShowMessageAsync("您的微软账号没有拥有Minecraft正版", "请确认您微软账号中购买了Minecraft正版，并拥有完整游戏权限", MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings()
+                    var res = await this.ShowMessageAsync(App.GetResourceString("String.OauthLogin.NoMinecraft"), 
+                        App.GetResourceString("String.OauthLogin.NoMinecraft1"), 
+                        MessageDialogStyle.AffirmativeAndNegative, 
+                        new MetroDialogSettings()
                     {
-                        AffirmativeButtonText = "返回",
-                        NegativeButtonText = "切换账户",
+                        AffirmativeButtonText = App.GetResourceString("String.OauthLogin.Back"),
+                        NegativeButtonText = App.GetResourceString("String.OauthLogin.Change"),
                         DefaultButtonFocus = MessageDialogResult.Negative
                     });
                     if (res == MessageDialogResult.Negative)
@@ -85,7 +88,7 @@ namespace NsisoLauncher.Windows
             catch (Exception ex)
             {
                 LoggedInUser = null;
-                await this.ShowMessageAsync("登录发生异常", ex.ToString());
+                await this.ShowMessageAsync(App.GetResourceString("String.OauthLogin.LoginError"), ex.ToString());
             }
             finally
             {
@@ -103,11 +106,13 @@ namespace NsisoLauncher.Windows
         {
             if (string.IsNullOrWhiteSpace(url.Text))
             {
-                await this.ShowMessageAsync("登录错误", "填写内容不正确");
+                await this.ShowMessageAsync(App.GetResourceString("String.OauthLogin.Error1.Title"),
+                    App.GetResourceString("String.OauthLogin.Error1.Text"));
                 return;
             }
             string code = OAuthFlower.RedirectUrlToAuthCode(new(url.Text));
-            var loading = await this.ShowProgressAsync("验证中", "正在验证你的登录");
+            var loading = await this.ShowProgressAsync(App.GetResourceString("String.OauthLogin.Logining.Title"),
+                    App.GetResourceString("String.OauthLogin.Logining.Text"));
             await Authenticate(code);
             await loading.CloseAsync();
         }
@@ -170,9 +175,7 @@ namespace NsisoLauncher.Windows
                 weburl.Text = temp;
                 try
                 {
-                    RegistryKey key = Registry.ClassesRoot.OpenSubKey(@"http\shell\open\command\");
-                    string s = key.GetValue("").ToString();
-                    Process.Start(s.Substring(0, s.Length - 8), temp);
+                    Process.Start(temp);
                 }
                 catch
                 {

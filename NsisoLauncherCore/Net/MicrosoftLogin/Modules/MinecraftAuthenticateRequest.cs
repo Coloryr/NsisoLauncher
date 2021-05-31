@@ -3,13 +3,13 @@ using System.Collections.Generic;
 
 namespace NsisoLauncherCore.Net.MicrosoftLogin.Modules
 {
-    public class MinecraftAuthenticateRequest
+    public record MinecraftAuthenticateRequest
     {
         [JsonProperty("identityToken")]
         public string IdentityToken { get; set; }
     }
 
-    public class MinecraftToken
+    public record MinecraftToken
     {
         [JsonProperty("username")]
         public string Username { get; set; }
@@ -27,7 +27,7 @@ namespace NsisoLauncherCore.Net.MicrosoftLogin.Modules
         public int ExpiresIn { get; set; }
     }
 
-    public class Ownership
+    public record Ownership
     {
         [JsonProperty("items")]
         public List<OwnershipItem> Items { get; set; }
@@ -39,7 +39,7 @@ namespace NsisoLauncherCore.Net.MicrosoftLogin.Modules
         public string KeyId { get; set; }
     }
 
-    public class OwnershipItem
+    public record OwnershipItem
     {
         [JsonProperty("name")]
         public string Name { get; set; }

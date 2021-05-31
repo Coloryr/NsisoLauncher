@@ -6,7 +6,7 @@ namespace NsisoLauncherCore.Net.MojangApi.Api
     /// <summary>
     /// 表示玩家的UUID数据
     /// </summary>
-    public class Uuid
+    public record Uuid
     {
 
         /// <summary>
@@ -14,8 +14,8 @@ namespace NsisoLauncherCore.Net.MojangApi.Api
         /// </summary>
         public Uuid()
         {
-            this.Legacy = false;
-            this.Demo = false;
+            Legacy = false;
+            Demo = false;
         }
 
         /// <summary>

@@ -1,9 +1,9 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using NsisoLauncher.Config.ConfigObj;
 using NsisoLauncherCore;
 using NsisoLauncherCore.Net;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Security;
@@ -27,15 +27,15 @@ namespace NsisoLauncher.Config
         /// <summary>
         /// 首要配置文件内容
         /// </summary>
-        public MainConfig MainConfig { get; set; }
+        public MainConfigObj MainConfig { get; set; }
 
         /// <summary>
         /// 官方用户配置文件内容
         /// </summary>
-        public LauncherProfilesConfig LauncherProfilesConfig { get; set; }
+        public LauncherProfilesConfigObj LauncherProfilesConfig { get; set; }
 
-        private ReaderWriterLockSlim mainconfigLock = new ReaderWriterLockSlim();
-        private ReaderWriterLockSlim launcherProfilesLock = new ReaderWriterLockSlim();
+        private ReaderWriterLockSlim mainconfigLock = new();
+        private ReaderWriterLockSlim launcherProfilesLock = new();
 
         public ConfigHandler()
         {
@@ -95,7 +95,7 @@ namespace NsisoLauncher.Config
             mainconfigLock.EnterReadLock();
             try
             {
-                MainConfig = JsonConvert.DeserializeObject<MainConfig>(File.ReadAllText(MainConfigPath));
+                MainConfig = JsonConvert.DeserializeObject<MainConfigObj>(File.ReadAllText(MainConfigPath));
             }
             catch (UnauthorizedAccessException e)
             {
@@ -160,7 +160,7 @@ namespace NsisoLauncher.Config
         /// </summary>
         private void NewProfilesConfig()
         {
-            LauncherProfilesConfig = new LauncherProfilesConfig()
+            LauncherProfilesConfig = new LauncherProfilesConfigObj()
             {
                 ClientToken = "88888888-8888-8888-8888-888888888888",
                 SelectedProfile = "(Default)",
@@ -174,39 +174,39 @@ namespace NsisoLauncher.Config
         /// </summary>
         private void NewConfig()
         {
-            MainConfig = new MainConfig()
+            MainConfig = new()
             {
-                User = new User()
+                User = new()
                 {
                     ClientToken = Guid.NewGuid().ToString("N"),
-                    UserDatabase = new Dictionary<string, UserNode>(),
-                    AuthenticationDic = new Dictionary<string, AuthenticationNode>()
+                    UserDatabase = new(),
+                    AuthenticationDic = new()
                     {
                         {
                             "offline",
-                            new AuthenticationNode()
+                            new()
                             {
                                 AuthType = AuthenticationType.OFFLINE
                             }
                         },
                         {
                             "online",
-                            new AuthenticationNode()
+                            new()
                             {
                                 AuthType = AuthenticationType.MOJANG
                             }
                         },
                         {
                             "Microsoft",
-                            new AuthenticationNode()
+                            new()
                             {
                                 AuthType = AuthenticationType.MICROSOFT
                             }
                         }
                     }
                 },
-                History = new History(),
-                Environment = new Environment()
+                History = new(),
+                Environment = new()
                 {
                     VersionIsolation = false,
                     MaxMemory = 2048,
@@ -217,7 +217,7 @@ namespace NsisoLauncher.Config
                     GCEnabled = true,
                     GCType = NsisoLauncherCore.Modules.GCType.G1GC,
                     AutoJava = true,
-                    WindowSize = new NsisoLauncherCore.Modules.WindowSize()
+                    WindowSize = new()
                     {
                         FullScreen = false,
                         Height = 0,
@@ -226,30 +226,30 @@ namespace NsisoLauncher.Config
                     ExitAfterLaunch = false,
                     AdvencedJvmArguments = "-XX:-UseAdaptiveSizePolicy -XX:-OmitStackTraceInFastThrow"
                 },
-                Download = new Download()
+                Download = new()
                 {
                     DownloadSource = DownloadSource.MCBBS,
                     DownloadThreadsSize = 5,
                     CheckDownloadFileHash = true
                 },
-                Launcher = new Launcher()
+                Launcher = new()
                 {
                     Debug = false,
                     NoTracking = false
                 },
-                Server = new Server()
+                Server = new()
                 {
                     ShowServerInfo = false,
                     LaunchToServer = false,
                     Port = 25565,
-                    UpdataCheck = new UpdataCheck
+                    UpdataCheck = new()
                     {
                         Enable = false,
                         Version = "0.0.0",
                         Packname = "modpack"
                     }
                 },
-                Customize = new Customize()
+                Customize = new()
                 {
                     CustomBackGroundVedio = false,
                     CustomBackGroundVedioCyclic = false,

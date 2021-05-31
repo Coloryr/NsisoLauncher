@@ -10,7 +10,7 @@ namespace NsisoLauncher.Core.Util
     {
         public bool WriteToFile { get; set; }
         public event EventHandler<Log> OnLog;
-        private readonly ReaderWriterLockSlim LogLock = new ReaderWriterLockSlim();
+        private readonly ReaderWriterLockSlim LogLock = new();
 
         public LogHandler(bool writetofile = false)
         {
@@ -22,7 +22,7 @@ namespace NsisoLauncher.Core.Util
             OnLog?.Invoke(sender, log);
             if (WriteToFile)
             {
-                Task.Factory.StartNew(() =>
+                Task.Run(() =>
                 {
                     try
                     {
@@ -48,9 +48,9 @@ namespace NsisoLauncher.Core.Util
                     }
                     catch (Exception ex)
                     {
-                        AggregateExceptionArgs args = new AggregateExceptionArgs()
+                        AggregateExceptionArgs args = new()
                         {
-                            AggregateException = new AggregateException(ex)
+                            AggregateException = new(ex)
                         };
                         App.CatchAggregateException(this, args);
                     }

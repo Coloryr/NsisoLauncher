@@ -1,4 +1,4 @@
-﻿using NsisoLauncher.Config;
+﻿using NsisoLauncher.Config.ConfigObj;
 using NsisoLauncherCore.Modules;
 using NsisoLauncherCore.Net;
 using System;
@@ -11,7 +11,7 @@ namespace NsisoLauncher.Utils
     {
         #region IValueConverter Members
         public object Convert(object value, Type targetType, object parameter,
-            System.Globalization.CultureInfo culture)
+            CultureInfo culture)
         {
             if (targetType != typeof(bool))
                 throw new InvalidOperationException("The target must be a boolean");
@@ -20,7 +20,7 @@ namespace NsisoLauncher.Utils
         }
 
         public object ConvertBack(object value, Type targetType, object parameter,
-            System.Globalization.CultureInfo culture)
+            CultureInfo culture)
         {
             throw new NotSupportedException();
         }

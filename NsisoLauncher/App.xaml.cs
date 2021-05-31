@@ -1,5 +1,6 @@
 ﻿using ControlzEx.Theming;
 using NsisoLauncher.Config;
+using NsisoLauncher.Config.ConfigObj;
 using NsisoLauncher.Core.Util;
 using NsisoLauncher.Windows;
 using NsisoLauncherCore;
@@ -66,7 +67,7 @@ namespace NsisoLauncher
 
             LogHandler = new LogHandler(true);
             Config = new ConfigHandler();
-            Config.Environment env = Config.MainConfig.Environment;
+            EnvironmentObj env = Config.MainConfig.Environment;
             JavaList = Java.GetJavaList();
 
             AggregateExceptionCatched += (a, b) => LogHandler.AppendFatal(b.AggregateException);
@@ -88,10 +89,10 @@ namespace NsisoLauncher
                     gameroot = Path.GetFullPath(".minecraft");
                     break;
                 case GameDirEnum.APPDATA:
-                    gameroot = System.Environment.GetFolderPath(System.Environment.SpecialFolder.ApplicationData) + "\\.minecraft";
+                    gameroot = System.Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\.minecraft";
                     break;
                 case GameDirEnum.PROGRAMFILES:
-                    gameroot = System.Environment.GetFolderPath(System.Environment.SpecialFolder.ProgramFiles) + "\\.minecraft";
+                    gameroot = System.Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles) + "\\.minecraft";
                     break;
                 case GameDirEnum.CUSTOM:
                     gameroot = env.GamePath + "\\.minecraft";
@@ -156,13 +157,13 @@ namespace NsisoLauncher
 
         public static void ProxyRe()
         {
-            Download downloadCfg = Config.MainConfig.Download;
+            DownloadObj downloadCfg = Config.MainConfig.Download;
             if (!string.IsNullOrWhiteSpace(downloadCfg.DownloadProxyAddress))
             {
                 WebProxy proxy = new WebProxy(downloadCfg.DownloadProxyAddress, downloadCfg.DownloadProxyPort);
                 if (!string.IsNullOrWhiteSpace(downloadCfg.ProxyUserName))
                 {
-                    NetworkCredential credential = new NetworkCredential(downloadCfg.ProxyUserName, downloadCfg.ProxyUserPassword);
+                    NetworkCredential credential = new(downloadCfg.ProxyUserName, downloadCfg.ProxyUserPassword);
                     proxy.Credentials = credential;
                 }
                 HttpRequesterAPI.Proxy = proxy;
@@ -217,7 +218,7 @@ namespace NsisoLauncher
             var args = System.Environment.GetCommandLineArgs();
             foreach (var item in args)
             {
-                info.Arguments += (item + ' ');
+                info.Arguments += item + ' ';
             }
             if (admin)
             {

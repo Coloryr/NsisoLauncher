@@ -13,20 +13,22 @@ namespace NsisoLauncher.Updata
             path += @"\scripts\";
             if (!Directory.Exists(path))
             {
-                return new Dictionary<string, UpdataItem>();
+                return new();
             }
-            Dictionary<string, UpdataItem> list = new Dictionary<string, UpdataItem>();
+            Dictionary<string, UpdataItem> list = new();
             IChecker checker = new MD5Checker();
-            await Task.Factory.StartNew(() =>
+            await Task.Run(() =>
             {
                 var GetFiles = new GetFiles();
                 foreach (string FilePath in GetFiles.GetDirectory(path))
                 {
                     checker.FilePath = FilePath;
-                    UpdataItem mod = new UpdataItem();
-                    mod.local = FilePath;
+                    UpdataItem mod = new()
+                    {
+                        local = FilePath,
+                        check = checker.GetFileChecksum()
+                    };
                     mod.name = mod.filename = FilePath.Replace(path, "");
-                    mod.check = checker.GetFileChecksum();
                     if (list.ContainsKey(mod.name) == false)
                         list.Add(mod.name, mod);
                 }

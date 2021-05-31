@@ -1,17 +1,18 @@
 ﻿using MahApps.Metro.Controls.Dialogs;
 using Newtonsoft.Json.Linq;
+using NsisoLauncher.Utils;
 using NsisoLauncherCore.Net;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace NsisoLauncher.ModPack
 {
-    class GetUrlRes
+    public record GetUrlRes
     {
         public string url { get; set; }
         public string filename { get; set; }
     }
-    class UrlResObj
+    public record UrlResObj
     {
         public long id { get; set; }
         public string displayName { get; set; }
@@ -34,12 +35,12 @@ namespace NsisoLauncher.ModPack
         public string gameVersionDateReleased { get; set; }
         public string gameVersionFlavor { get; set; }
     }
-    class dependencieObj
+    public record dependencieObj
     {
         public long addonId { get; set; }
         public int type { get; set; }
     }
-    class moduleObj
+    public record moduleObj
     {
         public string foldername { get; set; }
         public long fingerprint { get; set; }
@@ -57,7 +58,7 @@ namespace NsisoLauncher.ModPack
         private string BaseUrl = @"https://addons-ecs.forgesvc.net/api/v2/addon/{0}/file/{1}";
         public async Task<List<GetUrlRes>> GeturlAsync(List<FilesItem> mods)
         {
-
+            TaskbarManager.SetProgressState(TaskbarProgressBarState.Indeterminate);
             List<GetUrlRes> list = new();
             foreach (var item in mods)
             {
@@ -73,6 +74,7 @@ namespace NsisoLauncher.ModPack
                     filename = obj1.fileName
                 });
             }
+            TaskbarManager.SetProgressState(TaskbarProgressBarState.NoProgress);
             return list;
         }
     }

@@ -1,4 +1,4 @@
-﻿using NsisoLauncher.Config;
+﻿using NsisoLauncher.Config.ConfigObj;
 using NsisoLauncherCore.Net.Head;
 using System.Threading.Tasks;
 using System.Windows.Controls;
@@ -22,14 +22,14 @@ namespace NsisoLauncher.Controls
             iconImage.Source = await head.GetHeadSculSource(uuid);
             progressRing.IsActive = false;
         }
-        public async Task RefreshIconNide8(string uuid, AuthenticationNode args)
+        public async Task RefreshIconNide8(string uuid, AuthenticationNodeObj args)
         {
             var head = new Nide8Head();
             progressRing.IsActive = true;
             iconImage.Source = await head.GetHeadSculSource(uuid, args);
             progressRing.IsActive = false;
         }
-        public async Task RefreshIconInjector(UserNode uuid, AuthenticationNode args)
+        public async Task RefreshIconInjector(UserNodeObj uuid, AuthenticationNodeObj args)
         {
             var head = new InjectorHead();
             progressRing.IsActive = true;

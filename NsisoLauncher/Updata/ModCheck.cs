@@ -13,20 +13,20 @@ namespace NsisoLauncher.Updata
         public async Task<Dictionary<string, UpdataItem>> ReadModInfo(string path)
         {
             path += @"\mods\";
-            Dictionary<string, UpdataItem> list = new Dictionary<string, UpdataItem>();
+            Dictionary<string, UpdataItem> list = new();
             App.LogHandler.AppendInfo("检查mod:" + path.Replace(App.Handler.GameRootPath + path, ""));
             try
             {
                 if (!Directory.Exists(path))
                 {
-                    return new Dictionary<string, UpdataItem>();
+                    return new();
                 }
                 string[] files = Directory.GetFiles(path, "*.jar");
                 foreach (string file in files)
                 {
                     await Task.Factory.StartNew(() =>
                     {
-                        UpdataItem save = GetModsInfo(path, file);
+                        var save = GetModsInfo(path, file);
                         while (list.ContainsKey(save.name))
                             save.name += "1";
                         if (list.ContainsValue(save) == false)
@@ -45,47 +45,43 @@ namespace NsisoLauncher.Updata
             try
             {
                 JToken modinfo = null;
-                UpdataItem mod = new UpdataItem();
+                UpdataItem mod = new();
                 mod.filename = fileName.Replace(path, "");
-                using (ZipFile zip = new ZipFile(fileName))
+                using ZipFile zip = new(fileName);
+                ZipEntry zp = zip.GetEntry("mcmod.info");
+                if (zp == null)
                 {
-                    ZipEntry zp = zip.GetEntry("mcmod.info");
-                    if (zp == null)
+                    foreach (string name in TranList)
                     {
-                        foreach (string name in TranList)
+                        if (mod.filename.Contains(name))
+                            mod.name = name;
+                    }
+                }
+                else
+                {
+                    using Stream stream = zip.GetInputStream(zp);
+                    TextReader reader = new StreamReader(stream);
+                    string jsonString = reader.ReadToEnd();
+                    try
+                    {
+                        if (jsonString.StartsWith("{"))
+                            modinfo = JArray.Parse(jsonString)[0];
+                        else if (jsonString.StartsWith("["))
                         {
-                            if (mod.filename.Contains(name))
-                                mod.name = name;
+                            var a = JObject.Parse(jsonString).ToObject<ModObjList.Root>().modList[0];
+                            modinfo = JObject.FromObject(a);
                         }
                     }
-                    else
+                    catch
                     {
-                        using (Stream stream = zip.GetInputStream(zp))
+                        modinfo = null;
+                    }
+                    if (modinfo != null)
+                    {
+                        var c = modinfo.ToObject<ModObj>();
+                        if (c.name != null)
                         {
-                            TextReader reader = new StreamReader(stream);
-                            string jsonString = reader.ReadToEnd();
-                            try
-                            {
-                                if (jsonString.StartsWith("{"))
-                                    modinfo = JArray.Parse(jsonString)[0];
-                                else if (jsonString.StartsWith("["))
-                                {
-                                    var a = JObject.Parse(jsonString).ToObject<ModObjList.Root>().modList[0];
-                                    modinfo = JObject.FromObject(a);
-                                }
-                            }
-                            catch
-                            {
-                                modinfo = null;
-                            }
-                        }
-                        if (modinfo != null)
-                        {
-                            var c = modinfo.ToObject<ModObj>();
-                            if (c.name != null)
-                            {
-                                mod.name = c.name;
-                            }
+                            mod.name = c.name;
                         }
                     }
                 }

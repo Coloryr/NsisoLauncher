@@ -2,7 +2,7 @@
 
 namespace NsisoLauncher.ModPack
 {
-    public class manifestObj
+    public record manifestObj
     {
         public Minecraft minecraft { get; set; }
         /// <summary>
@@ -34,7 +34,7 @@ namespace NsisoLauncher.ModPack
         /// </summary>
         public string overrides { get; set; }
     }
-    public class ModLoadersItem
+    public record ModLoadersItem
     {
         /// <summary>
         /// 
@@ -46,7 +46,7 @@ namespace NsisoLauncher.ModPack
         public string primary { get; set; }
     }
 
-    public class Minecraft
+    public record Minecraft
     {
         /// <summary>
         /// 
@@ -58,7 +58,7 @@ namespace NsisoLauncher.ModPack
         public List<ModLoadersItem> modLoaders { get; set; }
     }
 
-    public class FilesItem
+    public record FilesItem
     {
         /// <summary>
         /// 

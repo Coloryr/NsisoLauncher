@@ -16,7 +16,7 @@ namespace NsisoLauncher.Updata
             {
                 return true;
             }
-            return await Task.Factory.StartNew(() =>
+            return await Task.Run(() =>
             {
                 foreach (string file in packList)
                 {
@@ -31,7 +31,7 @@ namespace NsisoLauncher.Updata
             try
             {
                 string strDirectory = App.Handler.GameRootPath + @"\";
-                ZipInputStream zip = new ZipInputStream(File.OpenRead(App.Handler.GameRootPath + @"\" + file));
+                using ZipInputStream zip = new(File.OpenRead(App.Handler.GameRootPath + @"\" + file));
                 ZipEntry theEntry;
 
                 while ((theEntry = zip.GetNextEntry()) != null)
@@ -44,7 +44,7 @@ namespace NsisoLauncher.Updata
                     Directory.CreateDirectory(strDirectory + directoryName);
                     if (!string.IsNullOrWhiteSpace(fileName))
                     {
-                        FileStream streamWriter = File.Create(strDirectory + directoryName + fileName);
+                        using FileStream streamWriter = File.Create(strDirectory + directoryName + fileName);
                         int size = 1024 * 512;
                         byte[] data = new byte[1024 * 512];
                         while (size > 0)
@@ -65,21 +65,24 @@ namespace NsisoLauncher.Updata
             finally
             {
                 //临时解决
-                Task.Factory.StartNew(() =>
+                Task.Run(() =>
                 {
-                a:
-                    try
-                    {
-                        Thread.Sleep(1000);
-                        File.Delete(App.Handler.GameRootPath + @"\" + file);
-                    }
-                    catch
-                    {
-                        goto a;
-                    }
-                });
+                    del(file);
+                }).Wait();
             }
             return false;
+        }
+        private void del(string file)
+        {
+            try
+            {
+                Thread.Sleep(1000);
+                File.Delete(App.Handler.GameRootPath + @"\" + file);
+            }
+            catch
+            {
+                del(file);
+            }
         }
     }
 }

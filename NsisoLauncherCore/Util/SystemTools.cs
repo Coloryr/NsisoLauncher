@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Management;
 using System.Runtime.InteropServices;
 
 namespace NsisoLauncherCore.Util
@@ -42,32 +44,25 @@ namespace NsisoLauncherCore.Util
 
         }
 
-        [StructLayout(LayoutKind.Sequential)]
-        public struct MEMORY_INFO
-        {
-            public uint dwLength;
-            public uint dwMemoryLoad;
-            public uint dwTotalPhys;
-            public uint dwAvailPhys;
-            public uint dwTotalPageFile;
-            public uint dwAvailPageFile;
-            public uint dwTotalVirtual;
-            public uint dwAvailVirtual;
-        }
-        [DllImport("kernel32")]
-        public static extern void GlobalMemoryStatus(ref MEMORY_INFO meminfo);
-
         /// <summary>
         /// 获取电脑总内存(MB)
         /// </summary>
         /// <returns>物理内存</returns>
         public static ulong GetTotalMemory()
         {
-            MEMORY_INFO MemInfo;
-            MemInfo = new MEMORY_INFO();
-            GlobalMemoryStatus(ref MemInfo);
-
-            return Convert.ToUInt64(MemInfo.dwTotalPhys.ToString()) / 1024 / 1024;
+            ManagementClass mc = new("Win32_PhysicalMemory");
+            ManagementObjectCollection moc = mc.GetInstances();
+            foreach (ManagementObject mo in moc)
+            {
+                foreach (PropertyData pd in mo.Properties)
+                {
+                    if (pd?.Name == "Capacity")
+                    {
+                        return Convert.ToUInt64(pd.Value.ToString()) / 1024 / 1024;
+                    }
+                }
+            }
+            return 0;
         }
 
         /// <summary>

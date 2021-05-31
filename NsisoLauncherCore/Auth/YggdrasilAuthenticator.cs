@@ -19,7 +19,7 @@ namespace NsisoLauncherCore.Auth
         {
             try
             {
-                Authenticate authenticate = new Authenticate(Credentials);
+                Authenticate authenticate = new(Credentials);
                 if (ProxyAuthServerAddress != null)
                 {
                     authenticate.Address = new Uri(ProxyAuthServerAddress + "/authenticate");
@@ -32,7 +32,7 @@ namespace NsisoLauncherCore.Auth
                 var result = resultTask.Result;
                 if (result.IsSuccess)
                 {
-                    return new AuthenticateResult(AuthState.SUCCESS)
+                    return new(AuthState.SUCCESS)
                     {
                         AccessToken = result.AccessToken,
                         SelectedProfileUUID = result.SelectedProfile,
@@ -51,12 +51,12 @@ namespace NsisoLauncherCore.Auth
                     else
                     { errState = AuthState.ERR_OTHER; }
 
-                    return new AuthenticateResult(errState) { Error = result.Error };
+                    return new(errState) { Error = result.Error };
                 }
             }
             catch (Exception ex)
             {
-                return new AuthenticateResult(AuthState.ERR_INSIDE) { Error = new Net.MojangApi.Error() { ErrorMessage = ex.Message, Exception = ex } };
+                return new(AuthState.ERR_INSIDE) { Error = new() { ErrorMessage = ex.Message, Exception = ex } };
             }
         }
 
@@ -64,7 +64,7 @@ namespace NsisoLauncherCore.Auth
         {
             try
             {
-                Authenticate authenticate = new Authenticate(Credentials);
+                Authenticate authenticate = new(Credentials);
                 if (ProxyAuthServerAddress != null)
                 {
                     authenticate.Address = new Uri(ProxyAuthServerAddress + "/authenticate");
@@ -77,7 +77,7 @@ namespace NsisoLauncherCore.Auth
 
                 if (result.IsSuccess)
                 {
-                    return new AuthenticateResult(AuthState.SUCCESS)
+                    return new(AuthState.SUCCESS)
                     {
                         AccessToken = result.AccessToken,
                         SelectedProfileUUID = result.SelectedProfile,
@@ -96,12 +96,12 @@ namespace NsisoLauncherCore.Auth
                     else
                     { errState = AuthState.ERR_OTHER; }
 
-                    return new AuthenticateResult(errState) { Error = result.Error };
+                    return new(errState) { Error = result.Error };
                 }
             }
             catch (Exception ex)
             {
-                return new AuthenticateResult(AuthState.ERR_INSIDE) { Error = new Net.MojangApi.Error() { ErrorMessage = ex.Message, Exception = ex } };
+                return new(AuthState.ERR_INSIDE) { Error = new() { ErrorMessage = ex.Message, Exception = ex } };
             }
         }
 
@@ -142,15 +142,15 @@ namespace NsisoLauncherCore.Auth
                 {
                     return new AuthenticateResult(AuthState.SUCCESS)
                     {
-                        AccessToken = this.AccessToken,
-                        SelectedProfileUUID = this.SelectedProfileUUID,
-                        UserData = this.UserData
+                        AccessToken = AccessToken,
+                        SelectedProfileUUID = SelectedProfileUUID,
+                        UserData = UserData
                     };
                 }
                 else
                 {
                     AuthState state;
-                    Refresh refresh = new Refresh(AccessToken);
+                    Refresh refresh = new(AccessToken);
                     if (ProxyAuthServerAddress != null)
                     {
                         validate.Address = new Uri(ProxyAuthServerAddress + "/refresh");
@@ -163,7 +163,7 @@ namespace NsisoLauncherCore.Auth
                     var refreshResult = refreshResultTask.Result;
                     if (refreshResult.IsSuccess)
                     {
-                        this.AccessToken = refreshResult.AccessToken;
+                        AccessToken = refreshResult.AccessToken;
                         state = AuthState.SUCCESS;
                     }
                     else
@@ -174,9 +174,9 @@ namespace NsisoLauncherCore.Auth
                     }
                     return new AuthenticateResult(state)
                     {
-                        AccessToken = AccessToken = this.AccessToken,
-                        SelectedProfileUUID = this.SelectedProfileUUID,
-                        UserData = this.UserData,
+                        AccessToken = AccessToken = AccessToken,
+                        SelectedProfileUUID = SelectedProfileUUID,
+                        UserData = UserData,
                         Error = refreshResult.Error
                     };
                 }
@@ -185,10 +185,10 @@ namespace NsisoLauncherCore.Auth
             {
                 return new AuthenticateResult(AuthState.ERR_INSIDE)
                 {
-                    Error = new Net.MojangApi.Error() { ErrorMessage = ex.Message, Exception = ex },
-                    AccessToken = AccessToken = this.AccessToken,
-                    UserData = this.UserData,
-                    SelectedProfileUUID = this.SelectedProfileUUID
+                    Error = new() { ErrorMessage = ex.Message, Exception = ex },
+                    AccessToken = AccessToken = AccessToken,
+                    UserData = UserData,
+                    SelectedProfileUUID = SelectedProfileUUID
                 };
             }
         }
@@ -197,7 +197,7 @@ namespace NsisoLauncherCore.Auth
         {
             try
             {
-                Validate validate = new Validate(AccessToken);
+                Validate validate = new(AccessToken);
                 if (ProxyAuthServerAddress != null)
                 {
                     validate.Address = new Uri(ProxyAuthServerAddress + "/validate");
@@ -209,12 +209,12 @@ namespace NsisoLauncherCore.Auth
                 var result = await validate.PerformRequestAsync();
                 if (result.IsSuccess)
                 {
-                    return new AuthenticateResult(AuthState.SUCCESS) { AccessToken = this.AccessToken, UserData = this.UserData, SelectedProfileUUID = this.SelectedProfileUUID };
+                    return new(AuthState.SUCCESS) { AccessToken = this.AccessToken, UserData = this.UserData, SelectedProfileUUID = this.SelectedProfileUUID };
                 }
                 else
                 {
                     AuthState state;
-                    Refresh refresh = new Refresh(AccessToken);
+                    Refresh refresh = new(AccessToken);
                     if (ProxyAuthServerAddress != null)
                     {
                         validate.Address = new Uri(ProxyAuthServerAddress + "/refresh");
@@ -226,7 +226,7 @@ namespace NsisoLauncherCore.Auth
                     var refreshResult = await refresh.PerformRequestAsync();
                     if (refreshResult.IsSuccess)
                     {
-                        this.AccessToken = refreshResult.AccessToken;
+                        AccessToken = refreshResult.AccessToken;
                         state = AuthState.SUCCESS;
                     }
                     else
@@ -235,11 +235,11 @@ namespace NsisoLauncherCore.Auth
                         if (refreshResult.Code == System.Net.HttpStatusCode.NotFound)
                         { state = AuthState.ERR_NOTFOUND; }
                     }
-                    return new AuthenticateResult(state)
+                    return new(state)
                     {
-                        AccessToken = AccessToken = this.AccessToken,
-                        UserData = this.UserData,
-                        SelectedProfileUUID = this.SelectedProfileUUID,
+                        AccessToken = AccessToken = AccessToken,
+                        UserData = UserData,
+                        SelectedProfileUUID = SelectedProfileUUID,
                         Error = refreshResult.Error
                     };
                 }
@@ -248,19 +248,19 @@ namespace NsisoLauncherCore.Auth
             {
                 return new AuthenticateResult(AuthState.ERR_INSIDE)
                 {
-                    Error = new Net.MojangApi.Error() { ErrorMessage = ex.Message, Exception = ex },
-                    AccessToken = AccessToken = this.AccessToken,
-                    UserData = this.UserData,
-                    SelectedProfileUUID = this.SelectedProfileUUID
+                    Error = new() { ErrorMessage = ex.Message, Exception = ex },
+                    AccessToken = AccessToken = AccessToken,
+                    UserData = UserData,
+                    SelectedProfileUUID = SelectedProfileUUID
                 };
             }
         }
 
         public YggdrasilTokenAuthenticator(string token, Uuid selectedProfileUUID, UserData userData)
         {
-            this.AccessToken = token;
-            this.SelectedProfileUUID = selectedProfileUUID;
-            this.UserData = userData;
+            AccessToken = token;
+            SelectedProfileUUID = selectedProfileUUID;
+            UserData = userData;
         }
     }
 }

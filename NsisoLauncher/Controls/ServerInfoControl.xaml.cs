@@ -1,4 +1,4 @@
-﻿using NsisoLauncher.Config;
+﻿using NsisoLauncher.Config.ConfigObj;
 using NsisoLauncher.Utils;
 using NsisoLauncherCore.Net.Server;
 using System;
@@ -30,8 +30,7 @@ namespace NsisoLauncher.Controls
         }
         public void APP_Color()
         {
-            BrushColor get = new BrushColor();
-            System.Windows.Media.Brush b = get.GetBursh();
+            System.Windows.Media.Brush b = BrushColor.GetBursh();
             if (b != null)
             {
                 serverNameTextBlock.Background = b;
@@ -49,16 +48,14 @@ namespace NsisoLauncher.Controls
         }
         private Bitmap BitmapImage2Bitmap(BitmapImage bitmapImage)
         {
-            using (MemoryStream outStream = new MemoryStream())
-            {
-                BitmapEncoder enc = new BmpBitmapEncoder();
-                enc.Frames.Add(BitmapFrame.Create(bitmapImage));
-                enc.Save(outStream);
-                Bitmap bitmap = new System.Drawing.Bitmap(outStream);
-                return new Bitmap(bitmap);
-            }
+            using MemoryStream outStream = new();
+            BitmapEncoder enc = new BmpBitmapEncoder();
+            enc.Frames.Add(BitmapFrame.Create(bitmapImage));
+            enc.Save(outStream);
+            Bitmap bitmap = new(outStream);
+            return new Bitmap(bitmap);
         }
-        public async void SetServerInfo(Server server)
+        public async void SetServerInfo(ServerObj server)
         {
             APP_Color();
             if (server.ShowServerInfo)
@@ -77,7 +74,7 @@ namespace NsisoLauncher.Controls
                 serverLoadingBar.Visibility = Visibility.Visible;
                 serverLoadingBar.IsIndeterminate = true;
 
-                ServerInfo serverInfo = new ServerInfo(server.Address, server.Port);
+                ServerInfo serverInfo = new(server.Address, server.Port);
                 await serverInfo.StartGetServerInfoAsync();
 
                 App.LogHandler.AppendDebug(serverInfo.JsonResult);
@@ -114,9 +111,7 @@ namespace NsisoLauncher.Controls
                         if (serverInfo.MOTD != null && !string.IsNullOrWhiteSpace(serverInfo.MOTD))
                         {
                             serverMotdTextBlock.ToolTip = serverInfo.MOTD;
-                            string str = serverInfo.MOTD;
-                            str.Replace(Convert.ToChar(10).ToString(), "&#x000A");
-                            serverMotdTextBlock.Text = str;
+                            serverMotdTextBlock.Text = serverInfo.MOTD.Replace(Convert.ToChar(10).ToString(), "&#x000A"); ;
                             serverMotdTextBlock.Visibility = Visibility.Visible;
                         }
                         else
@@ -133,7 +128,7 @@ namespace NsisoLauncher.Controls
                                 {
                                     if (count < 6)
                                         mods += item.ModID + ",";
-                                    else if (count == 6)
+                                    else
                                     {
                                         mods += item.ModID + ",";
                                         mods = mods.Substring(0, mods.Length - 1);
@@ -156,7 +151,7 @@ namespace NsisoLauncher.Controls
                         }
                         if (serverInfo.IconData != null)
                         {
-                            MemoryStream ms = new MemoryStream(serverInfo.IconData);
+                            MemoryStream ms = new(serverInfo.IconData);
                             serverIcon.Fill = new ImageBrush(ChangeBitmapToImageSource(new Bitmap(ms)));
                         }
                         break;

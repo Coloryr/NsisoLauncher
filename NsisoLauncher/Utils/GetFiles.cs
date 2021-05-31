@@ -7,8 +7,8 @@ namespace NsisoLauncher.Utils
     {
         public List<string> GetFileName(string path)
         {
-            List<string> files = new List<string>();
-            DirectoryInfo root = new DirectoryInfo(path);
+            List<string> files = new();
+            DirectoryInfo root = new(path);
             foreach (FileInfo f in root.GetFiles())
             {
                 files.Add(f.FullName);
@@ -17,9 +17,9 @@ namespace NsisoLauncher.Utils
         }
         public List<string> GetDirectory(string path)
         {
-            List<string> files = new List<string>();
+            List<string> files = new();
             files.AddRange(GetFileName(path));
-            DirectoryInfo root = new DirectoryInfo(path);
+            DirectoryInfo root = new(path);
             foreach (DirectoryInfo d in root.GetDirectories())
             {
                 files.AddRange(GetDirectory(d.FullName));

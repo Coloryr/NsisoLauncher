@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace NsisoLauncherCore.Net.MicrosoftLogin.Modules
 {
-    public class XblAuthProperties
+    public record XblAuthProperties
     {
         [JsonProperty("AuthMethod")]
         public string AuthMethod { get; set; } = "RPS";
@@ -20,13 +20,13 @@ namespace NsisoLauncherCore.Net.MicrosoftLogin.Modules
         }
     }
 
-    public class XblAuthRequest : XboxAuthRequest
+    public record XblAuthRequest : XboxAuthRequest
     {
         [JsonProperty("Properties")]
         public XblAuthProperties Properties { get; set; }
     }
 
-    public class XstsAuthProperties
+    public record XstsAuthProperties
     {
         [JsonProperty("SandboxId")]
         public string SandBoxId { get; set; } = "RETAIL";
@@ -41,13 +41,13 @@ namespace NsisoLauncherCore.Net.MicrosoftLogin.Modules
         }
     }
 
-    public class XstsAuthRequest : XboxAuthRequest
+    public record XstsAuthRequest : XboxAuthRequest
     {
         [JsonProperty("Properties")]
         public XstsAuthProperties Properties { get; set; }
     }
 
-    public class XboxLiveAuthResult
+    public record XboxLiveAuthResult
     {
         [JsonProperty("IssueInstant")]
         public string IssueInstant { get; set; }
@@ -62,7 +62,7 @@ namespace NsisoLauncherCore.Net.MicrosoftLogin.Modules
         public Claims DisplayClaims { get; set; }
     }
 
-    public class Claims
+    public record Claims
     {
         /// <summary>
         /// ?
@@ -71,13 +71,13 @@ namespace NsisoLauncherCore.Net.MicrosoftLogin.Modules
         public List<UhsContent> Xui { get; set; }
     }
 
-    public class UhsContent
+    public record UhsContent
     {
         [JsonProperty("uhs")]
         public string Uhs { get; set; }
     }
 
-    public abstract class XboxAuthRequest
+    public abstract record XboxAuthRequest
     {
         [JsonProperty("RelyingParty")]
         public string RelyingParty { get; set; }

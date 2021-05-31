@@ -9,8 +9,8 @@ namespace NsisoLauncherCore.Auth
         public string ServerRootAddress { get; set; }
         public AuthlibInjectorAuthenticator(string serverRootAddr, Credentials credentials) : base(credentials)
         {
-            this.ServerRootAddress = serverRootAddr;
-            this.ProxyAuthServerAddress = ServerRootAddress + "/authserver";
+            ServerRootAddress = serverRootAddr;
+            ProxyAuthServerAddress = ServerRootAddress + "/authserver";
         }
     }
 
@@ -19,8 +19,8 @@ namespace NsisoLauncherCore.Auth
         public string ServerRootAddress { get; set; }
         public AuthlibInjectorTokenAuthenticator(string serverRootAddr, string token, Uuid selectedProfileUUID, AuthenticateResponse.UserData userData) : base(token, selectedProfileUUID, userData)
         {
-            this.ServerRootAddress = serverRootAddr;
-            this.ProxyAuthServerAddress = ServerRootAddress + "/authserver";
+            ServerRootAddress = serverRootAddr;
+            ProxyAuthServerAddress = ServerRootAddress + "/authserver";
         }
     }
 }

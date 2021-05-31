@@ -4,7 +4,7 @@ namespace NsisoLauncher.Utils
 {
     class BrushColor
     {
-        public Brush GetBursh()
+        public static Brush GetBursh()
         {
             try
             {
@@ -68,7 +68,7 @@ namespace NsisoLauncher.Utils
                 return new SolidColorBrush((Color)ColorConverter.ConvertFromString("#AF3F5966"));
             }
         }
-        public Brush GetLDBursh()
+        public static Brush GetLDBursh()
         {
             try
             {
@@ -89,7 +89,7 @@ namespace NsisoLauncher.Utils
                 return new SolidColorBrush((Color)ColorConverter.ConvertFromString("#F8F8FF"));
             }
         }
-        public Brush GetNBursh()
+        public static Brush GetNBursh()
         {
             try
             {

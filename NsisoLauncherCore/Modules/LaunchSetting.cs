@@ -53,7 +53,7 @@ namespace NsisoLauncherCore.Modules
         CREATE_SHORT
     }
 
-    public class WindowSize
+    public record WindowSize
     {
         /// <summary>
         /// 是否全屏
@@ -78,7 +78,7 @@ namespace NsisoLauncherCore.Modules
         }
     }
 
-    public class Server
+    public record ToServer
     {
         /// <summary>
         /// 服务器地址
@@ -91,7 +91,7 @@ namespace NsisoLauncherCore.Modules
         public ushort Port { get; set; }
     }
 
-    public class LaunchSetting
+    public record LaunchSetting
     {
         /// <summary>
         /// 启动模式
@@ -171,7 +171,7 @@ namespace NsisoLauncherCore.Modules
         /// <summary>
         /// 设置启动时登录的服务器IP地址
         /// </summary>
-        public Server LaunchToServer { get; set; }
+        public ToServer LaunchToServer { get; set; }
 
         /// <summary>
         /// 左下角信息

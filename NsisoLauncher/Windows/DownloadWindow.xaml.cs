@@ -70,9 +70,9 @@ namespace NsisoLauncher.Windows
                 }
                 catch (Exception ex)
                 {
-                    AggregateExceptionArgs args = new AggregateExceptionArgs()
+                    AggregateExceptionArgs args = new()
                     {
-                        AggregateException = new AggregateException(ex)
+                        AggregateException = new(ex)
                     };
                     App.CatchAggregateException(this, args);
                 }
@@ -157,7 +157,7 @@ namespace NsisoLauncher.Windows
         {
             if (App.NewDownloadTaskWindow_ == null)
             {
-                App.NewDownloadTaskWindow_ = new NewDownloadTaskWindow(true);
+                App.NewDownloadTaskWindow_ = new(true);
                 App.NewDownloadTaskWindow_.Show();
             }
             else

@@ -1,7 +1,7 @@
 ﻿using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
 using MahApps.Metro.IconPacks;
-using NsisoLauncher.Config;
+using NsisoLauncher.Config.ConfigObj;
 using NsisoLauncher.Updata;
 using NsisoLauncher.Utils;
 using NsisoLauncher.Windows;
@@ -67,7 +67,7 @@ namespace NsisoLauncher
             {
                 if (App.Config.MainConfig.Server.UpdataCheck == null)
                 {
-                    App.Config.MainConfig.Server.UpdataCheck = new Config.UpdataCheck()
+                    App.Config.MainConfig.Server.UpdataCheck = new()
                     {
                         Enable = false,
                         Address = "",
@@ -80,14 +80,14 @@ namespace NsisoLauncher
                     checkUpdata = true;
                     string newPackName = null;
                     string newVerison = null;
-                    List<DownloadTask> losts = new List<DownloadTask>();
+                    List<DownloadTask> losts = new();
                     App.LogHandler.AppendInfo("检查客户端更新...");
                     Dispatcher.Invoke(() =>
                     {
                         mainPanel.launchButton.IsEnabled = false;
                         mainPanel.launchButton.Content = App.GetResourceString("String.Mainwindow.Check.mods");
                     });
-                    OtherCheck zipPack = new OtherCheck();
+                    OtherCheck zipPack = new();
 
                     var lostmod = await new UpdataCheckDo().Check();
                     if (lostmod is UpdataCheckDo)
@@ -158,7 +158,7 @@ namespace NsisoLauncher
                                 }
                                 else
                                 {
-                                    if (zipPack != null && await zipPack?.pack())
+                                    if (zipPack != null && await zipPack.pack())
                                     {
                                         App.Config.Read();
                                         App.Config.MainConfig.Server.UpdataCheck.Packname = newPackName;
@@ -211,7 +211,7 @@ namespace NsisoLauncher
                                         //关闭原有应用程序的所有进程 
                                         foreach (Process pro in proc)
                                         {
-                                            pro.Kill();
+                                            pro.Kill(true);
                                         }
                                     }
                                     else
@@ -244,12 +244,12 @@ namespace NsisoLauncher
         private void ChangeBackPic(string uri)
         {
             System.Drawing.Bitmap bitmap = new System.Drawing.Bitmap(uri);
-            MemoryStream stream = new MemoryStream();
+            MemoryStream stream = new();
             bitmap.Save(stream, ImageFormat.Png);
-            ImageSourceConverter imageSourceConverter = new ImageSourceConverter();
+            ImageSourceConverter imageSourceConverter = new();
             Dispatcher.Invoke(() =>
             {
-                BG.Source = (ImageSource)imageSourceConverter.ConvertFrom(stream);
+                BG.Source = imageSourceConverter.ConvertFrom(stream) as ImageSource;
                 bitmap.Dispose();
             });
             GC.Collect();
@@ -283,7 +283,8 @@ namespace NsisoLauncher
             try
             {
                 mediaElement.Stop();
-                mediaElement.Source = new Uri(Mp4Files[App.Config.MainConfig.Customize.CustomBackGroundVedioRandom ? new Random().Next(Mp4Files.Length) : MediaNow]);
+                mediaElement.Source = new Uri(Mp4Files[App.Config.MainConfig.Customize.CustomBackGroundVedioRandom ?
+                    new Random().Next(Mp4Files.Length) : MediaNow]);
                 mediaElement.Volume = (double)App.Config.MainConfig.Customize.CustomBackGroundSound / 100;
                 mediaElement.Play();
                 MediaNow++;
@@ -297,7 +298,8 @@ namespace NsisoLauncher
             try
             {
                 mediaElement.Stop();
-                mediaElement.Source = new Uri(Mp3Files[App.Config.MainConfig.Customize.CustomBackGroundMusicRandom ? new Random().Next(Mp3Files.Length - 1) : MediaNow]);
+                mediaElement.Source = new Uri(Mp3Files[App.Config.MainConfig.Customize.CustomBackGroundMusicRandom ? 
+                    new Random().Next(Mp3Files.Length - 1) : MediaNow]);
                 mediaElement.Volume = (double)App.Config.MainConfig.Customize.CustomBackGroundSound / 100;
                 mediaElement.Play();
                 MediaNow++;
@@ -388,10 +390,10 @@ namespace NsisoLauncher
                     if (icon.Length != 0)
                     {
                         System.Drawing.Bitmap bitmap = new System.Drawing.Bitmap(icon[0]);
-                        MemoryStream stream = new MemoryStream();
+                        MemoryStream stream = new();
                         bitmap.Save(stream, ImageFormat.Png);
-                        ImageSourceConverter imageSourceConverter = new ImageSourceConverter();
-                        Icon = (ImageSource)imageSourceConverter.ConvertFrom(stream);
+                        ImageSourceConverter imageSourceConverter = new();
+                        Icon = imageSourceConverter.ConvertFrom(stream) as ImageSource;
                         bitmap.Dispose();
                         ShowIconOnTitleBar = false;
                     }
@@ -436,7 +438,7 @@ namespace NsisoLauncher
                     if ((lockAuthNode != null) &&
                         (lockAuthNode.AuthType == AuthenticationType.NIDE8))
                     {
-                        Config.Server nide8Server = new Config.Server() { ShowServerInfo = true };
+                        ServerObj nide8Server = new ServerObj() { ShowServerInfo = true };
                         var nide8ReturnResult = await new APIHandler(lockAuthNode.Property["nide8ID"]).GetInfoAsync();
                         if (!string.IsNullOrWhiteSpace(nide8ReturnResult.Meta.ServerIP))
                         {
@@ -468,15 +470,14 @@ namespace NsisoLauncher
 
         public void APPColor()
         {
-            BrushColor get = new BrushColor();
-            Brush b = get.GetBursh();
+            Brush b = BrushColor.GetBursh();
             if (b != null)
             {
                 cancelLaunchButton.Background = b;
                 launchInfoBlock.Background = b;
                 Side.Background = b;
-                volumeButton.Foreground = get.GetNBursh();
-                volumeButton.BorderBrush = get.GetLDBursh();
+                volumeButton.Foreground = BrushColor.GetNBursh();
+                volumeButton.BorderBrush = BrushColor.GetLDBursh();
 
             }
         }
@@ -538,7 +539,7 @@ namespace NsisoLauncher
                 App.Config.MainConfig.History.LastLaunchVersion = args.LaunchVersion.ID;
                 App.Config.MainConfig.History.LastLaunchTime = DateTime.Now;
 
-                LaunchSetting launchSetting = new LaunchSetting()
+                LaunchSetting launchSetting = new()
                 {
                     Version = args.LaunchVersion
                 };
@@ -606,7 +607,7 @@ namespace NsisoLauncher
                             }
                             else
                             {
-                                var mYggAuthenticator = new YggdrasilAuthenticator(new Credentials()
+                                var mYggAuthenticator = new YggdrasilAuthenticator(new()
                                 {
                                     Username = args.UserNode.UserName,
                                     Password = mainPanel.PasswordBox.Password
@@ -641,7 +642,7 @@ namespace NsisoLauncher
                         {
                             var nYggCator = new Nide8Authenticator(
                                 nide8ID,
-                                new Credentials()
+                                new()
                                 {
                                     Username = args.UserNode.UserName,
                                     Password = mainPanel.PasswordBox.Password
@@ -677,7 +678,7 @@ namespace NsisoLauncher
                             {
                                 var cYggAuthenticator = new AuthlibInjectorAuthenticator(
                                         aiRootAddr,
-                                        new Credentials()
+                                        new()
                                         {
                                             Username = args.UserNode.UserName,
                                             Password = mainPanel.PasswordBox.Password
@@ -711,7 +712,7 @@ namespace NsisoLauncher
                                     App.GetResourceString("String.Mainwindow.Auth.Error.Check_Login"));
                                     return;
                                 }
-                                var cYggAuthenticator = new YggdrasilAuthenticator(new Credentials()
+                                var cYggAuthenticator = new YggdrasilAuthenticator(new()
                                 {
                                     Username = args.UserNode.UserName,
                                     Password = mainPanel.PasswordBox.Password
@@ -1011,13 +1012,13 @@ namespace NsisoLauncher
                 //直连服务器设置
                 var lockAuthNode = App.Config.MainConfig.User.GetLockAuthNode();
                 if (App.Config.MainConfig.User.Nide8ServerDependence &&
-                    (lockAuthNode != null) && App.Config.MainConfig.Server.LaunchToServer &&
-                        (lockAuthNode.AuthType == AuthenticationType.NIDE8))
+                    lockAuthNode != null && App.Config.MainConfig.Server.LaunchToServer &&
+                       lockAuthNode.AuthType == AuthenticationType.NIDE8)
                 {
-                    var nide8ReturnResult = await (new NsisoLauncherCore.Net.Nide8API.APIHandler(lockAuthNode.Property["nide8ID"])).GetInfoAsync();
+                    var nide8ReturnResult = await (new APIHandler(lockAuthNode.Property["nide8ID"])).GetInfoAsync();
                     if (!string.IsNullOrWhiteSpace(nide8ReturnResult.Meta.ServerIP))
                     {
-                        NsisoLauncherCore.Modules.Server server = new NsisoLauncherCore.Modules.Server();
+                        ToServer server = new();
                         string[] serverIp = nide8ReturnResult.Meta.ServerIP.Split(':');
                         if (serverIp.Length == 2)
                         {
@@ -1034,7 +1035,7 @@ namespace NsisoLauncher
                 }
                 else if (App.Config.MainConfig.Server.LaunchToServer)
                 {
-                    launchSetting.LaunchToServer = new NsisoLauncherCore.Modules.Server()
+                    launchSetting.LaunchToServer = new ToServer()
                     {
                         Address = App.Config.MainConfig.Server.Address,
                         Port = App.Config.MainConfig.Server.Port
@@ -1067,7 +1068,7 @@ namespace NsisoLauncher
                 {
                     try
                     {
-                        await Task.Factory.StartNew(() =>
+                        await Task.Run(() =>
                         {
                             result.Process.WaitForInputIdle();
                         });

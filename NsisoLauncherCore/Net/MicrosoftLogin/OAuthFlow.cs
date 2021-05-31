@@ -47,8 +47,8 @@ namespace NsisoLauncherCore.Net.MicrosoftLogin
 
         public Uri GetAuthorizeUri()
         {
-            UriBuilder uriBuilder = new UriBuilder(OAuthAuthorizeUri);
-            StringBuilder queryBuilder = new StringBuilder();
+            UriBuilder uriBuilder = new(OAuthAuthorizeUri);
+            StringBuilder queryBuilder = new();
             queryBuilder.AppendFormat("client_id={0}", Uri.EscapeDataString(ClientId));
             queryBuilder.AppendFormat("&response_type={0}", Uri.EscapeDataString(ResponseType));
             queryBuilder.AppendFormat("&redirect_uri={0}", Uri.EscapeDataString(RedirectUri.OriginalString));
@@ -88,13 +88,13 @@ namespace NsisoLauncherCore.Net.MicrosoftLogin
 
         public async Task<MicrosoftToken> MicrosoftCodeToAccessToken(string code, CancellationToken cancellation = default)
         {
-            Dictionary<string, string> args = new Dictionary<string, string>();
+            Dictionary<string, string> args = new();
             args.Add("client_id", ClientId);
             args.Add("code", code);
             args.Add("grant_type", "authorization_code");
             args.Add("redirect_uri", RedirectUri.AbsoluteUri);
             args.Add("scope", Scope);
-            FormUrlEncodedContent content = new FormUrlEncodedContent(args);
+            FormUrlEncodedContent content = new(args);
             var result = await HttpRequesterAPI.client.PostAsync(OAuthTokenUri, content, cancellation);
             result.EnsureSuccessStatusCode();
 
@@ -106,12 +106,12 @@ namespace NsisoLauncherCore.Net.MicrosoftLogin
 
         public async Task<MicrosoftToken> RefreshMicrosoftAccessToken(MicrosoftToken token, CancellationToken cancellation = default)
         {
-            Dictionary<string, string> args = new Dictionary<string, string>();
+            Dictionary<string, string> args = new();
             args.Add("client_id", ClientId);
             args.Add("refresh_token", token.Refresh_token);
             args.Add("grant_type", "refresh_token");
             args.Add("redirect_uri", RedirectUri.AbsoluteUri);
-            FormUrlEncodedContent content = new FormUrlEncodedContent(args);
+            FormUrlEncodedContent content = new(args);
             var result = await HttpRequesterAPI.client.PostAsync(OAuthTokenUri, content, cancellation);
             result.EnsureSuccessStatusCode();
 

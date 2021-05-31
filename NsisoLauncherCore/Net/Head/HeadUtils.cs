@@ -15,7 +15,7 @@ namespace NsisoLauncherCore.Net.Head
         //缩放
         public Bitmap Zoom(Bitmap orgimg, int times)
         {
-            Bitmap newimg = new Bitmap(orgimg.Width * times, orgimg.Height * times);
+            Bitmap newimg = new(orgimg.Width * times, orgimg.Height * times);
             for (int i = 0; i < orgimg.Width; i++)
             {
                 for (int j = 0; j < orgimg.Height; j++)
@@ -34,18 +34,18 @@ namespace NsisoLauncherCore.Net.Head
         public BitmapImage CaptureImage(Image fromImage)
         {
             //创建新图位图
-            Bitmap bitmap = new Bitmap(8, 8);
-            Bitmap bitmap_top = new Bitmap(8, 8);
+            Bitmap bitmap = new(8, 8);
+            Bitmap bitmap_top = new(8, 8);
             bitmap_top.MakeTransparent();
             //创建作图区域
             Graphics graphic = Graphics.FromImage(bitmap);
             Graphics graphic_top = Graphics.FromImage(bitmap_top);
             //矩形定义,将要在被截取的图像上要截取的图像区域的左顶点位置和截取的大小
-            Rectangle rectSource = new Rectangle(8, 8, 8, 8);
-            Rectangle rectSource_top = new Rectangle(40, 8, 8, 8);
+            Rectangle rectSource = new (8, 8, 8, 8);
+            Rectangle rectSource_top = new(40, 8, 8, 8);
             //矩形定义,将要把 截取的图像区域 绘制到初始化的位图的位置和大小
             //rectDest说明，将把截取的区域，从位图左顶点开始绘制，绘制截取的区域原来大小
-            Rectangle rectDest = new Rectangle(0, 0, 8, 8);
+            Rectangle rectDest = new(0, 0, 8, 8);
             //截取原图相应区域写入作图区
             graphic.DrawImage(fromImage, rectDest, rectSource, GraphicsUnit.Pixel);
             graphic_top.DrawImage(fromImage, rectDest, rectSource_top, GraphicsUnit.Pixel);
@@ -61,7 +61,7 @@ namespace NsisoLauncherCore.Net.Head
 
         public BitmapImage BitmapToBitmapImage(Bitmap bitmap)
         {
-            Bitmap bitmapSource = new Bitmap(bitmap.Width, bitmap.Height);
+            Bitmap bitmapSource = new(bitmap.Width, bitmap.Height);
             int i, j;
             for (i = 0; i < bitmap.Width; i++)
                 for (j = 0; j < bitmap.Height; j++)
@@ -70,9 +70,9 @@ namespace NsisoLauncherCore.Net.Head
                     Color newColor = Color.FromArgb(pixelColor.R, pixelColor.G, pixelColor.B);
                     bitmapSource.SetPixel(i, j, newColor);
                 }
-            MemoryStream ms = new MemoryStream();
+            MemoryStream ms = new();
             bitmapSource.Save(ms, System.Drawing.Imaging.ImageFormat.Bmp);
-            BitmapImage bitmapImage = new BitmapImage();
+            BitmapImage bitmapImage = new();
             bitmapImage.BeginInit();
             bitmapImage.StreamSource = new MemoryStream(ms.ToArray());
             bitmapImage.EndInit();

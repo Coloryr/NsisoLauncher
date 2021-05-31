@@ -8,7 +8,7 @@ namespace NsisoLauncherCore.Modules
     /// <summary>
     /// the minecraft version info class
     /// </summary>
-    public class MCVersion
+    public record MCVersion
     {
         /// <summary>
         /// 资源引导
@@ -102,7 +102,7 @@ namespace NsisoLauncherCore.Modules
     }
 
     #region assetsIndex
-    public class AssetIndex : Sha1SizeUrl
+    public record AssetIndex : Sha1SizeUrl
     {
         /// <summary>
         /// 资源ID
@@ -119,7 +119,7 @@ namespace NsisoLauncherCore.Modules
     #endregion
 
     #region coreDownloads
-    public class CoreDownloads
+    public record CoreDownloads
     {
         /// <summary>
         /// 客户端下载信息
@@ -136,7 +136,7 @@ namespace NsisoLauncherCore.Modules
     #endregion
 
     #region Library
-    public class Library
+    public record Library
     {
         public Artifact Artifact { get; set; }
 
@@ -157,7 +157,7 @@ namespace NsisoLauncherCore.Modules
     }
 
 
-    public class Native : Library
+    public record Native : Library
     {
         /// <summary>
         /// windows系统修改后缀
@@ -181,7 +181,7 @@ namespace NsisoLauncherCore.Modules
     }
 
     [JsonConverter(typeof(JsonTools.ArtifactJsonConverter))]
-    public class Artifact
+    public record Artifact
     {
         /// <summary>
         /// 包名
@@ -244,7 +244,7 @@ namespace NsisoLauncherCore.Modules
     /// <summary>
     /// 基本数据要素类
     /// </summary>
-    public class Sha1SizeUrl
+    public record Sha1SizeUrl
     {
         /// <summary>
         /// SHA1
@@ -268,7 +268,7 @@ namespace NsisoLauncherCore.Modules
     /// <summary>
     /// 基本数据要素类（包括路径）
     /// </summary>
-    public class PathSha1SizeUrl : Sha1SizeUrl
+    public record PathSha1SizeUrl : Sha1SizeUrl
     {
         /// <summary>
         /// 路径

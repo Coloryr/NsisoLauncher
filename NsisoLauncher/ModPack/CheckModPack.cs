@@ -20,12 +20,12 @@ namespace NsisoLauncher.ModPack
 
         public async Task<List<DownloadTask>> Check(string Local)
         {
-            FileInfo info = new FileInfo(Local);
-            List<DownloadTask> task = new List<DownloadTask>();
+            FileInfo info = new(Local);
+            List<DownloadTask> task = new();
             if (info.Exists)
             {
                 string strDirectory = App.Handler.GameRootPath + @"\";
-                ZipInputStream zip = new ZipInputStream(File.OpenRead(Local));
+                using ZipInputStream zip = new(File.OpenRead(Local));
                 ZipEntry theEntry;
                 manifestObj obj = null;
                 bool isfind = false;

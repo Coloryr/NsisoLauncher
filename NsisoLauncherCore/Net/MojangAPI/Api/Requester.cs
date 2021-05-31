@@ -87,14 +87,14 @@ namespace NsisoLauncherCore.Net.MojangApi.Api
             }
             catch (Exception ex)
             {
-                error = new Error()
+                error = new()
                 {
                     ErrorMessage = ex.Message,
                     ErrorTag = ex.Message,
                     Exception = ex
                 };
             }
-            return new Response()
+            return new()
             {
                 Code = httpResponse.StatusCode,
                 RawMessage = rawMessage,
@@ -130,11 +130,11 @@ namespace NsisoLauncherCore.Net.MojangApi.Api
 
             try
             {
-                StringContent contents = new StringContent(endpoint.PostContent, Encoding, "application/json");
+                StringContent contents = new(endpoint.PostContent, Encoding, "application/json");
                 httpResponse = await HttpRequesterAPI.client.PostAsync(endpoint.Address, contents);
                 if (httpResponse == null || httpResponse.Content == null)
                 {
-                    return new Response()
+                    return new()
                     {
                         Code = httpResponse.StatusCode,
                         RawMessage = rawMessage,
@@ -147,13 +147,13 @@ namespace NsisoLauncherCore.Net.MojangApi.Api
             }
             catch (TaskCanceledException ex)
             {
-                error = new Error()
+                error = new()
                 {
                     ErrorMessage = "TimeOut",
                     ErrorTag = ex.Message,
                     Exception = ex
                 };
-                return new Response()
+                return new()
                 {
                     Code = HttpStatusCode.GatewayTimeout,
                     RawMessage = rawMessage,
@@ -163,7 +163,7 @@ namespace NsisoLauncherCore.Net.MojangApi.Api
             }
             catch (Exception ex)
             {
-                error = new Error()
+                error = new()
                 {
                     ErrorMessage = ex.Message,
                     ErrorTag = ex.Message,
@@ -171,7 +171,7 @@ namespace NsisoLauncherCore.Net.MojangApi.Api
                 };
                 if (httpResponse == null)
                 {
-                    return new Response()
+                    return new()
                     {
                         Code = HttpStatusCode.ServiceUnavailable,
                         RawMessage = rawMessage,
@@ -179,7 +179,7 @@ namespace NsisoLauncherCore.Net.MojangApi.Api
                         Error = error
                     };
                 }
-                return new Response()
+                return new()
                 {
                     Code = httpResponse.StatusCode,
                     RawMessage = rawMessage,
@@ -188,7 +188,7 @@ namespace NsisoLauncherCore.Net.MojangApi.Api
                 };
             }
 
-            return new Response()
+            return new()
             {
                 Code = httpResponse.StatusCode,
                 RawMessage = rawMessage,
@@ -242,7 +242,7 @@ namespace NsisoLauncherCore.Net.MojangApi.Api
                     httpResponse.StatusCode == HttpStatusCode.Forbidden)
                 {
                     JObject err = JObject.Parse(rawMessage);
-                    error = new Error()
+                    error = new()
                     {
                         ErrorMessage = err["errorMessage"].ToObject<string>(),
                         ErrorTag = err["error"].ToObject<string>(),
@@ -251,7 +251,7 @@ namespace NsisoLauncherCore.Net.MojangApi.Api
                 }
                 else
                 {
-                    error = new Error()
+                    error = new()
                     {
                         ErrorMessage = ex.Message,
                         ErrorTag = ex.GetBaseException().Message,
@@ -261,7 +261,7 @@ namespace NsisoLauncherCore.Net.MojangApi.Api
 
             }
 
-            return new Response()
+            return new()
             {
                 Code = httpResponse.StatusCode,
                 RawMessage = rawMessage,
@@ -324,7 +324,7 @@ namespace NsisoLauncherCore.Net.MojangApi.Api
                     httpResponse.StatusCode == HttpStatusCode.Forbidden)
                 {
                     JObject err = JObject.Parse(rawMessage);
-                    error = new Error()
+                    error = new()
                     {
                         ErrorMessage = err["errorMessage"].ToObject<string>(),
                         ErrorTag = err["error"].ToObject<string>(),
@@ -333,7 +333,7 @@ namespace NsisoLauncherCore.Net.MojangApi.Api
                 }
                 else
                 {
-                    error = new Error()
+                    error = new()
                     {
                         ErrorMessage = ex.Message,
                         ErrorTag = ex.GetBaseException().Message,
@@ -343,7 +343,7 @@ namespace NsisoLauncherCore.Net.MojangApi.Api
 
             }
 
-            return new Response()
+            return new()
             {
                 Code = httpResponse.StatusCode,
                 RawMessage = rawMessage,
@@ -393,7 +393,7 @@ namespace NsisoLauncherCore.Net.MojangApi.Api
                     httpResponse.StatusCode == HttpStatusCode.Forbidden)
                 {
                     JObject err = JObject.Parse(rawMessage);
-                    error = new Error()
+                    error = new()
                     {
                         ErrorMessage = err["errorMessage"].ToObject<string>(),
                         ErrorTag = err["error"].ToObject<string>(),
@@ -402,7 +402,7 @@ namespace NsisoLauncherCore.Net.MojangApi.Api
                 }
                 else
                 {
-                    error = new Error()
+                    error = new()
                     {
                         ErrorMessage = ex.Message,
                         ErrorTag = ex.GetBaseException().Message,
@@ -412,7 +412,7 @@ namespace NsisoLauncherCore.Net.MojangApi.Api
 
             }
 
-            return new Response()
+            return new()
             {
                 Code = httpResponse.StatusCode,
                 RawMessage = rawMessage,

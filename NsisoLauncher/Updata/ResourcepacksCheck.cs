@@ -14,18 +14,20 @@ namespace NsisoLauncher.Updata
             {
                 return new Dictionary<string, UpdataItem>();
             }
-            Dictionary<string, UpdataItem> list = new Dictionary<string, UpdataItem>();
-            await Task.Factory.StartNew(() =>
+            Dictionary<string, UpdataItem> list = new();
+            await Task.Run(() =>
             {
                 string[] files = Directory.GetFiles(path, "*.zip");
                 IChecker checker = new MD5Checker();
                 foreach (string FilePath in files)
                 {
                     checker.FilePath = FilePath;
-                    UpdataItem mod = new UpdataItem();
-                    mod.local = FilePath;
+                    UpdataItem mod = new()
+                    {
+                        local = FilePath,
+                        check = checker.GetFileChecksum()
+                    };
                     mod.name = mod.filename = FilePath.Replace(path, "");
-                    mod.check = checker.GetFileChecksum();
                     if (list.ContainsKey(mod.name) == false)
                         list.Add(mod.name, mod);
                 }

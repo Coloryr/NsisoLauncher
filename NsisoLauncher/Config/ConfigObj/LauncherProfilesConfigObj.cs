@@ -1,9 +1,9 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace NsisoLauncher.Config
+namespace NsisoLauncher.Config.ConfigObj
 {
-    public class LauncherProfilesConfig
+    public record LauncherProfilesConfigObj
     {
         [JsonProperty("selectedProfile")]
         public string SelectedProfile { get; set; }

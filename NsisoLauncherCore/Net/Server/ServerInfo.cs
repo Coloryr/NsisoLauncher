@@ -101,7 +101,7 @@ namespace NsisoLauncherCore.Net.Server
             this.ServerPort = port;
         }
 
-        public ServerInfo(Modules.Server info)
+        public ServerInfo(Modules.ToServer info)
         {
             this.ServerAddress = info.Address;
             this.ServerPort = info.Port;

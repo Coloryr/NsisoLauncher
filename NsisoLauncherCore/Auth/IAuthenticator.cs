@@ -13,7 +13,7 @@ namespace NsisoLauncherCore.Auth
         Task<AuthenticateResult> DoAuthenticateAsync();
     }
 
-    public class AuthenticateResult
+    public record AuthenticateResult
     {
         public AuthState State { get; set; }
 
@@ -29,7 +29,7 @@ namespace NsisoLauncherCore.Auth
 
         public AuthenticateResult(AuthState state)
         {
-            this.State = state;
+            State = state;
         }
     }
 

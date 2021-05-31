@@ -2,14 +2,14 @@
 
 namespace NsisoLauncher.Updata
 {
-    public class server_info
+    public record server_info
     {
         /// <summary>
         /// 更新的网址根目录
         /// </summary>
         public static string server_local { get; set; }
     }
-    public class UpdataOBJ
+    public record UpdataOBJ
     {
         /// <summary>
         /// 整合包名字
@@ -49,7 +49,7 @@ namespace NsisoLauncher.Updata
         public List<UpdataItem> self { get; set; }
     }
 
-    public class UpdataItem
+    public record UpdataItem
     {
         /// <summary>
         /// 资源类型
@@ -80,7 +80,7 @@ namespace NsisoLauncher.Updata
         /// </summary>
         public string function { get; set; }
     }
-    class ModObj
+    public record ModObj
     {
         /// <summary>
         /// MOD id
@@ -131,9 +131,9 @@ namespace NsisoLauncher.Updata
         /// </summary>
         public List<string> dependencies { get; set; }
     }
-    class ModObjList
+    public record ModObjList
     {
-        public class Root
+        public record Root
         {
             public int modListVersion { get; set; }
             public List<ModObj> modList { get; set; }

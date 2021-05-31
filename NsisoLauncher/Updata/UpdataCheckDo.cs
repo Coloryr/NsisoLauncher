@@ -69,17 +69,17 @@ namespace NsisoLauncher.Updata
 
         public async Task<List<DownloadTask>> CheckUpdata(OtherCheck pack)
         {
-            List<DownloadTask> DownloadTask = new List<DownloadTask>();
+            List<DownloadTask> DownloadTask = new();
             if (UpdataObj.mods != null && UpdataObj.mods.Count != 0)
             {
                 try
                 {
                     var LocalMod = await new ModCheck().ReadModInfo(App.Handler.GameRootPath);
-                    foreach (KeyValuePair<string, UpdataItem> updataItem in UpdataObj.mods)
+                    foreach (var updataItem in UpdataObj.mods)
                     {
                         if (updataItem.Value.function == "delete")
                         {
-                            FileInfo file = new FileInfo(App.Handler.GameRootPath + @"\mods\" + updataItem.Value.filename);
+                            FileInfo file = new(App.Handler.GameRootPath + @"\mods\" + updataItem.Value.filename);
                             if (file.Exists)
                             {
                                 file.Delete();

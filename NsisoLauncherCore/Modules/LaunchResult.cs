@@ -3,7 +3,7 @@ using System.Diagnostics;
 
 namespace NsisoLauncherCore.Modules
 {
-    public class LaunchResult
+    public record LaunchResult
     {
         /// <summary>
         /// 游戏进程
