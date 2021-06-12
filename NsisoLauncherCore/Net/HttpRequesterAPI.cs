@@ -100,6 +100,22 @@ namespace NsisoLauncherCore.Net
         }
 
         /// <summary>
+        /// 302重定向处理
+        /// </summary>
+        /// <param name="res"></param>
+        /// <param name="cancelToken"></param>
+        /// <param name="option"></param>
+        /// <returns></returns>
+        private static async Task<HttpResponseMessage> Http302(HttpResponseMessage res, CancellationToken cancelToken, HttpCompletionOption option)
+        {
+            if (res.StatusCode == HttpStatusCode.Found)
+            {
+                return await HttpGetAsync(res.Headers.Location?.ToString(), cancelToken, option);
+            }
+            return res;
+        }
+
+        /// <summary>
         /// 异步Get
         /// </summary>
         /// <param name="uri">网址</param>
@@ -112,7 +128,7 @@ namespace NsisoLauncherCore.Net
                 try
                 {
                     var b = await client.GetAsync(uri, option, cancelToken);
-                    return b;
+                    return await Http302(b, cancelToken, option);
                 }
                 catch
                 {

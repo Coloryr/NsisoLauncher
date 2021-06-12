@@ -443,13 +443,10 @@ namespace NsisoLauncher.Controls
                         userComboBox.SelectedItem = null;
                         break;
                     default: //非离线模式
+                        userComboBox.Visibility = Visibility.Visible;
                         PasswordBox.Visibility = Visibility.Visible;
-                        if (node1 != null && node1.AuthModule == "offline")
-                            PasswordBox.Password = null;
-                        else if (node1.SelectProfileUUID != null && string.IsNullOrWhiteSpace(PasswordBox.Password) == true)
-                            PasswordBox.Password = "11111111111";
-                        else if (string.IsNullOrWhiteSpace(PasswordBox.Password) == false && userComboBox.SelectedValue == null)
-                            PasswordBox.Password = null;
+                        userComboBox.SelectedItem = null;
+                        PasswordBox.Password = "";
                         break;
                 }
         }

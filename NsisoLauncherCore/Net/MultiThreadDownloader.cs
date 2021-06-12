@@ -335,35 +335,31 @@ namespace NsisoLauncherCore.Net
                 try
                 {
                     //下载流程
-                    using (var getResult = await HttpRequesterAPI.HttpGetAsync(task.From, cancelToken, HttpCompletionOption.ResponseHeadersRead))
-                    {
-                        getResult.EnsureSuccessStatusCode();
-                        task.SetTotalSize(getResult.Content.Headers.ContentLength.GetValueOrDefault());
-                        using (Stream responseStream = await getResult.Content.ReadAsStreamAsync())
-                        {
-                            using (FileStream fs = new FileStream(buffFilename, FileMode.Create))
-                            {
-                                byte[] bArr = new byte[1024];
-                                int size = await responseStream.ReadAsync(bArr, 0, (int)bArr.Length, cancelToken);
+                    using var getResult = await HttpRequesterAPI.HttpGetAsync(task.From, cancelToken, HttpCompletionOption.ResponseHeadersRead);
+                    getResult.EnsureSuccessStatusCode();
+                    task.SetTotalSize(getResult.Content.Headers.ContentLength.GetValueOrDefault());
+                    using Stream responseStream = await getResult.Content.ReadAsStreamAsync();
+                    using FileStream fs = new(buffFilename, FileMode.Create);
+                    byte[] bArr = new byte[1024];
+                    int size = await responseStream.ReadAsync(bArr, 0, (int)bArr.Length, cancelToken);
 
-                                while (size > 0)
-                                {
-                                    await fs.WriteAsync(bArr, 0, size);
-                                    size = await responseStream.ReadAsync(bArr, 0, (int)bArr.Length, cancelToken);
-                                    _downloadSizePerSec += size;
-                                    task.IncreaseDownloadSize(size);
-                                    if (cancelToken.IsCancellationRequested)
-                                    {
-                                        fs.Close();
-                                        responseStream.Close();
-                                        Thread.Sleep(1000);
-                                        File.Delete(buffFilename);
-                                        return;
-                                    }
-                                }
-                            }
+                    while (size > 0)
+                    {
+                        await fs.WriteAsync(bArr, 0, size);
+                        size = await responseStream.ReadAsync(bArr, 0, (int)bArr.Length, cancelToken);
+                        _downloadSizePerSec += size;
+                        task.IncreaseDownloadSize(size);
+                        if (cancelToken.IsCancellationRequested)
+                        {
+                            fs.Close();
+                            responseStream.Close();
+                            Thread.Sleep(1000);
+                            File.Delete(buffFilename);
+                            return;
                         }
                     }
+                    fs.Close();
+                    responseStream.Close();
 
                     //下载完成后转正
                     File.Move(buffFilename, realFilename);

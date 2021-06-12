@@ -422,7 +422,7 @@ namespace NsisoLauncher.Windows
 
         private void AppendForgeDownloadTask(MCVersion ver, JWForge forge)
         {
-            DownloadTask dt = GetDownloadUrl.GetForgeDownloadURL(App.Config.MainConfig.Download.DownloadSource, forge);
+            DownloadTask dt = GetDownloadUrl.GetForgeDownloadURL(App.Config.MainConfig.Download.DownloadSource, forge, ver);
             App.Downloader.SetDownloadTasks(dt);
             App.Downloader.StartDownloadAsync();
         }

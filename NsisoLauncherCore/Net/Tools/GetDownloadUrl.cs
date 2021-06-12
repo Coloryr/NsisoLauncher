@@ -220,7 +220,7 @@ namespace NsisoLauncherCore.Net.Tools
         /// <param name="downloadSource">下载源</param>
         /// <param name="forge">Forge信息</param>
         /// <returns></returns>
-        public static DownloadTask GetForgeDownloadURL(DownloadSource downloadSource, APIModules.JWForge forge)
+        public static DownloadTask GetForgeDownloadURL(DownloadSource downloadSource, APIModules.JWForge forge, MCVersion mc)
         {
             string local = PathManager.TempDirectory + "\\forge-" + forge.Build + ".jar";
             string Source = BMCLUrl;
@@ -237,9 +237,10 @@ namespace NsisoLauncherCore.Net.Tools
                     break;
             }
 
-            Source += "forge/download/" + forge.Build + ".jar";
+            Source += $"maven/net/minecraftforge/forge/{mc.ID}-{forge.Version}" +
+                $"/forge-{mc.ID}-{forge.Version}-installer.jar";
 
-            DownloadTask dt = new DownloadTask(App.GetResourceString("String.NewDownloadTaskWindow.Core.Forge"),
+            DownloadTask dt = new(App.GetResourceString("String.NewDownloadTaskWindow.Core.Forge"),
                 Source, local);
             dt.Todo = new Func<ProgressCallback, CancellationToken, Exception>((callback, cancelToken) =>
             {
